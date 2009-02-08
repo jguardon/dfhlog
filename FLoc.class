@@ -1,0 +1,327 @@
+' Gambas class file
+
+PRIVATE EUR AS Picture
+PRIVATE ASI AS Picture
+PRIVATE AFR AS Picture
+PRIVATE NAM AS Picture
+PRIVATE SAM AS Picture
+PRIVATE OCE AS Picture
+PRIVATE ESP AS Picture
+PRIVATE MUN AS Picture
+PRIVATE Sx AS Float
+PRIVATE Sy AS Float
+PRIVATE Tx AS Float
+PRIVATE Ty AS Float
+STATIC currentMap AS Picture
+
+PRIVATE SUB loadImages()
+
+    EUR = Picture["/usr/share/dfhlog-images/pEU.png"]
+    ASI = Picture["/usr/share/dfhlog-images/pAS.png"]
+    AFR = Picture["/usr/share/dfhlog-images/pAF.png"]
+    NAM = Picture["/usr/share/dfhlog-images/pNA.png"]
+    SAM = Picture["/usr/share/dfhlog-images/pSA.png"]
+    OCE = Picture["/usr/share/dfhlog-images/pOC.png"]
+    ESP = Picture["/usr/share/dfhlog-images/pSP.png"]
+    MUN = Picture["/usr/share/dfhlog-images/pWW.png"]
+  
+END
+
+
+PUBLIC SUB drwMapa(map AS Picture)
+    'lienzo.Clear()
+    currentMap = map
+    SELECT CASE map
+    
+        CASE EUR        
+            
+            Sx = 70.7129
+            Sy = 53.66
+            Tx = 25.5521
+            Ty = 72.1329
+            lienzo.Font = Font["Monospace, 7"]
+            
+        CASE ESP
+            
+            Sx = 18.84
+            Sy = 20.82
+            Tx = 10.1
+            Ty = 50.31
+            lienzo.Font = Font["Monospace, 20"]
+            
+        CASE NAM
+        
+            Sx = 81.1909
+            Sy = 64.7271
+            Tx = 133.5271
+            Ty = 73.5579
+            lienzo.Font = Font["Monospace, 7"]
+            
+        CASE SAM        
+            
+            Sx = 109.2811
+            Sy = 87.1534
+            Tx = 116.7712
+            Ty = 26.9769
+            lienzo.Font = Font["Monospace, 7"]
+            
+        CASE AFR
+            
+            Sx = 96.4288
+            Sy = 76.9039
+            Tx = 29.0535
+            Ty = 40.6753
+            lienzo.Font = Font["Monospace, 7"]
+            
+        CASE OCE
+        
+            Sx = 84.5148
+            Sy = 67.4857
+            Tx = -95.235
+            Ty = 14.2688
+            lienzo.Font = Font["Monospace, 7"]
+            
+        CASE ASI
+        
+            Sx = 109.5392
+            Sy = 87.3592
+            Tx = -43.3746
+            Ty = 84.1883
+            lienzo.Font = Font["Monospace, 7"]
+        
+        CASE MUN        
+            
+            Sx = 360.0
+            Sy = 168.3
+            Tx = 180.0
+            Ty = 84.0
+                           
+    END SELECT
+    
+    
+    lienzo.Width = map.Width
+    lienzo.Height = map.Height
+        
+    Draw.Begin(lienzo)
+    Draw.Picture(map, 0, 0)
+    Draw.End()
+    
+    IF chkSquares.Value = TRUE THEN drwGrid()
+  
+END
+
+PUBLIC SUB Form_Open()
+    DIM propa, banda, modo AS String
+    
+    
+    loadImages()
+     ME.Top = FMain.ini["FMapLoc/Top", ME.Top]  
+     ME.Left = FMain.ini["FMapLoc/Left", ME.Left] 
+     ME.Height = FMain.ini["FMapLoc/Height", ME.Height]  
+     ME.Width = FMain.ini["FMapLoc/Width", ME.Width]
+    global.MapLoc = TRUE
+
+    drwMapa(EUR)
+    cboPropa.Add(("All"), 0)
+    FOR EACH propa IN global.getPropa()
+        cboPropa.Add(propa)
+    NEXT
+    cboBand.Add(("All"), 0)
+    FOR EACH banda IN global.getBandas()
+        cboBand.Add(banda)
+    NEXT
+    cboModo.Add(("All"), 0)
+    FOR EACH modo IN global.getModos()
+        cboModo.Add(modo)
+    NEXT
+    
+    dateIni.Value = "1/1/1900"
+    dateFin.Value = global.UTCNow()
+    
+     
+     CATCH 
+     
+        Message.Error(("Please, install required package \"dfhlog-images\""))
+        ME.Close()
+
+END
+
+PUBLIC SUB Form_Close()
+
+    global.MapLoc = FALSE
+  
+    FMain.ini["FMapLoc/Top"] = ME.ScreenY
+    FMain.ini["FMapLoc/Left"] = ME.ScreenX
+    FMain.ini["FMapLoc/Height"] = ME.Height
+    FMain.ini["FMapLoc/Width"] = ME.Width
+
+END
+
+
+
+PUBLIC SUB lienzo_MouseMove()
+    DIM x, y AS Float
+    
+        x = Mouse.X / (lienzo.Width / Sx) - Tx
+        y = Mouse.Y / (lienzo.Height / Sy) - Ty
+        
+        Label1.Text = ("Latitude: ") & Round(y * -1, -4) & ("  Longitude: ") & Round(x, -4) 
+        ME.Text = global.latLong2locator(y * -1, x)
+
+ 
+END
+
+PUBLIC SUB drwGrid()
+    DIM i, j AS Integer
+
+    WITH Draw
+        
+        .Begin(lienzo)    
+        .ForeColor = Color.LightGray
+        .LineStyle = Line.Solid
+        .LineWidth = 0.5
+        .Scale(lienzo.Width / Sx, lienzo.Height / Sy)
+        .Translate(Tx, Ty)
+        
+        FOR i = -180 TO 180 STEP 2              
+            .Line(i, -90, i, 90)
+        NEXT 
+        
+        FOR j = -90 TO 90 STEP 1    
+            .Line(-180, j, 180, j)
+        NEXT
+        
+        .End()
+        
+        .Begin(lienzo)    
+        .ForeColor = Color.RGB(200, 140, 80)
+        .LineStyle = Line.Solid
+        .LineWidth = 2
+        .Scale(lienzo.Width / Sx, lienzo.Height / Sy)
+        .Translate(Tx, Ty)
+        
+        FOR i = -180 TO 180 STEP 20
+            .Line(i, -90, i, 90)
+        NEXT 
+        
+        FOR j = -90 TO 90 STEP 10
+            .Line(-180, j, 180, j)
+        NEXT
+        
+        .End()
+    
+    END WITH
+    
+      Draw.Begin(lienzo)
+    
+    Draw.ForeColor = Color.blue
+    Draw.FillColor = Color.Orange
+    Draw.FillStyle = Fill.Solid
+    Draw.Scale(lienzo.Width / Sx, lienzo.Height / Sy)
+    Draw.Translate(Tx, Ty)
+    Draw.Rect(-4, -38, 2, 1)
+    IF currentMap <> MUN THEN 
+    Draw.Text("IM87", -4, -38) ', 1, 1, 1)
+    ENDIF 
+    Draw.End()
+    ' pic = DrawingArea1.Grab()
+    ' pic.Save(User.Home &/ "mypic.png")
+    ' Desktop.Open(User.Home &/ "mypic.png")
+
+ 
+END
+
+PUBLIC SUB btnOK_Click()
+    IF dateIni.Value > dateFin.Value THEN 
+        Message.Warning(("Start Date couldn't be greater than End Date"))
+        dateIni.SetFocus()
+    ENDIF 
+  
+
+END
+
+
+PUBLIC SUB lblEU_MouseDown()
+
+    drwMapa(EUR)
+
+END
+
+
+
+PUBLIC SUB lblES_MouseDown()
+
+    drwMapa(ESP)
+
+END
+
+PUBLIC SUB lblNA_MouseDown()
+
+    drwMapa(NAM)
+
+END
+
+PUBLIC SUB lblAF_MouseDown()
+
+    drwMapa(AFR)
+
+END
+
+PUBLIC SUB btnClear_Click()
+
+    lienzo.Clear()
+    drwMapa(currentMap)
+
+END
+
+PUBLIC SUB ToolButton1_Click()
+
+    ME.Close()
+
+END
+
+PUBLIC SUB lblAS_MouseDown()
+
+    drwMapa(ASI)
+
+END
+
+PUBLIC SUB lblOC_MouseDown()
+
+    drwMapa(OCE)
+
+END
+
+PUBLIC SUB lblSA_MouseDown()
+
+    drwMapa(SAM)
+
+END
+
+PUBLIC SUB lblMUN_MouseDown()
+
+    drwMapa(MUN)
+
+END
+
+PUBLIC SUB lienzo_MouseDrag()
+
+    DIM deltaX AS Integer = Mouse.X / 2
+    DIM deltaY AS Integer = Mouse.Y / 2
+    
+    IF Mouse.Left THEN 
+        ScrollView1.ScrollX = deltaX - ScrollView1.x
+        ScrollView1.ScrollY = deltaY - ScrollView1.Y
+    ENDIF 
+END
+
+PUBLIC SUB lienzo_MouseDown()
+    IF Mouse.Left THEN 
+        lienzo.Mouse = Mouse.Pointing
+    ENDIF 
+END
+
+PUBLIC SUB lienzo_MouseUp()
+    lienzo.Mouse = Mouse.Default
+
+END

@@ -1,0 +1,150 @@
+' Gambas class file
+' declare properties
+
+PROPERTY number AS Integer
+PROPERTY entity AS String
+PROPERTY pfx AS String
+PROPERTY cqz AS String
+PROPERTY ituz AS String
+PROPERTY continent AS String
+PROPERTY lat AS Float
+PROPERTY lon AS Float
+PROPERTY tz AS Integer
+PROPERTY pfxs AS String
+
+'private
+
+PRIVATE $number AS Integer
+PRIVATE $entity AS String
+PRIVATE $pfx AS String
+PRIVATE $cqz AS String
+PRIVATE $ituz AS String
+PRIVATE $continent AS String
+PRIVATE $lat AS Float
+PRIVATE $lon AS Float
+PRIVATE $tz AS Integer
+PRIVATE $pfxs AS String
+
+
+' Implements  properties
+
+PRIVATE FUNCTION number_Read() AS Integer
+
+  RETURN $number
+
+END
+
+PRIVATE SUB number_Write(Value AS Integer)
+
+  $number = Value
+
+END
+
+
+PRIVATE FUNCTION entity_Read() AS String
+
+  RETURN $entity
+
+END
+
+PRIVATE SUB entity_Write(Value AS String)
+
+  $entity = Value
+
+END
+
+PRIVATE FUNCTION pfx_Read() AS String
+
+  RETURN $pfx
+
+END
+
+PRIVATE SUB pfx_Write(Value AS String)
+
+  $pfx = Value
+
+END
+
+PRIVATE FUNCTION cqz_Read() AS String
+
+  RETURN $cqz
+
+END
+
+PRIVATE SUB cqz_Write(Value AS String)
+
+  $cqz = Value
+
+END
+
+PRIVATE FUNCTION ituz_Read() AS String
+
+  RETURN $ituz
+
+END
+
+PRIVATE SUB ituz_Write(Value AS String)
+
+  $ituz = Value
+
+END
+
+PRIVATE FUNCTION continent_Read() AS String
+
+  RETURN $continent
+
+END
+
+PRIVATE SUB continent_Write(Value AS String)
+
+  $continent = Value
+
+END
+
+PRIVATE FUNCTION lat_Read() AS Float
+
+  RETURN $lat
+
+END
+
+PRIVATE SUB lat_Write(Value AS Float)
+
+  $lat = Value
+
+END
+
+PRIVATE FUNCTION lon_Read() AS Float
+
+  RETURN $lon
+
+END
+
+PRIVATE SUB lon_Write(Value AS Float)
+
+  $lon = Value
+
+END
+
+PRIVATE FUNCTION tz_Read() AS Integer
+
+  RETURN $tz
+
+END
+
+PRIVATE SUB tz_Write(Value AS Integer)
+
+  $tz = Value
+
+END
+
+PRIVATE FUNCTION pfxs_Read() AS String
+
+  RETURN $pfxs
+
+END
+
+PRIVATE SUB pfxs_Write(Value AS String)
+
+  $pfxs = Value
+
+END

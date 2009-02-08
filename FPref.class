@@ -1,0 +1,353 @@
+' Gambas class file
+
+PRIVATE bQRZ AS Boolean = FALSE
+PRIVATE isHamlib AS Boolean = FALSE
+
+
+PUBLIC SUB btnOK_Click()
+  'salvar prefs
+  
+  
+   IF global.chkLoc(txtLocator.Text) = FALSE THEN 
+      Message.Warning(("Incorrect GridSquare"))
+      ELSE 
+      
+        FMain.ini["Estacion/QRZ"] = Trim(txtQRZ.Text)
+        FMain.ini["Estacion/Nombre"] = Trim(txtNombre.Text)
+        FMain.ini["Estacion/Locator"] = Trim(txtLocator.Text)
+        FMain.ini["Estacion/PrefBanda"] = cboPrefBanda.Text
+        FMain.ini["Estacion/PrefModo"] = cboPrefModo.Text
+        FMain.ini["Telnet/Server"] = cboServer.Current.Text
+        FMain.ini["Hamlib/Device"] = txtDevHamlib.Text
+        FMain.ini["Estacion/UserQRZ"] = txtUserQRZ.Text
+        FMain.ini["Estacion/PassQRZ"] = txtPassQRZ.Text
+        
+        saveCombo()
+        FMain.ini.Save()
+        
+        ME.Close()
+  ENDIF
+END
+
+PRIVATE SUB saveCombo()
+    DIM S AS String
+    DIM F AS File
+
+  IF NOT Exist(User.Home &/ "/.dfh_Log/") THEN
+  
+            MKDIR User.Home &/ "/.dfh_Log/"
+            
+        ENDIF
+         
+        F = OPEN User.Home &/ "/.dfh_Log/servers.dat" FOR WRITE CREATE  
+        
+        FOR EACH S IN cboServer.List
+        
+            PRINT #F, S 
+            
+        NEXT 
+               
+        CLOSE #F
+  
+  
+END
+
+PUBLIC SUB btnCancel_Click()
+   
+     ME.Close()
+ 
+END
+PUBLIC SUB Form_Close()
+    
+   
+    IF NOT FMain.ini["Estacion/QRZ"] OR NOT FMain.ini["Estacion/Nombre"] OR NOT FMain.ini["Estacion/Locator"] OR global.chkLoc(txtLocator.Text) = FALSE THEN 
+        Message.Warning(("You need to fill the mandatory fields\nor GridSquare is incorrect"))
+        STOP EVENT 
+    ENDIF 
+  
+  
+END
+
+PUBLIC SUB Form_Open()
+  DIM banda, modo, L AS String
+  DIM $test AS String
+  DIM F AS File
+  'load combos
+  FOR EACH banda IN global.getBandas()
+  
+    cboPrefBanda.Add(banda)
+  NEXT
+  FOR EACH modo IN global.getModos()
+  
+    cboPrefModo.Add(modo)
+  NEXT
+  
+  IF Exist(User.Home &/ "/.dfh_Log/servers.dat") THEN
+  
+     F = OPEN User.Home &/ "/.dfh_Log/servers.dat" FOR INPUT  
+        
+        WHILE NOT Eof(F)
+        
+            LINE INPUT #F, L
+            cboServer.Add(L)
+            
+            
+        WEND 
+      CLOSE #F     
+            
+  ENDIF
+  
+   
+  SHELL "rigctl -V | grep version" TO $test
+  
+  IF Left($test, 6) = "rigctl" THEN 
+     isHamlib = TRUE
+    load_backends(cboRigHamlib)
+     ELSE 
+     isHamlib = FALSE
+  ENDIF 
+        
+  
+  
+  txtQRZ.Text = FMain.ini["Estacion/QRZ"]
+  txtNombre.Text = FMain.ini["Estacion/Nombre"]
+  txtLocator.Text = FMain.ini["Estacion/Locator"]
+  cboPrefBanda.Text = FMain.ini["Estacion/PrefBanda"]
+  cboPrefModo.Text = FMain.ini["Estacion/PrefModo"]
+  cboServer.Text = FMain.ini["Telnet/Server"]
+  chkHamlib.Value = FMain.ini["Hamlib/Activado", FALSE]
+  chkXplanet.Value = FMain.ini["Xplanet/Activado", FALSE]
+  chkQRZcom.Value = FMain.ini["QRZcom/Activado", FALSE]
+  cbtnWorked.Color = FMain.ini["Colores/Trabajado", Color.Orange]
+  cbtnConfirmed.Color = FMain.ini["Colores/Confirmado", Color.Green]
+  cbtnNeeded.Color = FMain.ini["Colores/Necesitado", Color.Blue]
+  cbtnDefault.Color = FMain.ini["Colores/Default", Color.Black]
+  cboServer.Text = FMain.ini["Telnet/Server"]
+  cboRigHamlib.Text = FMain.ini["Hamlib/Modelo"]
+  cboPolling.Text = FMain.ini["Hamlib/Polling", 300]
+  cboSpd.Text = FMain.ini["Hamlib/Speed", 9600]
+  txtDevHamlib.Text = FMain.ini["Hamlib/Device", "/dev/ttyS0"]
+  chkHF.Value = FMain.ini["Filtros/HF", 0]
+  chkVHF.Value = FMain.ini["Filtros/VHF", 0] 
+  chkWARC.Value = FMain.ini["Filtros/WARC", 0]
+  chkANN.Value = FMain.ini["Filtros/ANN", 0]
+  chkWWV.Value = FMain.ini["Filtros/WWV", 0]
+  chkWCY.Value = FMain.ini["Filtros/WCY", 0]
+  txtUserQRZ.Text = FMain.ini["Estacion/UserQRZ"]
+  txtPassQRZ.Text = FMain.ini["Estacion/PassQRZ"]
+
+
+END
+
+PUBLIC SUB load_backends(cbo AS ComboBox)
+  DIM $test, sPath, sRigs AS String
+  DIM sMarca, sModelo, sNro AS String  
+  DIM tmp AS File
+  cbo.Clear()
+  sPath = Temp$("rigs")
+  
+  SHELL "rigctl -l" TO $test
+  tmp = OPEN sPath FOR WRITE CREATE 
+  
+  PRINT #tmp, $test
+  
+  CLOSE #tmp
+  
+  tmp = OPEN sPath FOR INPUT 
+  WHILE NOT Eof(tmp)
+    LINE INPUT #tmp, sRigs 
+    
+      IF IsDigit(Left(sRigs, 1)) = TRUE THEN
+      
+      sNro = Trim(Left(sRigs, InStr(sRigs, "\t")))
+      sMarca = Trim(Mid(sRigs, InStr(sRigs, "\t"), 16))
+      sModelo = Trim(Mid(sRigs, InStr(sRigs, "\t") + 16, 24))
+      
+       cbo.Add(sMarca & " " & sModelo & " #" & sNro)
+         
+    ENDIF 
+    
+  WEND 
+  cbo.Sorted = TRUE
+ 
+  CLOSE #tmp
+END
+
+
+PUBLIC SUB txtQRZ_Change()
+
+  txtQRZ.Text = Upper(txtQRZ.Text)
+  
+END
+
+
+PUBLIC SUB txtLocator_Change()  
+  
+  txtLocator.Text = Upper(txtLocator.Text)
+   
+  IF global.chkLoc(txtLocator.Text) THEN 
+            
+            picLoc.Picture = Picture["accept.png"]
+        ELSE 
+            
+            picLoc.Picture = Picture["cancel.png"]
+  
+  ENDIF 
+  
+
+END
+
+
+PUBLIC SUB chkHamlib_Click()
+   
+  IF isHamlib = FALSE THEN 
+        chkHamlib.Value = FALSE
+        FMain.ini["Hamlib/Activado"] = isHamlib
+        lblHamlibInst.Text = ("Hamlib not installed!")
+     
+  ELSE 
+        lblHamlibInst.Text = ""
+        FMain.ini["Hamlib/Activado"] = CBool(chkHamlib.Value)
+        IF FMain.ini["Hamlib/Activado"] = TRUE
+           FMain.Controls["btnCAT"].Enabled = TRUE
+        ELSE 
+           FMain.Controls["btnCAT"].Enabled = FALSE
+        ENDIF 
+  ENDIF 
+
+END
+
+
+PUBLIC SUB cbtnWorked_Change()
+
+   FMain.ini["Colores/Trabajado"] = cbtnWorked.Color
+
+END
+
+PUBLIC SUB cbtnConfirmed_Change()
+
+  FMain.ini["Colores/Confirmado"] = cbtnConfirmed.Color
+
+END
+
+PUBLIC SUB cbtnNeeded_Change()
+
+  FMain.ini["Colores/Necesitado"] = cbtnNeeded.Color
+
+END
+
+PUBLIC SUB cbtnDefault_Change()
+
+  FMain.ini["Colores/Default"] = cbtnDefault.Color
+
+END
+
+PUBLIC SUB chkXplanet_Click()
+
+    DIM $test AS String
+    
+    SHELL "xplanet -version | grep Xplanet" TO $test
+  
+    IF Left($test, 7) <> "Xplanet" THEN 
+        chkXplanet.Value = FALSE
+        lblXplanetInst.Text = ("Xplanet not installed!")
+    ELSE 
+        lblXplanetInst.Text = ""
+        FMain.ini["Xplanet/Activado"] = CBool(chkXplanet.Value)
+        IF FMain.ini["Xplanet/Activado"] = TRUE
+             FMain.Controls["btnMap"].Enabled = TRUE
+        ELSE 
+             FMain.Controls["btnMap"].Enabled = FALSE
+        ENDIF 
+    ENDIF 
+
+END
+
+PUBLIC SUB chkQRZcom_Click()
+    IF bQRZ = TRUE THEN 
+      bQRZ = FALSE
+      
+  ELSE 
+      
+      bQRZ = TRUE
+  ENDIF 
+  FMain.ini["QRZcom/Activado"] = bQRZ
+  FMain.ini.Save()
+
+  
+
+END
+
+
+PUBLIC SUB cboRigHamlib_Click()
+    DIM s AS String = cboRigHamlib.Current.Text
+    
+    FMain.ini["Hamlib/Rig"] = Right(s, Len(s) - InStr(s, "#"))
+    FMain.ini["Hamlib/Modelo"] = s
+    cboRigHamlib.ToolTip = s 
+
+END
+
+
+
+PUBLIC SUB btnAddServer_Click()
+
+  Fservers.ShowModal()
+  cboServer.Refresh()
+
+END
+
+PUBLIC SUB cboPolling_Click()
+
+    FMain.ini["Hamlib/Polling"] = cboPolling.Current.Text
+
+END
+
+PUBLIC SUB btnDelServer_Click()
+
+  cboServer.Remove(cboServer.Index)
+  saveCombo()
+
+END
+
+PUBLIC SUB cboSpd_Click()
+
+     FMain.ini["Hamlib/Speed"] = cboSpd.Current.Text  
+
+END
+
+PUBLIC SUB chkHF_Click()
+
+  FMain.ini["Filtros/HF"] = CBool(chkHF.Value)
+
+END
+
+PUBLIC SUB chkVHF_Click()
+
+  FMain.ini["Filtros/VHF"] = CBool(chkVHF.Value)
+
+END
+
+PUBLIC SUB chkWARC_Click()
+
+  FMain.ini["Filtros/WARC"] = CBool(chkWARC.Value)
+
+END
+
+PUBLIC SUB chkANN_Click()
+
+  FMain.ini["Filtros/ANN"] = CBool(chkANN.Value)
+
+END
+
+PUBLIC SUB chkWWV_Click()
+
+  FMain.ini["Filtros/WWV"] = CBool(chkWWV.Value)
+
+END
+
+PUBLIC SUB chkWCY_Click()
+
+  FMain.ini["Filtros/WCY"] = CBool(chkWCY.Value)
+
+END

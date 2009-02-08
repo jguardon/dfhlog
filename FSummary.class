@@ -1,0 +1,123 @@
+' Gambas class file
+PRIVATE $type AS Integer
+PRIVATE $sWkdcfd AS String
+
+PUBLIC SUB Form_Open()
+
+    DIM banda, modo AS String
+    
+    cboBand.Add(("All"), 0)
+    FOR EACH banda IN global.getBandas()  
+        cboBand.Add(banda)
+    NEXT
+    cboMode.Add(("All"), 0)
+    FOR EACH modo IN global.getModos()    
+        cboMode.Add(modo)
+    NEXT 
+
+END
+
+PRIVATE FUNCTION parseCbo(cbo AS ComboBox) AS String
+    DIM s AS String
+    
+    IF cbo.Index = 0 THEN 
+      s = "%"
+    ELSE 
+      s = cbo.Text
+    ENDIF 
+    
+    RETURN s
+
+END
+
+PUBLIC SUB getSummary(type AS Integer)
+    
+    $type = type
+ 
+    SELECT CASE $type
+    
+        CASE 1 'dxcc        
+            lblSummary.Text = ("DXCC Summary")            
+        CASE 2 'wac
+            lblSummary.Text = ("WAC Summary")
+        CASE 3 'was
+            lblSummary.Text = ("WAS Summary")
+        CASE 4 'usaca
+            lblSummary.Text = ("USACA Summary")
+        CASE 5 'iota
+            lblSummary.Text = ("IOTA Summary")
+        CASE 6 'tpea
+            lblSummary.Text = ("TPEA Summary")
+    END SELECT 
+    
+    ME.ShowModal()
+    
+END 
+
+PRIVATE SUB getDXCC(banda AS String, modo AS String, wcd AS String)
+    DIM hres AS Result
+    DIM sql AS String
+    DIM f AS File
+    DIM path AS String = Temp & ".html"
+    
+    f = OPEN path FOR OUTPUT APPEND     
+    
+    IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN 
+    sql = "select call, qso_date, band, mode, qsl_rcvd, qsl_sent, country ,dxcc, count(call) as num from log where band like &1 and mode like &2 and qsl_rcvd like &3 group by dxcc order by dxcc"
+    
+    hres = dbLog.cnLog.Exec(sql, parseCbo(cboBand), parseCbo(cboMode), wcd)
+    PRINT #f, html.header("DXCC Summary")
+    PRINT #f, ("<h2>Entities " & $sWkdcfd & " by " & FMain.ini["Estacion/QRZ"] & (" in " & cboBand.Text & " band and " & cboMode.Text & " mode</h2><br>\n"))
+    PRINT #f, ("<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>QSL_rcvd</td><td>QSL_sent</td><td>Country</td><td>QSOs</td></tr>")
+    
+    DO WHILE hres.Available    
+      PRINT #f, "<tr><td>" & hres!call & "</td><td>" & hres!qso_date & "</td><td>" & hres!band & "</td><td>" & hres!mode & "</td><td>" & hres!qsl_rcvd & "</td><td>" & hres!qsl_sent & "</td><td>" & hres!country & "</td><td>" & hres!num & "</td></tr>"
+      hres.MoveNext()
+    LOOP
+    PRINT #f, "</table>"
+    PRINT #f, html.footer()
+    
+      
+    CLOSE #f
+    Desktop.Open(path)
+    ME.Close()
+    
+    CATCH 
+        Message.Error(("Error in ") & "getDXCC\n" & Error.Text & "\n" & Error.Where)
+  
+END
+
+PUBLIC SUB btnOK_Click()
+
+  DIM wkdcfd AS String
+    IF rbCfd.Value = TRUE THEN 
+        wkdcfd = "Y"
+        $sWkdcfd = ("confirmed")
+    ELSE 
+        wkdcfd = "%"
+        $sWkdcfd = ("worked")
+    ENDIF
+    
+    SELECT CASE $type
+    
+        CASE 1 'dxcc        
+            getDXCC(cboBand.Text, cboMode.Text, wkdcfd)            
+        CASE 2 'wac
+        
+        CASE 3 'was
+        
+        CASE 4 'usaca
+        
+        CASE 5 'iota
+        
+        CASE 6 'tpea
+        
+    END SELECT     
+  
+END
+
+PUBLIC SUB btnCancel_Click()
+
+    ME.Close()
+
+END

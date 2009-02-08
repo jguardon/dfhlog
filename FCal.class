@@ -1,0 +1,21 @@
+' Gambas class file
+PRIVATE $fecha AS Date
+
+PUBLIC SUB DateChooser1_Activate()
+    $fecha = DateChooser1.Value
+    
+    
+    ME.Close()
+
+END
+
+PUBLIC SUB Form_Open()
+
+END
+
+PUBLIC FUNCTION getDatePicker() AS Date
+  ME.ShowModal()
+  RETURN $fecha
+  
+END
+

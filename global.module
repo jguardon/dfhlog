@@ -1,0 +1,312 @@
+' Gambas module file
+PRIVATE regx AS Regexp
+PRIVATE bandas AS NEW String[]
+PRIVATE modos AS NEW String[]
+PRIVATE propa AS NEW String[]
+PRIVATE LL AS NEW latlon
+PUBLIC MapLoc AS Boolean = FALSE
+PRIVATE ent AS NEW cty
+
+PUBLIC FUNCTION UTCNow() AS Date
+    DIM utc AS String
+    DIM utcd AS Date
+    EXEC ["date", "-u", "+%m/%d/%Y-%H:%M:%S"] TO utc
+    
+     utc = Replace(utc, "-", " ")
+     utc = Replace(utc, "\n", "")
+     utcd = CDate(utc) 
+     RETURN utcd
+    
+END
+
+PUBLIC FUNCTION chkLoc(loc AS String) AS Boolean
+'[a-r]{2}\\d{2}|[a-r]{2}\\d{2}[a-x]{2}
+    DIM bLoc AS Boolean
+    IF loc THEN
+       regx = NEW Regexp(loc, "^[A-R]{2}\\d{2}[A-X]{2}$|^[A-R]{2}\\d{2}$")
+     
+      IF regx.Text THEN 
+         'DEBUG regx.Text
+          bLoc = TRUE
+      ELSE 
+          bLoc = FALSE
+      
+      ENDIF 
+    ENDIF 
+
+    RETURN bLoc
+
+END
+
+'array bandas
+
+PUBLIC FUNCTION getBandas() AS String[]
+  bandas = ["2190M", "160M", "80M", "40M", "30M", "20M", "17M", "15M", "12M", "10M", "6M", "4M", "2M", "70CM", "23CM", "13CM", "6CM", "3CM", "1.25CM", "6MM"]  
+    
+  RETURN bandas
+  
+END
+
+PUBLIC FUNCTION getModos() AS String[]
+  modos = ["AM", "AMTOR", "APRS", "ARQ", "ATV", "BPSK", "CHIP64", "CHIP128", "CW", "FAX", "FM", "FSK", "FSK441", "HELL", "JT44", "JT65", "JT65A", "JT65B", "JT65C", "JT6M", "LSB", "MFSK", "MFSK8", "MFSK16", "MT63", "OLIVIA", "PACKET", "PACTOR", "PSK31", "PSK63", "RTTY", "RTTYM", "SSB", "SSTV", "THRB", "TOR", "USB", "VOI"]    
+ 
+  RETURN modos
+  
+END
+
+PUBLIC FUNCTION getPropa() AS String[]  
+  propa = ["ACS", "AUR", "AUE", "BS", "EME", "ES", "FAI", "F2", "ION", "LOS", "MS", "RS", "SAT", "TEP", "TR", "TRS", "TRD"]
+  
+  RETURN propa
+  
+END
+
+PUBLIC FUNCTION getBand(freq AS Float) AS String
+  freq /= 1000
+  
+  SELECT CASE freq
+    CASE 0.1357 TO 0.1378
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "2190M"
+    CASE 1.8 TO 2.0
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "160M"
+    CASE 3.5 TO 3.8
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "80M"
+    CASE 7.0 TO 7.2
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "40M"
+    CASE 10.1 TO 10.15
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "30M"
+    CASE 14.0 TO 14.35
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "20M"
+    CASE 18.068 TO 18.168
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "17M"
+    CASE 21.0 TO 21.45
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "15M"
+    CASE 24.89 TO 24.99
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "12M"
+    CASE 28.0 TO 29.7
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "10M"
+    CASE 50.0 TO 52.0
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "6M"
+    CASE 70.0 TO 70.5
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "4M"
+    CASE 144.0 TO 146.0
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "2M"
+    CASE 430.0 TO 440.0
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "70CM"
+    CASE 1240.0 TO 1300.0
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "23CM"
+    CASE 2300.0 TO 2450.0
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "13CM"
+    CASE 5650.0 TO 5850.0
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "6CM"
+    CASE 10000.0 TO 10500.0
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "3CM"
+    CASE 24000.0 TO 24250.0
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "1.25CM"
+    CASE 47000.0 TO 47200.0
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "6MM"
+    CASE ELSE 
+        FMain.Controls["lcdQRG"].ForeColor = Color.Red
+        
+        RETURN 
+  END SELECT 
+    
+  
+END
+
+'locator formulas from Yves Goergen  (http://beta.unclassified.de/code/dotnet/maidenheadlocator/)
+PUBLIC FUNCTION locator2latlon(loc AS String) AS latlon
+ 
+  loc = Upper(loc)
+  IF Len(loc) = 4 THEN loc &= "LL"
+  
+  LL.lon = (Asc(loc, 1) - Asc("A")) * 20 + (Asc(loc, 3) - Asc("0")) * 2 + (Asc(loc, 5) - Asc("A") + 0.5) / 12 - 180
+  LL.lat = (Asc(loc, 2) - Asc("A")) * 10 + (Asc(loc, 4) - Asc("0")) + (Asc(loc, 6) - Asc("A") + 0.5) / 24 - 90
+  
+  RETURN LL
+  
+  
+END
+
+PUBLIC FUNCTION latLong2locator(lat AS Float, lon AS Float) AS String
+  DIM v AS Integer
+  DIM locator AS String = ""
+  
+  lat += 90
+  lon += 180
+  v = CInt(lon / 20)
+  lon -= v * 20
+  locator &= Chr$(Asc("A") + v)
+  v = CInt(lat / 10)
+  lat -= v * 10
+  locator &= Chr$(Asc("A") + v)
+  locator &= CStr(CInt(lon / 2))
+  locator &= CStr(CInt(lat))
+  lon -= CInt(lon / 2) * 2
+  lat -= CInt(lat)
+  locator &= Chr$(Asc("A") + lon * 12)
+  locator &= Chr$(Asc("A") + lat * 24)
+  
+  RETURN locator
+  
+END
+
+
+PUBLIC FUNCTION distance(lat1 AS Float, lon1 AS Float, lat2 AS Float, lon2 AS Float) AS Float
+  DIM dx AS Float
+  DIM hn AS Float = Rad(lat1)
+  DIM he AS Float = Rad(lon1)
+  DIM n AS Float = Rad(lat2)
+  DIM e AS Float = Rad(lon2)
+  DIM co AS Float = Cos(he - e) * Cos(hn) * Cos(n) + Sin(hn) * Sin(n)
+  DIM ca AS Float = ATan(Abs(Sqr(1 - co * co) / co))
+  IF co < 0 THEN ca = Pi - ca
+  dx = 6367 * ca
+  
+  RETURN dx
+  
+END
+
+PUBLIC FUNCTION distLoc(loc1 AS String, loc2 AS String) AS Float
+  
+  RETURN distance(locator2latlon(loc1).lat, locator2latlon(loc1).lon, locator2latlon(loc2).lat, locator2latlon(loc2).lon)
+  
+  
+END
+
+PUBLIC FUNCTION bearing(lat1 AS Float, lon1 AS Float, lat2 AS Float, lon2 AS Float) AS Float
+  
+  DIM az, si AS Float
+  DIM hn AS Float = Rad(lat1)
+  DIM he AS Float = Rad(lon1)
+  DIM n AS Float = Rad(lat2)
+  DIM e AS Float = Rad(lon2)
+  DIM co AS Float = Cos(he - e) * Cos(hn) * Cos(n) + Sin(hn) * Sin(n)
+  DIM ca AS Float = ATan(Abs(Sqr(1 - co * co) / co))
+  IF co < 0 THEN ca = Pi - ca
+  si = Sin(e - he) * Cos(n) * Cos(hn)
+  co = Sin(n) - Sin(hn) * Cos(ca)
+  az = ATan(Abs(si / co))
+  IF co < 0 THEN az = Pi - az
+  IF si < 0 THEN az = az * -1
+  IF az < 0 THEN az = az + 2 * Pi
+  
+  RETURN Deg(az)
+  
+END
+
+PUBLIC FUNCTION bearingLoc(loc1 AS String, loc2 AS String) AS Float
+  DIM b AS Float
+  IF loc1 = loc2 THEN 
+    b = 0
+  ELSE 
+    b = bearing(locator2latlon(loc1).lat, locator2latlon(loc1).lon, locator2latlon(loc2).lat, locator2latlon(loc2).lon)
+  ENDIF 
+  
+  RETURN b
+  
+END
+
+' PUBLIC FUNCTION parseFecha(fecha AS String) AS String
+'   
+'   DIM Y, M, D, nF AS String
+'   DIM F AS String[]
+'   IF fecha THEN 
+'   
+'     F = Split(fecha, "/")
+'     
+'     Y = F[2]
+'     M = F[1]
+'     D = F[0]
+'    
+'   ELSE
+'   
+'     Y = Year(Now)
+'     M = Month(Now)
+'     D = Day(Now)
+'   ENDIF  
+'   
+'   
+'   nF = Y & "-" & M & "-" & D
+'   RETURN nF
+'   
+'   
+' END
+
+PUBLIC FUNCTION clusterColor(call AS String, band AS String) AS Integer
+  DIM colorDX AS Integer
+  DIM entidad AS Integer 
+  DIM hresul AS Result
+  ent = world.findEntity(call)
+  IF ent <> NULL THEN 
+        entidad = ent.number
+        IF FMain.connDB() THEN RETURN 
+        hResul = dbLog.cnLog.Exec("SELECT qsl_rcvd, band FROM log WHERE dxcc = " & entidad & " AND band='" & band & "';")
+        IF NOT hResul.Available THEN 
+            'DEBUG call, band, hResul!QSL_r
+            colorDX = FMain.ini["Colores/Necesitado", Color.Blue]
+        ELSE
+            DO WHILE hResul.Available 
+            
+                  IF hResul!qsl_rcvd = "Y" THEN 
+                      'DEBUG call, band, hResul!QSL_r
+                      colorDX = FMain.ini["Colores/Confirmado", Color.Green]
+                      EXIT
+                  ELSE 
+                      'DEBUG call, band, hResul!QSL_r
+                      colorDX = FMain.ini["Colores/Trabajado", Color.Orange]
+                  
+                  ENDIF 
+                  
+                  hResul.MoveNext()
+            LOOP 
+        ENDIF 
+        FMain.descDB()
+  ENDIF 
+  RETURN colorDX
+  
+    CATCH 
+        DEBUG Error.Text, Error.Where
+
+END
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

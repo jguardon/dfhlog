@@ -1,0 +1,68 @@
+# Gambas Form File 2.0
+
+{ Form Form
+  MoveScaled(0,0,94,69)
+  Text = ("")
+  Icon = Picture["dfhlog.png"]
+  Arrangement = Arrange.Vertical
+  Spacing = 3
+  Padding = 3
+  { HBox1 HBox
+    MoveScaled(0,0,93,62)
+    Expand = True
+    { cv GridView
+      MoveScaled(1,3,87,53)
+      Expand = True
+      Mode = Select.Multiple
+      Header = GridView.Horizontal
+    }
+  }
+  { HBox2 HBox
+    MoveScaled(0,63,93,4)
+    Spacing = 5
+    Padding = 3
+    { btnFirst ToolButton
+      MoveScaled(5,1,3,3)
+      Text = ("")
+      Picture = Picture["icon:/16/first"]
+      Border = True
+    }
+    { btnPrev ToolButton
+      MoveScaled(10,1,3,3)
+      Text = ("")
+      Picture = Picture["icon:/16/left"]
+      Border = True
+    }
+    { btnNext ToolButton
+      MoveScaled(15,1,3,3)
+      Text = ("")
+      Picture = Picture["icon:/16/right"]
+      Border = True
+    }
+    { btnLast ToolButton
+      MoveScaled(20,1,3,3)
+      Text = ("")
+      Picture = Picture["icon:/16/last"]
+      Border = True
+    }
+    { Label1 Label
+      MoveScaled(25,1,8,3)
+      Text = ("Page:")
+    }
+    { txtQSOs TextBox
+      MoveScaled(34,1,14,3)
+      Text = ("")
+      Alignment = Align.Right
+      ReadOnly = True
+    }
+    { Label2 Label
+      MoveScaled(49,1,24,3)
+      Expand = True
+      Text = ("")
+    }
+    { btnClose Button
+      MoveScaled(75,1,16,3)
+      Text = ("&Close")
+    }
+  }
+}

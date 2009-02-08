@@ -1,0 +1,71 @@
+# Gambas Form File 2.0
+
+{ Form Form
+  MoveScaled(0,0,88,66)
+  Text = ("")
+  Icon = Picture["icon:/16/earth"]
+  Arrangement = Arrange.Horizontal
+  Padding = 3
+  { VBox1 VBox
+    MoveScaled(0,5,62,52)
+    Expand = True
+    { Embedder1 Embedder
+      MoveScaled(4,3,24,24)
+      Background = &HFFEFDF&
+      Expand = True
+    }
+  }
+  { VBox2 VBox
+    MoveScaled(62,0,26,66)
+    Spacing = 15
+    Padding = 10
+    { Frame1 Frame
+      MoveScaled(2,2,22,21)
+      Text = ("Settings")
+      { SpinLat SpinBox
+        MoveScaled(12,5,9,3)
+        ToolTip = ("Observer Latitude")
+        MinValue = -180
+        MaxValue = 180
+      }
+      { Label1 Label
+        MoveScaled(1,5,10,3)
+        Text = ("Latitude:")
+      }
+      { Label2 Label
+        MoveScaled(1,10,10,3)
+        Text = ("Longitude:")
+      }
+      { SpinLon SpinBox
+        MoveScaled(12,10,9,3)
+        ToolTip = ("Observer Longitude")
+        MinValue = -180
+        MaxValue = 180
+      }
+      { Label3 Label
+        MoveScaled(1,15,10,3)
+        Text = ("Zoom:")
+      }
+      { SpinZoom SpinBox
+        MoveScaled(12,15,9,3)
+        ToolTip = ("Zoom: Less value = closer view,\nMore value = far away view")
+        MinValue = 5
+        MaxValue = 400
+      }
+    }
+    { btnAply Button
+      MoveScaled(2,25,22,3)
+      Text = ("&Apply Changes")
+    }
+    { btnClearMap Button
+      MoveScaled(2,29,22,3)
+      ToolTip = ("Delete all labels")
+      Text = ("&Clean Map")
+    }
+    { btnClose Button
+      MoveScaled(2,33,22,3)
+      ToolTip = ("Close window")
+      Text = ("&Close")
+    }
+  }
+}

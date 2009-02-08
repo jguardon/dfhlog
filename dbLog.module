@@ -1,0 +1,43 @@
+' Gambas module file
+PUBLIC cnLog AS Connection
+
+PUBLIC FUNCTION connDB(path AS String) AS Boolean
+DIM myHost, myDBName AS String
+
+    myHost = Left(path, RInStr(path, "/"))
+    myDBName = Mid(path, Len(myHost) + 1, RInStr(path, "/"))
+    'DEBUG myHost;; myDBName
+    IF cnLog <> NULL THEN RETURN FALSE
+    
+    cnLog = NEW Connection
+    
+    cnLog.Host = myHost
+    cnLog.Name = myDBName
+    cnLog.Type = "sqlite3"
+    
+    TRY cnLog.Open()
+    
+    IF ERROR THEN 
+        cnLog = NULL
+        Message.Error(("Error connecting to database: ") & myDBName)
+        RETURN TRUE
+    ENDIF 
+    
+    RETURN FALSE
+  
+END
+
+PUBLIC SUB CloseDB()
+  
+  IF cnLog = NULL THEN RETURN 
+  cnLog.Close()
+  cnLog = NULL
+  
+END
+' select distinct country from log where dxcc in(select distinct dxcc from log) and qsl_rcvd='Y' 
+' select * from log where band='6M' and gridsquare <>'' group by substr(gridsquare,0,4) 
+' select call, qso_date, gridsquare , count(call)  from log where band='2M' and gridsquare <>'' and qsl_rcvd='Y'  group by substr(gridsquare,0,4) order by gridsquare, id 
+' select call, qso_date, country ,dxcc, count(call) as num from log group by dxcc order by dxcc, id
+
+
+

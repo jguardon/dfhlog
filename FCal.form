@@ -1,0 +1,16 @@
+# Gambas Form File 2.0
+
+{ Form Form
+  MoveScaled(0,0,38,27)
+  Text = ("")
+  Icon = Picture["icon:/16/view-detail"]
+  Border = Window.Fixed
+  Stacking = Window.Above
+  SkipTaskbar = True
+  Arrangement = Arrange.Fill
+  Padding = 3
+  { DateChooser1 DateChooser
+    MoveScaled(1,2,36,24)
+    Expand = True
+  }
+}

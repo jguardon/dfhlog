@@ -1,0 +1,22 @@
+# Gambas Form File 2.0
+
+{ Form Form
+  MoveScaled(0,0,51,50)
+  Text = ("")
+  Icon = Picture["icon:/16/find"]
+  Border = Window.Fixed
+  ToolBox = True
+  SkipTaskbar = True
+  { cView ColumnView
+    MoveScaled(1,6,49,43)
+    Sorted = True
+  }
+  { txtBuscar TextBox
+    MoveScaled(12,2,38,3)
+    Text = ("")
+  }
+  { Label1 Label
+    MoveScaled(2,2,9,3)
+    Text = ("Search:")
+  }
+}

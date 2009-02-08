@@ -1,0 +1,263 @@
+' Gambas class file
+PRIVATE modo AS String
+
+PUBLIC SUB Form_Open()
+
+    cView.Columns.Count = 2
+    
+    SELECT CASE modo
+    
+        CASE "tpea"
+            loadTpea()
+            
+        CASE "iota" 
+            loadIota()
+            
+        CASE "was"
+            loadWas()
+            
+        CASE "usac" 
+            loadUsac()
+         
+    END SELECT
+ 
+END
+
+PRIVATE SUB loadTpea()
+
+    DIM clave AS String
+    DIM hResul AS Result
+    
+    cView.Clear()
+    cView.Columns[0].Text = ("EA Reference")
+    cView.Columns[1].Text = ("Province")
+    
+    IF dbTablas.connDB(User.Home &/ "/.dfh_Log/tablas.db") THEN RETURN 
+    
+    hResul = dbTablas.cnTablas.Exec("SELECT * FROM tpea ORDER by Matricula ASC")
+    
+    DO WHILE hResul.Available
+    
+      clave = hResul["Matricula"]
+      cView.Add(clave, clave)
+      cView[clave][1] = hResul["Provincia"]
+          
+      hResul.MoveNext()
+        
+    LOOP 
+  
+  dbTablas.CloseDB()
+  
+END
+
+PRIVATE SUB loadIota()
+
+    DIM clave AS String
+    DIM hResul AS Result
+    
+    cView.Clear()
+    cView.Columns[0].Text = "Ref."
+    cView.Columns[1].Text = ("Name")
+    
+    IF dbTablas.connDB(User.Home &/ "/.dfh_Log/tablas.db") THEN RETURN 
+    
+    hResul = dbTablas.cnTablas.Exec("SELECT * FROM iota ORDER by Ref ASC")
+    
+    DO WHILE hResul.Available
+    
+      clave = hResul["Ref"]
+      cView.Add(clave, clave)
+      cView[clave][1] = hResul["Nombre"]
+          
+      hResul.MoveNext()
+        
+    LOOP 
+  
+  dbTablas.CloseDB()
+  
+END
+
+PRIVATE SUB loadWas()
+
+    DIM clave AS String
+    DIM hResul AS Result
+    
+    cView.Clear()
+    cView.Columns[0].Text = "Ref."
+    cView.Columns[1].Text = ("State")
+    
+    IF dbTablas.connDB(User.Home &/ "/.dfh_Log/tablas.db") THEN RETURN 
+    
+    hResul = dbTablas.cnTablas.Exec("SELECT * FROM was ORDER by Ref ASC")
+    
+    DO WHILE hResul.Available
+    
+      clave = hResul["Ref"]
+      cView.Add(clave, clave)
+      cView[clave][1] = hResul["Nombre"]
+          
+      hResul.MoveNext()
+        
+    LOOP 
+  
+    dbTablas.CloseDB()  
+  
+END
+
+PRIVATE SUB loadUsac()
+
+    DIM clave AS String
+    DIM hResul AS Result
+    
+    cView.Clear()
+    cView.Columns[0].Text = ("County Ref.")
+    cView.Columns[1].Text = ("State")
+    
+    IF dbTablas.connDB(User.Home &/ "/.dfh_Log/tablas.db") THEN RETURN 
+    
+    hResul = dbTablas.cnTablas.Exec("SELECT * FROM usac ORDER by Ref ASC")
+    
+    DO WHILE hResul.Available
+    
+      clave = hResul["Ref"]
+      cView.Add(clave, clave)
+      cView[clave][1] = hResul["Estado"]
+          
+      hResul.MoveNext()
+        
+    LOOP 
+    
+    dbTablas.CloseDB()  
+    
+END
+
+PUBLIC SUB oTPEA()
+
+    ME.Text = "TPEA"
+    modo = "tpea"
+    ME.ShowModal()
+
+END
+
+PUBLIC SUB oIOTA()
+  
+    ME.Text = "IOTA"
+    modo = "iota"
+    ME.ShowModal()
+  
+END
+
+PUBLIC SUB oWAS()
+
+    ME.Text = "WAS"
+    modo = "was"
+    ME.ShowModal()
+
+END
+
+PUBLIC SUB oUSAC()
+  
+    ME.Text = "USAC"
+    modo = "usac"
+    ME.ShowModal()
+  
+END
+
+PUBLIC SUB txtBuscar_Change()
+
+    DIM hResul AS Result
+    DIM clave AS String
+    
+    IF dbTablas.connDB(User.Home &/ "/.dfh_Log/tablas.db") THEN RETURN 
+    cView.Clear()
+    
+    SELECT CASE modo
+        CASE "tpea"
+            
+            hResul = dbTablas.cnTablas.Exec("SELECT * FROM tpea WHERE Provincia LIKE '%" & txtBuscar.Text & "%' ORDER by Matricula ASC")
+            
+            DO WHILE hResul.Available
+              clave = hResul["Matricula"]
+              cView.Add(clave, clave)
+              cView[clave][1] = hResul["Provincia"]
+                  
+              hResul.MoveNext()
+                
+            LOOP 
+            
+        CASE "iota"
+            
+            hResul = dbTablas.cnTablas.Exec("SELECT * FROM iota WHERE Nombre LIKE '%" & txtBuscar.Text & "%' ORDER by Ref ASC")
+            
+            DO WHILE hResul.Available
+              clave = hResul["Ref"]
+              cView.Add(clave, clave)
+              cView[clave][1] = hResul["Nombre"]
+                  
+              hResul.MoveNext()
+                
+            LOOP 
+        
+        CASE "was"
+            
+            hResul = dbTablas.cnTablas.Exec("SELECT * FROM was WHERE Nombre LIKE '%" & txtBuscar.Text & "%' ORDER by Ref ASC")
+            
+            DO WHILE hResul.Available
+              clave = hResul["Ref"]
+              cView.Add(clave, clave)
+              cView[clave][1] = hResul["Nombre"]
+                  
+              hResul.MoveNext()
+                
+            LOOP 
+            
+        CASE "usac"
+            
+            hResul = dbTablas.cnTablas.Exec("SELECT * FROM usac WHERE Ref LIKE '%" & txtBuscar.Text & "%' ORDER by Ref ASC")
+            
+            DO WHILE hResul.Available
+              clave = hResul["Ref"]
+              cView.Add(clave, clave)
+              cView[clave][1] = hResul["Estado"]
+                  
+              hResul.MoveNext()
+                
+            LOOP 
+        
+        
+    END SELECT 
+    
+  
+
+END
+
+PUBLIC SUB cView_Activate()
+
+    SELECT CASE modo
+        CASE "tpea"
+        
+            FMain.sTPEA = cView.Current[0]
+            
+        CASE "iota"
+        
+            FMain.sIOTA = cView.Current[0]
+            
+        CASE "was" 
+        
+            FMain.sWAS = cView.Current[0]
+            
+        CASE "usac"
+        
+            FMain.sUSAC = Mid(cView.Current[0], InStr(cView.Current[0], "(") + 1, 2) & "," & Left(cView.Current[0], InStr(cView.Current[0], "(") - 1)
+            FMain.sWAS = Mid(cView.Current[0], InStr(cView.Current[0], "(") + 1, 2)
+            
+    END SELECT
+    
+    dbTablas.CloseDB()
+    ME.Close()
+END
+
+PUBLIC SUB Form_Close()
+    dbTablas.CloseDB()
+
+END

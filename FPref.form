@@ -1,0 +1,291 @@
+# Gambas Form File 2.0
+
+{ Form Form
+  MoveScaled(0,0,68,52)
+  Text = ("Settings")
+  Icon = Picture["icon:/32/tools"]
+  Border = Window.Fixed
+  ToolBox = True
+  SkipTaskbar = True
+  Padding = 3
+  { TabStrip1 TabStrip
+    MoveScaled(0,0,68,45)
+    Padding = 10
+    Count = 5
+    Index = 0
+    Text = ("My &Station")
+    { Frame1 Frame
+      MoveScaled(1,1,65,22)
+      Text = ("My Station Data")
+      { Label1 Label
+        MoveScaled(3,4,10,3)
+        Text = ("*QRZ:")
+      }
+      { Label2 Label
+        MoveScaled(3,10,10,3)
+        Text = ("*Name:")
+      }
+      { Label3 Label
+        MoveScaled(3,16,12,3)
+        Text = ("*GridSquare:")
+      }
+      { txtQRZ TextBox
+        MoveScaled(20,4,24,3)
+        ToolTip = ("My Callsign")
+        Text = ("")
+        MaxLength = 20
+      }
+      { txtNombre TextBox
+        MoveScaled(20,10,24,3)
+        ToolTip = ("My First Name")
+        Text = ("")
+        MaxLength = 20
+      }
+      { txtLocator TextBox
+        MoveScaled(20,16,24,3)
+        ToolTip = ("My GridSquare")
+        Text = ("")
+        MaxLength = 6
+      }
+      { picLoc PictureBox
+        MoveScaled(48,16,3,3)
+        Picture = Picture["cancel.png"]
+        Stretch = True
+      }
+    }
+    { Frame2 Frame
+      MoveScaled(1,25,65,14)
+      Text = ("Preferred Band && Mode")
+      { Label4 Label
+        MoveScaled(5,6,8,3)
+        Text = ("Band:")
+      }
+      { cboPrefBanda ComboBox
+        MoveScaled(13,6,14,3)
+        Text = ("")
+        ReadOnly = True
+      }
+      { Label5 Label
+        MoveScaled(36,6,7,3)
+        Text = ("Mode:")
+      }
+      { cboPrefModo ComboBox
+        MoveScaled(44,6,14,3)
+        Text = ("")
+        ReadOnly = True
+        Sorted = True
+      }
+    }
+    Index = 1
+    Text = ("C&luster")
+    { Frame3 Frame
+      MoveScaled(1,1,65,14)
+      Text = ("Telnet Server")
+      { cboServer ComboBox
+        MoveScaled(9,5,49,3)
+        ToolTip = ("Telnet Server")
+        Text = ("")
+        ReadOnly = True
+      }
+      { btnDelServer Button
+        MoveScaled(39,10,9,3)
+        Text = ("Delete")
+      }
+      { btnAddServer Button
+        MoveScaled(49,10,9,3)
+        Text = ("Add")
+      }
+    }
+    { Frame4 Frame
+      MoveScaled(1,16,65,23)
+      Text = ("Filters")
+      { chkHF CheckBox
+        MoveScaled(9,5,24,3)
+        Text = ("HF Spots")
+        Value = CheckBox.True
+      }
+      { chkVHF CheckBox
+        MoveScaled(9,11,24,3)
+        Text = ("V/UHF Spots")
+        Value = CheckBox.True
+      }
+      { chkWARC CheckBox
+        MoveScaled(9,17,24,3)
+        Text = ("WARC Spots")
+        Value = CheckBox.True
+      }
+      { chkANN CheckBox
+        MoveScaled(40,5,24,3)
+        Text = ("Ann Messages")
+        Value = CheckBox.True
+      }
+      { chkWWV CheckBox
+        MoveScaled(40,11,24,3)
+        Text = ("WWV Messages")
+        Value = CheckBox.True
+      }
+      { chkWCY CheckBox
+        MoveScaled(40,17,24,3)
+        Text = ("WCY Messages")
+        Value = CheckBox.True
+      }
+    }
+    Index = 2
+    Text = ("C&olors")
+    { Frame5 Frame
+      MoveScaled(1,1,65,38)
+      Text = ("Colores")
+      { cbtnWorked ColorButton
+        MoveScaled(28,5,6,5)
+        Value = &HFF0000&
+      }
+      { cbtnConfirmed ColorButton
+        MoveScaled(28,13,6,5)
+        Value = &HC06000&
+      }
+      { cbtnNeeded ColorButton
+        MoveScaled(28,21,6,5)
+        Value = &H008000&
+      }
+      { cbtnDefault ColorButton
+        MoveScaled(28,29,6,5)
+        Value = &H505050&
+      }
+      { Label6 Label
+        MoveScaled(10,14,12,3)
+        Text = ("Confirmed:")
+      }
+      { Label7 Label
+        MoveScaled(10,6,12,3)
+        Text = ("Worked:")
+      }
+      { Label8 Label
+        MoveScaled(10,22,12,3)
+        Text = ("Needed:")
+      }
+      { Label9 Label
+        MoveScaled(10,30,12,3)
+        Text = ("Default:")
+      }
+    }
+    Index = 3
+    Text = ("&Hamlib")
+    { Frame6 Frame
+      MoveScaled(1,1,65,38)
+      Text = ("Hamlib (CAT) Parameters")
+      { chkHamlib CheckBox
+        MoveScaled(6,7,14,3)
+        Text = ("Activate")
+      }
+      { Label10 Label
+        MoveScaled(26,7,16,3)
+        Text = ("Poll every:")
+      }
+      { cboPolling ComboBox
+        MoveScaled(42,7,11,3)
+        Text = ("")
+        ReadOnly = True
+        List = [("100"), ("200"), ("300"), ("400"), ("500"), ("1000"), ("2000")]
+      }
+      { Label11 Label
+        MoveScaled(54,7,8,3)
+        Text = ("msec.")
+      }
+      { Label12 Label
+        MoveScaled(6,16,24,3)
+        Text = ("Rig select:")
+      }
+      { cboRigHamlib ComboBox
+        MoveScaled(6,20,33,3)
+        Text = ("")
+        ReadOnly = True
+      }
+      { Label13 Label
+        MoveScaled(6,27,24,3)
+        Text = ("Device:")
+      }
+      { txtDevHamlib TextBox
+        MoveScaled(6,32,53,3)
+        Text = ("/dev/ttyS0")
+      }
+      { cboSpd ComboBox
+        MoveScaled(42,20,11,3)
+        Text = ("")
+        ReadOnly = True
+        List = [("1200"), ("2400"), ("4800"), ("9600"), ("19200"), ("38400"), ("57600"), ("115200")]
+      }
+      { Label15 Label
+        MoveScaled(42,16,14,3)
+        Text = ("Speed:")
+      }
+      { Label16 Label
+        MoveScaled(54,20,7,3)
+        Text = ("bauds")
+      }
+      { lblHamlibInst Label
+        MoveScaled(6,12,53,3)
+        Foreground = &H804000&
+        Text = ("")
+      }
+    }
+    Index = 4
+    Text = ("Ot&hers")
+    { Frame7 Frame
+      MoveScaled(1,25,65,14)
+      Text = ("XPlanet")
+      { chkXplanet CheckBox
+        MoveScaled(9,4,53,3)
+        Text = ("Use Xplanet Maps (If installed)")
+      }
+      { lblXplanetInst Label
+        MoveScaled(9,9,47,3)
+        Foreground = &H804000&
+        Text = ("")
+      }
+    }
+    { Frame8 Frame
+      MoveScaled(1,1,65,23)
+      Text = ("QRZ.com")
+      { chkQRZcom CheckBox
+        MoveScaled(9,4,48,4)
+        Text = ("Fill QSO data from QRZ.com")
+      }
+      { Label17 Label
+        MoveScaled(12,9,35,3)
+        Foreground = &HFF0000&
+        Text = ("(A subscription to QRZ.com is needed)")
+      }
+      { txtUserQRZ TextBox
+        MoveScaled(9,17,16,3)
+        Text = ("")
+      }
+      { txtPassQRZ TextBox
+        MoveScaled(37,17,16,3)
+        Text = ("")
+        Password = True
+      }
+      { Label18 Label
+        MoveScaled(9,14,16,3)
+        Text = ("User:")
+      }
+      { Label19 Label
+        MoveScaled(37,14,16,3)
+        Text = ("Password:")
+      }
+    }
+    Index = 0
+  }
+  { btnOK Button
+    MoveScaled(33,47,16,3)
+    Text = ("&Accept")
+  }
+  { btnCancel Button
+    MoveScaled(50,47,16,3)
+    Text = ("&Cancel")
+  }
+  { Label14 Label
+    MoveScaled(3,47,24,3)
+    Foreground = &H0000C0&
+    Text = ("* (Mandatory Fields)")
+  }
+}

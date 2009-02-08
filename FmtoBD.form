@@ -1,0 +1,31 @@
+# Gambas Form File 2.0
+
+{ Form Form
+  MoveScaled(0,0,62,23)
+  Text = ("Compact Database")
+  Icon = Picture["dfhlog.png"]
+  Border = Window.Fixed
+  SkipTaskbar = True
+  { Label1 Label
+    MoveScaled(14,1,47,9)
+    AutoResize = True
+    Text = ("This operates in the database itself.\nNow it will compact and recalculate records numbers,\nso it's advisable to backup the database before\nproceeding.")
+    Alignment = Align.Justify
+  }
+  { pb ProgressBar
+    MoveScaled(2,12,57,3)
+  }
+  { Button1 Button
+    MoveScaled(13,17,16,3)
+    Text = ("&Cancel")
+  }
+  { Button2 Button
+    MoveScaled(31,17,16,3)
+    Text = ("&OK")
+  }
+  { PictureBox1 PictureBox
+    MoveScaled(3,2,10,9.1429)
+    Picture = Picture["icon:/64/harddisk"]
+    Stretch = True
+  }
+}
