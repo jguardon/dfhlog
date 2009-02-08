@@ -1,0 +1,120 @@
+' Gambas class file
+PRIVATE iLat AS Integer
+PRIVATE iLon AS Integer
+PRIVATE iZoom AS Integer
+
+
+PUBLIC SUB Form_Open()
+
+  DIM sTitle AS String
+  DIM aHandle AS NEW Pointer[]
+  DIM iHandle AS Integer
+  
+     ME.Top = FMain.ini["FxMap/Top", ME.Top]  
+     ME.Left = FMain.ini["FxMap/Left", ME.Left] 
+     ME.Height = FMain.ini["FxMap/Height", ME.Height]  
+     ME.Width = FMain.ini["FxMap/Width", ME.Width]
+  
+   sTitle = "DX Map"
+   ME.Title = sTitle
+      WHILE aHandle.Count < 1
+      
+            aHandle = Desktop.find(Trim(sTitle))
+            
+          WAIT 0.1
+      WEND
+  iHandle = aHandle[0]
+  TRY Embedder1.Embed(iHandle)
+  FMain.Controls["btnMap"].Enabled = FALSE
+  
+  loadSettings()
+  
+END
+
+PUBLIC SUB loadSettings()
+  
+  iLat = FMain.ini["Map/Lat", 40]
+  iLon = FMain.ini["Map/Lon", -3]
+  iZoom = FMain.ini["Map/Zoom", 150]
+  
+  SpinLat.Value = iLat
+  SpinLon.Value = iLon
+  SpinZoom.Value = iZoom
+  
+END
+
+PUBLIC SUB form_Close()
+  
+  Embedder1.Discard
+  FMain.p.Kill
+  FMain.Controls["btnMap"].Enabled = TRUE
+  FMain.ini["FxMap/Top"] = ME.ScreenY
+  FMain.ini["FxMap/Left"] = ME.ScreenX
+  FMain.ini["FxMap/Height"] = ME.Height
+  FMain.ini["FxMap/Width"] = ME.Width
+  
+END
+
+PUBLIC SUB Embedder1_Embed()
+
+  FMain.Mouse = Mouse.Default
+
+END
+
+PUBLIC SUB btnAply_Click()
+    
+    DIM F AS File
+    DIM S, fic AS String
+    
+    FMain.ini["Map/Lat"] = iLat
+    FMain.ini["Map/Lon"] = iLon
+    FMain.ini["Map/Zoom"] = iZoom
+    
+    fic = User.Home &/ ".xplanet/origin/do"
+    
+    F = OPEN fic FOR WRITE CREATE 
+    
+    PRINT #F, "20081231.1200", iZoom, Format(iLat, "00#.00"), Format(iLon, "00#.00")
+    
+    CLOSE #F
+    
+  
+
+END
+
+PUBLIC SUB btnClose_Click()
+
+  ME.Close()
+
+END
+
+PUBLIC SUB SpinLat_Change()
+
+  ilat = SpinLat.Value
+
+END
+
+PUBLIC SUB SpinLon_Change()
+
+  iLon = SpinLon.Value
+
+END
+
+PUBLIC SUB SpinZoom_Change()
+
+  iZoom = SpinZoom.Value
+
+END
+
+PUBLIC SUB btnClearMap_Click()
+
+    DIM F AS File
+    DIM S, fic AS String
+       
+    fic = User.Home &/ ".xplanet/markers/dx"
+    
+    F = OPEN fic FOR WRITE CREATE 
+        
+    CLOSE #F
+
+END

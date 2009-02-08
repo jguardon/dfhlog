@@ -1,0 +1,31 @@
+# Gambas Project File 2.0
+# Compiled with Gambas 2.9.0
+Title=dfhLog
+Startup=FMain
+Icon=dfhlog.png
+Version=0.0.28
+Library=gb.qt
+Library=gb.form
+Library=gb.db
+Library=gb.db.form
+Library=gb.desktop
+Library=gb.form.dialog
+Library=gb.net
+Library=gb.net.curl
+Library=gb.pcre
+Library=gb.qt.ext
+Library=gb.settings
+Library=gb.xml
+Description=Amateur Radio Logging program\n\nImport/Export ADIF files, cluster connection, Hamlib based CAT control, \nQRZ.com support, XPlanet Maps and Custom GridSquare Maps, \nsimple awards support (WAS, DXCC, IOTA, USACA, TPEA).\n\nCurrent available languages:\n\nEnglish, Spanish, Galego, Catalan, Portugues
+Authors=Jesús Guardón, EA7DFH\nea7dfh@ea7dfh.com
+TabSize=4
+CreateShortcut=1
+Maintainer=Jesus Guardon
+Address=ea7dfh@ea7dfh.com
+License=General Public Licence
+UseRelease=1
+CreateEachDirectory=1
+Systems=ubuntu
+Menus=Apps/Hamradio
+Categories=HamRadio
+Groups=Databases

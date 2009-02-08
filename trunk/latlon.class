@@ -1,0 +1,36 @@
+' Gambas class file
+PRIVATE $lat AS Float
+PRIVATE $lon AS Float
+
+PROPERTY lat AS Float
+PROPERTY lon AS Float
+
+
+PUBLIC SUB _new()
+  
+END
+
+
+PRIVATE FUNCTION lat_Read() AS Float
+
+  RETURN $lat
+
+END
+
+PRIVATE SUB lat_Write(Value AS Float)
+
+  $lat = Value
+
+END
+
+PRIVATE FUNCTION lon_Read() AS Float
+
+  RETURN $lon   
+
+END
+
+PRIVATE SUB lon_Write(Value AS Float)
+
+  $lon = Value
+
+END

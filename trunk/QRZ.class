@@ -1,0 +1,280 @@
+' Gambas class file
+PRIVATE _downloadAsyncKey AS NEW HttpClient AS "_DownloadKey"
+PRIVATE _downloadAsyncData AS NEW HttpClient AS "_DownloadData"
+PRIVATE downloadBufferKey AS String
+PRIVATE downloadBufferData AS String
+PRIVATE xml AS NEW XmlReader
+PRIVATE keyQRZ AS String
+PRIVATE csgn AS String
+
+'****PROPIEDADES******
+PRIVATE $qerror AS String
+PRIVATE $qcall AS String
+PRIVATE $fname AS String
+PRIVATE $name AS String
+PRIVATE $addr1 AS String
+PRIVATE $addr2 AS String
+PRIVATE $country AS String
+PRIVATE $state AS String
+PRIVATE $grid AS String
+PRIVATE $county AS String
+PRIVATE $qslmgr AS String
+PRIVATE $email AS String
+
+PROPERTY READ qcall AS String
+PROPERTY READ name AS String
+PROPERTY READ fname AS String
+PROPERTY READ qerror AS String
+PROPERTY READ addr1 AS String
+PROPERTY READ addr2 AS String
+PROPERTY READ country AS String
+PROPERTY READ state AS String
+PROPERTY READ grid AS String
+PROPERTY READ county AS String
+PROPERTY READ qslmgr AS String
+PROPERTY READ email AS String
+
+
+PUBLIC SUB _new()
+  
+END
+
+PUBLIC SUB DownloadAsyncKey(URL AS String)
+  downloadBufferKey = ""
+   _downloadAsyncKey.Async = TRUE
+   _downloadAsyncKey.TimeOut = 10
+   _downloadAsyncKey.URL = URL
+
+   _downloadAsyncKey.Get()
+END
+
+PUBLIC SUB DownloadAsyncData(URL AS String)
+  downloadBufferData = ""
+   _downloadAsyncData.Async = TRUE
+   _downloadAsyncData.TimeOut = 10
+   _downloadAsyncData.URL = URL
+
+   _downloadAsyncData.Get()
+END
+
+PUBLIC SUB _DownloadKey_Read()
+  DIM buffer AS String
+  READ #LAST, buffer, Lof(LAST)
+  downloadBufferKey &= buffer
+END
+
+PUBLIC SUB _DownloadData_Read()
+  DIM buffer AS String
+  READ #LAST, buffer, Lof(LAST)
+  downloadBufferData &= buffer
+END
+
+PUBLIC SUB _DownloadKey_Error()
+  DEBUG "Error downloading Key" & _downloadAsyncKey.Status 
+END
+
+PUBLIC SUB _DownloadData_Error()
+  DEBUG "Error " & _downloadAsyncData.Status & " downloading " '& _downloadAsyncData.URL
+END
+
+PUBLIC SUB _DownloadKey_Finished()
+    DIM sElement AS String
+    
+        
+        xml.FromString(downloadBufferKey)
+        
+          WHILE NOT Xml.Eof
+            SELECT CASE Xml.Node.Type
+                CASE XmlReaderNodeType.Element
+                    sElement = Xml.Node.Name
+                    IF sElement = "Key" THEN
+                        xml.Read()
+                       keyQRZ = xml.Node.Value    
+                        
+                    ENDIF
+            END SELECT
+            Xml.Read()
+            
+        WEND 
+        'sElement = ""
+        TRY DownloadAsyncData("http://online.qrz.com/bin/xml?s=" & keyQRZ & ";callsign=" & csgn)
+        
+        'DEBUG downloadBufferKey
+        CATCH 
+            Message.Error("Error leyendo XML (Key QRZ.COM)\n Linea: " & Error.Where)
+END
+
+PUBLIC SUB _DownloadData_Finished()
+    DIM sElement AS String
+    
+    
+    xml.FromString(downloadBufferData)
+    
+      WHILE NOT Xml.Eof
+        SELECT CASE Xml.Node.Type
+            CASE XmlReaderNodeType.Element
+                sElement = Xml.Node.Name
+                SELECT CASE sElement
+                    CASE "call"                
+                        xml.Read()                    
+                        $qcall = xml.Node.Value
+                    CASE "fname"                
+                        xml.Read()                    
+                        $fname = xml.Node.Value 
+                    CASE "name"
+                        xml.Read()                    
+                        $name = xml.Node.Value
+                    CASE "addr1"
+                        xml.Read()                    
+                        $addr1 = xml.Node.Value
+                    CASE "addr2"
+                        xml.Read()                    
+                        $addr2 = xml.Node.Value
+                    CASE "country"                
+                        xml.Read()                    
+                        $country = xml.Node.Value
+                    CASE "state"
+                        xml.Read()                    
+                        $state = xml.Node.Value
+                    CASE "grid"
+                        xml.Read()                    
+                        $grid = xml.Node.Value 
+                    CASE "county"
+                        xml.Read()                    
+                        $county = xml.Node.Value
+                    CASE "qslmgr"
+                        xml.Read()                    
+                        $qslmgr = xml.Node.Value
+                    CASE "email"
+                        xml.Read()                    
+                        $email = xml.Node.Value
+                    CASE "Error"
+                        xml.Read()                    
+                        $qerror = xml.Node.Value
+                    CASE "key"
+                        xml.Read()                    
+                        keyQRZ = xml.Node.Value
+                    
+                END SELECT
+                
+        END SELECT
+        Xml.Read()
+        
+    WEND 
+    FMain.updateFields()
+    'DEBUG downloadBufferData
+    CATCH 
+            Message.Error("Error leyendo XML (Data QRZ.COM)\n Linea: " & Error.Where)
+END 
+
+PRIVATE SUB getKeyQRZcom()
+
+    DIM uqrz AS String = FMain.ini["Estacion/UserQRZ"]
+    DIM pqrz AS String = FMain.ini["Estacion/PassQRZ"]
+
+   TRY DownloadAsyncKey("http://online.qrz.com/bin/xml?username=" & uqrz & ";password=" & pqrz)
+   'TRY DownloadAsyncKey("http://online.qrz.com/bin/xml?username=" & uqrz & ";password=" & pqrz)
+  
+END
+
+PUBLIC SUB getQRZcom(callsign AS String)
+  
+  csgn = callsign
+  
+  IF NOT KeyQRZ OR $qerror = "Session Timeout" OR $qerror = "Username / password required" THEN 
+    getKeyQRZcom()
+  ELSE 
+     TRY DownloadAsyncData("http://online.qrz.com/bin/xml?s=" & keyQRZ & ";callsign=" & Trim(callsign))
+  ENDIF 
+  
+   
+  
+END
+
+PUBLIC SUB clearQRZ()
+ $qerror = NULL
+ $qcall = NULL
+ $fname = NULL
+ $name = NULL
+ $addr1 = NULL
+ $addr2 = NULL
+ $country = NULL
+ $state = NULL
+ $grid = NULL
+ $county = NULL
+ $qslmgr = NULL
+ $email = NULL
+
+END
+
+
+PRIVATE FUNCTION name_Read() AS String
+    RETURN $name
+ 
+END
+
+PRIVATE FUNCTION fname_Read() AS String
+    RETURN $fname
+  
+
+END
+
+PRIVATE FUNCTION qerror_Read() AS String
+    RETURN $qerror
+  
+
+END
+
+PRIVATE FUNCTION addr1_Read() AS String
+    RETURN $addr1
+  
+
+END
+
+PRIVATE FUNCTION addr2_Read() AS String
+    RETURN $addr2
+  
+
+END
+
+PRIVATE FUNCTION state_Read() AS String
+    RETURN $state
+  
+
+END
+
+PRIVATE FUNCTION grid_Read() AS String
+    RETURN Upper($grid)
+  
+
+END
+
+PRIVATE FUNCTION county_Read() AS String
+    RETURN $county
+  
+
+END
+
+PRIVATE FUNCTION qslmgr_Read() AS String
+    RETURN Upper($qslmgr)
+  
+
+END
+
+PRIVATE FUNCTION email_Read() AS String
+    RETURN Lower($email)
+  
+
+END
+
+PRIVATE FUNCTION qcall_Read() AS String
+    RETURN Upper($qcall)
+  
+
+END
+
+PRIVATE FUNCTION country_Read() AS String
+    RETURN $country
+  
+
+END

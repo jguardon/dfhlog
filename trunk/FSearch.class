@@ -1,0 +1,303 @@
+' Gambas class file
+PRIVATE $hres AS Result
+PUBLIC active AS Boolean = FALSE
+
+PUBLIC SUB Form_Open()
+    
+    DIM propa, banda, modo AS String
+    active = TRUE
+    ME.Move(FMain.ScreenX + 100, FMain.ScreenY + 100)
+    ME.Title = ("Log Search")
+    
+    cboProp.Add(("All"), 0)
+    FOR EACH propa IN global.getPropa()
+        cboProp.Add(propa)
+    NEXT
+    cboBand.Add(("All"), 0)
+    FOR EACH banda IN global.getBandas()
+        cboBand.Add(banda)
+    NEXT
+    cboMode.Add(("All"), 0)
+    FOR EACH modo IN global.getModos()
+        cboMode.Add(modo)
+    NEXT
+    
+    
+    dtIni.Value = "01/01/1900"
+    dtFin.Value = Now()
+    prepararCV()
+
+END
+
+PRIVATE SUB prepararCV()
+  
+  cv.Columns.Count = 23
+  
+  cv.Columns[0].Title = ("Nr")
+  cv.Columns[1].Text = ("Date")
+  cv.Columns[2].Text = ("Time")
+  cv.Columns[3].Text = ("Callsign")
+  cv.Columns[4].Text = ("Band")
+  cv.Columns[5].Text = ("Mode")
+  cv.Columns[6].Text = ("Propa.")
+  cv.Columns[7].Text = "RST(R)"
+  cv.Columns[8].Text = "RST(E)"
+  cv.Columns[9].Text = ("Name")
+  cv.Columns[10].Text = "Locator"
+  cv.Columns[11].Text = ("QSL(S)")
+  cv.Columns[12].Text = "QSL(R)"
+  cv.Columns[13].Text = "QSL Via"  
+  cv.Columns[14].Text = ("Prefix")
+  cv.Columns[15].Text = "DXCC"
+  cv.Columns[16].Text = "Cont."
+  cv.Columns[17].Text = "CQz"
+  cv.Columns[18].Text = "ITUz"
+  cv.Columns[19].Text = ("Operator")
+  cv.Columns[20].Text = ("Power")
+  cv.Columns[21].Text = ("My Locator")
+  cv.Columns[22].Text = ("Satellite")
+  
+  
+END
+
+PRIVATE SUB searchQSO()
+    
+    DIM sql AS String
+    DIM clave, swColor AS Integer
+    cv.Clear()
+    'p = start
+    'sql = "SELECT * FROM log WHERE Indicativo LIKE &1 ORDER BY id DESC;"
+    sql = "SELECT * FROM log WHERE qso_date BETWEEN &1 AND &2 AND call LIKE &3 AND band LIKE &4 and mode LIKE &5 " &
+        "AND prop_mode LIKE &6 AND qsl_rcvd LIKE &7 AND gridsquare LIKE &8 ORDER BY id ASC;"
+
+    IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN
+    $hres = dbLog.cnLog.Exec(sql, dtIni.Value, dtFin.Value, txtCall.Text & "%", parseCbo(cboBand), parseCbo(cboMode), parseCbo(cboProp), parseQSL(), txtLoc.Text & "%")
+    cv.Rows.Count = $hres.Count
+    lblNumRec.Text = "Records: " & $hres.Count
+    DO WHILE $hres.Available
+    
+        cv[clave, 0].Text = $hres!id
+        cv[clave, 0].Background = IIf(swColor, Color.White, Color.LightBackground)
+        cv[clave, 1].Text = Format($hres!qso_date, "dd/mm/yyyy") 'Day($hres!qso_date) & "/" & Month($hres!qso_date) & "/" & Year($hres!qso_date)
+        cv[clave, 1].Background = IIf(swColor, Color.White, Color.LightBackground)
+        cv[clave, 2].Text = Left($hres!time_on, 5)
+        cv[clave, 2].Background = IIf(swColor, Color.White, Color.LightBackground)
+        cv[clave, 3].Text = $hres!call
+        cv[clave, 3].Background = IIf(swColor, Color.White, Color.LightBackground)
+        cv[clave, 4].Text = $hres!band
+        cv[clave, 4].Background = IIf(swColor, Color.White, Color.LightBackground)
+        cv[clave, 5].Text = $hres!mode
+        cv[clave, 5].Background = IIf(swColor, Color.White, Color.LightBackground)
+        cv[clave, 6].Text = $hres!prop_mode
+        cv[clave, 6].Background = IIf(swColor, Color.White, Color.LightBackground)
+        cv[clave, 7].Text = $hres!rst_rcvd
+        cv[clave, 7].Background = IIf(swColor, Color.White, Color.LightBackground)
+        cv[clave, 8].Text = $hres!rst_sent
+        cv[clave, 8].Background = IIf(swColor, Color.White, Color.LightBackground)
+        cv[clave, 9].Text = $hres!name
+        cv[clave, 9].Background = IIf(swColor, Color.White, Color.LightBackground)
+        cv[clave, 10].Text = $hres!gridsquare
+        cv[clave, 10].Background = IIf(swColor, Color.White, Color.LightBackground)
+        cv[clave, 11].Text = $hres!qsl_sent
+        cv[clave, 11].Background = IIf(swColor, Color.White, Color.LightBackground)
+        cv[clave, 12].Text = $hres!qsl_rcvd
+        cv[clave, 12].Background = IIf(swColor, Color.White, Color.LightBackground)
+        cv[clave, 13].Text = $hres!qsl_via
+        cv[clave, 13].Background = IIf(swColor, Color.White, Color.LightBackground)
+        cv[clave, 14].Text = $hres!pfx
+        cv[clave, 14].Background = IIf(swColor, Color.White, Color.LightBackground)
+        cv[clave, 15].Text = $hres!country
+        cv[clave, 15].Background = IIf(swColor, Color.White, Color.LightBackground)
+        cv[clave, 16].Text = $hres!cont
+        cv[clave, 16].Background = IIf(swColor, Color.White, Color.LightBackground)
+        cv[clave, 17].Text = $hres!cqz
+        cv[clave, 17].Background = IIf(swColor, Color.White, Color.LightBackground)
+        cv[clave, 18].Text = $hres!ituz
+        cv[clave, 18].Background = IIf(swColor, Color.White, Color.LightBackground)
+        cv[clave, 19].Text = $hres!operator
+        cv[clave, 19].Background = IIf(swColor, Color.White, Color.LightBackground)
+        cv[clave, 20].Text = $hres!tx_pwr
+        cv[clave, 20].Background = IIf(swColor, Color.White, Color.LightBackground)
+        cv[clave, 21].Text = $hres!my_gridsquare
+        cv[clave, 21].Background = IIf(swColor, Color.White, Color.LightBackground)
+        cv[clave, 22].Text = $hres!sat_name
+        cv[clave, 22].Background = IIf(swColor, Color.White, Color.LightBackground)
+        
+    $hres.MoveNext()
+    INC clave 
+    swColor = NOT swColor 
+  LOOP 
+  
+  
+  dbLog.CloseDB()
+  cv.Refresh()
+  
+  
+END
+
+
+PRIVATE SUB menuLog()
+  
+  DIM hMenus AS Menu
+  DIM hMenu, hMenue AS Menu
+  
+  hMenus = NEW Menu(ME)
+  
+  hMenu = NEW Menu(hMenus)
+  hMenu.Text = (("For QSO with: ") & cv[cv.Row, 3].Text)
+  
+  hMenu = NEW Menu(hMenus)
+  hMenu.Text = ""
+  
+  hMenue = NEW Menu(hMenus) AS "mnuEditarQSO"
+  hMenue.Text = ("Edit QSO")
+  hMenue.Picture = Picture["gtk-undo-rtl.png"]
+  'IF cv.Row > 1 THEN hMenue.enabled = FALSE
+  
+  hMenu = NEW Menu(hMenus) AS "mnuBorrarQSO"
+  hMenu.Text = ("Delete QSO")
+  hMenu.Picture = Picture["gtk-edit.png"]
+  
+  hMenu = NEW Menu(hMenus)
+  hMenu.Text = ""
+  
+  hMenu = NEW Menu(hMenus) AS "mnuQSLrec"
+  hMenu.Text = ("Check QSL as recvd.")
+  hMenu.Picture = Picture["gtk-redo-rtl.png"]
+  
+  hMenu = NEW Menu(hMenus) AS "mnuQSLenv"
+  hMenu.Text = ("Check QSL as sent.")
+  hMenu.Picture = Picture["gtk-undo-rtl.png"]
+  
+  hMenu = NEW Menu(hMenus) AS "mnuPrintQSL"
+  hMenu.Text = ("Print QSL")
+  hMenu.Picture = Picture["gtk-print.png"]
+
+  ' pop up 
+  IF hMenus THEN hMenus.Popup()
+  
+  
+END
+
+PUBLIC SUB mnuEditarQSO_Click()
+  TRY FMain.modifyQSO(CInt(cv[cv.Row, 0].Text))
+    
+  ME.Lower()
+  FMain.SetFocus()
+  
+END
+
+PUBLIC SUB fillData()
+  
+  searchQSO()
+  cv.Refresh()
+
+END
+
+
+PUBLIC SUB mnuBorrarQSO_Click()
+message("not yet functional")
+    ' DIM qso AS String
+    ' qso = grdQSO.Current.Text
+    ' IF Message.Warning("Se borrará el QSO seleccionado\n¿Deseas continuar?", "Borrar QSO", "Cancelar") = 2 THEN RETURN
+    ' IF connDB() THEN RETURN 
+    ' dbLog.cnLog.Exec("DELETE FROM log WHERE id=" & qso & ";")
+    ' fillData()
+    ' CATCH 
+    '     Message.Error("Error al borrar QSO\n" & Error.Text)
+END
+PUBLIC SUB mnuQSLrec_Click()
+  FMain.setQSLrcvd(CInt(cv[cv.Row, 0].Text))
+END
+PUBLIC SUB mnuQSLenv_Click()
+  FMain.setQSLsent(CInt(cv[cv.Row, 0].Text))
+END
+PUBLIC SUB mnuPrintQSL_Click()
+  message("not yet functional")
+END
+
+PUBLIC SUB cv_Menu()
+     
+  menuLog()
+ 
+ 
+END
+
+
+
+PUBLIC SUB btnClose_Click()
+
+  ME.Close()
+
+END
+
+PUBLIC SUB btnOK_Click()
+
+  searchQSO()
+
+END
+
+PRIVATE FUNCTION parseCbo(cbo AS ComboBox) AS String
+  DIM s AS String
+
+  IF cbo.Index = 0 THEN 
+    s = "%"
+  ELSE 
+    s = cbo.Text
+  ENDIF 
+  
+  RETURN s
+
+END
+
+PRIVATE FUNCTION parseQSL() AS String
+  
+  DIM s AS String
+  
+  IF chkCfd.Value = TRUE THEN 
+    s = "Y"
+  ELSE 
+    s = "%"
+  ENDIF 
+  
+  RETURN s
+  
+END
+
+
+
+PUBLIC SUB btnReset_Click()
+    dtIni.Value = "01/01/1900"
+    dtFin.Value = Now()
+END
+
+PUBLIC SUB btnCalIni_Click()
+
+  dtIni.Value = FCal.getDatePicker()
+
+END
+
+PUBLIC SUB btnCalFin_Click()
+
+  dtFin.Value = FCal.getDatePicker()
+
+END
+
+PUBLIC SUB txtCall_Change()
+
+  txtCall.Text = Upper(txtCall.Text)
+
+END
+
+PUBLIC SUB Form_Close()
+
+  active = FALSE
+
+END
+
+
+PUBLIC SUB txtLoc_Change()
+
+  txtLoc.Text = Upper(txtLoc.Text)
+
+END

@@ -1,0 +1,37 @@
+' Gambas module file
+PUBLIC cnTablas AS Connection
+
+PUBLIC FUNCTION connDB(path AS String) AS Boolean
+DIM myHost, myDBName AS String
+
+    myHost = Left(path, RInStr(path, "/"))
+    myDBName = Mid(path, Len(myHost) + 1, RInStr(path, "/"))
+    'DEBUG myHost;; myDBName
+    IF cnTablas <> NULL THEN RETURN FALSE
+    
+    cnTablas = NEW Connection
+    
+    cnTablas.Host = myHost
+    cnTablas.Name = myDBName
+    cnTablas.Type = "sqlite3"
+    
+    TRY cnTablas.Open()
+    
+    IF ERROR THEN 
+        cnTablas = NULL
+        Message.Error("Error connecting to database: " & myDBName)
+        RETURN TRUE
+    ENDIF 
+    
+    RETURN FALSE
+  
+END
+
+PUBLIC SUB CloseDB()
+  
+  IF cnTablas = NULL THEN RETURN 
+  cnTablas.Close()
+  cnTablas = NULL
+  
+END
+

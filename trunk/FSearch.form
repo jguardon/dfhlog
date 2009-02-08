@@ -1,0 +1,151 @@
+# Gambas Form File 2.0
+
+{ Form Form
+  MoveScaled(0,0,86,69)
+  Text = ("Search QSOs")
+  Icon = Picture["icon:/16/find"]
+  Border = Window.Fixed
+  Arrangement = Arrange.Vertical
+  Spacing = 4
+  Padding = 3
+  { HBox3 HBox
+    MoveScaled(0,0,85,24)
+    { Frame1 Frame
+      MoveScaled(1,1,84,23)
+      Expand = True
+      Text = ("Search QSO")
+      { dtIni ValueBox
+        MoveScaled(2,6,15,3)
+        Type = ValueBox.Date
+      }
+      { btnCalIni Button
+        MoveScaled(17,6,3,3)
+        ToolTip = ("DatePicker")
+        Text = ("")
+        Picture = Picture["icon:/16/view-detail"]
+      }
+      { dtFin ValueBox
+        MoveScaled(2,12,15,3)
+        Type = ValueBox.Date
+      }
+      { btnCalFin Button
+        MoveScaled(17,12,3,3)
+        ToolTip = ("DatePicker")
+        Text = ("")
+        Picture = Picture["icon:/16/view-detail"]
+      }
+      { txtCall TextBox
+        MoveScaled(24,6,14,3)
+        Text = ("")
+      }
+      { txtLoc TextBox
+        MoveScaled(24,12,14,3)
+        Text = ("")
+      }
+      { txtMgr TextBox
+        MoveScaled(24,18,14,3)
+        Visible = False
+        Text = ("No operativo")
+      }
+      { cboBand ComboBox
+        MoveScaled(42,6,18,3)
+        Text = ("")
+        ReadOnly = True
+      }
+      { cboMode ComboBox
+        MoveScaled(42,12,18,3)
+        Text = ("")
+        ReadOnly = True
+      }
+      { cboProp ComboBox
+        MoveScaled(42,18,18,3)
+        Text = ("")
+        ReadOnly = True
+      }
+      { Frame2 Frame
+        MoveScaled(64,3,18,12)
+        Text = ("")
+        { chkWkd RadioButton
+          MoveScaled(3,2,13,3)
+          Text = ("Worked")
+          Value = True
+        }
+        { chkCfd RadioButton
+          MoveScaled(3,7,13,3)
+          Text = ("Confirmed")
+        }
+      }
+      { btnOK Button
+        MoveScaled(64,16,18,5)
+        Text = ("&Search")
+        Default = True
+      }
+      { Label1 Label
+        MoveScaled(2,3,15,3)
+        Text = ("Start date:")
+      }
+      { Label3 Label
+        MoveScaled(2,9,15,3)
+        Text = ("End date:")
+      }
+      { Label4 Label
+        MoveScaled(24,3,14,3)
+        Text = ("Callsign:")
+      }
+      { Label5 Label
+        MoveScaled(24,9,14,3)
+        Text = ("Locator:")
+      }
+      { Label6 Label
+        MoveScaled(24,15,14,3)
+        Visible = False
+        Text = ("Manager:")
+      }
+      { Label7 Label
+        MoveScaled(42,15,14,3)
+        Text = ("Prop. Type:")
+      }
+      { Label8 Label
+        MoveScaled(42,9,14,3)
+        Text = ("Mode:")
+      }
+      { Label9 Label
+        MoveScaled(42,3,14,3)
+        Text = ("Band:")
+      }
+      { btnReset Button
+        MoveScaled(2,18,18,3)
+        Foreground = &H000080&
+        Text = ("Reset Dates")
+      }
+    }
+  }
+  { HBox1 HBox
+    MoveScaled(0,25,85,41)
+    Expand = True
+    { cv GridView
+      MoveScaled(1,0,84,35)
+      Expand = True
+      Mode = Select.Single
+      Header = GridView.Horizontal
+    }
+  }
+  { HBox2 HBox
+    MoveScaled(0,63,85,4)
+    Spacing = 5
+    Padding = 3
+    { lblNumRec Label
+      MoveScaled(1,1,24,3)
+      Text = ("Records:")
+    }
+    { Label2 Label
+      MoveScaled(36,1,24,3)
+      Expand = True
+      Text = ("")
+    }
+    { btnClose Button
+      MoveScaled(67,1,16,3)
+      Text = ("&Close")
+    }
+  }
+}

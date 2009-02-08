@@ -1,0 +1,28 @@
+' Gambas class file
+
+PRIVATE cboS AS ComboBox
+
+PUBLIC SUB btnCancel_Click()
+
+  ME.Close
+
+END
+
+PUBLIC SUB btnOK_Click()
+    IF InStr(txtServer.Text, ":") > 1 THEN
+        cboS.Add(Trim(txtServer.Text))
+        
+        ME.Close
+ 
+    ELSE 
+    
+        Message.Warning(("Incorrect format\nCheck for : (colon) between address and port number."))
+    ENDIF 
+END
+
+PUBLIC SUB Form_Open()
+
+  cboS = FPref.Controls["cboServer"]
+  txtServer.SetFocus()
+
+END
