@@ -281,7 +281,7 @@ PUBLIC FUNCTION clusterColor(call AS String, band AS String) AS Integer
                   hResul.MoveNext()
             LOOP 
         ENDIF 
-        FMain.descDB()
+        'FMain.descDB()
   ENDIF 
   RETURN colorDX
   

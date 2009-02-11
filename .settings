@@ -146,13 +146,13 @@ SearchComment=True
 SearchString=True
 
 [OpenFile]
-File[1]="FLoc.class:26.2"
-File[2]="FMain.class:2057.0"
-File[3]="dbLog.module:39.99"
-File[4]="FSummary.form"
-File[5]="FMain.form"
-File[6]="html.module:6.287"
-File[7]="FSummary.class:116.3"
+File[1]="FMain.class:1090.22"
+File[2]="dbLog.module:39.99"
+File[3]="FSummary.form"
+File[4]="FMain.form"
+File[5]="html.module:6.287"
+File[6]="FSummary.class:232.263"
+File[7]="QRZ.class:178.0"
 Active=7
 Count=7
 
