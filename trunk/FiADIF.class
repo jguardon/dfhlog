@@ -44,6 +44,8 @@ PRIVATE tx_pwr AS String
 PRIVATE own_gridsq AS String
 PRIVATE sat_name AS String
 PRIVATE sat_mode AS String
+PRIVATE email AS String
+PRIVATE tpea AS String
 PRIVATE ndxcc AS Integer
 PRIVATE entidad AS String
 
@@ -89,7 +91,9 @@ PUBLIC SUB _new()
     Fields.Add("<own_gridsq:", 30)
     Fields.Add("<my_gridsquare:", 31)  
     Fields.Add("<sat_name:", 32)
-    Fields.Add("<sat_mode:", 33) 
+    Fields.Add("<sat_mode:", 33)
+    Fields.Add("<email:", 34)
+    Fields.Add("<tpea:", 35) 
    
   ' they must correspond to columns in data base
 END
@@ -343,6 +347,10 @@ PUBLIC SUB Process_Field(field AS String, p AS Integer)
            sat_name = Valor
         CASE "<sat_mode:"
            sat_mode = Valor
+        CASE "<email:"
+           email = Valor
+        CASE "<tpea:"
+           tpea = Valor
     
     END SELECT
 END
@@ -355,7 +363,7 @@ PUBLIC SUB Log_qso()
     Insert$ = "INSERT INTO log VALUES (&1,&2,&3,&4,&5,&6,&7,&8,&9,&10,&11,&12,&13,&14,&15,&16,&17,&18," &
               "&19,&20,&21,&22,&23,&24,&25,&26,&27,&28,&29,&30,&31,&32,&33,&34,&35,&36,&37);" 
   
-    rData = dbLog.cnLog.Exec(Insert$, "", qso_date, time_on, time_off, call, freq, freq_rx, band, mode, prop_mode, rst_rcvd, rst_sent, name, gridsquare, qth, comment, qsl_sent, qsl_rcvd, qslsdate, qslrdate, qsl_via, pfx, cont, cqz, ituz, state, cnty, iota, operator, tx_pwr, own_gridsq, sat_name, sat_mode, NULL, entidad, ndxcc, NULL) 
+    rData = dbLog.cnLog.Exec(Insert$, "", qso_date, time_on, time_off, call, freq, freq_rx, band, mode, prop_mode, rst_rcvd, rst_sent, name, gridsquare, qth, comment, qsl_sent, qsl_rcvd, qslsdate, qslrdate, qsl_via, pfx, cont, cqz, ituz, state, cnty, iota, operator, tx_pwr, own_gridsq, sat_name, sat_mode, email, entidad, ndxcc, tpea) 
   
     INC Lqso
     WAIT 0.001
@@ -408,6 +416,8 @@ PUBLIC SUB ResetVariables()
     sat_mode = ""
     ndxcc = 0
     entidad = ""
+    email = ""
+    tpea = ""
    
 END
 

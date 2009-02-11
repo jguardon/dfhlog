@@ -17,6 +17,8 @@ PRIVATE stoppedTime AS String
 PRIVATE stopped AS Boolean = FALSE
 PRIVATE modificando AS Boolean = FALSE
 PRIVATE $mode AS String
+PRIVATE $markedSpot AS Boolean = FALSE
+PRIVATE $i AS Integer
 
 PUBLIC sTPEA AS String
 PUBLIC sIOTA AS String
@@ -71,6 +73,8 @@ PUBLIC SUB Form_Close()
           sktHamlib.Close()
           sktHamlib = NULL
     ENDIF
+    
+    dbLog.CloseDB()
     
     CATCH 
     
@@ -1047,7 +1051,7 @@ PUBLIC SUB filterLine(dxline AS String)
               CASE NULL
                 addLines(dxline, 0) 
             END SELECT 
-            IF Right(dxline, 1) = Chr(7) THEN TRY SHELL "beep"
+            
     CASE "To AL"  
         IF ANN = TRUE THEN addLines(dxline, 2)
     CASE "WWV d" 
@@ -1084,6 +1088,7 @@ PUBLIC SUB addLines(linea AS String, OPTIONAL tipo AS Integer = 0)   'añade lin
         'DEBUG DX;; freq;; band
         tblCluster[I, 0].ForeColor = global.clusterColor(DX, band) 
         tblCluster[I, 0].Text = linea
+        IF Right(linea, 1) = Chr(7) THEN TRY SHELL "beep"
         markers_spot(linea)
     CASE 0, 2, 3, 4
         tblCluster[I, 0].Text = linea
@@ -1100,7 +1105,7 @@ PUBLIC SUB addLines(linea AS String, OPTIONAL tipo AS Integer = 0)   'añade lin
     END SELECT
         tblCluster.Rows.Select(I)
         tblCluster.Rows.Unselect() 
-        tblCluster[I, 0].EnsureVisible() 'would I let the user select this?
+        IF $markedSpot = FALSE THEN tblCluster[I, 0].EnsureVisible() 'would I let the user select this?
         
         INC I
         'IF I >= 100 THEN I = 5
@@ -1169,11 +1174,27 @@ PUBLIC SUB txtClx_KeyPress()
 
 END
 
-PUBLIC SUB tblCluster_MouseUp() 
-
-        tblCluster.Rows.Unselect()
+PUBLIC SUB tblCluster_Click() 
+    DIM dxline AS String 
     
+    dxline = tblCluster.Current.Text
     
+    IF Left$(dxline, 5) = "DX de" OR (IsDigit(Trim(Left(dxline, 6))) = TRUE AND InStr(dxline, ".") > 6 AND InStr(dxline, ".") < 15) THEN
+        IF $markedSpot = FALSE
+            tblCluster.Current.Background = Color.Yellow
+            $markedSpot = TRUE
+            $i = tblCluster.Row
+        ELSE 
+            IF tblCluster.Row = $i THEN 
+                tblCluster.Current.Background = Color.White
+                $markedSpot = FALSE
+            ENDIF 
+        ENDIF 
+    ENDIF 
+    CATCH 
+        Message.Error(("Error in tblCluster_Click()\n") & Error.Text & "\n" & Error.Where)
+        
+ 
 END
 PUBLIC SUB tblCluster_DblClick()
     DIM dxCall AS String
