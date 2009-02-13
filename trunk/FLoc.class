@@ -27,6 +27,18 @@ PRIVATE SUB loadImages()
   
 END
 
+PRIVATE FUNCTION parseCbo(cbo AS ComboBox) AS String
+    DIM s AS String
+    
+    IF cbo.Index = 0 THEN 
+      s = "%"
+    ELSE 
+      s = cbo.Text
+    ENDIF 
+    
+    RETURN s
+
+END
 
 PUBLIC SUB drwMapa(map AS Picture)
     'lienzo.Clear()
@@ -137,6 +149,7 @@ PUBLIC SUB Form_Open()
     
     dateIni.Value = "1/1/1900"
     dateFin.Value = global.UTCNow()
+    ToolPanel1.Index = 1
     
      
      CATCH 
@@ -212,18 +225,7 @@ PUBLIC SUB drwGrid()
     
     END WITH
     
-      Draw.Begin(lienzo)
-    
-    Draw.ForeColor = Color.blue
-    Draw.FillColor = Color.Orange
-    Draw.FillStyle = Fill.Solid
-    Draw.Scale(lienzo.Width / Sx, lienzo.Height / Sy)
-    Draw.Translate(Tx, Ty)
-    Draw.Rect(-4, -38, 2, 1)
-    IF currentMap <> MUN THEN 
-    Draw.Text("IM87", -4, -38) ', 1, 1, 1)
-    ENDIF 
-    Draw.End()
+      
     ' pic = DrawingArea1.Grab()
     ' pic.Save(User.Home &/ "mypic.png")
     ' Desktop.Open(User.Home &/ "mypic.png")
@@ -235,10 +237,52 @@ PUBLIC SUB btnOK_Click()
     IF dateIni.Value > dateFin.Value THEN 
         Message.Warning(("Start Date couldn't be greater than End Date"))
         dateIni.SetFocus()
+        RETURN 
     ENDIF 
+    btnClear_Click()
+    drawSquares()
   
 
 END
+
+PRIVATE SUB drawSquares()
+
+    DIM hres AS Result
+    DIM sql, sq AS String
+    DIM glat, glon AS Float
+    DIM wkdcfd AS String
+    IF rbConf.Value = TRUE THEN 
+        wkdcfd = "Y"        
+    ELSE 
+        wkdcfd = "%"        
+    ENDIF
+    sql = "select gridsquare from log where qso_date between &1 and &2 and band like &3 and mode like &4 and prop_mode like &5 and gridsquare <>'' and qsl_rcvd like &6  group by substr(gridsquare,0,4) order by gridsquare;"
+    IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN 
+    hres = dbLog.cnLog.Exec(sql, dateIni.Value, dateFin.Value, parseCbo(cboBand), parseCbo(cboModo), parseCbo(cboPropa), wkdcfd)
+    Draw.Begin(lienzo)
+    
+    Draw.ForeColor = Color.Red
+    'Draw.FillColor = Color.Gray
+    'Draw.FillStyle = Fill.CrossDiagonal
+    Draw.Scale(lienzo.Width / Sx, lienzo.Height / Sy)
+    Draw.Translate(Tx, Ty)
+    
+    WHILE hres.Available
+        sq = Left(hres!gridsquare, 4) & "AX"
+        
+        glat = Round(global.locator2latlon(sq).lat * -1)
+        glon = Round(global.locator2latlon(sq).lon)
+    '   DEBUG glat, glon, sq
+        Draw.Rect(glon, glat, 2, 1)
+        IF currentMap <> MUN THEN Draw.Text(Left(sq, 4), glon, glat) ', 1, 1, 1)
+        hres.MoveNext()
+    
+     WEND  
+    Draw.End()
+  
+  
+END
+
 
 
 PUBLIC SUB lblEU_MouseDown()
@@ -310,8 +354,8 @@ PUBLIC SUB lienzo_MouseDrag()
     DIM deltaY AS Integer = Mouse.Y / 2
     
     IF Mouse.Left THEN 
-        ScrollView1.ScrollX = deltaX - ScrollView1.x
-        ScrollView1.ScrollY = deltaY - ScrollView1.Y
+        ScrollView1.ScrollX = (deltaX - ScrollView1.X) * -1
+        ScrollView1.ScrollY = (deltaY - ScrollView1.Y) * -1
     ENDIF 
 END
 
