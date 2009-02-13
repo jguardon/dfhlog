@@ -227,31 +227,26 @@ PUBLIC FUNCTION bearingLoc(loc1 AS String, loc2 AS String) AS Float
   
 END
 
-' PUBLIC FUNCTION parseFecha(fecha AS String) AS String
-'   
-'   DIM Y, M, D, nF AS String
-'   DIM F AS String[]
-'   IF fecha THEN 
-'   
-'     F = Split(fecha, "/")
-'     
-'     Y = F[2]
-'     M = F[1]
-'     D = F[0]
-'    
-'   ELSE
-'   
-'     Y = Year(Now)
-'     M = Month(Now)
-'     D = Day(Now)
-'   ENDIF  
-'   
-'   
-'   nF = Y & "-" & M & "-" & D
-'   RETURN nF
-'   
-'   
-' END
+PUBLIC FUNCTION parseFecha(fecha AS String) AS String
+  
+  DIM Y, M, D, nF AS String
+  DIM F AS String[]
+  fecha = Left(fecha, 10)
+  IF fecha THEN 
+  
+    F = Split(fecha, "-")
+    
+    Y = F[0]
+    M = F[1]
+    D = F[2]
+    nF = D & "/" & M & "/" & Y
+  
+  ENDIF  
+  
+  RETURN nF
+  
+  
+END
 
 PUBLIC FUNCTION clusterColor(call AS String, band AS String) AS Integer
   DIM colorDX AS Integer

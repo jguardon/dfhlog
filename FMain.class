@@ -1080,19 +1080,25 @@ PUBLIC SUB addLines(linea AS String, OPTIONAL tipo AS Integer = 0)   'añade lin
   tblCluster.Rows.Count = I + 1
   
   SELECT CASE tipo
-  
+    CASE 0
+        tblCluster[I, 0].Text = linea
+        tblCluster[I, 0].ForeColor = ini["Colores/Default", 0]    
     CASE 1
         DX = Trim(Mid(linea, 27, 10))
         freq = CFloat(Trim(Mid(linea, 15, 10)))
         band = global.getBand(freq)
         'DEBUG DX;; freq;; band
+        IF Right(linea, 1) = Chr(7) THEN 
+            linea = Replace(linea, Chr(7), "*")
+            TRY SHELL "beep"
+        ENDIF 
         tblCluster[I, 0].ForeColor = global.clusterColor(DX, band) 
         tblCluster[I, 0].Text = linea
-        IF Right(linea, 1) = Chr(7) THEN TRY SHELL "beep"
+        
         markers_spot(linea)
-    CASE 0, 2, 3, 4
-        tblCluster[I, 0].Text = linea
-        tblCluster[I, 0].ForeColor = ini["Colores/Default", 0]
+    CASE 2, 3, 4
+        tblCluster[I, 0].RichText = "<i><font color=\"#C0C0C0\">" & linea & "</font></i>"
+        'tblCluster[I, 0].ForeColor = ini["Colores/Default", 0]
     CASE 5
         
         DX = Trim(Mid(linea, 11, 12))
@@ -2075,18 +2081,18 @@ END
 
 PUBLIC SUB mnuMGridSq_Click()
 
-  
+    FSquares.getSummary(1)
 
 END
 
 PUBLIC SUB mnuGridSq_Click()
 
-  
+    FSquares.getSummary(2)
 
 END
 
 PUBLIC SUB mnuInitials_Click()
 
-  
+    FSquares.getSummary(3)
 
 END

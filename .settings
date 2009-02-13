@@ -146,15 +146,14 @@ SearchComment=True
 SearchString=True
 
 [OpenFile]
-File[1]="FMain.class:1090.22"
-File[2]="dbLog.module:39.99"
-File[3]="FSummary.form"
-File[4]="FMain.form"
-File[5]="html.module:6.287"
-File[6]="FSummary.class:232.263"
-File[7]="QRZ.class:178.0"
-Active=7
-Count=7
+File[1]="FMain.class:1093.14"
+File[2]="dbLog.module:38.170"
+File[3]="FLoc.form"
+File[4]="FLoc.class:280.14"
+File[5]="FSquares.class:179.20"
+File[6]="QRZ.class:0.0"
+Active=6
+Count=6
 
 [Watches]
 Count=0

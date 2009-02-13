@@ -3,7 +3,7 @@
 Title=dfhLog
 Startup=FMain
 Icon=dfhlog.png
-Version=0.0.29
+Version=0.0.30
 Library=gb.qt
 Library=gb.form
 Library=gb.db
@@ -19,7 +19,7 @@ Library=gb.xml
 Description=Amateur Radio Logging program\n\nImport/Export ADIF files, cluster connection, Hamlib based CAT control, \nQRZ.com support, XPlanet Maps and Custom GridSquare Maps, \nsimple awards support (WAS, DXCC, IOTA, USACA, TPEA).\n\nCurrent available languages:\n\nEnglish, Spanish, Galego, Catalan, Portugues
 Authors=Jesús Guardón, EA7DFH\nea7dfh@ea7dfh.com
 TabSize=4
-CreateShortcut=1
+ExecPath=/home/jesus/Escritorio/dfhLog.gambas
 Maintainer=Jesus Guardon
 Address=ea7dfh@ea7dfh.com
 License=General Public Licence
