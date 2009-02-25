@@ -134,7 +134,7 @@
     Text = ("C&olors")
     { Frame5 Frame
       MoveScaled(1,1,65,38)
-      Text = ("Colores")
+      Text = ("Colors")
       { cbtnWorked ColorButton
         MoveScaled(28,5,6,5)
         Value = &HFF0000&

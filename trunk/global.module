@@ -250,13 +250,13 @@ END
 
 PUBLIC FUNCTION clusterColor(call AS String, band AS String) AS Integer
   DIM colorDX AS Integer
-  DIM entidad AS Integer 
+  DIM entidad AS String 
   DIM hresul AS Result
   ent = world.findEntity(call)
   IF ent <> NULL THEN 
-        entidad = ent.number
+        entidad = ent.entity
         IF FMain.connDB() THEN RETURN 
-        hResul = dbLog.cnLog.Exec("SELECT qsl_rcvd, band FROM log WHERE dxcc = " & entidad & " AND band='" & band & "';")
+        hResul = dbLog.cnLog.Exec("SELECT qsl_rcvd, band FROM log WHERE country = &1 AND band= &2;", entidad, band)
         IF NOT hResul.Available THEN 
             'DEBUG call, band, hResul!QSL_r
             colorDX = FMain.ini["Colores/Necesitado", Color.Blue]

@@ -26,7 +26,11 @@ PUBLIC sWAS AS String
 PUBLIC sUSAC AS String
 
 
+
+
 PUBLIC SUB _new()
+
+    
     
     TRY world.init()
     ini = NEW Settings(User.Home &/ "/.dfh_Log/dfhLog.conf", "dfhLog Settings")
@@ -674,7 +678,7 @@ PUBLIC SUB btnOK_Click()
             ELSE 
                 logQSO()
                 IF chkAutoSpot.Value AND sktCluster.Status = Net.Connected THEN 
-                    IF Message.Question(("Do you want to spot\n SPOT\n to the Cluster Net?"), "No", ("Yes")) = 2 THEN spotQSO()
+                    IF Message.Question(("Do you want to spot\n") & txtCall.Text & ("\n to the Cluster Net?"), "No", ("Yes")) = 2 THEN spotQSO()
                 ENDIF 
                 
             ENDIF 
@@ -1090,7 +1094,7 @@ PUBLIC SUB addLines(linea AS String, OPTIONAL tipo AS Integer = 0)   'añade lin
         'DEBUG DX;; freq;; band
         IF Right(linea, 1) = Chr(7) THEN 
             linea = Replace(linea, Chr(7), "*")
-            TRY SHELL "beep"
+            TRY SHELL "echo -e \"\\007\" >/dev/tty10"
         ENDIF 
         tblCluster[I, 0].ForeColor = global.clusterColor(DX, band) 
         tblCluster[I, 0].Text = linea
