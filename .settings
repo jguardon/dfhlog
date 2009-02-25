@@ -93,6 +93,9 @@ Geometry=[809,202,301,301]
 [DebugWindow/nmap]
 Geometry=[0,25,301,301]
 
+[DebugWindow/nmap["2"]]
+Geometry=[14,39,301,301]
+
 [DebugWindow/nmap[nr]]
 Geometry=[0,25,301,301]
 
@@ -146,14 +149,11 @@ SearchComment=True
 SearchString=True
 
 [OpenFile]
-File[1]="FMain.class:1093.14"
-File[2]="dbLog.module:38.170"
-File[3]="FLoc.form"
-File[4]="FLoc.class:280.14"
-File[5]="FSquares.class:179.20"
-File[6]="QRZ.class:0.0"
-Active=6
-Count=6
+File[1]="FMain.class:32.4"
+File[2]="FMain.form"
+File[3]="world.module:84.2"
+Active=3
+Count=3
 
 [Watches]
 Count=0

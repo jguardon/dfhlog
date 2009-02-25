@@ -72,7 +72,11 @@ PUBLIC SUB init()
                 
               
                 FOR EACH finalPrefix IN prefixes
-                    map.Add(number, Trim$(Replace$(finalPrefix, "=", ""))) 'coleccion de prefijos/nº ent
+                    finalPrefix = Trim$(Replace$(finalPrefix, "=", ""))
+                    IF InStr(finalPrefix, "(") > 1 THEN finalPrefix = Left(finalPrefix, InStr(finalPrefix, "(") - 1)
+                    IF InStr(finalPrefix, "[") > 1 THEN finalPrefix = Left(finalPrefix, InStr(finalPrefix, "[") - 1)
+                    
+                    map.Add(number, finalPrefix) 'coleccion de prefijos/nº ent
                     'TODO manejo de prefijos especiales con diferente zona(cq)[itu]
                 NEXT
               
@@ -80,7 +84,9 @@ PUBLIC SUB init()
         NEXT   
   
     CLOSE file
-    created = TRUE  
+    created = TRUE 
+    CATCH 
+            DEBUG Error.Text, Error.Where 
 END
     'devuelve una clase cty por cadena completa de indicativo
 PUBLIC FUNCTION findEntity(call AS String) AS cty
@@ -94,15 +100,18 @@ PUBLIC FUNCTION findEntity(call AS String) AS cty
             IF Len(prefixa) < Len(prefixab) THEN 
                 call = prefixa
               ELSE
-                IF prefixab <> "P" AND prefixab <> "MM" AND prefixab <> "B" AND prefixab <> "M" AND prefixab <> "QRP" AND prefixab <> "AM" AND NOT IsNumber(prefixab) THEN
-                      call = prefixab
-                  ENDIF
+                IF prefixab <> "P" AND prefixab <> "MM" AND prefixab <> "B" AND prefixab <> "M" AND prefixab <> "QRP" AND prefixab <> "AM" AND prefixab <> "" &
+                    "0" AND prefixab <> "1" AND prefixab <> "2" AND prefixab <> "3" AND prefixab <> "4" AND prefixab <> "5" AND prefixab <> "6" & 
+                    "" AND prefixab <> "7" AND prefixab <> "8" AND prefixab <> "9" THEN 
+                    call = prefixab
+                ENDIF
                   
             ENDIF 
         ENDIF 
         'magic statement
         FOR y = Len(call) TO 1 STEP -1
              FOR EACH cad IN map
+             
                   IF Left(call, y) = map.Key THEN 
                       RETURN nmap[map[map.Key]]
                   BREAK 
