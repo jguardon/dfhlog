@@ -238,7 +238,7 @@ PRIVATE SUB menuLog()
   hMenus = NEW Menu(ME)
   
   hMenu = NEW Menu(hMenus)
-  hMenu.Text = (("For QSO with: ") & cv[cv.Row, 3].Text)
+  hMenu.Text = (("For QSO with: ") & cv[cv.Row, 4].Text)
   
   hMenu = NEW Menu(hMenus)
   hMenu.Text = ""

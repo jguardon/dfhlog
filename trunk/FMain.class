@@ -32,6 +32,7 @@ PUBLIC SUB _new()
 
     
     
+    
     TRY world.init()
     ini = NEW Settings(User.Home &/ "/.dfh_Log/dfhLog.conf", "dfhLog Settings")
     
@@ -1883,7 +1884,7 @@ PUBLIC SUB modifyQSO(idQSO AS Integer)
     ME.SetFocus()
     modificando = TRUE
     clearFields()
-    btnOK.Text = "Modify"
+    btnOK.Text = ("Modify")
     btnOK.ForeColor = Color.Red
     frameQSO.Text = ("Edit QSO")
     chkAutoSpot.Value = FALSE
@@ -2098,5 +2099,13 @@ END
 PUBLIC SUB mnuInitials_Click()
 
     FSquares.getSummary(3)
+
+END
+
+PUBLIC SUB mnuLang_Click()
+  '   System.Language = "en_US.UTF-8"
+  '   
+  '   SHELL Application.Path &/ "dfhLog.gambas"
+  ' ME.Close
 
 END
