@@ -1,7 +1,7 @@
 # Gambas Form File 2.0
 
 { Form Form
-  MoveScaled(0,0,98,74)
+  MoveScaled(0,0,109,74)
   Text = ("")
   Icon = Picture["dfhlog.png"]
   Arrangement = Arrange.Horizontal
@@ -168,7 +168,7 @@
     }
   }
   { Panel1 Panel
-    MoveScaled(32,1,65,72)
+    MoveScaled(32,1,77,72)
     Expand = True
     Arrangement = Arrange.Vertical
     { HBox1 HBox
@@ -176,24 +176,24 @@
       Spacing = 5
       Padding = 5
       { chkSquares CheckBox
-        MoveScaled(2,1,13,3)
+        MoveScaled(2,1,21,3)
         Text = ("Show Grid")
         Value = CheckBox.True
       }
       { btnClear ToolButton
-        MoveScaled(16,0.4286,13,4)
+        MoveScaled(30,0,16,4)
         Text = ("Clean Map")
         Picture = Picture["icon:/16/clear"]
         Border = True
       }
       { Label1 Label
-        MoveScaled(35,1,21,3)
+        MoveScaled(49,1,21,3)
         Expand = True
         AutoResize = True
         Text = ("Coords:")
       }
       { ToolButton1 ToolButton
-        MoveScaled(60,1,4,4)
+        MoveScaled(72,1,4,4)
         Text = ("")
         Picture = Picture["icon:/24/quit"]
       }
@@ -202,7 +202,7 @@
       MoveScaled(0,5,87,66)
       Expand = True
       { ScrollView1 ScrollView
-        MoveScaled(0,0,71,65)
+        MoveScaled(0,0,77,65)
         Expand = True
         { lienzo DrawingArea
           MoveScaled(0,0,117,88)

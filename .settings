@@ -149,11 +149,16 @@ SearchComment=True
 SearchString=True
 
 [OpenFile]
-File[1]="FMain.class:32.4"
+File[1]="FMain.class:2105.2"
+Active=1
 File[2]="FMain.form"
 File[3]="world.module:84.2"
-Active=3
-Count=3
+File[4]="global.module:243.2"
+File[5]="FSearch.form"
+File[6]="FSummary.form"
+File[7]="FSummary.class:279.27"
+File[8]="FLoc.form"
+Count=8
 
 [Watches]
 Count=0

@@ -111,6 +111,10 @@
       Picture = Picture["icon:/16/tools"]
       Shortcut = "F2"
     }
+    { mnuLang Menu
+      Text = ("&Language")
+      Shortcut = "Ctrl+Shift+L"
+    }
   }
   { mnuPrint Menu
     Text = ("&Printing")
