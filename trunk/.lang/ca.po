@@ -500,6 +500,10 @@ msgstr ""
 msgid "Error in BackupDB\n"
 msgstr ""
 
+#: FMain.class:1887
+msgid "Modify"
+msgstr ""
+
 #: FMain.class:1942
 msgid "Error in modifyQSO\n"
 msgstr ""

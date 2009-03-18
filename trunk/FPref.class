@@ -1,4 +1,20 @@
 ' Gambas class file
+' dfhLog- Hamradio LogBook
+'     Copyright (C) 2009  Jesús Guardón, EA7DFH <ea7dfh@gmail.com>
+' 
+'     This program is free software: you can redistribute it and/or modify
+'     it under the terms of the GNU General Public License as published by
+'     the Free Software Foundation, either version 3 of the License, or
+'     (at your option) any later version.
+' 
+'     This program is distributed in the hope that it will be useful,
+'     but WITHOUT ANY WARRANTY; without even the implied warranty of
+'     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'     GNU General Public License for more details.
+' 
+'     You should have received a copy of the GNU General Public License
+'     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 
 PRIVATE bQRZ AS Boolean = FALSE
 PRIVATE isHamlib AS Boolean = FALSE
@@ -17,7 +33,7 @@ PUBLIC SUB btnOK_Click()
         FMain.ini["Estacion/Locator"] = Trim(txtLocator.Text)
         FMain.ini["Estacion/PrefBanda"] = cboPrefBanda.Text
         FMain.ini["Estacion/PrefModo"] = cboPrefModo.Text
-        FMain.ini["Telnet/Server"] = cboServer.Current.Text
+        IF cboServer.Text THEN FMain.ini["Telnet/Server"] = cboServer.Text
         FMain.ini["Hamlib/Device"] = txtDevHamlib.Text
         FMain.ini["Estacion/UserQRZ"] = txtUserQRZ.Text
         FMain.ini["Estacion/PassQRZ"] = txtPassQRZ.Text
@@ -112,9 +128,11 @@ PUBLIC SUB Form_Open()
   txtQRZ.Text = FMain.ini["Estacion/QRZ"]
   txtNombre.Text = FMain.ini["Estacion/Nombre"]
   txtLocator.Text = FMain.ini["Estacion/Locator"]
+  chkTimeOnOff.Value = FMain.ini["Estacion/TimeOnOff", FALSE]
   cboPrefBanda.Text = FMain.ini["Estacion/PrefBanda"]
   cboPrefModo.Text = FMain.ini["Estacion/PrefModo"]
   cboServer.Text = FMain.ini["Telnet/Server"]
+  chkAutoLogin.Value = FMain.ini["Telnet/Autologin", FALSE]
   chkHamlib.Value = FMain.ini["Hamlib/Activado", FALSE]
   chkXplanet.Value = FMain.ini["Xplanet/Activado", FALSE]
   chkQRZcom.Value = FMain.ini["QRZcom/Activado", FALSE]
@@ -349,5 +367,17 @@ END
 PUBLIC SUB chkWCY_Click()
 
   FMain.ini["Filtros/WCY"] = CBool(chkWCY.Value)
+
+END
+
+PUBLIC SUB chkAutoLogin_Click()
+
+  FMain.ini["Telnet/Autologin"] = CBool(chkAutoLogin.Value)
+
+END
+
+PUBLIC SUB chkTimeOnOff_Click()
+
+  FMain.ini["Estacion/TimeOnOff"] = CBool(chkTimeOnOff.Value)
 
 END

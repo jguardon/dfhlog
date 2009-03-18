@@ -1,7 +1,7 @@
 # Gambas Form File 2.0
 
 { Form Form
-  MoveScaled(0,0,109,74)
+  MoveScaled(0,0,109,82)
   Text = ("")
   Icon = Picture["dfhlog.png"]
   Arrangement = Arrange.Horizontal
@@ -11,6 +11,7 @@
     Padding = 3
     Orientation = Align.Right
     Resizable = False
+    Border = True
     { ToolPanel1 ToolPanel
       MoveScaled(1,1,27,67)
       Spacing = 2
@@ -138,11 +139,6 @@
         Text = ("")
         ReadOnly = True
       }
-      { txtDist TextBox
-        MoveScaled(13,13,13,3)
-        ToolTip = ("Distance greater than...")
-        Text = ("")
-      }
       { Frame1 Frame
         MoveScaled(1,32,25,15)
         Text = ("")
@@ -164,6 +160,10 @@
         MoveScaled(1,49,25,4)
         Text = ("OK")
       }
+      { vDist ValueBox
+        MoveScaled(13,13,13,3)
+        ToolTip = ("Distance greater than...")
+      }
       Index = 0
     }
   }
@@ -172,18 +172,22 @@
     Expand = True
     Arrangement = Arrange.Vertical
     { HBox1 HBox
-      MoveScaled(0,0,87,5)
+      MoveScaled(0,0.2857,87,4)
       Spacing = 5
       Padding = 5
-      { chkSquares CheckBox
-        MoveScaled(2,1,21,3)
-        Text = ("Show Grid")
-        Value = CheckBox.True
+      { chkSquares ToolButton
+        MoveScaled(1,1,3,3)
+        ToolTip = ("Show Grid")
+        Text = ("")
+        Picture = Picture["sq.png"]
+        Border = True
+        Toggle = True
       }
       { btnClear ToolButton
-        MoveScaled(30,0,16,4)
-        Text = ("Clean Map")
-        Picture = Picture["icon:/16/clear"]
+        MoveScaled(6,1,3,3)
+        ToolTip = ("Clean Map")
+        Text = ("")
+        Picture = Picture["gtk-delete.png"]
         Border = True
       }
       { Label1 Label
@@ -193,16 +197,17 @@
         Text = ("Coords:")
       }
       { ToolButton1 ToolButton
-        MoveScaled(72,1,4,4)
+        MoveScaled(72,1,3,3)
         Text = ("")
-        Picture = Picture["icon:/24/quit"]
+        Picture = Picture["icon:/16/quit"]
+        Border = True
       }
     }
     { HBox2 HBox
       MoveScaled(0,5,87,66)
       Expand = True
       { ScrollView1 ScrollView
-        MoveScaled(0,0,77,65)
+        MoveScaled(0,0,77,66)
         Expand = True
         { lienzo DrawingArea
           MoveScaled(0,0,117,88)

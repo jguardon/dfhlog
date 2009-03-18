@@ -1,7 +1,23 @@
 ' Gambas class file
 ' ADIF import
+' dfhLog- Hamradio LogBook
+'     Copyright (C) 2009  Jesús Guardón, EA7DFH <ea7dfh@gmail.com>
+' 
+'     This program is free software: you can redistribute it and/or modify
+'     it under the terms of the GNU General Public License as published by
+'     the Free Software Foundation, either version 3 of the License, or
+'     (at your option) any later version.
+' 
+'     This program is distributed in the hope that it will be useful,
+'     but WITHOUT ANY WARRANTY; without even the implied warranty of
+'     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'     GNU General Public License for more details.
+' 
+'     You should have received a copy of the GNU General Public License
+'     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 ' Class from Pino Zollo's project (ZP4KFX) at http://www.qsl.net/zp4kfx/Linux/dblog.html
-' Borrowed and modified by Jesus Guardon, EA7DFH
+' Modified by Jesus Guardon, EA7DFH
 PRIVATE hFileError AS File 
 PRIVATE Record AS String
 PRIVATE Record_t AS String 
@@ -10,6 +26,7 @@ PRIVATE campo AS String
 PRIVATE file_l AS Integer
 PRIVATE n_char AS Integer
 PRIVATE cCty AS cty
+PRIVATE mycallsign AS String
 
 '   ---------------   for Data Base ---------------------
 PRIVATE qso_date AS String
@@ -48,14 +65,17 @@ PRIVATE email AS String
 PRIVATE tpea AS String
 PRIVATE ndxcc AS Integer
 PRIVATE entidad AS String
+PRIVATE dist AS Float
 
 PRIVATE rData AS Result
 PRIVATE nDup AS Integer ' number of duplicated
 PRIVATE Lqso AS Integer ' number of logged qso
 PRIVATE Errors AS Integer
+PRIVATE importing AS Boolean = FALSE
 
 '------------------------------------------
 PUBLIC SUB _new()
+    mycallsign = FMain.ini["Estacion/QRZ"]
     cCty = NEW cty
     world.init()    'init the cty.dat class
     
@@ -119,7 +139,7 @@ PUBLIC SUB importQSOs()
     DIM Linea AS String
     DIM FoundEOH AS Boolean
     DIM final AS Boolean 
-    btnCancel.Enabled = FALSE
+    'btnCancel.Enabled = FALSE
     WAIT 0.1
     
     FoundEOH = FALSE 
@@ -142,6 +162,7 @@ PUBLIC SUB importQSOs()
     END WITH 
     
     WHILE NOT Eof(hFileADIF) 
+        IF importing = FALSE THEN EXIT 
         IF NOT FoundEOH THEN
             REPEAT   ' Look for Header
                 IF NOT Eof(hFileADIF) THEN LINE INPUT #hFileADIF, Linea
@@ -173,15 +194,15 @@ PUBLIC SUB importQSOs()
             Record = ""
             Linea = ""
         END IF 
+        
       WEND  
     pb.Value = 1 
     CLOSE #hFileADIF
     CLOSE #hFileError
     btnCancel.Text = ("&Close")
-    btnCancel.Enabled = TRUE
+    'btnCancel.Enabled = TRUE
     btnOK.Enabled = FALSE
-    dbLog.cnLog.Exec("VACUUM")
-    dbLog.CloseDB()
+    
     IF Errors > 0 THEN Message.Info(("Check 'ImportErrors.txt' into User Folder"))
   
 END
@@ -211,7 +232,8 @@ PUBLIC SUB Process_Record()
         pb.Value = n_char / file_l
     ELSE   ' Log it 
         'PRINT call, qso_date, time_on, name, qth, time_off
-        FindDXCC(call) ' in case dxcc was empty        
+        FindDXCC(call) ' in case dxcc was empty
+        findDistance(call, gridsquare)
         Log_qso() ' write record to DB 
         lblCurrent.Text = call & " " & qso_date & " " & time_on & " " & entidad 
         'UpdateStats()    
@@ -220,6 +242,26 @@ PUBLIC SUB Process_Record()
     CATCH
         Message.Error(("Error in Process Record\n") & call & " " & qso_date & "\n" & Error.Text)
 END
+
+PUBLIC SUB findDistance(indic AS String, locator AS String)
+
+    DIM mycall AS String = FMain.ini["Estacion/QRZ"]
+    DIM myLoc AS String = FMain.ini["Estacion/Locator"]
+    
+    IF locator THEN 
+        dist = Round(global.distLoc(myLoc, locator), -1)
+    ELSE 
+        dist = Round(global.distance(cCty.lat, cCty.lon, global.locator2latlon(myLoc).lat, global.locator2latlon(myLoc).lon), -1)
+    ENDIF 
+    
+    CATCH
+        Message.Error(("Error in findDistance\nDistance error in qso: ") & call & " " & qso_date & " " & band & " " & mode & ("\nCheck 'ImportErrors.txt' into User Folder"))
+        INC Errors
+        lblErrors.Text = Errors
+        PRINT #hFileError, ("Distance error in qso: "); call, qso_date, band, mode
+   
+END
+
 
 PUBLIC SUB FindDXCC(callsign AS String)
 
@@ -261,7 +303,7 @@ PUBLIC SUB Process_Field(field AS String, p AS Integer)
             ELSE   ' only HHMM
                 Valor = Mid$(Valor, 1, 2) & ":" & Mid$(Valor, 3, 2) & ":00"
             END IF 
-       CASE "<qth:", "<comment:", "<name:", 
+       CASE "<qth:", "<comment:", "<name:" 
             Valor = Replace$(Valor, "'", "''")  ' Escape apostroph
             ' what about accented wovels ? and ° ?
             Valor = Replace$(Valor, Chr$(176), "°")
@@ -278,6 +320,8 @@ PUBLIC SUB Process_Field(field AS String, p AS Integer)
             Valor = Replace$(Valor, Chr$(243), String.Chr(00243)) ' o acute
             Valor = Replace$(Valor, Chr$(250), String.Chr(00250)) ' u acute
             Valor = Replace$(Valor, Chr$(216), "0") ' 0/
+       CASE "<operator:"
+            IF Valor = FALSE THEN Valor = mycallsign
     END SELECT   
    
   ' Write value into the correspondent variable
@@ -361,9 +405,9 @@ PUBLIC SUB Log_qso()
     IF time_off = "" THEN time_off = time_on
   
     Insert$ = "INSERT INTO log VALUES (&1,&2,&3,&4,&5,&6,&7,&8,&9,&10,&11,&12,&13,&14,&15,&16,&17,&18," &
-              "&19,&20,&21,&22,&23,&24,&25,&26,&27,&28,&29,&30,&31,&32,&33,&34,&35,&36,&37);" 
+              "&19,&20,&21,&22,&23,&24,&25,&26,&27,&28,&29,&30,&31,&32,&33,&34,&35,&36,&37,&38);" 
   
-    rData = dbLog.cnLog.Exec(Insert$, "", qso_date, time_on, time_off, call, freq, freq_rx, band, mode, prop_mode, rst_rcvd, rst_sent, name, gridsquare, qth, comment, qsl_sent, qsl_rcvd, qslsdate, qslrdate, qsl_via, pfx, cont, cqz, ituz, state, cnty, iota, operator, tx_pwr, own_gridsq, sat_name, sat_mode, email, entidad, ndxcc, tpea) 
+    rData = dbLog.cnLog.Exec(Insert$, "", qso_date, time_on, time_off, call, freq, freq_rx, band, mode, prop_mode, rst_rcvd, rst_sent, name, gridsquare, qth, comment, qsl_sent, qsl_rcvd, qslsdate, qslrdate, qsl_via, pfx, cont, cqz, ituz, state, cnty, iota, operator, tx_pwr, own_gridsq, sat_name, sat_mode, email, entidad, ndxcc, tpea, dist) 
   
     INC Lqso
     WAIT 0.001
@@ -418,6 +462,7 @@ PUBLIC SUB ResetVariables()
     entidad = ""
     email = ""
     tpea = ""
+    dist = 0.0
    
 END
 
@@ -468,15 +513,25 @@ PUBLIC SUB UpdateStats() ' if logged a new country add a record into sattistics
 END
 
 PUBLIC SUB btnCancel_Click()
-
+    
+    IF importing = TRUE THEN 
+        importing = FALSE
+        dbLog.cnLog.Rollback()
+        Message.Question(("Importing ADIF has been aborted!"))
+    ENDIF 
      ME.Close()
 
 END
 
 PUBLIC SUB btnOK_Click()
     IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN 
-    importQSOs()  
-
+    dbLog.cnLog.Begin()
+    importing = TRUE
+    importQSOs() 
+    dbLog.cnLog.Commit()
+    dbLog.cnLog.Exec("VACUUM")
+    dbLog.CloseDB() 
+    importing = FALSE
 END
 
 PUBLIC SUB Form_Close()

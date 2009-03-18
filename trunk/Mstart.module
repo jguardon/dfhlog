@@ -1,4 +1,4 @@
-' Gambas class file
+' Gambas module file
 ' dfhLog- Hamradio LogBook
 '     Copyright (C) 2009  Jesús Guardón, EA7DFH <ea7dfh@gmail.com>
 ' 
@@ -15,23 +15,19 @@
 '     You should have received a copy of the GNU General Public License
 '     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-PRIVATE $fecha AS Date
 
-PUBLIC SUB DateChooser1_Activate()
-    $fecha = DateChooser1.Value
-    
-    
-    ME.Close()
-
-END
-
-PUBLIC SUB Form_Open()
-
-END
-
-PUBLIC FUNCTION getDatePicker() AS Date
-  ME.ShowModal()
-  RETURN $fecha
+PUBLIC SUB Main()
+ 
+    ' System.Language = "es_ES.UTF-8"
+    ' 
+     'System.Language = "gl_ES.UTF-8"
+    ' 
+    'System.Language = "pt_PT.UTF-8"
+    ' 
+     'System.Language = "en_US.UTF-8"
+ 
+    FMain.Show
   
 END
+
 

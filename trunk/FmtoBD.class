@@ -1,5 +1,20 @@
 ' Gambas class file
-' Gambas module file
+' dfhLog- Hamradio LogBook
+'     Copyright (C) 2009  Jesús Guardón, EA7DFH <ea7dfh@gmail.com>
+' 
+'     This program is free software: you can redistribute it and/or modify
+'     it under the terms of the GNU General Public License as published by
+'     the Free Software Foundation, either version 3 of the License, or
+'     (at your option) any later version.
+' 
+'     This program is distributed in the hope that it will be useful,
+'     but WITHOUT ANY WARRANTY; without even the implied warranty of
+'     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'     GNU General Public License for more details.
+' 
+'     You should have received a copy of the GNU General Public License
+'     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 PRIVATE hTable AS Table
 PRIVATE i AS Integer = 0
 
@@ -51,6 +66,7 @@ PUBLIC PROCEDURE CreateTableTemp()
     .Fields.Add("country", db.String, 30)
     .Fields.Add("dxcc", db.Integer)
     .Fields.Add("TPEA", db.String, 2)
+    .Fields.Add("distance", db.Float)
     
      .PrimaryKey = ["id"]
 
@@ -117,6 +133,7 @@ PUBLIC PROCEDURE CreateTableLog()
     .Fields.Add("country", db.String, 30)
     .Fields.Add("dxcc", db.Integer)
     .Fields.Add("TPEA", db.String, 2)
+    .Fields.Add("distance", db.Float)
     
      .PrimaryKey = ["id"]
 
@@ -141,13 +158,13 @@ PUBLIC PROCEDURE copyData()
     sql = "SELECT * FROM log ORDER BY qso_date, time_on;"
      
      sql2 = "INSERT INTO temp VALUES (&1,&2,&3,&4,&5,&6,&7,&8,&9,&10,&11,&12,&13,&14,&15,&16,&17,&18," &
-              "&19,&20,&21,&22,&23,&24,&25,&26,&27,&28,&29,&30,&31,&32,&33,&34,&35,&36,&37);"
+              "&19,&20,&21,&22,&23,&24,&25,&26,&27,&28,&29,&30,&31,&32,&33,&34,&35,&36,&37,&38);"
     
     hres = dbLog.cnLog.Exec(sql)
     'dbLog.cnLog.Begin()
     WHILE hres.Available
         WAIT 0.01
-        dbLog.cnLog.Exec(sql2, "", hres!qso_date, hres!time_on, hres!time_off, hres!call, hres!freq, hres!freq_rx, hres!band, hres!mode, hres!prop_mode, hres!rst_rcvd, hres!rst_sent, hres!name, hres!gridsquare, hres!qth, hres!comment, hres!qsl_sent, hres!qsl_rcvd, hres!qslsdate, hres!qslrdate, hres!qsl_via, hres!pfx, hres!cont, hres!cqz, hres!ituz, hres!state, hres!cnty, hres!iota, hres!operator, hres!tx_pwr, hres!my_gridsquare, hres!sat_name, hres!sat_mode, hres!email, hres!country, hres!dxcc, hres!TPEA)
+        dbLog.cnLog.Exec(sql2, "", hres!qso_date, hres!time_on, hres!time_off, hres!call, hres!freq, hres!freq_rx, hres!band, hres!mode, hres!prop_mode, hres!rst_rcvd, hres!rst_sent, hres!name, hres!gridsquare, hres!qth, hres!comment, hres!qsl_sent, hres!qsl_rcvd, hres!qslsdate, hres!qslrdate, hres!qsl_via, hres!pfx, hres!cont, hres!cqz, hres!ituz, hres!state, hres!cnty, hres!iota, hres!operator, hres!tx_pwr, hres!my_gridsquare, hres!sat_name, hres!sat_mode, hres!email, hres!country, hres!dxcc, hres!TPEA, hres!distance)
         DEC i
         pb.Value = 1 / i
         hres.MoveNext()

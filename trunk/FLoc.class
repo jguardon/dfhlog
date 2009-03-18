@@ -1,4 +1,20 @@
 ' Gambas class file
+' dfhLog- Hamradio LogBook
+'     Copyright (C) 2009  Jesús Guardón, EA7DFH <ea7dfh@gmail.com>
+' 
+'     This program is free software: you can redistribute it and/or modify
+'     it under the terms of the GNU General Public License as published by
+'     the Free Software Foundation, either version 3 of the License, or
+'     (at your option) any later version.
+' 
+'     This program is distributed in the hope that it will be useful,
+'     but WITHOUT ANY WARRANTY; without even the implied warranty of
+'     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'     GNU General Public License for more details.
+' 
+'     You should have received a copy of the GNU General Public License
+'     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 
 PRIVATE EUR AS Picture
 PRIVATE ASI AS Picture
@@ -12,6 +28,7 @@ PRIVATE Sx AS Float
 PRIVATE Sy AS Float
 PRIVATE Tx AS Float
 PRIVATE Ty AS Float
+PRIVATE locator AS String
 STATIC currentMap AS Picture
 
 PRIVATE SUB loadImages()
@@ -131,6 +148,7 @@ PUBLIC SUB Form_Open()
      ME.Left = FMain.ini["FMapLoc/Left", ME.Left] 
      ME.Height = FMain.ini["FMapLoc/Height", ME.Height]  
      ME.Width = FMain.ini["FMapLoc/Width", ME.Width]
+     
     global.MapLoc = TRUE
 
     drwMapa(EUR)
@@ -147,15 +165,15 @@ PUBLIC SUB Form_Open()
         cboModo.Add(modo)
     NEXT
     
-    dateIni.Value = "1/1/1900"
+    dateIni.Value = Date(1900, 1, 1)
     dateFin.Value = global.UTCNow()
     ToolPanel1.Index = 1
-    
+    chkSquares.Value = FMain.ini["FMapLoc/Grid", FALSE]
      
-     CATCH 
-     
-        Message.Error(("Please, install required package \"dfhlog-images\""))
-        ME.Close()
+     ' CATCH 
+     ' 
+     '    Message.Error(("Please, install required package \"dfhlog-images\""))
+     '    ME.Close()
 
 END
 
@@ -167,19 +185,21 @@ PUBLIC SUB Form_Close()
     FMain.ini["FMapLoc/Left"] = ME.ScreenX
     FMain.ini["FMapLoc/Height"] = ME.Height
     FMain.ini["FMapLoc/Width"] = ME.Width
+    
 
 END
 
-
-
 PUBLIC SUB lienzo_MouseMove()
     DIM x, y AS Float
-    
+    DIM ball AS Balloon
         x = Mouse.X / (lienzo.Width / Sx) - Tx
         y = Mouse.Y / (lienzo.Height / Sy) - Ty
         
         Label1.Text = ("Latitude: ") & Round(y * -1, -4) & ("  Longitude: ") & Round(x, -4) 
-        ME.Text = global.latLong2locator(y * -1, x)
+        ME.Text = "dfhLog - " & global.latLong2locator(y * -1, x)
+        locator = Left(global.latLong2locator(y * -1, x), 4)
+        lienzo.ToolTip = global.latLong2locator(y * -1, x) & "\n" &
+        ("At ") & Round(global.distLoc(global.latLong2locator(y * -1, x), FMain.ini["Estacion/Locator"]), -1) & (" Km from ") & FMain.ini["Estacion/Locator"]
 
  
 END
@@ -234,13 +254,21 @@ PUBLIC SUB drwGrid()
 END
 
 PUBLIC SUB btnOK_Click()
-    IF dateIni.Value > dateFin.Value THEN 
-        Message.Warning(("Start Date couldn't be greater than End Date"))
-        dateIni.SetFocus()
-        RETURN 
+
+    IF IsDate(dateIni.Value) AND IsDate(dateFin.Value) THEN 
+        IF dateIni.Value > dateFin.Value THEN 
+            Message.Warning(("Start Date couldn't be greater than End Date"))
+            dateIni.SetFocus()
+            RETURN 
+        ENDIF 
+        btnClear_Click()
+        drawSquares()
+    ELSE 
+        Message.Warning(("Check dates, please"))
     ENDIF 
-    btnClear_Click()
-    drawSquares()
+    
+    CATCH 
+        Message.Error(("Error in btnOK_Click") & "\n" & Error.Text & "\n" & Error.Where)
   
 
 END
@@ -251,47 +279,66 @@ PRIVATE SUB drawSquares()
     DIM sql, sq AS String
     DIM glat, glon AS Float
     DIM wkdcfd AS String
-    IF rbConf.Value = TRUE THEN 
-        wkdcfd = "Y"        
+    DIM dist AS Integer 
+    
+    IF vDist.Value = NULL THEN 
+        dist = 0
     ELSE 
-        wkdcfd = "%"        
-    ENDIF
-    sql = "select gridsquare from log where qso_date between &1 and &2 and band like &3 and mode like &4 and prop_mode like &5 and gridsquare <>'' and qsl_rcvd like &6  group by substr(gridsquare,0,4) order by gridsquare;"
-    IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN 
-    hres = dbLog.cnLog.Exec(sql, dateIni.Value, dateFin.Value, parseCbo(cboBand), parseCbo(cboModo), parseCbo(cboPropa), wkdcfd)
-    Draw.Begin(lienzo)
+        dist = vDist.Value
+    ENDIF 
+    IF rbConf.Value = TRUE THEN 
+        wkdcfd = "Y"
+        sql = "select gridsquare from log where qso_date between &1 and &2 and band like &3 and mode like &4 and prop_mode like &5 and gridsquare <>'' and qsl_rcvd like &6  and distance > &7 group by substr(gridsquare,0,4) order by gridsquare;"
+            
+    ELSE IF rbWorked.Value = TRUE
+        wkdcfd = "%"
+        sql = "select gridsquare from log where qso_date between &1 and &2 and band like &3 and mode like &4 and prop_mode like &5 and gridsquare <>'' and qsl_rcvd like &6  and distance > &7 group by substr(gridsquare,0,4) order by gridsquare;"
     
-    Draw.ForeColor = Color.Red
-    'Draw.FillColor = Color.Gray
-    'Draw.FillStyle = Fill.CrossDiagonal
-    Draw.Scale(lienzo.Width / Sx, lienzo.Height / Sy)
-    Draw.Translate(Tx, Ty)
-    
-    WHILE hres.Available
-        sq = Left(hres!gridsquare, 4) & "AX"
+    ELSE IF rbNotConf.Value = TRUE
+        wkdcfd = "Y"
+        sql = "select gridsquare from log where substr(gridsquare,0,4) not in (select substr(gridsquare,0,4) from log where " & 
+        "qsl_rcvd = &6) and qso_date between &1 and &2 and band like &3 and mode like &4 and prop_mode like &5 and qsl_rcvd <> &6 " &
+        "and distance > &7 group by substr(gridsquare,0,4);"
         
-        glat = Round(global.locator2latlon(sq).lat * -1)
-        glon = Round(global.locator2latlon(sq).lon)
-    '   DEBUG glat, glon, sq
-        Draw.Rect(glon, glat, 2, 1)
-        IF currentMap <> MUN THEN Draw.Text(Left(sq, 4), glon, glat) ', 1, 1, 1)
-        hres.MoveNext()
+    ENDIF
+    IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN 
+    hres = dbLog.cnLog.Exec(sql, dateIni.Value, dateFin.Value, parseCbo(cboBand), parseCbo(cboModo), parseCbo(cboPropa), wkdcfd, dist)
     
-     WEND  
-    Draw.End()
-  
+    IF hres.Count < 1 THEN 
+        Message.Info(("Query has no results!"))
+    ELSE 
+    
+        Draw.Begin(lienzo)
+        Draw.ForeColor = Color.Red
+        'Draw.FillColor = Color.Gray
+        'Draw.FillStyle = Fill.CrossDiagonal
+        Draw.Scale(lienzo.Width / Sx, lienzo.Height / Sy)
+        Draw.Translate(Tx, Ty)
+        
+        WHILE hres.Available
+            sq = Left(hres!gridsquare, 4) & "AX"
+            
+            glat = Round(global.locator2latlon(sq).lat * -1)
+            glon = Round(global.locator2latlon(sq).lon)
+        '   DEBUG glat, glon, sq
+            Draw.Rect(glon, glat, 2, 1)
+            IF currentMap <> MUN THEN Draw.Text(Left(sq, 4), glon, glat) ', 1, 1, 1)
+            hres.MoveNext()
+        
+         WEND  
+         Draw.End()
+    ENDIF 
+    
+    CATCH 
+        Message.Error(("Error in drawSquares") & "\n" & Error.Text & "\n" & Error.Where)
   
 END
-
-
 
 PUBLIC SUB lblEU_MouseDown()
 
     drwMapa(EUR)
 
 END
-
-
 
 PUBLIC SUB lblES_MouseDown()
 
@@ -367,5 +414,53 @@ END
 
 PUBLIC SUB lienzo_MouseUp()
     lienzo.Mouse = Mouse.Default
+    IF Mouse.Right THEN 
+        menuFind()
+    ENDIF
+
+END
+
+PRIVATE SUB menuFind()
+  
+  DIM hmenus AS Menu
+  DIM hmenu AS Menu
+  
+  hMenus = NEW Menu(ME)
+  
+  hMenu = NEW Menu(hMenus) AS "mnufindQSOs"
+  hMenu.Text = ("Find QSOs with ") & locator
+  hMenu.Picture = Picture["find.png"]
+  
+  ' pop up 
+  IF hMenus THEN hMenus.Popup()
+  
+  
+END
+
+PUBLIC SUB mnufindQSOs_Click()
+  
+  FFindQSO.searchQSO(locator)
+  FFindQSO.Title = ("QSOs with ") & locator
+  
+  
+END
+
+PUBLIC SUB chkSquares_Click()
+
+    FMain.ini["FMapLoc/Grid"] = CBool(chkSquares.Value)
+    'lienzo.Clear()
+    IF chkSquares.Value = TRUE THEN 
+        drwMapa(currentMap)
+        drwGrid()
+        'drawSquares()
+        
+    ELSE 
+        drwMapa(currentMap)
+        'drawSquares()
+        
+    ENDIF 
+    
+    
+        
 
 END
