@@ -1,11 +1,26 @@
 ' Gambas class file
+' dfhLog- Hamradio LogBook
+'     Copyright (C) 2009  Jesús Guardón, EA7DFH <ea7dfh@gmail.com>
+' 
+'     This program is free software: you can redistribute it and/or modify
+'     it under the terms of the GNU General Public License as published by
+'     the Free Software Foundation, either version 3 of the License, or
+'     (at your option) any later version.
+' 
+'     This program is distributed in the hope that it will be useful,
+'     but WITHOUT ANY WARRANTY; without even the implied warranty of
+'     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'     GNU General Public License for more details.
+' 
+'     You should have received a copy of the GNU General Public License
+'     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 PRIVATE hres AS Result
 PRIVATE disp AS Integer
 PRIVATE pages AS Integer
 PRIVATE currentPage AS Integer
 PRIVATE records AS Integer
 PRIVATE start AS Integer
-
 
 PUBLIC SUB Form_Open()
     ME.Title = ("Log Review")
@@ -30,7 +45,7 @@ END
 
 PRIVATE SUB prepararCV()
   
-  cv.Columns.Count = 36
+  cv.Columns.Count = 37
   
   cv.Columns[0].Title = ("Nr")
   cv.Columns[1].Text = ("Date")
@@ -68,6 +83,7 @@ PRIVATE SUB prepararCV()
   cv.Columns[33].Text = "Email"
   cv.Columns[34].Text = "DXCC"
   cv.Columns[35].Text = "TPEA"
+  cv.Columns[36].Text = ("Distance (Km)")
   
   
 END
@@ -158,6 +174,8 @@ PRIVATE SUB getQSOs(OPTIONAL p AS Integer = 0)
         cv[clave, 34].Background = IIf(swColor, Color.White, Color.LightBackground)
         cv[clave, 35].Text = hres!TPEA
         cv[clave, 35].Background = IIf(swColor, Color.White, Color.LightBackground)
+        cv[clave, 36].Text = Format(hres!distance, "#.0")
+        cv[clave, 36].Background = IIf(swColor, Color.White, Color.LightBackground)
         
     hres.MoveNext()
     INC clave 
@@ -238,19 +256,26 @@ PRIVATE SUB menuLog()
   hMenus = NEW Menu(ME)
   
   hMenu = NEW Menu(hMenus)
-  hMenu.Text = (("For QSO with: ") & cv[cv.Row, 4].Text)
+  getSelectedQSO()
+  IF global.$iQSOn.Count > 1 THEN 
+        hMenu.Text = ("For selected QSOs: ") & global.$iQSOn.Count
+  ELSE 
+        hMenu.Text = (("For QSO with: ") & cv[cv.Row, 4].Text)
+  ENDIF 
   
   hMenu = NEW Menu(hMenus)
   hMenu.Text = ""
   
   hMenue = NEW Menu(hMenus) AS "mnuEditarQSO"
   hMenue.Text = ("Edit QSO")
-  hMenue.Picture = Picture["gtk-undo-rtl.png"]
-  'IF cv.Row > 1 THEN hMenue.enabled = FALSE
+  hMenue.Picture = Picture["gtk-edit.png"]
+  hMenue.Shortcut = "Ctrl+M"
+  IF global.$iQSOn.Count > 1 THEN hMenue.enabled = FALSE
   
   hMenu = NEW Menu(hMenus) AS "mnuBorrarQSO"
   hMenu.Text = ("Delete QSO")
-  hMenu.Picture = Picture["gtk-edit.png"]
+  hMenu.Picture = Picture["gtk-delete.png"]
+  hMenu.Shortcut = "Ctrl+D"
   
   hMenu = NEW Menu(hMenus)
   hMenu.Text = ""
@@ -258,14 +283,17 @@ PRIVATE SUB menuLog()
   hMenu = NEW Menu(hMenus) AS "mnuQSLrec"
   hMenu.Text = ("Check QSL as recvd.")
   hMenu.Picture = Picture["gtk-redo-rtl.png"]
+  hMenu.Shortcut = "F5"
   
   hMenu = NEW Menu(hMenus) AS "mnuQSLenv"
   hMenu.Text = ("Check QSL as sent.")
   hMenu.Picture = Picture["gtk-undo-rtl.png"]
+  hMenu.Shortcut = "F6"
   
   hMenu = NEW Menu(hMenus) AS "mnuPrintQSL"
   hMenu.Text = ("Print QSL")
   hMenu.Picture = Picture["gtk-print.png"]
+  hMenu.Shortcut = "Ctrl+P"
 
   ' pop up 
   IF hMenus THEN hMenus.Popup()
@@ -274,12 +302,14 @@ PRIVATE SUB menuLog()
 END
 
 PUBLIC SUB mnuEditarQSO_Click()
-  TRY FMain.modifyQSO(CInt(cv[cv.Row, 0].Text))
-  getQSOs(currentPage)
-  cv.Refresh()
-  
-  ME.Lower()
-  FMain.SetFocus()
+    IF global.$iQSOn.Count = 1 THEN 
+        TRY FMain.modifyQSO(CInt(cv[cv.Row, 0].Text))
+        'getQSOs(currentPage)
+        cv.Refresh()
+        
+        ME.Lower()
+        FMain.SetFocus()
+    ENDIF 
   
 END
 
@@ -291,35 +321,51 @@ END
 
 
 PUBLIC SUB mnuBorrarQSO_Click()
-message("not yet functional")
-    ' DIM qso AS String
-    ' qso = grdQSO.Current.Text
-    ' IF Message.Warning("Se borrará el QSO seleccionado\n¿Deseas continuar?", "Borrar QSO", "Cancelar") = 2 THEN RETURN
-    ' IF connDB() THEN RETURN 
-    ' dbLog.cnLog.Exec("DELETE FROM log WHERE id=" & qso & ";")
-    ' fillData()
-    ' CATCH 
-    '     Message.Error("Error al borrar QSO\n" & Error.Text)
+    DIM i AS Integer
+    
+    IF Message.Warning(("Selected QSO will be deleted\nDo you want to continue?"), ("Delete QSO"), ("Cancel")) = 2 THEN RETURN
+    IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN 
+    FOR i = 0 TO global.$iQSOn.Count - 1
+        dbLog.cnLog.Exec("DELETE FROM log WHERE id=&1;", global.$iQSOn[i])
+    NEXT 
+    dbLog.CloseDB()
+    fillData()
+    FMain.fillData()
+     CATCH 
+        Message.Error(("Error deleting QSO\n") & Error.Text & "\n" & Error.Where)
 END
 PUBLIC SUB mnuQSLrec_Click()
-  FMain.setQSLrcvd(CInt(cv[cv.Row, 0].Text))
+  FMain.setQSLrcvd(global.$iQSOn)
+  fillData()
   
 END
 PUBLIC SUB mnuQSLenv_Click()
-  FMain.setQSLsent(CInt(cv[cv.Row, 0].Text))
+  FMain.setQSLsent(global.$iQSOn)
+  fillData()
 END
 PUBLIC SUB mnuPrintQSL_Click()
-  message("not yet functional")
+    DIM i AS Integer
+    FOR i = 0 TO global.$iQSOn.Count - 1
+        TRY global.addToQueue(global.$iQSOn[i])
+    NEXT
+    IF NOT ERROR THEN Message.Info(("Added ") & global.$iQSOn.Count & (" QSOs to the QSL print queue."))
 END
 
 PUBLIC SUB cv_Menu()
      
-  menuLog()
- 
- 
+  menuLog() 
+ cv.Rows.Unselect
 END
 
-
+PUBLIC SUB getSelectedQSO()
+    DIM i AS Integer 
+    global.$iQSOn.Clear()
+    FOR i = 0 TO cv.Rows.Count - 1   
+        IF cv.Rows[i].Selected = TRUE THEN 
+            global.$iQSOn.Add(CInt(cv[i, 0].Text))
+        ENDIF 
+    NEXT 
+END
 
 PUBLIC SUB btnClose_Click()
 

@@ -1,0 +1,155 @@
+# Gambas Form File 2.0
+
+{ Form Form
+  MoveScaled(0,0,96,67)
+  Text = ("QSL Design")
+  Arrangement = Arrange.Vertical
+  Padding = 5
+  { mnuSettings Menu
+    Text = ("Settings")
+    { mnuDes Menu
+      Text = ("Design")
+    }
+  }
+  { HBox2 HBox
+    MoveScaled(0,0,96,58)
+    Expand = True
+    Padding = 1
+    { ScrollView1 ScrollView
+      MoveScaled(1,2,70,46)
+      Background = Color.LightBackground
+      Expand = True
+      Padding = 5
+      { daQSL DrawingArea
+        MoveScaled(0,0,66.4286,42.7143)
+        Background = &HFFFFFF&
+        Cached = True
+        Tracking = True
+        Border = Border.Plain
+      }
+    }
+    { VBox1 VBox
+      MoveScaled(75,0,21,60)
+      Spacing = 10
+      Padding = 5
+      { ComboBox1 ComboBox
+        MoveScaled(2,2,16,3)
+        Text = ("")
+        ReadOnly = True
+        List = [("My Call"), ("His Call"), ("Date"), ("UTC"), ("RST"), ("Band"), ("Mode"), ("Prop"), ("My Loc"), ("His Loc"), ("X (PSE QSL)"), ("X (TNX QSL)"), ("Mgr")]
+      }
+      { Frame2 Frame
+        MoveScaled(0,6,20,25)
+        Text = ("Label")
+        { btnUp Button
+          MoveScaled(8,9,4,3)
+          Text = ("")
+          Picture = Picture["icon:/16/up"]
+        }
+        { btnLeft Button
+          MoveScaled(4,12,4,3)
+          Text = ("")
+          Picture = Picture["icon:/16/left"]
+        }
+        { btnDwn Button
+          MoveScaled(8,15,4,3)
+          Text = ("")
+          Picture = Picture["icon:/16/down"]
+        }
+        { btnRight Button
+          MoveScaled(12,12,4,3)
+          Text = ("")
+          Picture = Picture["icon:/16/right"]
+        }
+        { Button2 Button
+          MoveScaled(4,20,8,3)
+          Text = ("Font")
+        }
+        { ColorButton1 ColorButton
+          MoveScaled(12,20,4,3)
+        }
+        { labelX2 Label
+          MoveScaled(3,2,3,3)
+          Text = ("X:")
+        }
+        { labelX Label
+          MoveScaled(7,2,4,3)
+          Text = ("X")
+          Alignment = Align.Right
+        }
+        { labelY2 Label
+          MoveScaled(3,5,3,3)
+          Text = ("Y:")
+        }
+        { labelY Label
+          MoveScaled(7,5,4,3)
+          Text = ("Y")
+          Alignment = Align.Right
+        }
+        { labelX3 Label
+          MoveScaled(12,2,4,3)
+          Text = ("mm")
+        }
+        { labelY3 Label
+          MoveScaled(12,5,4,3)
+          Text = ("mm")
+        }
+      }
+      { Frame1 Frame
+        MoveScaled(0,31,20,13)
+        Text = ("Background")
+        { Button4 Button
+          MoveScaled(3,4,14,3)
+          Text = ("Image")
+        }
+        { chkBG CheckBox
+          MoveScaled(3,8,10,3)
+          Text = ("Active")
+        }
+      }
+      { Button1 Button
+        MoveScaled(2,46,16,3)
+        Text = ("Setup")
+      }
+      { Button3 Button
+        MoveScaled(2,51,16,3)
+        Text = ("Print Test")
+      }
+      { Button7 Button
+        MoveScaled(2,56,16,3)
+        Text = ("Cancel")
+      }
+    }
+  }
+  { HBox1 HBox
+    MoveScaled(0,60,94,3)
+    Spacing = 1
+    Padding = 1
+    { lblPath Label
+      MoveScaled(1,0,24,3)
+      Expand = True
+      AutoResize = True
+      Text = ("Path")
+      Border = Border.Sunken
+    }
+    { lblPrinter Label
+      MoveScaled(32,0,18,3)
+      AutoResize = True
+      Text = ("Printer")
+      Border = Border.Sunken
+    }
+    { lblRes Label
+      MoveScaled(55,0,12,3)
+      AutoResize = True
+      Text = ("Resolution")
+      Border = Border.Sunken
+    }
+    { lblMouse Label
+      MoveScaled(68,0,24,3)
+      AutoResize = True
+      Text = ("Coords")
+      Alignment = Align.Right
+      Border = Border.Sunken
+    }
+  }
+}

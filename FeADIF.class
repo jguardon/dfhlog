@@ -1,4 +1,20 @@
 ' Gambas class file
+' dfhLog- Hamradio LogBook
+'     Copyright (C) 2009  Jesús Guardón, EA7DFH <ea7dfh@gmail.com>
+' 
+'     This program is free software: you can redistribute it and/or modify
+'     it under the terms of the GNU General Public License as published by
+'     the Free Software Foundation, either version 3 of the License, or
+'     (at your option) any later version.
+' 
+'     This program is distributed in the hope that it will be useful,
+'     but WITHOUT ANY WARRANTY; without even the implied warranty of
+'     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'     GNU General Public License for more details.
+' 
+'     You should have received a copy of the GNU General Public License
+'     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 PRIVATE filePath AS String
 PRIVATE hres AS Result
 PRIVATE i AS Integer = 0
@@ -22,7 +38,7 @@ END
 
 PUBLIC SUB Form_Open()
     btnOK.Enabled = FALSE
-    vStart.Value = "1/1/1900"
+    vStart.Value = Date(1900, 1, 1)
     vEnd.Value = Now()
   
 
@@ -153,7 +169,7 @@ PUBLIC SUB btnOK_Click()
         CLOSE #hFile
         dbLog.CloseDB()
         btnSaveAs.Enabled = TRUE
-        btnCancel.Text = "&Close"
+        btnCancel.Text = ("&Close")
         
         CATCH
         Message.Error(("Error exporting Record\n") & hField!call & " " & hField!qso_date & "\n" & Error.Text)

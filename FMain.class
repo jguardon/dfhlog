@@ -1,4 +1,20 @@
 ' Gambas class file
+' dfhLog- Hamradio LogBook
+'     Copyright (C) 2009  Jesús Guardón, EA7DFH <ea7dfh@gmail.com>
+' 
+'     This program is free software: you can redistribute it and/or modify
+'     it under the terms of the GNU General Public License as published by
+'     the Free Software Foundation, either version 3 of the License, or
+'     (at your option) any later version.
+' 
+'     This program is distributed in the hope that it will be useful,
+'     but WITHOUT ANY WARRANTY; without even the implied warranty of
+'     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'     GNU General Public License for more details.
+' 
+'     You should have received a copy of the GNU General Public License
+'     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
  
 PRIVATE I AS Integer = 0
 PRIVATE c AS cty
@@ -275,6 +291,7 @@ END
 PRIVATE SUB checkSettings()
     'check settings
     DIM fp AS Form
+   
     fp = NEW FPref
     IF NOT ini["Estacion/QRZ"] THEN 
         fp.ShowModal()
@@ -357,19 +374,19 @@ SUB buscar()
         Message.Error(("Error in buscar\n") & Error.Text & "\n" & Error.Where)
 END
 
-PUBLIC SUB getWkdCfd(dxcc AS Integer, band AS String) 
+PUBLIC SUB getWkdCfd(country AS String, band AS String) 
 
   DIM colorDX AS Integer
   DIM hresul AS Result
   
-  IF dxcc > 0 THEN 
+  IF country THEN 
         
         IF connDB() THEN RETURN 
-        hResul = dbLog.cnLog.Exec("SELECT qsl_rcvd, band FROM log WHERE dxcc = " & dxcc & " AND band='" & band & "';")
+        hResul = dbLog.cnLog.Exec("SELECT qsl_rcvd, band FROM log WHERE country = &1 AND band=&2;", country, band)
         IF NOT hResul.Available THEN 
             'DEBUG call, band
             colorDX = FMain.ini["Colores/Necesitado", Color.Blue]
-            lblWorked.Text = ("New on ") & band
+            lblWorked.Text = ("New DXCC on ") & band
             lblWorked.ForeColor = colorDX
         ELSE
             DO WHILE hResul.Available 
@@ -377,13 +394,13 @@ PUBLIC SUB getWkdCfd(dxcc AS Integer, band AS String)
                   IF hResul!qsl_rcvd = "Y" THEN 
                       'DEBUG call, band, hResul!QSL_r
                       colorDX = FMain.ini["Colores/Confirmado", Color.Green]
-                      lblWorked.Text = ("Confirmed on ") & band
+                      lblWorked.Text = ("DXCC Confirmed on ") & band
                       lblWorked.ForeColor = colorDX
                       EXIT
                   ELSE 
                       'DEBUG call, band, hResul!QSL_r
                       colorDX = FMain.ini["Colores/Trabajado", Color.Orange]
-                      lblWorked.Text = ("Worked on ") & band
+                      lblWorked.Text = ("DXCC Worked on ") & band
                       lblWorked.ForeColor = colorDX
                   
                   ENDIF 
@@ -413,22 +430,22 @@ PUBLIC SUB getSqWkdCfd(sq AS String, band AS String)
           IF NOT hResul.Available THEN 
               'DEBUG sq, band
               colorDX = FMain.ini["Colores/Necesitado"]
-              lblWorked.Text = sq & (" New square on ") & band
-              lblWorked.ForeColor = colorDX
+              lblSqWorked.Text = sq & (" New square on ") & band
+              lblSqWorked.ForeColor = colorDX
           ELSE
               DO WHILE hResul.Available 
               
                     IF hResul!qsl_rcvd = "Y" THEN 
                         'DEBUG sq, band, hResul!QSL_r
                         colorDX = FMain.ini["Colores/Confirmado"]
-                        lblWorked.Text = sq & (" Square Cfmd on ") & band
-                        lblWorked.ForeColor = colorDX
+                        lblSqWorked.Text = sq & (" Square Cfmd on ") & band
+                        lblSqWorked.ForeColor = colorDX
                         BREAK 
                     ELSE 
                         'DEBUG sq, band, hResul!QSL_r
                         colorDX = FMain.ini["Colores/Trabajado"]
-                        lblWorked.Text = sq & (" Square Wkd on ") & band
-                        lblWorked.ForeColor = colorDX
+                        lblSqWorked.Text = sq & (" Square Wkd on ") & band
+                        lblSqWorked.ForeColor = colorDX
                     
                     ENDIF 
                     
@@ -445,7 +462,7 @@ END
 
 PUBLIC SUB cboBanda_Click()
 
-  IF c <> NULL THEN getWkdCfd(c.number, cboBanda.Text)
+  IF c <> NULL THEN getWkdCfd(c.entity, cboBanda.Text)
 
 END
 
@@ -540,7 +557,7 @@ PUBLIC SUB txtCall_LostFocus()
     DIM pa, pb AS String
     DIM call AS String = txtCall.Text
     
-    IF Len(txtCall.Text) > 2 THEN 
+    IF Len(txtCall.Text) > 2 AND ini["Estacion/TimeOnOff", FALSE] = FALSE THEN 
         stopped = TRUE
         stoppedTime = vHora.Value
         IF en THEN lblQSOTimer.Visible = TRUE
@@ -567,15 +584,15 @@ PUBLIC SUB txtCall_LostFocus()
             
         ENDIF 
     ENDIF 
-    IF c <> NULL THEN getWkdCfd(c.number, cboBanda.Text)
+    IF c <> NULL AND Len(txtCall.Text) > 2 THEN getWkdCfd(c.entity, cboBanda.Text)
     IF sktHamlib.Status = Net.Connected THEN txtFreq.Text = Left(lcdQRG.Text, Len(lcdQRG.Text) - 1)
     cboModo_Click()
     wkdB4(call) 'worked before?
     btnOK.Default = TRUE
     
-    'CATCH 
+    CATCH 
     
-        'Message.Error(("Error in txtCall_LostFocus\n") & Error.Text & "\n" & Error.Where)
+        DEBUG "Error in txtCall_LostFocus\n" & Error.Text & "\n" & Error.Where
      
 END
 
@@ -594,7 +611,7 @@ PRIVATE SUB wkdB4(call AS String)
         IF hres.Count > 0 THEN tabLC[2].Visible = TRUE
         
         grdWkdB4.Rows.Count = hres.Count
-        
+        tabLC[2].Text = ("&Wkd Before") & " (" & hres.Count & ")"
         DO WHILE hres.Available
             
             grdWkdB4[r, 0].Text = hres!id
@@ -767,6 +784,7 @@ PUBLIC SUB clearFields()
     lblDist.Caption = ""
     lblRumbo.Caption = ""
     lblWorked.Caption = ""
+    lblSqWorked.Caption = ""
     chkQSLe.Value = FALSE
     chkQSLr.Value = FALSE
     txtTPEA.Clear()
@@ -782,7 +800,7 @@ END
 '******************************XPLANET********************************
 PUBLIC SUB btnMap_Click()
 
-    ME.Mouse = Mouse.Wait
+    INC Application.Busy
     'p = EXEC ["xplanet", "-window", "-config", "dfh", "-origin", "sun", "-window_title", "DX Map", "-geometry", "600x600+410+10", "-fov", "1", "-latitude", "40", "-longitude", "-3", "-wait", "2"]  
     
     p = EXEC ["xplanet", "-window", "-config", "dfh", "-origin", "earth", "-dynamic_origin", "do", "-window_title", "DX Map", "-fov", "1", "-wait", "2"]  
@@ -800,7 +818,7 @@ PUBLIC SUB mnuSquares_Click()
     IF global.MapLoc = FALSE THEN 
       
         FLoc.Show()
-        FLoc.Stacking = Window.Above
+        'FLoc.Stacking = Window.Above
     
     ENDIF 
 END
@@ -872,6 +890,7 @@ PUBLIC SUB sktHamlib_Read()
     
     IF sktHamlib.Status = Net.Connected THEN
         LINE INPUT #sktHamlib, S
+        'DEBUG S
         IF S <> "END" THEN
          'DEBUG S
             IF Len(S) > 6 THEN 
@@ -1019,13 +1038,35 @@ PUBLIC SUB sktCluster_Read()
     IF sktCluster.Status = Net.Connected THEN 
     
         LINE INPUT #sktCluster, L
-       
+        IF ini["Telnet/Autologin"] = TRUE THEN 
+            IF InStr(L, "login:") > 0 THEN WRITE #sktCluster, strippedCall() & "\r\n", Len(strippedCall()) + 2
+        ENDIF 
         filterLine(L)
-
         
     ENDIF 
         
 END
+
+PRIVATE FUNCTION strippedCall() AS String
+  DIM call AS String = ini["Estacion/QRZ"]
+  DIM stripped AS String = ""
+  DIM arr AS String[]  
+  
+  IF InStr(call, "/") > 1 THEN 
+    arr = Split(call, "/")
+        IF Len(arr[0]) > Len(arr[1]) THEN 
+            stripped = arr[0]
+        ELSE 
+            stripped = arr[1]
+        ENDIF
+  ELSE 
+    stripped = call 
+  ENDIF 
+    
+  RETURN stripped
+    
+END
+
 
 PUBLIC SUB filterLine(dxline AS String)
 
@@ -1343,9 +1384,9 @@ PUBLIC SUB txtLocQSO_Change()
       IF modificando = FALSE THEN getSqWkdCfd(txtLocQSO.Text, cboBanda.Text)
     ELSE 
       txtLocQSO.ForeColor = Color.Red
-      lblWorked.Text = ""
+      lblSqWorked.Text = ""
       'buscar()
-      IF modificando = FALSE THEN getWkdCfd(c.number, cboBanda.Text)
+      IF modificando = FALSE THEN getWkdCfd(c.entity, cboBanda.Text)
     ENDIF 
   ELSE 
     txtLocQSO.ForeColor = Color.Black
@@ -1365,7 +1406,7 @@ END
 
 PUBLIC SUB acerca_Click()
     DIM f AS Form
-    f = NEW Fabout
+    f = NEW FAbout
     
     f.ShowModal
 
@@ -1605,7 +1646,7 @@ PRIVATE SUB prepararGrid()
 END
 
 
-PRIVATE SUB fillData()
+PUBLIC SUB fillData()
  
   DIM clave AS String
   DIM hResul, hResulMax AS Result
@@ -1694,13 +1735,14 @@ END
 PRIVATE SUB logQSO()
     DIM sql AS String
     DIM modo AS String = cboModo.Text
+    DIM dist AS Float = CFloat(Replace(lblDist.Text, ",", "."))
     IF cboModo.Text = "LSB" OR cboModo.Text = "USB" THEN modo = "SSB"
     
     IF connDB() THEN RETURN '
     sql = "INSERT INTO log VALUES (&1,&2,&3,&4,&5,&6,&7,&8,&9,&10,&11,&12,&13,&14,&15,&16,&17,&18," &
-              "&19,&20,&21,&22,&23,&24,&25,&26,&27,&28,&29,&30,&31,&32,&33,&34,&35,&36,&37);"
+              "&19,&20,&21,&22,&23,&24,&25,&26,&27,&28,&29,&30,&31,&32,&33,&34,&35,&36,&37,&38);"
     
-    dbLog.cnLog.Exec(sql, "", vFecha.Value, vHora.Text, vHora2.Text, txtCall.Text, parseFreq(txtFreq.Text), parseFreq(txtFreq2.Text), cboBanda.Text, modo, cboPropa.Text, txtRSTr.Text, txtRSTe.Text, txtNameQSO.Text, txtLocQSO.Text, txtQTHqso.Text, txtComment.Text, QSLsent(), QSLrec(), dteQSLe.Value, dteQSLr.Value, txtMgrQSO.Text, c.pfx, c.continent, c.cqz, c.ituz, txtState.Text, txtCounty.Text, txtIOTA.Text, ini["Estacion/QRZ"], txtPwr.Text, ini["Estacion/Locator"], txtSatName.Text, txtSatMode.Text, lblEmail.Text, c.entity, c.number, txtTPEA.Text)             
+    dbLog.cnLog.Exec(sql, "", vFecha.Value, vHora.Text, vHora2.Text, txtCall.Text, parseFreq(txtFreq.Text), parseFreq(txtFreq2.Text), cboBanda.Text, modo, cboPropa.Text, txtRSTr.Text, txtRSTe.Text, txtNameQSO.Text, txtLocQSO.Text, txtQTHqso.Text, txtComment.Text, QSLsent(), QSLrec(), dteQSLe.Value, dteQSLr.Value, txtMgrQSO.Text, c.pfx, c.continent, c.cqz, c.ituz, txtState.Text, txtCounty.Text, txtIOTA.Text, ini["Estacion/QRZ"], txtPwr.Text, ini["Estacion/Locator"], txtSatName.Text, txtSatMode.Text, lblEmail.Text, c.entity, c.number, txtTPEA.Text, dist)             
     'tabla dxcc para control estadistico
     'dxcc, nºqsos, nºconf, banda, propa y modo
     'dbLog.cnLog.Exec("INSERT OR IGNORE INTO dxcc VALUES (&1,&2,&3,&4,&5,&6);", c.number, NULL, NULL, cboBanda.Text, cboModo.Text, cboPropa.Text)
@@ -1717,18 +1759,31 @@ END
 
 PRIVATE SUB menuLog()
   
-  DIM hmenus AS Menu
-  DIM hmenu AS Menu
+  DIM hMenus AS Menu
+  DIM hMenu, hMenue AS Menu
   
   hMenus = NEW Menu(ME)
   
-  hMenu = NEW Menu(hMenus) AS "mnuEditarQSO"
-  hMenu.Text = ("Edit QSO")
-  hMenu.Picture = Picture["gtk-undo-rtl.png"]
+  hMenu = NEW Menu(hMenus)
+  global.$iQSOn.Clear
+  global.$iQSOn.Add(CInt(grdQSO.Current.Text))
+  
+  hMenu.Text = (("For QSO with: ") & grdQSO[grdQSO.Current.Text][3])
+  
+  
+  hMenu = NEW Menu(hMenus)
+  hMenu.Text = ""
+  
+  hMenue = NEW Menu(hMenus) AS "mnuEditarQSO"
+  hMenue.Text = ("Edit QSO")
+  hMenue.Picture = Picture["gtk-edit.png"]
+  hMenue.Shortcut = "Ctrl+M"
+  'IF global.$iQSOn.Count > 1 THEN hMenue.enabled = FALSE
   
   hMenu = NEW Menu(hMenus) AS "mnuBorrarQSO"
   hMenu.Text = ("Delete QSO")
-  hMenu.Picture = Picture["gtk-edit.png"]
+  hMenu.Picture = Picture["gtk-delete.png"]
+  hMenu.Shortcut = "Ctrl+D"
   
   hMenu = NEW Menu(hMenus)
   hMenu.Text = ""
@@ -1736,14 +1791,17 @@ PRIVATE SUB menuLog()
   hMenu = NEW Menu(hMenus) AS "mnuQSLrec"
   hMenu.Text = ("Check QSL as recvd.")
   hMenu.Picture = Picture["gtk-redo-rtl.png"]
+  hMenu.Shortcut = "F5"
   
   hMenu = NEW Menu(hMenus) AS "mnuQSLenv"
-  hMenu.Text = ("Check QSL as sent")
+  hMenu.Text = ("Check QSL as sent.")
   hMenu.Picture = Picture["gtk-undo-rtl.png"]
+  hMenu.Shortcut = "F6"
   
   hMenu = NEW Menu(hMenus) AS "mnuPrintQSL"
   hMenu.Text = ("Print QSL")
   hMenu.Picture = Picture["gtk-print.png"]
+  hMenu.Shortcut = "Ctrl+P"
 
   ' pop up 
   IF hMenus THEN hMenus.Popup()
@@ -1767,18 +1825,23 @@ PUBLIC SUB mnuBorrarQSO_Click()
         Message.Error(("Error deleting QSO\n") & Error.Text)
 END
 PUBLIC SUB mnuQSLrec_Click()
-  'Message("qsl_rec")
-    setQSLrcvd(grdQSO[grdQSO.Current.Text][0])
+  
+    IF global.$iQSOn.Count = 1 THEN setQSLrcvd(global.$iQSOn)
 END
 PUBLIC SUB mnuQSLenv_Click()
-    setQSLsent(grdQSO[grdQSO.Current.Text][0])
+    IF global.$iQSOn.Count = 1 THEN setQSLsent(global.$iQSOn)
 END
 PUBLIC SUB mnuPrintQSL_Click()
-  Message("not yet functional")
+    
+    IF global.$iQSOn.Count = 1 THEN TRY global.addToQueue(global.$iQSOn[0])
+   
+    IF NOT ERROR THEN Message.Info(("Added ") & global.$iQSOn.Count & (" QSOs to the QSL print queue."))
+
 END
 
 PUBLIC SUB grdQSO_Menu()
   menuLog()
+  grdQSO.SelectAll(FALSE)
 END
 
 PUBLIC SUB btnOpnTPEA_Click()
@@ -1928,7 +1991,7 @@ PUBLIC SUB modifyQSO(idQSO AS Integer)
         txtSatMode.Text = hres!sat_mode
         lblEmail.Text = hres!email
         txtTPEA.Text = hres!TPEA        
-        cboEntidad.Index = CInt(hres!dxcc)
+        cboEntidad.Text = hres!country
         
         dbLog.CloseDB()
     
@@ -1984,13 +2047,15 @@ PRIVATE SUB logModifiedQSO(id AS Integer)
   
 END
 
-PUBLIC SUB setQSLrcvd(id AS Integer)
-  
+PUBLIC SUB setQSLrcvd(id AS Integer[])
+  DIM i AS Integer
   DIM sql AS String
-   
-    IF connDB() THEN RETURN '
-     sql = "UPDATE log SET qsl_rcvd='Y' WHERE id = " & id & ";"
-    dbLog.cnLog.Exec(sql)
+  IF connDB() THEN RETURN 
+    FOR i = 0 TO id.Count - 1    
+        sql = "UPDATE log SET qsl_rcvd='Y' WHERE id = " & id[i] & ";"
+        dbLog.cnLog.Exec(sql)
+    NEXT 
+    dbLog.CloseDB()
     fillData()
     IF FLog.Visible = TRUE THEN FLog.fillData()
     IF FSearch.Visible = TRUE THEN FSearch.fillData()
@@ -2000,13 +2065,15 @@ PUBLIC SUB setQSLrcvd(id AS Integer)
   
 END
 
-PUBLIC SUB setQSLsent(id AS Integer)
-  
-  DIM sql AS String
-   
-    IF connDB() THEN RETURN 
-     sql = "UPDATE log SET qsl_sent='Y' WHERE id = " & id & ";"
-    dbLog.cnLog.Exec(sql)
+PUBLIC SUB setQSLsent(id AS Integer[])
+  DIM i AS Integer
+  DIM sql AS String   
+  IF connDB() THEN RETURN 
+    FOR i = 0 TO id.Count - 1
+        sql = "UPDATE log SET qsl_sent='Y' WHERE id = " & id[i] & ";"
+        dbLog.cnLog.Exec(sql)
+    NEXT 
+    dbLog.CloseDB()
     fillData()
     IF FLog.Visible = TRUE THEN FLog.fillData()
     IF FSearch.Visible = TRUE THEN FSearch.fillData()
@@ -2102,10 +2169,14 @@ PUBLIC SUB mnuInitials_Click()
 
 END
 
-PUBLIC SUB mnuLang_Click()
-  '   System.Language = "en_US.UTF-8"
-  '   
-  '   SHELL Application.Path &/ "dfhLog.gambas"
-  ' ME.Close
+PUBLIC SUB mnuDesign_Click()
+
+  FDesign.ShowModal
+
+END
+
+PUBLIC SUB mnuQueue_Click()
+
+  FQueue.Show()
 
 END

@@ -1,0 +1,132 @@
+# Gambas Form File 2.0
+
+{ Form Form
+  MoveScaled(3.4286,6,65,55)
+  Background = Color.TextBackground
+  Text = ("About dfhLog...")
+  Icon = Picture["dfhlog.png"]
+  Border = Window.Fixed
+  { TabStrip1 TabStrip
+    MoveScaled(1,19,63,30)
+    Count = 2
+    Index = 0
+    Text = ("About")
+    { svwAuthor ScrollView
+      MoveScaled(0,1,62,23)
+      Border = False
+      ScrollBar = Scroll.None
+      { txtAuthor TextEdit
+        MoveScaled(1,83,60,16)
+        ReadOnly = True
+        Border = False
+      }
+      { Image1 PictureBox
+        MoveScaled(28,33,6.8571,6.8571)
+        Background = &HFFFFFF&
+        Picture = Picture["dfhlog.png"]
+        Stretch = True
+        Alignment = Align.Center
+      }
+      { TextLabel2 TextLabel
+        MoveScaled(1,45,60,33)
+        Text = ("<h2 align=center>Licence</h2>\n\n<p align=center>This program is FREE SOFTWARE; you can redistribute it AND/OR modify it under the terms of the GNU General Public License as published by the Free Software Foundation ; either version 2, or (at your option) any later version.</p>\n\n<p align=center>This program is distributed in the hope that it will be useful but WITHOUT ANY WARRANTY; without even the implied warranty of  MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</p>\n")
+      }
+      { TextLabel3 TextLabel
+        MoveScaled(6,78,50,4)
+        Text = ("<h2 align=center>Authors</h2>\n")
+        Alignment = Align.Center
+      }
+      { TextLabel4 TextLabel
+        MoveScaled(2,25,58,7)
+        Font = Font["Bold,+4"]
+        Text = ("dfhLog, the Hamradio Logbook")
+        Alignment = Align.Center
+      }
+    }
+    { timAuthor #Timer
+      #X = 344
+      #Y = 16
+      Enabled = True
+      Delay = 25
+    }
+    Index = 1
+    Text = ("Support")
+    { TextLabel1 TextLabel
+      MoveScaled(2,1,59,14)
+      Text = ("You can support <b>dfhLog</b> by writing the help\ndocuments, translating to your language, etc.\n<p>\nYou can also make a gift to the project by using PayPal:")
+    }
+    { btnGift Button
+      MoveScaled(2,13,56,8)
+      Font = Font["Bold,+1"]
+      Text = ("Make a gift!")
+      Picture = Picture["btn_donateCC_LG.gif"]
+    }
+    { panGift Panel
+      MoveScaled(2,22,59,4)
+      { txtGift TextEdit
+        MoveScaled(0,0,59,4)
+        Font = Font["Bold,+2"]
+        ScrollBar = Scroll.None
+        Border = False
+      }
+    }
+    Index = 0
+  }
+  { btnClose Button
+    MoveScaled(25,50,15,3)
+    Text = ("OK")
+    Default = True
+  }
+  { panBackground Panel
+    MoveScaled(1,1,63,17)
+    Background = Color.SelectedBackground
+    Foreground = Color.Background
+    { panTitle Panel
+      MoveScaled(1,1,59,15)
+      { lblGambas Label
+        MoveScaled(0,0,32,7)
+        Font = Font["Bold,+10"]
+        Foreground = Color.SelectedForeground
+        AutoResize = True
+        Text = ("dfhLog")
+        Alignment = Align.TopNormal
+      }
+      { lblVersion Label
+        MoveScaled(25,0,21,6)
+        Font = Font["Bold,+6"]
+        Background = Color.SelectedBackground
+        Foreground = Color.SelectedForeground
+        Ignore = True
+        Text = ("")
+        Alignment = Align.TopNormal
+      }
+      { Label1 Label
+        MoveScaled(1,6,33,3)
+        Font = Font["Underline"]
+        Text = ("http://code.google.com/p/dfhlog")
+      }
+      { lblMessage TextLabel
+        MoveScaled(1,12,41,3)
+        Font = Font["Bold,8"]
+        AutoResize = True
+        Text = ("(c) 2000-2009 EA7DFH")
+      }
+      { Panel1 Panel
+        MoveScaled(3,15,6,1)
+      }
+      { lblCtyDat TextLabel
+        MoveScaled(1,9,41,3)
+        Font = Font["Bold,8"]
+        AutoResize = True
+        Text = ("Cty.dat version:")
+      }
+    }
+    { imgGambas PictureBox
+      MoveScaled(48,2,13,13)
+      Background = Color.SelectedBackground
+      Picture = Picture["dfhlog.png"]
+      Stretch = True
+      Alignment = Align.TopRight
+    }
+  }
+}

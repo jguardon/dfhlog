@@ -17,30 +17,17 @@
 
 PRIVATE $hres AS Result
 PUBLIC active AS Boolean = FALSE
+PRIVATE loc AS String
 
 PUBLIC SUB Form_Open()
     
-    DIM propa, banda, modo AS String
+    'DIM propa, banda, modo AS String
     active = TRUE
     ME.Move(FMain.ScreenX + 100, FMain.ScreenY + 100)
-    ME.Title = ("Log Search")
-    
-    cboProp.Add(("All"), 0)
-    FOR EACH propa IN global.getPropa()
-        cboProp.Add(propa)
-    NEXT
-    cboBand.Add(("All"), 0)
-    FOR EACH banda IN global.getBandas()
-        cboBand.Add(banda)
-    NEXT
-    cboMode.Add(("All"), 0)
-    FOR EACH modo IN global.getModos()
-        cboMode.Add(modo)
-    NEXT
-    
-    
-    dtIni.Value = Date(1900, 1, 1)
-    dtFin.Value = Now()
+    ME.Title = ("QSOs with ") & loc
+    ME.Stacking = Window.Above
+    ME.SetFocus
+        
     prepararCV()
 
 END
@@ -73,29 +60,23 @@ PRIVATE SUB prepararCV()
   cv.Columns[21].Text = ("My Locator")
   cv.Columns[22].Text = ("Satellite")
   cv.Columns[23].Text = ("Distance (Km)")
-  
-  
+    
 END
 
-PRIVATE SUB searchQSO()
+PUBLIC SUB searchQSO(locator AS String)
     
     DIM sql AS String
     DIM clave, swColor AS Integer
-    DIM dist AS Integer 
-    
-    IF vDist.Value = NULL THEN 
-        dist = 0
-    ELSE 
-        dist = vDist.Value
-    ENDIF 
+    loc = locator
+    ME.Show
+    ME.Stacking = Window.Above
     cv.Clear()
     'p = start
     'sql = "SELECT * FROM log WHERE Indicativo LIKE &1 ORDER BY id DESC;"
-    sql = "SELECT * FROM log WHERE qso_date BETWEEN &1 AND &2 AND call LIKE &3 AND band LIKE &4 and mode LIKE &5 " &
-        "AND prop_mode LIKE &6 AND qsl_rcvd LIKE &7 AND gridsquare LIKE &8 AND distance > &9 ORDER BY id ASC;"
+    sql = "SELECT * FROM log WHERE gridsquare LIKE &1 ORDER BY id ASC;"
 
     IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN
-    $hres = dbLog.cnLog.Exec(sql, dtIni.Value, dtFin.Value, txtCall.Text & "%", parseCbo(cboBand), parseCbo(cboMode), parseCbo(cboProp), parseQSL(), txtLoc.Text & "%", dist)
+    $hres = dbLog.cnLog.Exec(sql, locator & "%")
     cv.Rows.Count = $hres.Count
     lblNumRec.Text = ("Records: ") & $hres.Count
     DO WHILE $hres.Available
@@ -153,17 +134,15 @@ PRIVATE SUB searchQSO()
     INC clave 
     swColor = NOT swColor 
   LOOP 
-  
-  
+   
   dbLog.CloseDB()
   cv.Refresh()
   
   CATCH 
     
     Message.Error(("Error in searchQSO") & "\n" & Error.Text & "\n" & Error.Where)
-    
+   
 END
-
 
 PRIVATE SUB menuLog()
   
@@ -241,7 +220,7 @@ END
 
 PUBLIC SUB fillData()
   
-  searchQSO()
+  searchQSO(loc)
   cv.Refresh()
 
 END
@@ -292,71 +271,10 @@ PUBLIC SUB btnClose_Click()
 
 END
 
-PUBLIC SUB btnOK_Click()
-
-  searchQSO()
-
-END
-
-PRIVATE FUNCTION parseCbo(cbo AS ComboBox) AS String
-  DIM s AS String
-
-  IF cbo.Index = 0 THEN 
-    s = "%"
-  ELSE 
-    s = cbo.Text
-  ENDIF 
-  
-  RETURN s
-
-END
-
-PRIVATE FUNCTION parseQSL() AS String
-  
-  DIM s AS String
-  
-  IF chkCfd.Value = TRUE THEN 
-    s = "Y"
-  ELSE 
-    s = "%"
-  ENDIF 
-  
-  RETURN s
-  
-END
-
-PUBLIC SUB btnReset_Click()
-    dtIni.Value = Date(1900, 1, 1)
-    dtFin.Value = Now()
-END
-
-PUBLIC SUB btnCalIni_Click()
-
-  dtIni.Value = FCal.getDatePicker()
-
-END
-
-PUBLIC SUB btnCalFin_Click()
-
-  dtFin.Value = FCal.getDatePicker()
-
-END
-
-PUBLIC SUB txtCall_Change()
-
-  txtCall.Text = Upper(txtCall.Text)
-
-END
 
 PUBLIC SUB Form_Close()
 
   active = FALSE
-
-END
-
-PUBLIC SUB txtLoc_Change()
-
-  txtLoc.Text = Upper(txtLoc.Text)
 
 END
 

@@ -1,4 +1,20 @@
 ' Gambas class file
+' dfhLog- Hamradio LogBook
+'     Copyright (C) 2009  Jesús Guardón, EA7DFH <ea7dfh@gmail.com>
+' 
+'     This program is free software: you can redistribute it and/or modify
+'     it under the terms of the GNU General Public License as published by
+'     the Free Software Foundation, either version 3 of the License, or
+'     (at your option) any later version.
+' 
+'     This program is distributed in the hope that it will be useful,
+'     but WITHOUT ANY WARRANTY; without even the implied warranty of
+'     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'     GNU General Public License for more details.
+' 
+'     You should have received a copy of the GNU General Public License
+'     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 PRIVATE $type AS Integer
 PRIVATE $sWkdcfd AS String
 
@@ -65,7 +81,7 @@ PRIVATE SUB getDXCC(banda AS String, modo AS String, wcd AS String)
     f = OPEN path FOR OUTPUT APPEND     
     
     IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN 
-    sql = "select call, qso_date, band, mode, qsl_rcvd, qsl_sent, country ,dxcc, count(call) as num from log where band like &1 and mode like &2 and qsl_rcvd like &3 group by dxcc order by dxcc"
+    sql = "select call, qso_date, band, mode, qsl_rcvd, qsl_sent, country, count(call) as num from log where band like &1 and mode like &2 and qsl_rcvd like &3 group by country order by country"
     
     hres = dbLog.cnLog.Exec(sql, parseCbo(cboBand), parseCbo(cboMode), wcd)
     PRINT #f, html.header("DXCC Summary")

@@ -78,6 +78,12 @@ Geometry=[0,0,301,301]
 [DebugWindow/hResult]
 Geometry=[0,25,301,301]
 
+[DebugWindow/iQSOn]
+Geometry=[0,0,301,301]
+
+[DebugWindow/lienzo]
+Geometry=[0,0,301,301]
+
 [DebugWindow/lines]
 Geometry=[0,25,921,301]
 
@@ -145,20 +151,17 @@ Geometry=[0,0,301,301]
 SearchIn="Module"
 CaseSensitive=False
 SearchWord=False
-SearchComment=True
-SearchString=True
+SearchComment=False
+SearchString=False
 
 [OpenFile]
-File[1]="FMain.class:2105.2"
+File[1]="FMain.class:2175.3"
 Active=1
 File[2]="FMain.form"
-File[3]="world.module:84.2"
-File[4]="global.module:243.2"
-File[5]="FSearch.form"
-File[6]="FSummary.form"
-File[7]="FSummary.class:279.27"
-File[8]="FLoc.form"
-Count=8
+File[3]="FQueue.form"
+File[4]="FQueue.class:31.13"
+File[5]="global.module:317.10"
+Count=5
 
 [Watches]
 Count=0

@@ -1,4 +1,5 @@
 # Gambas Form File 2.0
+#LOCKED
 
 { Form Form
   MoveScaled(0,0,114,94)
@@ -33,7 +34,7 @@
     { mnuAdifImp Menu
       Text = ("ADIF Import")
       Picture = Picture["icon:/16/down"]
-      Shortcut = "Ctrl+D"
+      Shortcut = "Ctrl+I"
     }
     { mnuAdifExport Menu
       Text = ("ADIF Export")
@@ -111,15 +112,21 @@
       Picture = Picture["icon:/16/tools"]
       Shortcut = "F2"
     }
-    { mnuLang Menu
-      Text = ("&Language")
-      Shortcut = "Ctrl+Shift+L"
-    }
   }
   { mnuPrint Menu
     Text = ("&Printing")
-    { Menu3 Menu
-      Text = ("")
+    { mnuDesign Menu
+      Text = ("QSL &Design")
+      Picture = Picture["icon:/16/desktop"]
+    }
+    { mnuQueue Menu
+      Text = ("QSL queu&e")
+      Picture = Picture["icon:/16/layers"]
+    }
+    { Menu2 Menu
+      Text = ("Print QSLs")
+      Picture = Picture["icon:/16/print"]
+      Shortcut = "Ctrl+Alt+P"
     }
   }
   { Cluster Menu
@@ -653,82 +660,82 @@
             Border = Border.Sunken
           }
           { Label16 Label
-            MoveScaled(1,9,8,3)
+            MoveScaled(1,12,8,3)
             Text = ("Cont:")
             Alignment = Align.Left
             Border = Border.Sunken
           }
           { lblCont Label
-            MoveScaled(9,9,7,3)
-            Text = ("")
-            Alignment = Align.Center
-            Border = Border.Sunken
-          }
-          { lbld Label
-            MoveScaled(1,15,15,3)
-            Text = ("Distance:")
-            Alignment = Align.Left
-            Border = Border.Sunken
-          }
-          { lblDist Label
-            MoveScaled(16,15,16,3)
-            Text = ("")
-            Alignment = Align.Right
-            Border = Border.Sunken
-          }
-          { lblPfx Label
-            MoveScaled(24,9,8,3)
-            Text = ("")
-            Alignment = Align.Center
-            Border = Border.Sunken
-          }
-          { Label30 Label
-            MoveScaled(16,9,8,3)
-            Text = ("Prefix:")
-            Alignment = Align.Left
-            Border = Border.Sunken
-          }
-          { Label31 Label
-            MoveScaled(1,12,8,3)
-            Text = ("CQ:")
-            Alignment = Align.Left
-            Border = Border.Sunken
-          }
-          { lblCQ Label
             MoveScaled(9,12,7,3)
             Text = ("")
             Alignment = Align.Center
             Border = Border.Sunken
           }
-          { lblr Label
+          { lbld Label
             MoveScaled(1,18,15,3)
-            Text = ("Rhumb:")
+            Text = ("Distance:")
             Alignment = Align.Left
             Border = Border.Sunken
           }
-          { lblRumbo Label
+          { lblDist Label
             MoveScaled(16,18,16,3)
             Text = ("")
             Alignment = Align.Right
             Border = Border.Sunken
           }
-          { lblITU Label
+          { lblPfx Label
             MoveScaled(24,12,8,3)
             Text = ("")
             Alignment = Align.Center
             Border = Border.Sunken
           }
-          { Label32 Label
+          { Label30 Label
             MoveScaled(16,12,8,3)
+            Text = ("Prefix:")
+            Alignment = Align.Left
+            Border = Border.Sunken
+          }
+          { Label31 Label
+            MoveScaled(1,15,8,3)
+            Text = ("CQ:")
+            Alignment = Align.Left
+            Border = Border.Sunken
+          }
+          { lblCQ Label
+            MoveScaled(9,15,7,3)
+            Text = ("")
+            Alignment = Align.Center
+            Border = Border.Sunken
+          }
+          { lblr Label
+            MoveScaled(1,21,15,3)
+            Text = ("Rhumb:")
+            Alignment = Align.Left
+            Border = Border.Sunken
+          }
+          { lblRumbo Label
+            MoveScaled(16,21,16,3)
+            Text = ("")
+            Alignment = Align.Right
+            Border = Border.Sunken
+          }
+          { lblITU Label
+            MoveScaled(24,15,8,3)
+            Text = ("")
+            Alignment = Align.Center
+            Border = Border.Sunken
+          }
+          { Label32 Label
+            MoveScaled(16,15,8,3)
             Text = ("ITU:")
             Alignment = Align.Left
             Border = Border.Sunken
           }
           { Frame3 Frame
-            MoveScaled(1,22,31,20)
+            MoveScaled(1,25,31,17)
             Text = ("QRZ.com")
             { txtDataQRZ TextArea
-              MoveScaled(1,3,29,16)
+              MoveScaled(1,3,29,13)
               Text = ("")
               ReadOnly = True
               Border = False
@@ -736,10 +743,17 @@
             }
           }
           { cboEntidad ComboBox
-            MoveScaled(1,6,31,3)
+            MoveScaled(1,9,31,3)
             ToolTip = ("Current DXCC")
             Text = ("")
             ReadOnly = True
+          }
+          { lblSqWorked Label
+            MoveScaled(1,6,31,3)
+            Font = Font["Bold"]
+            Text = ("")
+            Alignment = Align.Center
+            Border = Border.Sunken
           }
         }
         { lblQSOTimer Label
@@ -787,6 +801,7 @@
           { grdQSO ColumnView
             MoveScaled(1,3,108,16)
             Expand = True
+            Resizable = True
           }
         }
         Index = 1

@@ -42,11 +42,6 @@
         MoveScaled(24,12,14,3)
         Text = ("")
       }
-      { txtMgr TextBox
-        MoveScaled(24,18,14,3)
-        Visible = False
-        Text = ("No operativo")
-      }
       { cboBand ComboBox
         MoveScaled(42,6,18,3)
         Text = ("")
@@ -96,11 +91,6 @@
         MoveScaled(24,9,14,3)
         Text = ("Locator:")
       }
-      { Label6 Label
-        MoveScaled(24,15,14,3)
-        Visible = False
-        Text = ("Manager:")
-      }
       { Label7 Label
         MoveScaled(42,15,14,3)
         Text = ("Prop. Type:")
@@ -118,15 +108,24 @@
         Foreground = &H000080&
         Text = ("Reset Dates")
       }
+      { vDist ValueBox
+        MoveScaled(24,18,14,3)
+        ToolTip = ("Distance greater than...")
+        MaxLength = 6
+      }
+      { Label6 Label
+        MoveScaled(24,15,13,3)
+        Text = ("Distance >:")
+      }
     }
   }
   { HBox1 HBox
     MoveScaled(0,25,85,41)
     Expand = True
     { cv GridView
-      MoveScaled(1,0,84,35)
+      MoveScaled(0,0,84,35)
       Expand = True
-      Mode = Select.Single
+      Mode = Select.Multiple
       Header = GridView.Horizontal
     }
   }

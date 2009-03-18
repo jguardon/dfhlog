@@ -1,0 +1,37 @@
+# Gambas Form File 2.0
+
+{ Form Form
+  MoveScaled(0,0,86,46)
+  Text = ("")
+  Icon = Picture["gtk-print.png"]
+  Border = Window.Fixed
+  Arrangement = Arrange.Vertical
+  { HBox1 HBox
+    MoveScaled(0,0,85,41)
+    Expand = True
+    { cv GridView
+      MoveScaled(1,1,84,31)
+      Expand = True
+      Mode = Select.Multiple
+      Header = GridView.Horizontal
+    }
+  }
+  { HBox2 HBox
+    MoveScaled(0,41,85,4)
+    Spacing = 5
+    Padding = 3
+    { lblNumRec Label
+      MoveScaled(1,1,24,3)
+      Text = ("Records:")
+    }
+    { Label2 Label
+      MoveScaled(36,1,24,3)
+      Expand = True
+      Text = ("")
+    }
+    { btnClose Button
+      MoveScaled(67,1,16,3)
+      Text = ("&Close")
+    }
+  }
+}

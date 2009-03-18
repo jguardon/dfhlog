@@ -1,4 +1,20 @@
 ' Gambas module file
+' dfhLog- Hamradio LogBook
+'     Copyright (C) 2009  Jesús Guardón, EA7DFH <ea7dfh@gmail.com>
+' 
+'     This program is free software: you can redistribute it and/or modify
+'     it under the terms of the GNU General Public License as published by
+'     the Free Software Foundation, either version 3 of the License, or
+'     (at your option) any later version.
+' 
+'     This program is distributed in the hope that it will be useful,
+'     but WITHOUT ANY WARRANTY; without even the implied warranty of
+'     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'     GNU General Public License for more details.
+' 
+'     You should have received a copy of the GNU General Public License
+'     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 PRIVATE regx AS Regexp
 PRIVATE bandas AS NEW String[]
 PRIVATE modos AS NEW String[]
@@ -6,6 +22,7 @@ PRIVATE propa AS NEW String[]
 PRIVATE LL AS NEW latlon
 PUBLIC MapLoc AS Boolean = FALSE
 PRIVATE ent AS NEW cty
+PUBLIC $iQSOn AS NEW Integer[]
 
 PUBLIC FUNCTION UTCNow() AS Date
     DIM utc AS String
@@ -284,6 +301,25 @@ PUBLIC FUNCTION clusterColor(call AS String, band AS String) AS Integer
         DEBUG Error.Text, Error.Where
 
 END
+
+PUBLIC SUB addToQueue(id AS Integer)
+    DIM hres AS Result
+    DIM sql AS String
+    
+    IF id <> NULL THEN 
+        sql = "INSERT OR IGNORE INTO qQSL " &
+        "SELECT id, operator, call, qso_date, time_on, band, mode, prop_mode, rst_sent, gridsquare, " &
+        "my_gridsquare, qsl_via, qsl_rcvd, qsl_sent FROM log WHERE id=&1;"
+        IF FMain.connDB() THEN RETURN 
+        hres = dbLog.cnLog.Exec(sql, id)
+    ENDIF 
+    
+
+    CATCH 
+        Message.Error(Error.Text, Error.Where)    
+        
+END
+
 
 
 

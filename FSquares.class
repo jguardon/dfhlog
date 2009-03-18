@@ -1,4 +1,20 @@
 ' Gambas class file
+' dfhLog- Hamradio LogBook
+'     Copyright (C) 2009  Jesús Guardón, EA7DFH <ea7dfh@gmail.com>
+' 
+'     This program is free software: you can redistribute it and/or modify
+'     it under the terms of the GNU General Public License as published by
+'     the Free Software Foundation, either version 3 of the License, or
+'     (at your option) any later version.
+' 
+'     This program is distributed in the hope that it will be useful,
+'     but WITHOUT ANY WARRANTY; without even the implied warranty of
+'     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'     GNU General Public License for more details.
+' 
+'     You should have received a copy of the GNU General Public License
+'     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 PRIVATE $type AS Integer
 PRIVATE $sWkdcfd AS String
 
@@ -70,7 +86,7 @@ PRIVATE SUB getMainSq(banda AS String, modo AS String, prop AS String, wcd AS St
     ' select call, qso_date, gridsquare , count(call)  from log where band='2M' and gridsquare <>'' and qsl_rcvd='Y'  group by substr(gridsquare,0,4) order by gridsquare, id 
     hres = dbLog.cnLog.Exec(sql, parseCbo(cboBand), parseCbo(cboMode), parseCbo(cboProp), wcd)
     PRINT #f, html.header("Main Squares Summary")
-    PRINT #f, ("<h2>Main Squares " & $sWkdcfd & " by " & FMain.ini["Estacion/QRZ"] & (" in " & cboBand.Text & " band and " & cboMode.Text & " mode and " & cboProp.Text & " Propagation mode</h2><br>\n"))
+    PRINT #f, ("<h2>Main Squares ") & $sWkdcfd & (" by ") & FMain.ini["Estacion/QRZ"] & (" in Band = ") & cboBand.Text & ", Mode = " & cboMode.Text & (" and Propagation mode = ") & cboProp.Text & "</h2><br>\n"
     PRINT #f, ("<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>Prop. Mode</td><td>QSL_rcvd</td><td>QSL_sent</td><td>Country</td><td>Gridsquare</td><td>Main Grid</td><td>QSOs</td></tr>")
     
     DO WHILE hres.Available    
@@ -79,8 +95,8 @@ PRIVATE SUB getMainSq(banda AS String, modo AS String, prop AS String, wcd AS St
       totalQSO += CInt(hres!num)
       hres.MoveNext()
     LOOP
-    PRINT #f, "<tr><td colspan=\"8\"></td><td><b>Total References</b></td><td align=\"right\">" & countRef & "</td>"
-    PRINT #f, "<tr><td colspan=\"8\"></td><td><b>Total QSO</b></td><td align=\"right\" colspan=\"2\">" & totalQSO & "</td>"
+    PRINT #f, ("<tr><td colspan=\"8\"></td><td><b>Total References</b></td><td align=\"right\">") & countRef & "</td>"
+    PRINT #f, ("<tr><td colspan=\"8\"></td><td><b>Total QSO</b></td><td align=\"right\" colspan=\"2\">") & totalQSO & "</td>"
     PRINT #f, "</table>"
     PRINT #f, html.footer()
     
@@ -109,7 +125,7 @@ PRIVATE SUB getSqs(banda AS String, modo AS String, prop AS String, wcd AS Strin
     ' select call, qso_date, gridsquare , count(call)  from log where band='2M' and gridsquare <>'' and qsl_rcvd='Y'  group by substr(gridsquare,0,4) order by gridsquare, id 
     hres = dbLog.cnLog.Exec(sql, parseCbo(cboBand), parseCbo(cboMode), parseCbo(cboProp), wcd)
     PRINT #f, html.header("Gridquares Summary")
-    PRINT #f, ("<h2>Gridquares " & $sWkdcfd & " by " & FMain.ini["Estacion/QRZ"] & (" in " & cboBand.Text & " band and " & cboMode.Text & " mode and " & cboProp.Text & " Propagation mode</h2><br>\n"))
+    PRINT #f, ("<h2>Gridsquares ") & $sWkdcfd & (" by ") & FMain.ini["Estacion/QRZ"] & (" in band = ") & cboBand.Text & (", mode = ") & cboMode.Text & (" and Propagation mode = ") & cboProp.Text & "</h2><br>\n"
     PRINT #f, ("<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>Prop. Mode</td><td>QSL_rcvd</td><td>QSL_sent</td><td>Country</td><td>Gridsquare</td><td>Main Grid</td><td>QSOs</td></tr>")
     
     DO WHILE hres.Available    
@@ -118,8 +134,8 @@ PRIVATE SUB getSqs(banda AS String, modo AS String, prop AS String, wcd AS Strin
       totalQSO += CInt(hres!num)
       hres.MoveNext()
     LOOP
-    PRINT #f, "<tr><td colspan=\"8\"></td><td><b>Total References</b></td><td align=\"right\">" & countRef & "</td>"
-    PRINT #f, "<tr><td colspan=\"8\"></td><td><b>Total QSO</b></td><td align=\"right\" colspan=\"2\">" & totalQSO & "</td>"
+    PRINT #f, ("<tr><td colspan=\"8\"></td><td><b>Total References</b></td><td align=\"right\">") & countRef & "</td>"
+    PRINT #f, ("<tr><td colspan=\"8\"></td><td><b>Total QSO</b></td><td align=\"right\" colspan=\"2\">") & totalQSO & "</td>"
     PRINT #f, "</table>"
     PRINT #f, html.footer()
     
