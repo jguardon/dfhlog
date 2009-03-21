@@ -41,13 +41,7 @@ PUBLIC sIOTA AS String
 PUBLIC sWAS AS String
 PUBLIC sUSAC AS String
 
-
-
-
-PUBLIC SUB _new()
-
-    
-    
+PUBLIC SUB _new()    
     
     TRY world.init()
     ini = NEW Settings(User.Home &/ "/.dfh_Log/dfhLog.conf", "dfhLog Settings")
@@ -59,12 +53,11 @@ PUBLIC SUB _new()
         TRY MKDIR User.Home &/ "/.xplanet/markers/"
         TRY MKDIR User.Home &/ "/.xplanet/origin/"
         TRY COPY "dfh" TO User.Home &/ "/.xplanet/config/dfh"
-        'TRY COPY "dx" TO User.Home &/ "/.xplanet/markers/dx"        
         TRY COPY "do" TO User.Home &/ "/.xplanet/origin/do"
         
     ENDIF
     
-    IF NOT Exist(User.Home &/ "/.dfh_Log/tablas.db") THEN TRY COPY "tablas.db" TO User.Home &/ "/.dfh_Log/tablas.db"
+    IF NOT Exist(User.Home &/ "/.dfh_Log/tablas.db") THEN TRY COPY "tablas.db" TO User.Home &/ "/.dfh_Log/tablas.db"   
     
     CATCH 
     
@@ -190,6 +183,8 @@ PUBLIC SUB Form_Open()
         connDB()   
         fillData()
     ENDIF 
+    
+    TRY global.getVersion()
 
     txtCall.SetFocus()
     
@@ -799,13 +794,14 @@ END
 
 '******************************XPLANET********************************
 PUBLIC SUB btnMap_Click()
-
-    INC Application.Busy
-    'p = EXEC ["xplanet", "-window", "-config", "dfh", "-origin", "sun", "-window_title", "DX Map", "-geometry", "600x600+410+10", "-fov", "1", "-latitude", "40", "-longitude", "-3", "-wait", "2"]  
-    
-    p = EXEC ["xplanet", "-window", "-config", "dfh", "-origin", "earth", "-dynamic_origin", "do", "-window_title", "DX Map", "-fov", "1", "-wait", "2"]  
-    
-    FMap.Show
+    IF ini["Xplanet/Activado"] = TRUE AND FMap.xplanet_opened = FALSE THEN 
+        INC Application.Busy
+        'p = EXEC ["xplanet", "-window", "-config", "dfh", "-origin", "sun", "-window_title", "DX Map", "-geometry", "600x600+410+10", "-fov", "1", "-latitude", "40", "-longitude", "-3", "-wait", "2"]  
+        
+        p = EXEC ["xplanet", "-window", "-config", "dfh", "-origin", "earth", "-dynamic_origin", "do", "-window_title", "DX Map", "-fov", "1", "-wait", "2"]  
+        
+        FMap.Show
+    ENDIF 
 END
 
 PUBLIC SUB mnuDXMap_Click()
@@ -1997,7 +1993,8 @@ PUBLIC SUB modifyQSO(idQSO AS Integer)
     
     
     ELSE     
-        Message.Error(("QSO Nr " & idQSO & " doesn't exist!"))
+        Message.Error(("QSO Nr ") & idQSO & (" doesn't exist!"))
+        btnClear_Click()
     ENDIF 
     'DEBUG idQSO
     
@@ -2055,7 +2052,7 @@ PUBLIC SUB setQSLrcvd(id AS Integer[])
         sql = "UPDATE log SET qsl_rcvd='Y' WHERE id = " & id[i] & ";"
         dbLog.cnLog.Exec(sql)
     NEXT 
-    dbLog.CloseDB()
+    'dbLog.CloseDB()
     fillData()
     IF FLog.Visible = TRUE THEN FLog.fillData()
     IF FSearch.Visible = TRUE THEN FSearch.fillData()
@@ -2073,7 +2070,7 @@ PUBLIC SUB setQSLsent(id AS Integer[])
         sql = "UPDATE log SET qsl_sent='Y' WHERE id = " & id[i] & ";"
         dbLog.cnLog.Exec(sql)
     NEXT 
-    dbLog.CloseDB()
+    'dbLog.CloseDB()
     fillData()
     IF FLog.Visible = TRUE THEN FLog.fillData()
     IF FSearch.Visible = TRUE THEN FSearch.fillData()
@@ -2179,4 +2176,19 @@ PUBLIC SUB mnuQueue_Click()
 
   FQueue.Show()
 
+END
+
+PUBLIC SUB btnWatch_Click()
+
+  mnuRlog_Click()
+
+END
+
+PUBLIC SUB btnEditLast_Click()
+    DIM id AS Integer
+    DIM hResult AS Result
+    IF connDB() THEN RETURN 
+    hResult = dbLog.cnLog.Exec("SELECT MAX(id) AS id FROM log")
+    id = CInt(hResult!id)
+    modifyQSO(id)
 END

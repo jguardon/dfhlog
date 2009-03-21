@@ -25,9 +25,17 @@
       Text = ("Records:")
     }
     { Label2 Label
-      MoveScaled(36,1,24,3)
+      MoveScaled(27,1,4,3)
       Expand = True
       Text = ("")
+    }
+    { btnClear Button
+      MoveScaled(32,1,16,3)
+      Text = ("Clear Queue")
+    }
+    { btnPrint Button
+      MoveScaled(49,1,16,3)
+      Text = ("Print")
     }
     { btnClose Button
       MoveScaled(67,1,16,3)

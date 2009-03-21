@@ -280,6 +280,14 @@ PRIVATE SUB menuLog()
   hMenu = NEW Menu(hMenus)
   hMenu.Text = ""
   
+  hMenu = NEW Menu(hMenus) AS "mnuExpADIF"
+  hMenu.Text = ("Export to ADIF")
+  hMenu.Picture = Picture["icon:/16/up"]
+  hMenu.Shortcut = "Ctrl+Alt+A"
+  
+  hMenu = NEW Menu(hMenus)
+  hMenu.Text = ""
+  
   hMenu = NEW Menu(hMenus) AS "mnuQSLrec"
   hMenu.Text = ("Check QSL as recvd.")
   hMenu.Picture = Picture["gtk-redo-rtl.png"]
@@ -328,7 +336,7 @@ PUBLIC SUB mnuBorrarQSO_Click()
     FOR i = 0 TO global.$iQSOn.Count - 1
         dbLog.cnLog.Exec("DELETE FROM log WHERE id=&1;", global.$iQSOn[i])
     NEXT 
-    dbLog.CloseDB()
+    'dbLog.CloseDB()
     fillData()
     FMain.fillData()
      CATCH 
@@ -342,6 +350,18 @@ END
 PUBLIC SUB mnuQSLenv_Click()
   FMain.setQSLsent(global.$iQSOn)
   fillData()
+END
+PUBLIC SUB mnuExpADIF_Click()
+    DIM i AS Integer
+    DIM filePath AS String
+  
+    Dialog.Title = ("Save ADIF file")
+    Dialog.Filter = ["*.adi", ("ADIF file")]
+    
+    IF Dialog.SaveFile() THEN RETURN
+    filePath = Dialog.Path & ".adi"
+    global.saveADIF(filePath)
+    
 END
 PUBLIC SUB mnuPrintQSL_Click()
     DIM i AS Integer

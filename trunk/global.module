@@ -23,6 +23,10 @@ PRIVATE LL AS NEW latlon
 PUBLIC MapLoc AS Boolean = FALSE
 PRIVATE ent AS NEW cty
 PUBLIC $iQSOn AS NEW Integer[]
+PUBLIC dwnld AS NEW HttpClient AS "_getVer"
+PRIVATE ver AS String
+
+
 
 PUBLIC FUNCTION UTCNow() AS Date
     DIM utc AS String
@@ -320,24 +324,109 @@ PUBLIC SUB addToQueue(id AS Integer)
         
 END
 
+PUBLIC SUB saveADIF(myFile AS String)
+    DIM hres AS Result
+    DIM sql AS String
+    DIM crlf AS String
+    DIM sField AS String
+    DIM hFile AS File 
+    DIM L AS Integer
+    DIM hField AS ResultField    
+    DIM i AS Integer
+    
+    crlf = Chr$(13) & Chr$(10)
+    
+    $iQSOn.Sort()
+    
+    OPEN myFile FOR WRITE CREATE AS #hFile
+      PRINT #hFile, "ADIF file created by dfhLog v." & application.Version & " (c) EA7DFH," &  
+       crlf & "distributed under the GPL GNU Licence " & crlf & "<EOH>" & crlf & crlf
+       
+       IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN        
+       FOR i = 0 TO $iQSOn.Count - 1
+            sql = "SELECT * FROM log WHERE id=&1 ORDER BY id;"
+            hres = dbLog.cnLog.Exec(sql, $iQSOn[i])
+            
+            DO WHILE hres.Available
+            
+                 FOR EACH hField IN hres.Fields
+                     WITH hField
+                         L = Len(Trim(Str(hres[.Name])))
+                         IF L > 0 AND .Name <> "id" AND .Name <> "dxcc" AND .Name <> "TPEA" THEN 
+                         sField = Trim(Str(hres[.Name]))
+                             SELECT CASE .Name
+                                 CASE "qso_date", "qslrdate", "qslsdate"
+                                     sField = Year(hres!qso_date) & Format(Month(hres!qso_date), "0#") & Format(Day(hres!qso_date), "0#")
+                                     L = Len(sField)
+                                 CASE "time_on", "time_off"
+                                     sField = Left(Replace(hres[.Name], ":", ""), 4)
+                                     L = Len(sField)
+                                 CASE "mode"
+                                     IF sField = "USB" OR sField = "LSB" THEN sField = "SSB"
+                                                                         
+                                 CASE ELSE 
+                                     sField = Trim(Str(hres[.Name]))
+                             END SELECT
+                                     
+                                     
+                             PRINT #hFile, "<" & Upper(.Name) & ":" & Str(L) & ">" & sField;
+                         ENDIF 
+                     END WITH 
+                 NEXT 
+                 PRINT #hFile, " <EOR>"
+                 
+                 WAIT 0.01
+                 
+                 hres.MoveNext()
+                 
+            LOOP  
+       NEXT 
+              
+       FINALLY 
+        FLUSH #hFile
+        CLOSE #hFile
+        dbLog.CloseDB()
+                
+        CATCH
+        Message.Error(("Error exporting Record\n") & hField!call & " " & hField!qso_date & "\n" & Error.Text)
 
+END
 
+PUBLIC SUB getVersion()
+    ver = ""
+    dwnld.Async = TRUE
+    dwnld.Timeout = 5
+    dwnld.URL = "http://www.ea7dfh.com/dfhlog/version.php?call=" & FMain.ini["Estacion/QRZ"] & "&loc=" & FMain.ini["Estacion/Locator"]    
+    dwnld.Get() 
+  
+END
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+PUBLIC SUB _getVer_Read()
+    DIM buffer AS String
+    READ #LAST, buffer, Lof(LAST)
+    ver &= buffer 
+  
+END
+PUBLIC SUB _getVer_Error()
+  
+    DEBUG "Error downloading Version number" & dwnld.Status, Error.Text  
+  
+END
+PUBLIC SUB _getVer_Finished()
+    DIM myVersion, verUpdate AS Integer
+    DIM sMyVer AS String = "1" & Replace(Application.Version, ".", "")  
+    
+    ver = "1" & Replace(ver, ".", "")
+    
+    myVersion = CInt(sMyVer)
+    
+    IF ver THEN verUpdate = CInt(ver)    
+    
+    IF verUpdate > myVersion THEN 
+        IF Message.Question(("There is a new version of dfhLog.\nDo you want to visit the download page?"), ("Yes"), "No") = 2 THEN RETURN 
+        Desktop.Open("http://code.google.com/p/dfhlog/downloads/list")       
+    ENDIF 
+END
 
 
 

@@ -176,6 +176,14 @@ PRIVATE SUB menuLog()
   hMenu = NEW Menu(hMenus)
   hMenu.Text = ""
   
+  hMenu = NEW Menu(hMenus) AS "mnuExpADIF"
+  hMenu.Text = ("Export to ADIF")
+  hMenu.Picture = Picture["icon:/16/up"]
+  hMenu.Shortcut = "Ctrl+Alt+A"
+  
+  hMenu = NEW Menu(hMenus)
+  hMenu.Text = ""
+  
   hMenu = NEW Menu(hMenus) AS "mnuQSLrec"
   hMenu.Text = ("Check QSL as recvd.")
   hMenu.Picture = Picture["gtk-redo-rtl.png"]
@@ -238,6 +246,19 @@ PUBLIC SUB mnuBorrarQSO_Click()
     FMain.fillData()
      CATCH 
         Message.Error(("Error deleting QSO\n") & Error.Text & "\n" & Error.Where)
+END
+
+PUBLIC SUB mnuExpADIF_Click()
+    DIM i AS Integer
+    DIM filePath AS String
+  
+    Dialog.Title = ("Save ADIF file")
+    Dialog.Filter = ["*.adi", ("ADIF file")]
+    
+    IF Dialog.SaveFile() THEN RETURN
+    filePath = Dialog.Path & ".adi"
+    global.saveADIF(filePath)
+    
 END
 
 PUBLIC SUB mnuQSLrec_Click()

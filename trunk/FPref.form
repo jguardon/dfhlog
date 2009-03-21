@@ -244,7 +244,7 @@
     Index = 4
     Text = ("Ot&hers")
     { Frame7 Frame
-      MoveScaled(1,25,65,14)
+      MoveScaled(1,28,65,14)
       Text = ("XPlanet")
       { chkXplanet CheckBox
         MoveScaled(9,4,53,3)
@@ -257,33 +257,37 @@
       }
     }
     { Frame8 Frame
-      MoveScaled(1,1,65,23)
+      MoveScaled(1,1,65,26)
       Text = ("QRZ.com")
       { chkQRZcom CheckBox
-        MoveScaled(9,4,48,4)
+        MoveScaled(9,3,48,4)
         Text = ("Fill QSO data from QRZ.com")
       }
       { Label17 Label
-        MoveScaled(12,9,35,3)
+        MoveScaled(12,7,41,3)
         Foreground = &HFF0000&
-        Text = ("(A subscription to QRZ.com is needed)")
+        Text = ("(A subscription to QRZ.com(xml) is needed)")
       }
       { txtUserQRZ TextBox
-        MoveScaled(9,17,16,3)
+        MoveScaled(9,14,16,3)
         Text = ("")
       }
       { txtPassQRZ TextBox
-        MoveScaled(37,17,16,3)
+        MoveScaled(37,14,16,3)
         Text = ("")
         Password = True
       }
       { Label18 Label
-        MoveScaled(9,14,16,3)
+        MoveScaled(9,11,16,3)
         Text = ("User:")
       }
       { Label19 Label
-        MoveScaled(37,14,16,3)
+        MoveScaled(37,11,16,3)
         Text = ("Password:")
+      }
+      { RadioButton1 RadioButton
+        MoveScaled(9,19,46,3)
+        Text = ("Fill QSO data from QRZ.com (Web method)")
       }
     }
     Index = 0
