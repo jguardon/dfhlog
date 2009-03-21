@@ -180,7 +180,7 @@ PUBLIC SUB _DownloadData_Finished()
     FMain.updateFields()
     'DEBUG downloadBufferData
     CATCH 
-            Message.Error("Error leyendo XML (Data QRZ.COM)\n Linea: " & Error.Where)
+            Message.Error(("Error reading XML (Data QRZ.COM)\n Line: ") & Error.Where)
 END 
 
 PRIVATE SUB getKeyQRZcom()

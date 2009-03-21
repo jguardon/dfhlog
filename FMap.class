@@ -18,6 +18,7 @@
 PRIVATE iLat AS Integer
 PRIVATE iLon AS Integer
 PRIVATE iZoom AS Integer
+STATIC PUBLIC xplanet_opened AS Boolean = FALSE
 
 
 PUBLIC SUB Form_Open()
@@ -30,6 +31,7 @@ PUBLIC SUB Form_Open()
      ME.Left = FMain.ini["FxMap/Left", ME.Left] 
      ME.Height = FMain.ini["FxMap/Height", ME.Height]  
      ME.Width = FMain.ini["FxMap/Width", ME.Width]
+     xplanet_opened = TRUE
   
    sTitle = "DX Map"
    ME.Title = sTitle
@@ -41,7 +43,6 @@ PUBLIC SUB Form_Open()
       WEND
   iHandle = aHandle[0]
   TRY Embedder1.Embed(iHandle)
-  FMain.Controls["btnMap"].Enabled = FALSE
   
   loadSettings()
   
@@ -63,11 +64,12 @@ PUBLIC SUB form_Close()
   
   Embedder1.Discard
   FMain.p.Kill
-  FMain.Controls["btnMap"].Enabled = TRUE
+'  FMain.Controls["btnMap"].Enabled = TRUE
   FMain.ini["FxMap/Top"] = ME.ScreenY
   FMain.ini["FxMap/Left"] = ME.ScreenX
   FMain.ini["FxMap/Height"] = ME.Height
   FMain.ini["FxMap/Width"] = ME.Width
+  xplanet_opened = FALSE
   
 END
 

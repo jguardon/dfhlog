@@ -1,5 +1,4 @@
 # Gambas Form File 2.0
-#LOCKED
 
 { Form Form
   MoveScaled(0,0,114,94)
@@ -44,23 +43,35 @@
     { sep2 Menu
       Text = ("")
     }
+    { BD Menu
+      Text = ("&Database")
+      { mnuBDcompact Menu
+        Text = ("Compact DB")
+        Picture = Picture["icon:/16/archive"]
+        Shortcut = "Ctrl+F5"
+      }
+      { mnuBackup Menu
+        Text = ("Backup DB")
+        Picture = Picture["icon:/16/floppy"]
+        Shortcut = "Ctrl+F6"
+      }
+    }
+    { sep3 Menu
+      Text = ("")
+    }
+    { options Menu
+      Action = "shPref"
+      Text = ("Se&ttings")
+      Picture = Picture["icon:/16/tools"]
+      Shortcut = "F2"
+    }
+    { sep4 Menu
+      Text = ("")
+    }
     { Salir Menu
       Text = ("E&xit")
       Picture = Picture["icon:/16/cancel"]
       Shortcut = "Ctrl+X"
-    }
-  }
-  { BD Menu
-    Text = ("&Database")
-    { mnuBDcompact Menu
-      Text = ("Compact DB")
-      Picture = Picture["icon:/16/archive"]
-      Shortcut = "Ctrl+F5"
-    }
-    { mnuBackup Menu
-      Text = ("Backup DB")
-      Picture = Picture["icon:/16/floppy"]
-      Shortcut = "Ctrl+F6"
     }
   }
   { mnuS Menu
@@ -102,15 +113,6 @@
     }
     { mnuInitials Menu
       Text = ("EME Initials")
-    }
-  }
-  { Preferencias Menu
-    Text = ("Se&ttings")
-    { options Menu
-      Action = "shPref"
-      Text = ("Opt&ions")
-      Picture = Picture["icon:/16/tools"]
-      Shortcut = "F2"
     }
   }
   { mnuPrint Menu
@@ -170,87 +172,105 @@
     }
   }
   { HBox1 HBox
-    MoveScaled(0,0,114,5)
-    Spacing = 5
-    Padding = 2
-    { btnNewLog ToolButton
-      MoveScaled(1,1,5,3)
-      ToolTip = ("New Log")
-      Action = "opnLog"
-      Text = ("")
-      Picture = Picture["icon:/24/file"]
-      Border = True
-    }
-    { btnOpnLog ToolButton
-      MoveScaled(7,1,5,3)
-      ToolTip = ("Open Log")
-      Action = "opnLog"
-      Text = ("")
-      Picture = Picture["icon:/24/open"]
-      Border = True
-    }
-    { btnPrefs ToolButton
-      MoveScaled(13,1,5,3)
-      ToolTip = ("Settings")
-      Text = ("")
-      Picture = Picture["icon:/24/tools"]
-      Border = True
-    }
-    { btnSearch ToolButton
-      MoveScaled(19,1,5,3)
-      ToolTip = ("Search QSOs")
-      Text = ("")
-      Picture = Picture["icon:/24/find"]
-      Border = True
-    }
-    { btnConn ToolButton
-      MoveScaled(25,1,5,3)
-      ToolTip = ("Conn/Dis. Cluster")
-      Text = ("")
-      Picture = Picture["icon:/24/connect"]
-      Border = True
-      Toggle = True
-    }
-    { btnMap ToolButton
-      MoveScaled(32,1,5,3)
-      ToolTip = ("DX Map")
-      Text = ("")
-      Picture = Picture["icon:/24/earth"]
-      Border = True
-    }
-    { btnSqrMap ToolButton
-      MoveScaled(39,1,5,3)
-      ToolTip = ("GridSquares Map")
-      Text = ("")
-      Picture = Picture["sq.png"]
-      Border = True
-    }
-    { btnCAT ToolButton
-      MoveScaled(46,1,5,3)
-      ToolTip = ("CAT")
-      Text = ("")
-      Picture = Picture["icon:/24/network"]
-      Border = True
-      Toggle = True
+    MoveScaled(0,0,114,3.1429)
+    Spacing = 3
+    { ToolBar1 ToolBar
+      MoveScaled(0,0,55,3)
+      { btnNewLog ToolButton
+        MoveScaled(0,0,3,3)
+        ToolTip = ("New Log")
+        Action = "opnLog"
+        Text = ("")
+        Picture = Picture["icon:/16/file"]
+      }
+      { btnOpnLog ToolButton
+        MoveScaled(4,0,3,3)
+        ToolTip = ("Open Log")
+        Action = "opnLog"
+        Text = ("")
+        Picture = Picture["icon:/16/open"]
+      }
+      { Separator1 Separator
+        MoveScaled(7,0,1,3)
+      }
+      { btnPrefs ToolButton
+        MoveScaled(8,0,3,3)
+        ToolTip = ("Settings")
+        Text = ("")
+        Picture = Picture["icon:/16/tools"]
+      }
+      { Separator3 Separator
+        MoveScaled(11,0,1,3)
+      }
+      { btnWatch ToolButton
+        MoveScaled(12,0,3,3)
+        ToolTip = ("Watch Log")
+        Text = ("")
+        Picture = Picture["icon:/16/watch"]
+      }
+      { btnSearch ToolButton
+        MoveScaled(16,0,3,3)
+        ToolTip = ("Search QSOs")
+        Text = ("")
+        Picture = Picture["icon:/16/find"]
+      }
+      { btnEditLast ToolButton
+        MoveScaled(19,0,3,3)
+        ToolTip = ("Edit Last QSO")
+        Text = ("")
+        Picture = Picture["icon:/16/undo"]
+      }
+      { Separator4 Separator
+        MoveScaled(23,0,1,3)
+      }
+      { btnConn ToolButton
+        MoveScaled(24,0,3,3)
+        ToolTip = ("Conn/Dis. Cluster")
+        Text = ("")
+        Picture = Picture["icon:/16/connect"]
+        Toggle = True
+      }
+      { btnCAT ToolButton
+        MoveScaled(28,0,3,3)
+        ToolTip = ("CAT")
+        Text = ("")
+        Picture = Picture["icon:/16/network"]
+        Toggle = True
+      }
+      { Separator2 Separator
+        MoveScaled(31,0,1,3)
+      }
+      { btnSqrMap ToolButton
+        MoveScaled(32,0,3,3)
+        ToolTip = ("GridSquares Map")
+        Text = ("")
+        Picture = Picture["sq.png"]
+      }
+      { btnMap ToolButton
+        MoveScaled(35,0,3,3)
+        ToolTip = ("DX Map")
+        Text = ("")
+        Picture = Picture["icon:/16/earth"]
+      }
     }
     { Label1 Label
-      MoveScaled(52,1,7,3)
+      MoveScaled(56,1,7,3)
       Expand = True
       Text = ("")
     }
     { PanelSmeter Panel
-      MoveScaled(60,0,28,5)
-      Padding = 5
+      MoveScaled(65.1429,0,22.4286,3)
+      Padding = 1
       Border = Border.Sunken
       { Label4 Label
-        MoveScaled(1,2.1429,26,2)
-        Font = Font["-1"]
+        MoveScaled(1,1.4286,21,1)
+        Font = Font["-2"]
         Ignore = True
         Text = ("S 0 1  3  5  7  9 +20 +40 +60")
         Alignment = Align.Justify
       }
       { pbSmeter ProgressBar
-        MoveScaled(3,1,22,1)
+        MoveScaled(2,0.1429,19,1)
         Foreground = &H800000&
         Ignore = True
         Label = False
@@ -258,7 +278,7 @@
     }
     { lcdQRG TextBox
       MoveScaled(89,0,24,4)
-      Font = Font["Bitstream Vera Sans,Bold,+5"]
+      Font = Font["Bitstream Vera Sans,Bold,+3"]
       Background = &H707070&
       Foreground = &H00FF00&
       Text = ("0.00")

@@ -18,7 +18,6 @@
 PRIVATE $hres AS Result
 PUBLIC active AS Boolean = FALSE
 
-
 PUBLIC SUB Form_Open()
     
     'DIM propa, banda, modo AS String
@@ -126,22 +125,12 @@ PRIVATE SUB menuLog()
   hMenu.Shortcut = "Ctrl+D"
   
   hMenu = NEW Menu(hMenus)
-  hMenu.Text = ""
+  hMenu.Text = ""  
   
-  hMenu = NEW Menu(hMenus) AS "mnuQSLrec"
-  hMenu.Text = ("Check QSL as recvd.")
-  hMenu.Picture = Picture["gtk-redo-rtl.png"]
-  hMenu.Shortcut = "F5"
-  
-  hMenu = NEW Menu(hMenus) AS "mnuQSLenv"
-  hMenu.Text = ("Check QSL as sent.")
-  hMenu.Picture = Picture["gtk-undo-rtl.png"]
-  hMenu.Shortcut = "F6"
-  
-  hMenu = NEW Menu(hMenus) AS "mnuPrintQSL"
-  hMenu.Text = ("Print QSL")
-  hMenu.Picture = Picture["gtk-print.png"]
-  hMenu.Shortcut = "Ctrl+P"
+  hMenu = NEW Menu(hMenus) AS "mnuExpADIF"
+  hMenu.Text = ("Export to ADIF")
+  hMenu.Picture = Picture["icon:/16/up"]
+  hMenu.Shortcut = "Ctrl+Alt+A"
 
   ' pop up 
   IF hMenus THEN hMenus.Popup()
@@ -160,7 +149,7 @@ PUBLIC SUB getSelectedQSO()
 END
 
 PUBLIC SUB mnuEditarQSO_Click()
-  IF global.$iQSOn.Count = 1 THEN 
+    IF global.$iQSOn.Count = 1 THEN 
         TRY FMain.modifyQSO(CInt(cv[cv.Row, 0].Text))        
         cv.Refresh()
         
@@ -192,22 +181,17 @@ PUBLIC SUB mnuBorrarQSO_Click()
         Message.Error(("Error deleting QSO\n") & Error.Text & "\n" & Error.Where)
 END
 
-PUBLIC SUB mnuQSLrec_Click()
-  FMain.setQSLrcvd(global.$iQSOn)
-  fillData()
-END
-
-PUBLIC SUB mnuQSLenv_Click()
-  FMain.setQSLsent(global.$iQSOn)
-  fillData()
-END
-
-PUBLIC SUB mnuPrintQSL_Click()
-  DIM i AS Integer
-    FOR i = 0 TO global.$iQSOn.Count - 1
-        TRY global.addToQueue(global.$iQSOn[i])
-    NEXT
-    IF NOT ERROR THEN Message.Info(("Added ") & global.$iQSOn.Count & (" QSOs to the QSL print queue."))
+PUBLIC SUB mnuExpADIF_Click()
+    DIM i AS Integer
+    DIM filePath AS String
+  
+    Dialog.Title = ("Save ADIF file")
+    Dialog.Filter = ["*.adi", ("ADIF file")]
+    
+    IF Dialog.SaveFile() THEN RETURN
+    filePath = Dialog.Path & ".adi"
+    global.saveADIF(filePath)
+    
 END
 
 PUBLIC SUB cv_Menu()
@@ -230,3 +214,20 @@ PUBLIC SUB Form_Close()
 
 END
 
+PUBLIC SUB btnPrint_Click()
+
+    Message("Not yet operative") 
+
+END
+
+PUBLIC SUB btnClear_Click()
+    IF cv.Rows.Count > 0 THEN 
+        IF Message.Warning(("Print queue will be deleted\nDo you want to continue?"), ("Delete"), ("Cancel")) = 2 THEN RETURN
+        IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN 
+        dbLog.cnLog.Exec("DELETE FROM qQSL")
+        
+        dbLog.CloseDB()
+        fillData() 
+    ENDIF  
+
+END

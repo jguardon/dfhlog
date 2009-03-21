@@ -155,13 +155,10 @@ SearchComment=False
 SearchString=False
 
 [OpenFile]
-File[1]="FMain.class:2175.3"
+File[1]="FMain.class:2192.17"
 Active=1
 File[2]="FMain.form"
-File[3]="FQueue.form"
-File[4]="FQueue.class:31.13"
-File[5]="global.module:317.10"
-Count=5
+Count=2
 
 [Watches]
 Count=0

@@ -226,11 +226,11 @@ PUBLIC SUB chkHamlib_Click()
   ELSE 
         lblHamlibInst.Text = ""
         FMain.ini["Hamlib/Activado"] = CBool(chkHamlib.Value)
-        IF FMain.ini["Hamlib/Activado"] = TRUE
-           FMain.Controls["btnCAT"].Enabled = TRUE
-        ELSE 
-           FMain.Controls["btnCAT"].Enabled = FALSE
-        ENDIF 
+        ' IF FMain.ini["Hamlib/Activado"] = TRUE
+        '    FMain.Controls["btnCAT"].Enabled = TRUE
+        ' ELSE 
+        '    FMain.Controls["btnCAT"].Enabled = FALSE
+        ' ENDIF 
   ENDIF 
 
 END
@@ -272,11 +272,11 @@ PUBLIC SUB chkXplanet_Click()
     ELSE 
         lblXplanetInst.Text = ""
         FMain.ini["Xplanet/Activado"] = CBool(chkXplanet.Value)
-        IF FMain.ini["Xplanet/Activado"] = TRUE
-             FMain.Controls["btnMap"].Enabled = TRUE
-        ELSE 
-             FMain.Controls["btnMap"].Enabled = FALSE
-        ENDIF 
+        ' IF FMain.ini["Xplanet/Activado"] = TRUE
+        '      FMain.Controls["btnMap"].Enabled = TRUE
+        ' ELSE 
+        '      FMain.Controls["btnMap"].Enabled = FALSE
+        ' ENDIF 
     ENDIF 
 
 END
@@ -379,5 +379,11 @@ END
 PUBLIC SUB chkTimeOnOff_Click()
 
   FMain.ini["Estacion/TimeOnOff"] = CBool(chkTimeOnOff.Value)
+
+END
+
+PUBLIC SUB RadioButton1_Click()
+
+  Message.Info("Not yet implemented!")
 
 END
