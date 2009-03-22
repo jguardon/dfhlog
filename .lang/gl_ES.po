@@ -158,7 +158,7 @@ msgstr " y Modo de Propagación = "
 msgid "Ann Messages"
 msgstr "Mensaxes Ann"
 
-#: FMap.class:227
+#: FMap.class:226
 msgid "&Apply Changes"
 msgstr "&Aplicar Cambios"
 
@@ -274,7 +274,7 @@ msgstr "Marcar QSL enviada"
 msgid "Choose a background image"
 msgstr "Elige una imagen de fondo"
 
-#: FMap.class:233
+#: FMap.class:232
 msgid "&Clean Map"
 msgstr "&Limpar Mapa"
 
@@ -290,7 +290,7 @@ msgstr "Eliminar cauda"
 msgid "&Close"
 msgstr "Fec&har"
 
-#: FMap.class:238
+#: FMap.class:237
 msgid "Close window"
 msgstr "Pechar Fiestra"
 
@@ -438,7 +438,7 @@ msgstr "Por defecto:"
 msgid "Delete"
 msgstr "Borrar"
 
-#: FMap.class:232
+#: FMap.class:231
 msgid "Delete all labels"
 msgstr "Borrar etiquetas"
 
@@ -974,7 +974,7 @@ msgstr " Km de "
 msgid "Label"
 msgstr "Etiqueta"
 
-#: FMap.class:197
+#: FMap.class:196
 msgid "Latitude:"
 msgstr "Latitude: "
 
@@ -1002,7 +1002,7 @@ msgstr "Buscar no Log"
 msgid "  Longitude: "
 msgstr " Lonxitude: "
 
-#: FMap.class:202
+#: FMap.class:201
 msgid "Longitude:"
 msgstr "Lonxitude: "
 
@@ -1182,11 +1182,11 @@ msgstr "Nº:"
 msgid "\n to the Cluster Net?"
 msgstr "\n a Rede de Cluster?"
 
-#: FMap.class:190
+#: FMap.class:189
 msgid "Observer Latitude"
 msgstr "Latitude do Observador"
 
-#: FMap.class:207
+#: FMap.class:206
 msgid "Observer Longitude"
 msgstr "Lonxitud do Observador"
 
@@ -1249,6 +1249,10 @@ msgstr "Ruta a base de datos non atopada, por favor\nabre ou crea unha nova"
 #: FDesign.class:243
 msgid "Picture files"
 msgstr "Arquivos de imagen"
+
+#: FLoc.class:175
+msgid "Please, install required package \"dfhlog-images\""
+msgstr "Por favor, instala o pacote esixe \"dfhlog-images\""
 
 #: FPref.class:694
 msgid "Poll every:"
@@ -1566,7 +1570,7 @@ msgstr "O QSO seleccionado borrarase\n¿Desexas continuar?"
 msgid "Send"
 msgstr "Enviar"
 
-#: FDesign.class:316 FMain.class:2620 FMap.class:186 FPref.class:464
+#: FDesign.class:316 FMain.class:2620 FMap.class:185 FPref.class:464
 msgid "Settings"
 msgstr "Configuración"
 
@@ -1898,11 +1902,11 @@ msgstr "Debes encher po-lo menos: Indicativo, RST_r, RST_e e Frecuencia TX"
 msgid "You need to fill the mandatory fields\nor GridSquare is incorrect"
 msgstr "E necesario completar os campos obligatorios\nou o Locator e incorrecto"
 
-#: FMap.class:214
+#: FMap.class:213
 msgid "Zoom:"
 msgstr "-"
 
-#: FMap.class:219
+#: FMap.class:218
 msgid "Zoom: Less value = closer view,\nMore value = far away view"
 msgstr "Zoom: Menor valor = vista cercana,\nMaior valor = vista lonxana"
 

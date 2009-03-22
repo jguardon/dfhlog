@@ -170,10 +170,10 @@ PUBLIC SUB Form_Open()
     ToolPanel1.Index = 1
     chkSquares.Value = FMain.ini["FMapLoc/Grid", FALSE]
      
-     ' CATCH 
-     ' 
-     '    Message.Error(("Please, install required package \"dfhlog-images\""))
-     '    ME.Close()
+     CATCH 
+     
+        Message.Error(("Please, install required package \"dfhlog-images\""))
+        ME.Close()
 
 END
 

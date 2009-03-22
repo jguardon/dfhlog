@@ -156,9 +156,11 @@ SearchString=False
 
 [OpenFile]
 File[1]="FMain.class:2192.17"
-Active=1
 File[2]="FMain.form"
-Count=2
+File[3]="FLoc.form"
+File[4]="FLoc.class:168.35"
+Active=4
+Count=4
 
 [Watches]
 Count=0
