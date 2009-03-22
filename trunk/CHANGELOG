@@ -1,3 +1,21 @@
+* Sun Mar 22 2009 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.31
+-Spanish translation updated
+-Galician translation finished
+-Portuguese translation finished
+-Database structure modified
+-Locator Map fully operative
+-Changed 'About..' form
+-Some printing test added (QSL)
+-Management of QSL print queue
+-Now we can choose to use the same start time or not
+-Autologin on cluster
+-Now we can abort the importing ADIF process
+-Updated contextual menus
+-Multiple selections on gridviews
+-Partial export ADIF from logs
+-Checking for new versions online
+-Changed main toolbar size
+
 * Sun Mar 01 2009 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.30
 - Spanish translation finished
 - Map Loc semi-operative
