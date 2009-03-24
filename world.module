@@ -1,5 +1,7 @@
 ' Gambas module file
 ' dfhLog- Hamradio LogBook
+'     Adapted from KLog's class "world" in C++ by Jaime Robles <http://jaime.robles.es/klog/>
+
 '     Copyright (C) 2009  Jesús Guardón, EA7DFH <ea7dfh@gmail.com>
 ' 
 '     This program is free software: you can redistribute it and/or modify
