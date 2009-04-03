@@ -114,6 +114,13 @@
     { mnuInitials Menu
       Text = ("EME Initials")
     }
+    { Menu3 Menu
+      Text = ("")
+    }
+    { mnuGStats Menu
+      Text = ("Global Stats")
+      Shortcut = "Ctrl+G"
+    }
   }
   { mnuPrint Menu
     Text = ("&Printing")
@@ -398,14 +405,12 @@
           MoveScaled(31,24,29,3)
           Tag = "t"
           ToolTip = ("DX Name")
-          Expand = True
           Text = ("")
           MaxLength = 50
         }
         { txtQTHqso TextBox
           MoveScaled(62,24,15,3)
           ToolTip = ("DX City")
-          Expand = True
           Text = ("")
           MaxLength = 50
         }
@@ -419,14 +424,6 @@
           ToolTip = ("TX Power")
           Text = ("")
           Alignment = Align.Right
-        }
-        { lblEmail Label
-          MoveScaled(62,30,15,3)
-          Foreground = &H0000FF&
-          Mouse = Mouse.Pointing
-          ToolTip = ("DX Email")
-          Text = ("")
-          Border = Border.Sunken
         }
         { chkQSLr CheckBox
           MoveScaled(2,34,16,3)
@@ -662,7 +659,9 @@
         }
         { chkAutoSpot CheckBox
           MoveScaled(2,49,14,3)
+          ToolTip = ("Status:\nRed=Send spot without confirmation\nOrange=Send spot after confirmation\nUnchecked=Don't send spots\n\nFor convenience, status is not saved\nbetween sessions.")
           Text = ("AutoSpot")
+          Tristate = True
         }
         { chkRT CheckBox
           MoveScaled(20,49,16,3)
@@ -795,6 +794,7 @@
         }
         { btnCalIni Button
           MoveScaled(14,18,3,3)
+          Mouse = Mouse.Pointing
           ToolTip = ("DatePicker")
           Text = ("")
           Picture = Picture["icon:/16/view-detail"]
@@ -803,6 +803,14 @@
         { txtModeChange TextBox
           MoveScaled(60,11,2,3)
           Visible = False
+          Text = ("")
+        }
+        { lblEmail TextBox
+          MoveScaled(62,30,15,3)
+          Font = Font["Underline"]
+          Foreground = &H0000C0&
+          Mouse = Mouse.Pointing
+          ToolTip = ("DX email")
           Text = ("")
         }
       }
@@ -875,7 +883,12 @@
           MoveScaled(0,0,96,19)
           Expand = True
           Header = GridView.Horizontal
-          Resizable = False
+        }
+        { statsEntity Label
+          MoveScaled(1,14,24,3)
+          Background = &HFFFFFF&
+          Ignore = True
+          Text = ("")
         }
         Index = 0
       }

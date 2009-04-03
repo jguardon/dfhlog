@@ -135,7 +135,7 @@ PUBLIC SUB Form_Open()
   chkAutoLogin.Value = FMain.ini["Telnet/Autologin", FALSE]
   chkHamlib.Value = FMain.ini["Hamlib/Activado", FALSE]
   chkXplanet.Value = FMain.ini["Xplanet/Activado", FALSE]
-  chkQRZcom.Value = FMain.ini["QRZcom/Activado", FALSE]
+  getRbQRZ()
   cbtnWorked.Color = FMain.ini["Colores/Trabajado", Color.Orange]
   cbtnConfirmed.Color = FMain.ini["Colores/Confirmado", Color.Green]
   cbtnNeeded.Color = FMain.ini["Colores/Necesitado", Color.Blue]
@@ -155,6 +155,19 @@ PUBLIC SUB Form_Open()
   txtPassQRZ.Text = FMain.ini["Estacion/PassQRZ"]
 
 
+END
+
+PRIVATE SUB getRbQRZ()
+
+  SELECT CASE FMain.ini["qrzCom/Value", 0]
+    CASE 0
+        rbNotQRZcom.Value = TRUE
+    CASE 1
+        rbQRZcom.Value = TRUE
+    CASE 2
+        rbQRZcomWeb.Value = TRUE
+  END SELECT
+  
 END
 
 PUBLIC SUB load_backends(cbo AS ComboBox)
@@ -281,22 +294,6 @@ PUBLIC SUB chkXplanet_Click()
 
 END
 
-PUBLIC SUB chkQRZcom_Click()
-    IF bQRZ = TRUE THEN 
-      bQRZ = FALSE
-      
-  ELSE 
-      
-      bQRZ = TRUE
-  ENDIF 
-  FMain.ini["QRZcom/Activado"] = bQRZ
-  FMain.ini.Save()
-
-  
-
-END
-
-
 PUBLIC SUB cboRigHamlib_Click()
     DIM s AS String = cboRigHamlib.Current.Text
     
@@ -305,8 +302,6 @@ PUBLIC SUB cboRigHamlib_Click()
     cboRigHamlib.ToolTip = s 
 
 END
-
-
 
 PUBLIC SUB btnAddServer_Click()
 
@@ -382,8 +377,20 @@ PUBLIC SUB chkTimeOnOff_Click()
 
 END
 
-PUBLIC SUB RadioButton1_Click()
+PUBLIC SUB rbQRZcom_Click()
+    FMain.ini["qrzCom/Value"] = 1
+    FMain.$qrzCom = 1
 
-  Message.Info("Not yet implemented!")
+END
+
+PUBLIC SUB rbQRZcomWeb_Click()
+    FMain.ini["qrzCom/Value"] = 2
+    FMain.$qrzCom = 2  
+
+END
+
+PUBLIC SUB rbNotQRZcom_Click()
+    FMain.ini["qrzCom/Value"] = 0
+    FMain.$qrzCom = 0  
 
 END

@@ -120,6 +120,7 @@ END
 
 PUBLIC SUB Form_Open()
     DIM hRes AS Result
+    ME.Move(FMain.ScreenX + (FMain.Width - ME.Width) / 2, FMain.ScreenY + (FMain.Height - ME.Height) / 2) 
     btnOK.Enabled = FALSE
 END 
 
@@ -203,7 +204,10 @@ PUBLIC SUB importQSOs()
     'btnCancel.Enabled = TRUE
     btnOK.Enabled = FALSE
     
-    IF Errors > 0 THEN Message.Info(("Check 'ImportErrors.txt' into User Folder"))
+    IF Errors > 0 THEN 
+        IF Message.Error(("Some errors found.\nCheck 'ImportErrors.txt' into User Folder?"), ("Yes"), "No") = 2 THEN RETURN 
+        Desktop.Open(User.Home &/ "ImportErrors.txt")
+    ENDIF 
   
 END
 
@@ -234,7 +238,14 @@ PUBLIC SUB Process_Record()
         'PRINT call, qso_date, time_on, name, qth, time_off
         FindDXCC(call) ' in case dxcc was empty
         findDistance(call, gridsquare)
-        Log_qso() ' write record to DB 
+        'check for mandatory fields present in adif file
+        IF qso_date <> NULL AND time_on <> NULL AND call <> NULL AND band <> NULL AND mode <> NULL AND rst_rcvd <> NULL AND rst_sent <> NULL THEN
+            Log_qso() ' write record to DB
+        ELSE 
+            INC Errors
+            lblErrors.Text = Errors
+            PRINT #hFileError, ("Missing field/s in ADIF record. Not logged!: "); call, qso_date, time_on, band, mode, rst_rcvd, rst_sent            
+        ENDIF  
         lblCurrent.Text = call & " " & qso_date & " " & time_on & " " & entidad 
         'UpdateStats()    
     END IF
@@ -255,7 +266,7 @@ PUBLIC SUB findDistance(indic AS String, locator AS String)
     ENDIF 
     
     CATCH
-        Message.Error(("Error in findDistance\nDistance error in qso: ") & call & " " & qso_date & " " & band & " " & mode & ("\nCheck 'ImportErrors.txt' into User Folder"))
+        'Message.Error(("Error in findDistance\nDistance error in qso: ") & call & " " & qso_date & " " & band & " " & mode & ("\nCheck 'ImportErrors.txt' into User Folder"))
         INC Errors
         lblErrors.Text = Errors
         PRINT #hFileError, ("Distance error in qso: "); call, qso_date, band, mode
@@ -275,7 +286,7 @@ PUBLIC SUB FindDXCC(callsign AS String)
     'DEBUG entidad
    
     CATCH 
-        Message.Error(("Error in FindDXCC\nDXCC not found for: ") & call & " " & qso_date & " " & band & " " & mode & ("\nCheck 'ImportErrors.txt' into User Folder"))
+        'Message.Error(("Error in FindDXCC\nDXCC not found for: ") & call & " " & qso_date & " " & band & " " & mode & ("\nCheck 'ImportErrors.txt' into User Folder"))
         INC Errors
         lblErrors.Text = Errors
         PRINT #hFileError, ("DXCC not found for: "); call, qso_date, band, mode
@@ -285,8 +296,7 @@ PUBLIC SUB Process_Field(field AS String, p AS Integer)
     DIM Ini AS Integer 
     DIM Fin AS Integer
     DIM Long AS Integer  
-    DIM Valor AS String 
-
+    DIM Valor AS String     
   
     'Get field value
     Ini = p + Len(field)   ' where starts the number
@@ -321,33 +331,33 @@ PUBLIC SUB Process_Field(field AS String, p AS Integer)
             Valor = Replace$(Valor, Chr$(250), String.Chr(00250)) ' u acute
             Valor = Replace$(Valor, Chr$(216), "0") ' 0/
        CASE "<operator:"
-            IF Valor = FALSE THEN Valor = mycallsign
+            IF Valor = "" THEN Valor = mycallsign
     END SELECT   
    
   ' Write value into the correspondent variable
     SELECT CASE field 
   
-        CASE "<qso_date:" 
+        CASE "<qso_date:"             
            qso_date = Valor 
-        CASE "<time_on:"
+        CASE "<time_on:"           
            time_on = Valor 
         CASE "<time_off:"
            time_off = Valor   
-        CASE "<call:"
+        CASE "<call:"            
            call = Upper$(Valor)
         CASE "<freq:"
            freq = Valor
         CASE "<freq_rx:"
            freq_rx = Valor
-        CASE "<band:"
+        CASE "<band:"            
            band = Upper$(Valor)
-        CASE "<mode:"
+        CASE "<mode:"            
            mode = Upper$(Valor)
         CASE "<prop_mode:"
            prop_mode = Upper$(Valor)
-        CASE "<rst_rcvd:"
+        CASE "<rst_rcvd:"            
            rst_rcvd = Valor
-        CASE "<rst_sent:"
+        CASE "<rst_sent:"            
            rst_sent = Valor
         CASE "<name:"
            name = Valor
@@ -402,6 +412,7 @@ END
 PUBLIC SUB Log_qso()
   
     DIM Insert$ AS String
+    
     IF time_off = "" THEN time_off = time_on
   
     Insert$ = "INSERT INTO log VALUES (&1,&2,&3,&4,&5,&6,&7,&8,&9,&10,&11,&12,&13,&14,&15,&16,&17,&18," &
@@ -413,6 +424,7 @@ PUBLIC SUB Log_qso()
     WAIT 0.001
     lblQSOs.Text = Lqso
     pb.Value = n_char / file_l
+    
     
     CATCH
         PRINT #hFileError, "Error logging " & Error.Text & " \n"; call, qso_date, time_on, band, freq, mode, rst_sent, rst_rcvd, name, qth, gridsquare

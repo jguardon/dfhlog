@@ -23,7 +23,7 @@ PRIVATE xml AS NEW XmlReader
 PRIVATE keyQRZ AS String
 PRIVATE csgn AS String
 
-'****PROPIEDADES******
+'****PROPERTIES******
 PRIVATE $qerror AS String
 PRIVATE $qcall AS String
 PRIVATE $fname AS String
@@ -50,17 +50,12 @@ PROPERTY READ county AS String
 PROPERTY READ qslmgr AS String
 PROPERTY READ email AS String
 
-
-PUBLIC SUB _new()
-  
-END
-
+'***************** QRZ.com XML method *****************
 PUBLIC SUB DownloadAsyncKey(URL AS String)
   downloadBufferKey = ""
    _downloadAsyncKey.Async = TRUE
    _downloadAsyncKey.TimeOut = 10
    _downloadAsyncKey.URL = URL
-
    _downloadAsyncKey.Get()
 END
 
@@ -69,7 +64,6 @@ PUBLIC SUB DownloadAsyncData(URL AS String)
    _downloadAsyncData.Async = TRUE
    _downloadAsyncData.TimeOut = 10
    _downloadAsyncData.URL = URL
-
    _downloadAsyncData.Get()
 END
 
@@ -94,8 +88,7 @@ PUBLIC SUB _DownloadData_Error()
 END
 
 PUBLIC SUB _DownloadKey_Finished()
-    DIM sElement AS String
-    
+    DIM sElement AS String    
         
         xml.FromString(downloadBufferKey)
         
@@ -105,24 +98,20 @@ PUBLIC SUB _DownloadKey_Finished()
                     sElement = Xml.Node.Name
                     IF sElement = "Key" THEN
                         xml.Read()
-                       keyQRZ = xml.Node.Value    
-                        
+                       keyQRZ = xml.Node.Value                        
                     ENDIF
             END SELECT
-            Xml.Read()
-            
-        WEND 
-        'sElement = ""
-        TRY DownloadAsyncData("http://online.qrz.com/bin/xml?s=" & keyQRZ & ";callsign=" & csgn)
+            Xml.Read()            
+          WEND 
         
+        TRY DownloadAsyncData("http://online.qrz.com/bin/xml?s=" & keyQRZ & ";callsign=" & csgn)        
         'DEBUG downloadBufferKey
         CATCH 
             Message.Error("Error leyendo XML (Key QRZ.COM)\n Linea: " & Error.Where)
 END
 
 PUBLIC SUB _DownloadData_Finished()
-    DIM sElement AS String
-    
+    DIM sElement AS String    
     
     xml.FromString(downloadBufferData)
     
@@ -189,21 +178,22 @@ PRIVATE SUB getKeyQRZcom()
     DIM pqrz AS String = FMain.ini["Estacion/PassQRZ"]
 
    TRY DownloadAsyncKey("http://online.qrz.com/bin/xml?username=" & uqrz & ";password=" & pqrz)
-   'TRY DownloadAsyncKey("http://online.qrz.com/bin/xml?username=" & uqrz & ";password=" & pqrz)
-  
+   
 END
 
 PUBLIC SUB getQRZcom(callsign AS String)
   
   csgn = callsign
-  
-  IF NOT KeyQRZ OR $qerror = "Session Timeout" OR $qerror = "Username / password required" THEN 
-    getKeyQRZcom()
-  ELSE 
-     TRY DownloadAsyncData("http://online.qrz.com/bin/xml?s=" & keyQRZ & ";callsign=" & Trim(callsign))
-  ENDIF 
-  
-   
+  IF FMain.ini["qrzCom/Value"] = 1 THEN 
+    IF NOT KeyQRZ OR $qerror = "Session Timeout" OR $qerror = "Username / password required" THEN 
+      getKeyQRZcom()
+    ELSE 
+       TRY DownloadAsyncData("http://online.qrz.com/bin/xml?s=" & keyQRZ & ";callsign=" & Trim(callsign))
+    ENDIF 
+  ELSE IF FMain.ini["qrzCom/Value"] = 2
+    getQRZcomWeb("http://www.qrz.com/" & Trim(callsign))
+    
+  ENDIF    
   
 END
 
@@ -222,75 +212,115 @@ PUBLIC SUB clearQRZ()
  $email = NULL
 
 END
+'*************** QRZ.com Web method ***************
+PRIVATE _download AS NEW HttpClient AS "Download"
+PRIVATE downloadBuffer AS String
+PRIVATE $finished AS Boolean = TRUE
 
+PUBLIC SUB getQRZcomWeb(URL AS String)
+    downloadBuffer = ""  
+  IF $finished = TRUE THEN 
+   _download.Async = TRUE
+   _download.TimeOut = 5
+   _download.URL = URL
+   _download.Get()
+  ENDIF 
+END
 
-PRIVATE FUNCTION name_Read() AS String
-    RETURN $name
+PUBLIC SUB Download_Read()
+  DIM buffer AS String
+  $finished = FALSE
+  READ #LAST, buffer, Lof(LAST)
+  downloadBuffer &= buffer
+END
+
+PUBLIC SUB Download_Error()
+    _download.Close
+  DEBUG "Error downloading " & _download.Status 
+END
+
+PUBLIC SUB Download_Finished()
+    TRY extractData(downloadBuffer)
+    $finished = TRUE
+    FMain.updateFields()
+END
+PRIVATE FUNCTION stripField(s AS String) AS String  
+  IF s THEN 
+    s = Trim(s)
+    s = Mid(s, InStr(s, "p>") + 2, InStr(s, "</") - (InStr(s, "p>") + 2))
+  ENDIF 
+  RETURN s
+END
+
+PUBLIC SUB extractData(S AS String)
+  DIM calldata, callsign AS String
+  DIM i, j AS Integer
+  DIM sArr AS String[]
+  IF InStr(S, "calldata") THEN 
+    i = InStr(S, ")\">")
+    j = InStr(S, "style=\"margin-top:1.5em;")
+    IF j > i THEN calldata = Mid(S, i, (j - i))
+    sArr = Split(calldata, "\n", "", TRUE)  
+    
+    callsign = Replace(sArr[0], ")\"", "p", 1) 'to match stripField() function
+    $qcall = stripField(callsign) 
+    $fname = stripField(sArr[1])
+    $addr1 = stripField(sArr[2])
+    $addr2 = stripField(sArr[3])
+    $country = stripField(sArr[4])
+    sArr.Clear
+    IF InStr(S, "Info:") THEN $qslmgr = stripField(Upper(Mid(S, InStr(S, "Info:") + 24)))
+    IF InStr(S, "Square:") THEN $grid = Upper(Mid(S, InStr(S, "Square:") + 27, 6))
+  ELSE 
+    $qcall = ("Not Found")
+  ENDIF 
  
 END
 
-PRIVATE FUNCTION fname_Read() AS String
-    RETURN $fname
-  
+PRIVATE FUNCTION name_Read() AS String
+    RETURN $name 
+END
 
+PRIVATE FUNCTION fname_Read() AS String
+    RETURN $fname 
 END
 
 PRIVATE FUNCTION qerror_Read() AS String
     RETURN $qerror
-  
-
 END
 
 PRIVATE FUNCTION addr1_Read() AS String
     RETURN $addr1
-  
-
 END
 
 PRIVATE FUNCTION addr2_Read() AS String
     RETURN $addr2
-  
-
 END
 
 PRIVATE FUNCTION state_Read() AS String
     RETURN $state
-  
-
 END
 
 PRIVATE FUNCTION grid_Read() AS String
     RETURN Upper($grid)
-  
-
 END
 
 PRIVATE FUNCTION county_Read() AS String
     RETURN $county
-  
-
 END
 
 PRIVATE FUNCTION qslmgr_Read() AS String
     RETURN Upper($qslmgr)
-  
-
 END
 
 PRIVATE FUNCTION email_Read() AS String
     RETURN Lower($email)
-  
-
 END
 
 PRIVATE FUNCTION qcall_Read() AS String
     RETURN Upper($qcall)
-  
-
 END
 
 PRIVATE FUNCTION country_Read() AS String
     RETURN $country
-  
-
 END

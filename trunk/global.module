@@ -26,23 +26,16 @@ PUBLIC $iQSOn AS NEW Integer[]
 PUBLIC dwnld AS NEW HttpClient AS "_getVer"
 PRIVATE ver AS String
 
-
-
 PUBLIC FUNCTION UTCNow() AS Date
-    DIM utc AS String
-    DIM utcd AS Date
-    EXEC ["date", "-u", "+%m/%d/%Y-%H:%M:%S"] TO utc
     
-     utc = Replace(utc, "-", " ")
-     utc = Replace(utc, "\n", "")
-     utcd = CDate(utc) 
-     RETURN utcd
-    
+     RETURN DateAdd(Now, gb.Hour, FMain.$diff)
+   
 END
 
 PUBLIC FUNCTION chkLoc(loc AS String) AS Boolean
 '[a-r]{2}\\d{2}|[a-r]{2}\\d{2}[a-x]{2}
     DIM bLoc AS Boolean
+    loc = Trim(loc)
     IF loc THEN
        regx = NEW Regexp(loc, "^[A-R]{2}\\d{2}[A-X]{2}$|^[A-R]{2}\\d{2}$")
      
@@ -50,8 +43,7 @@ PUBLIC FUNCTION chkLoc(loc AS String) AS Boolean
          'DEBUG regx.Text
           bLoc = TRUE
       ELSE 
-          bLoc = FALSE
-      
+          bLoc = FALSE      
       ENDIF 
     ENDIF 
 
@@ -352,7 +344,7 @@ PUBLIC SUB saveADIF(myFile AS String)
                  FOR EACH hField IN hres.Fields
                      WITH hField
                          L = Len(Trim(Str(hres[.Name])))
-                         IF L > 0 AND .Name <> "id" AND .Name <> "dxcc" AND .Name <> "TPEA" THEN 
+                         IF L > 0 AND .Name <> "id" AND .Name <> "dxcc" THEN 
                          sField = Trim(Str(hres[.Name]))
                              SELECT CASE .Name
                                  CASE "qso_date", "qslrdate", "qslsdate"
@@ -385,7 +377,7 @@ PUBLIC SUB saveADIF(myFile AS String)
        FINALLY 
         FLUSH #hFile
         CLOSE #hFile
-        dbLog.CloseDB()
+        'dbLog.CloseDB()
                 
         CATCH
         Message.Error(("Error exporting Record\n") & hField!call & " " & hField!qso_date & "\n" & Error.Text)
@@ -396,7 +388,7 @@ PUBLIC SUB getVersion()
     ver = ""
     dwnld.Async = TRUE
     dwnld.Timeout = 5
-    dwnld.URL = "http://www.ea7dfh.com/dfhlog/version.php?call=" & FMain.ini["Estacion/QRZ"] & "&loc=" & FMain.ini["Estacion/Locator"]    
+    dwnld.URL = "http://www.ea7dfh.com/dfhlog/version.php?call=" & FMain.ini["Estacion/QRZ"] & "&loc=" & FMain.ini["Estacion/Locator"] & "&ver=" & Application.Version   
     dwnld.Get() 
   
 END
@@ -404,14 +396,15 @@ END
 PUBLIC SUB _getVer_Read()
     DIM buffer AS String
     READ #LAST, buffer, Lof(LAST)
-    ver &= buffer 
-  
+    ver &= buffer  
 END
+
 PUBLIC SUB _getVer_Error()
   
-    DEBUG "Error downloading Version number" & dwnld.Status, Error.Text  
+    DEBUG "Error downloading Version number\n" & dwnld.Status, Error.Text  
   
 END
+
 PUBLIC SUB _getVer_Finished()
     DIM myVersion, verUpdate AS Integer
     DIM sMyVer AS String = "1" & Replace(Application.Version, ".", "")  
@@ -420,11 +413,12 @@ PUBLIC SUB _getVer_Finished()
     
     myVersion = CInt(sMyVer)
     
-    IF ver THEN verUpdate = CInt(ver)    
-    
-    IF verUpdate > myVersion THEN 
-        IF Message.Question(("There is a new version of dfhLog.\nDo you want to visit the download page?"), ("Yes"), "No") = 2 THEN RETURN 
-        Desktop.Open("http://code.google.com/p/dfhlog/downloads/list")       
+    IF ver THEN 
+        verUpdate = CInt(ver)    
+        IF verUpdate > myVersion THEN 
+            IF Message.Question(("There is a new version of dfhLog.\nDo you want to visit the download page?"), ("Yes"), "No") = 2 THEN RETURN 
+            Desktop.Open("http://code.google.com/p/dfhlog/downloads/list")       
+        ENDIF 
     ENDIF 
 END
 

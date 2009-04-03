@@ -1,7 +1,7 @@
 # Gambas Form File 2.0
 
 { Form Form
-  MoveScaled(0,0,62,23)
+  MoveScaled(0,0,62,24)
   Text = ("Compact Database")
   Icon = Picture["dfhlog.png"]
   Border = Window.Fixed
@@ -13,19 +13,24 @@
     Alignment = Align.Justify
   }
   { pb ProgressBar
-    MoveScaled(2,12,57,3)
+    MoveScaled(2,14,57,3)
   }
-  { Button1 Button
-    MoveScaled(13,17,16,3)
+  { btnCancel Button
+    MoveScaled(13,19,16,3)
     Text = ("&Cancel")
   }
-  { Button2 Button
-    MoveScaled(31,17,16,3)
+  { btnOK Button
+    MoveScaled(31,19,16,3)
     Text = ("&OK")
   }
   { PictureBox1 PictureBox
-    MoveScaled(3,2,10,9.1429)
+    MoveScaled(3,2,9,7)
     Picture = Picture["icon:/64/harddisk"]
     Stretch = True
+  }
+  { lblStage Label
+    MoveScaled(3,11,24,2)
+    AutoResize = True
+    Text = ("")
   }
 }
