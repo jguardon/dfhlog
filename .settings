@@ -4,6 +4,12 @@ Count=0
 [DebugWindow]
 Count=0
 
+[DebugWindow/$aMyFields]
+Geometry=[0,0,301,301]
+
+[DebugWindow/$hres]
+Geometry=[0,0,301,301]
+
 [DebugWindow/Action]
 Geometry=[0,25,301,301]
 
@@ -35,6 +41,12 @@ Geometry=[0,25,301,301]
 
 [DebugWindow/Split(sRigs, "\t")]
 Geometry=[0,25,531,325]
+
+[DebugWindow/["5", "s", "v"]]
+Geometry=[0,0,301,301]
+
+[DebugWindow/[0]]
+Geometry=[0,0,301,301]
 
 [DebugWindow/[call LIKE (map.Key)]]
 Geometry=[0,25,301,301]
@@ -72,11 +84,17 @@ Geometry=[0,25,301,301]
 [DebugWindow/file]
 Geometry=[0,25,301,301]
 
+[DebugWindow/global.getBandas()]
+Geometry=[0,0,301,301]
+
 [DebugWindow/hMenue]
 Geometry=[0,0,301,301]
 
 [DebugWindow/hResult]
 Geometry=[0,25,301,301]
+
+[DebugWindow/hres]
+Geometry=[0,0,301,301]
 
 [DebugWindow/iQSOn]
 Geometry=[0,0,301,301]
@@ -112,6 +130,12 @@ Geometry=[0,25,301,301]
 [DebugWindow/prefixes]
 Geometry=[0,0,301,301]
 
+[DebugWindow/rData]
+Geometry=[0,0,301,301]
+
+[DebugWindow/rf]
+Geometry=[0,0,301,301]
+
 [DebugWindow/sCampos]
 Geometry=[0,25,301,301]
 
@@ -132,6 +156,9 @@ Geometry=[0,25,301,301]
 [DebugWindow/tabQSO]
 Geometry=[0,25,301,301]
 
+[DebugWindow/tblGStats.Rows]
+Geometry=[0,0,301,301]
+
 [DebugWindow/ti]
 Geometry=[0,25,301,301]
 
@@ -149,16 +176,16 @@ Geometry=[0,0,301,301]
 
 [FFind]
 SearchIn="Module"
-CaseSensitive=False
+CaseSensitive=True
 SearchWord=False
 SearchComment=False
-SearchString=False
+SearchString=True
 
 [OpenFile]
-File[1]="FMain.class:2192.17"
-File[2]="FMain.form"
-File[3]="FLoc.form"
-File[4]="FLoc.class:168.35"
+File[1]="FMain.form"
+File[2]="FMain.class:1778.33"
+File[3]="FStats.form"
+File[4]="FStats.class:74.14"
 Active=4
 Count=4
 

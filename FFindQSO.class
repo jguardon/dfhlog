@@ -18,17 +18,27 @@
 PRIVATE $hres AS Result
 PUBLIC active AS Boolean = FALSE
 PRIVATE loc AS String
+PRIVATE $rf AS ResultField
+PRIVATE $aMyFields AS NEW String[]
 
 PUBLIC SUB Form_Open()
     
-    'DIM propa, banda, modo AS String
-    active = TRUE
-    ME.Move(FMain.ScreenX + 100, FMain.ScreenY + 100)
+    DIM sql AS String
+    active = TRUE     
+    ME.Move(FLoc.ScreenX + (FLoc.Width - ME.Width) / 2, FLoc.ScreenY + (FLoc.Height - ME.Height) / 2)  
     ME.Title = ("QSOs with ") & loc
-    ME.Stacking = Window.Above
-    ME.SetFocus
+    ME.Raise
         
     prepararCV()
+    IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN 
+    sql = "SELECT id, qso_date, time_on, call, band, mode, prop_mode, rst_rcvd, rst_sent, name, gridsquare, qsl_sent, qsl_rcvd, " &
+    "qsl_via, pfx, country, cont, cqz, ituz, operator, tx_pwr, my_gridsquare, sat_name, distance " &
+    "FROM log;"   
+    $hres = dbLog.cnLog.Exec(sql)
+    
+    FOR EACH $rf IN $hres.Fields   
+      $aMyFields.Add($rf.Name)           
+    NEXT 
 
 END
 
@@ -62,82 +72,38 @@ PRIVATE SUB prepararCV()
   cv.Columns[23].Text = ("Distance (Km)")
     
 END
+PUBLIC SUB cv_Data(Row AS Integer, Column AS Integer)
+    $hres.MoveTo(Row)
+    
+    IF Column = 1 THEN 
+        cv.Data.Text = Format$($hres[$aMyFields[Column]], "dd/mm/yyyy")
+    ELSE       
+        cv.Data.Text = $hres[$aMyFields[Column]]    
+    ENDIF 
+    
+    IF row MOD 2 = 0 THEN cv.Data.Background = Color.LightBackground
+    CATCH 
+        DEBUG Error.Text & "\n" & Error.Where
+  
+END
 
 PUBLIC SUB searchQSO(locator AS String)
     
     DIM sql AS String
-    DIM clave, swColor AS Integer
-    loc = locator
-    ME.Show
-    ME.Stacking = Window.Above
+    loc = locator    
+    Form_Open
     cv.Clear()
-    'p = start
-    'sql = "SELECT * FROM log WHERE Indicativo LIKE &1 ORDER BY id DESC;"
-    sql = "SELECT * FROM log WHERE gridsquare LIKE &1 ORDER BY id ASC;"
+    
+    sql = "SELECT id, qso_date, time_on, call, band, mode, prop_mode, rst_rcvd, rst_sent, name, gridsquare, qsl_sent, qsl_rcvd, " &
+    "qsl_via, pfx, country, cont, cqz, ituz, operator, tx_pwr, my_gridsquare, sat_name, distance " &
+    "FROM log WHERE gridsquare LIKE &1 ORDER BY id ASC;"
 
     IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN
     $hres = dbLog.cnLog.Exec(sql, locator & "%")
     cv.Rows.Count = $hres.Count
     lblNumRec.Text = ("Records: ") & $hres.Count
-    DO WHILE $hres.Available
+    DEC Application.Busy
     
-        cv[clave, 0].Text = $hres!id
-        cv[clave, 0].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 1].Text = Format($hres!qso_date, "dd/mm/yyyy") 'Day($hres!qso_date) & "/" & Month($hres!qso_date) & "/" & Year($hres!qso_date)
-        cv[clave, 1].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 2].Text = Left($hres!time_on, 5)
-        cv[clave, 2].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 3].Text = $hres!call
-        cv[clave, 3].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 4].Text = $hres!band
-        cv[clave, 4].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 5].Text = $hres!mode
-        cv[clave, 5].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 6].Text = $hres!prop_mode
-        cv[clave, 6].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 7].Text = $hres!rst_rcvd
-        cv[clave, 7].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 8].Text = $hres!rst_sent
-        cv[clave, 8].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 9].Text = $hres!name
-        cv[clave, 9].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 10].Text = $hres!gridsquare
-        cv[clave, 10].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 11].Text = $hres!qsl_sent
-        cv[clave, 11].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 12].Text = $hres!qsl_rcvd
-        cv[clave, 12].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 13].Text = $hres!qsl_via
-        cv[clave, 13].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 14].Text = $hres!pfx
-        cv[clave, 14].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 15].Text = $hres!country
-        cv[clave, 15].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 16].Text = $hres!cont
-        cv[clave, 16].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 17].Text = $hres!cqz
-        cv[clave, 17].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 18].Text = $hres!ituz
-        cv[clave, 18].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 19].Text = $hres!operator
-        cv[clave, 19].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 20].Text = $hres!tx_pwr
-        cv[clave, 20].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 21].Text = $hres!my_gridsquare
-        cv[clave, 21].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 22].Text = $hres!sat_name
-        cv[clave, 22].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 23].Text = Format($hres!distance, "#.0")
-        cv[clave, 23].Background = IIf(swColor, Color.White, Color.LightBackground)
-        
-    $hres.MoveNext()
-    INC clave 
-    swColor = NOT swColor 
-  LOOP 
-   
-  dbLog.CloseDB()
-  cv.Refresh()
-  
   CATCH 
     
     Message.Error(("Error in searchQSO") & "\n" & Error.Text & "\n" & Error.Where)
@@ -217,22 +183,16 @@ END
 
 PUBLIC SUB mnuEditarQSO_Click()
   IF global.$iQSOn.Count = 1 THEN 
-        TRY FMain.modifyQSO(CInt(cv[cv.Row, 0].Text))        
-        cv.Refresh()
-        
-        ME.Lower()
-        FMain.SetFocus()
-    ENDIF 
-  
+        TRY FMain.modifyQSO(CInt(cv[cv.Row, 0].Text))         
+        FMain.Raise
+    ENDIF   
 END
 
 PUBLIC SUB fillData()
-  
+  INC Application.Busy
   searchQSO(loc)
-  cv.Refresh()
-
-END
-
+  DEC Application.Busy
+  END
 
 PUBLIC SUB mnuBorrarQSO_Click()
     DIM i AS Integer    
@@ -240,8 +200,7 @@ PUBLIC SUB mnuBorrarQSO_Click()
     IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN 
     FOR i = 0 TO global.$iQSOn.Count - 1
         dbLog.cnLog.Exec("DELETE FROM log WHERE id=&1;", global.$iQSOn[i])
-    NEXT 
-    dbLog.CloseDB()
+    NEXT     
     fillData()
     FMain.fillData()
      CATCH 
@@ -281,7 +240,7 @@ END
 
 PUBLIC SUB cv_Menu()
      
-  menuLog()
+  TRY menuLog()
   cv.Rows.Unselect()
   
 END

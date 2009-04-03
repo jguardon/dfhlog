@@ -34,6 +34,7 @@ PRIVATE map AS Collection
 
 'public
 PUBLIC listDxcc AS NEW Collection
+PUBLIC $aListDxcc AS NEW String[] ' aux array OF entities
 PUBLIC created AS Boolean
 
 
@@ -86,6 +87,7 @@ PUBLIC SUB init()
               ent.pfxs = Trim$(fields[8])
               nmap.Add(ent, CStr(number)) 'coleccion de entidades
               listDxcc.Add(ent.entity, CStr(number)) 'coleccion de nombre entidad, numero
+              $aListDxcc.Add(ent.entity) ' aux array OF entities
               prefixes = Split(ent.pfxs, ",", "\r\n", TRUE)
                 
               
@@ -113,8 +115,8 @@ PUBLIC FUNCTION findEntity(call AS String) AS cty
     call = Trim$(Upper(call))
     
         IF InStr(call, "/") > 0 THEN 
-        prefixa = Left(call, InStr(call, "/"))
-        prefixab = Right(call, Len(call) - InStr(call, "/"))
+        prefixa = Left(call, InStr(call, "/") - 1)        
+        prefixab = Right(call, Len(call) - InStr(call, "/"))        
             IF Len(prefixa) < Len(prefixab) THEN 
                 call = prefixa
               ELSE

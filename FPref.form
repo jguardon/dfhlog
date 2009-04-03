@@ -110,7 +110,7 @@
       }
     }
     { Frame4 Frame
-      MoveScaled(1,16,65,23)
+      MoveScaled(1,16,65,25)
       Text = ("Filters")
       { chkHF CheckBox
         MoveScaled(9,5,24,3)
@@ -146,7 +146,7 @@
     Index = 2
     Text = ("C&olors")
     { Frame5 Frame
-      MoveScaled(1,1,65,38)
+      MoveScaled(1,1,65,40)
       Text = ("Colors")
       { cbtnWorked ColorButton
         MoveScaled(28,5,6,5)
@@ -184,7 +184,7 @@
     Index = 3
     Text = ("&Hamlib")
     { Frame6 Frame
-      MoveScaled(1,1,65,38)
+      MoveScaled(1,1,65,40)
       Text = ("Hamlib (CAT) Parameters")
       { chkHamlib CheckBox
         MoveScaled(6,7,14,3)
@@ -244,50 +244,54 @@
     Index = 4
     Text = ("Ot&hers")
     { Frame7 Frame
-      MoveScaled(1,28,65,14)
+      MoveScaled(1,31,65,11)
       Text = ("XPlanet")
       { chkXplanet CheckBox
-        MoveScaled(9,4,53,3)
+        MoveScaled(9,3,53,3)
         Text = ("Use Xplanet Maps (If installed)")
       }
       { lblXplanetInst Label
-        MoveScaled(9,9,47,3)
+        MoveScaled(9,6,47,3)
         Foreground = &H804000&
         Text = ("")
       }
     }
     { Frame8 Frame
-      MoveScaled(1,1,65,26)
+      MoveScaled(1,1,65,29)
       Text = ("QRZ.com")
-      { chkQRZcom CheckBox
-        MoveScaled(9,3,48,4)
-        Text = ("Fill QSO data from QRZ.com")
-      }
       { Label17 Label
         MoveScaled(12,7,41,3)
         Foreground = &HFF0000&
         Text = ("(A subscription to QRZ.com(xml) is needed)")
       }
       { txtUserQRZ TextBox
-        MoveScaled(9,14,16,3)
+        MoveScaled(9,13,16,3)
         Text = ("")
       }
       { txtPassQRZ TextBox
-        MoveScaled(37,14,16,3)
+        MoveScaled(37,13,16,3)
         Text = ("")
         Password = True
       }
       { Label18 Label
-        MoveScaled(9,11,16,3)
+        MoveScaled(9,10,16,3)
         Text = ("User:")
       }
       { Label19 Label
-        MoveScaled(37,11,16,3)
+        MoveScaled(37,10,16,3)
         Text = ("Password:")
       }
-      { RadioButton1 RadioButton
-        MoveScaled(9,19,46,3)
+      { rbQRZcomWeb RadioButton
+        MoveScaled(9,18,54,3)
         Text = ("Fill QSO data from QRZ.com (Web method)")
+      }
+      { rbNotQRZcom RadioButton
+        MoveScaled(9,24,54,3)
+        Text = ("Don't fetch data from QRZ.com")
+      }
+      { rbQRZcom RadioButton
+        MoveScaled(9,3,52,3)
+        Text = ("Fill QSO data from QRZ.com")
       }
     }
     Index = 0

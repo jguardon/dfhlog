@@ -1,0 +1,80 @@
+' Gambas class file
+
+
+PUBLIC SUB Form_Open()
+    initTable
+    createStats
+END
+
+PRIVATE SUB initTable()
+    DIM bands AS String
+    DIM i AS Integer = 1
+    DIM j AS Integer
+    DIM sEnt AS String    
+    world.$aListDxcc.Sort
+    tblGStats.Rows.Count = world.$aListDxcc.Count  
+    
+    tblGStats.Columns.Count = global.getBandas().Count + 1
+    tblGStats.Columns[0].Text = ("Entity/Band")
+    FOR EACH bands IN global.getBandas()
+        tblGStats.Columns[i].Text = bands
+        tblGStats.Columns[i].Width = 50
+        INC i
+    NEXT
+    tblGStats.Columns[0].Width = 150
+    FOR EACH sEnt IN world.$aListDxcc        
+        tblGStats[j, 0].Text = sEnt
+      INC j 
+    NEXT  
+END
+
+PRIVATE SUB createStats()
+    DIM hres AS Result    
+    DIM sql AS String
+    DIM banda AS String 
+    DIM sAux AS String 
+    DIM iRow, iCol AS Integer 
+    DIM f AS String = Temp$ & ".jpg"  
+    
+    sql = "SELECT country, band, qsl_rcvd FROM log  GROUP BY  qsl_rcvd,  band, country ORDER BY qsl_rcvd;"
+    IF FMain.connDB() THEN RETURN
+    hres = dbLog.cnLog.Exec(sql)    
+     
+    FOR EACH hres 
+        IF world.$aListDxcc.Exist(hres!country) THEN 
+            iRow = world.$aListDxcc.Find(hres!country)
+            IF global.getBandas().Find(hres!band) = -1 THEN CONTINUE 
+            iCol = global.getBandas().Find(hres!band) + 1
+            IF hres!qsl_rcvd = "Y" THEN 
+                tblGStats[iRow, iCol].Alignment = 3
+                tblGStats[iRow, iCol].Font = Font["Bold"]
+                tblGStats[iRow, iCol].BackColor = FMain.ini["Colores/Confirmado"]
+                tblGStats[iRow, iCol].ForeColor = Color.White
+                tblGStats[iRow, iCol].Text = ("C")
+            ELSE
+                tblGStats[iRow, iCol].Alignment = 3 
+                tblGStats[iRow, iCol].Font = Font["Bold"]
+                tblGStats[iRow, iCol].BackColor = FMain.ini["Colores/Trabajado"]
+                tblGStats[iRow, iCol].ForeColor = Color.White
+                tblGStats[iRow, iCol].Text = ("W")
+            ENDIF 
+        ENDIF     
+    NEXT
+    sql = "SELECT DISTINCT country FROM log;"    
+    hres = dbLog.cnLog.Exec(sql)
+    lblTotal.Text = ("Total Entities Worked: ") & hres.Count
+    sql = "SELECT DISTINCT country FROM log WHERE qsl_rcvd='Y';"    
+    hres = dbLog.cnLog.Exec(sql)
+    lblTotalCfd.Text = ("Total Entities Confirmed: ") & hres.Count
+    
+    CATCH 
+        Message.Error(Error.Text & "\n" & Error.Where)  
+END
+
+PUBLIC SUB btnClose_Click()
+    ME.Close()
+END
+
+PUBLIC SUB btnPrint_Click()    
+    Message("Not yet implemented")
+END

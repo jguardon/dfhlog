@@ -16,25 +16,35 @@
 '     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 PRIVATE $hres AS Result
+PRIVATE $rf AS ResultField
+PRIVATE $aMyFields AS NEW String[]
 PUBLIC active AS Boolean = FALSE
 
 PUBLIC SUB Form_Open()
     
-    'DIM propa, banda, modo AS String
+    DIM resul AS Result
+    DIM sql AS String
     active = TRUE
     ME.Move(FMain.ScreenX + 100, FMain.ScreenY + 100)
     ME.Title = ("QSL Print Queue")
-    ME.Stacking = Window.Above
+    ME.Raise
     ME.SetFocus
         
     prepararCV()
+    IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN
+    sql = "SELECT id, date, time, call, band, mode, prop_mode, rst_sent, gridsquare, my_gridsquare, qsl_via, qsl_rcvd, qsl_sent, my_call FROM qQSL;"   
+    resul = dbLog.cnLog.Exec(sql)
+    
+    FOR EACH $rf IN resul.Fields   
+      $aMyFields.Add($rf.Name)           
+    NEXT 
     searchQSO
 
 END
 
 PRIVATE SUB prepararCV()
   
-  cv.Columns.Count = 13
+  cv.Columns.Count = 14
   
   cv.Columns[0].Title = ("Nr")
   cv.Columns[1].Text = ("Date")
@@ -49,50 +59,44 @@ PRIVATE SUB prepararCV()
   cv.Columns[10].Text = "Manager"
   cv.Columns[11].Text = "QSL(R)"  
   cv.Columns[12].Text = ("QSL(S)")
+  cv.Columns[13].Text = ("My Call")
+  
     
 END
 
 PUBLIC SUB searchQSO()
     
     DIM sql AS String
-    DIM clave, swColor AS Integer
     
     cv.Clear()
     
-    sql = "SELECT * FROM qQSL ORDER BY call, id ASC;"
+    sql = "SELECT id, date, time, call, band, mode, prop_mode, rst_sent, gridsquare, my_gridsquare, qsl_via, qsl_rcvd, qsl_sent, my_call FROM qQSL ORDER BY call, id ASC;"
 
     IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN
     $hres = dbLog.cnLog.Exec(sql)
     cv.Rows.Count = $hres.Count
-    lblNumRec.Text = ("Records: ") & $hres.Count
-    DO WHILE $hres.Available
-    
-        cv[clave, 0].Text = $hres!id        
-        cv[clave, 1].Text = Format($hres!date, "dd/mm/yyyy") 
-        cv[clave, 2].Text = Left($hres!time, 5)        
-        cv[clave, 3].Text = $hres!call        
-        cv[clave, 4].Text = $hres!band        
-        cv[clave, 5].Text = $hres!mode        
-        cv[clave, 6].Text = $hres!prop_mode               
-        cv[clave, 7].Text = $hres!rst_sent                
-        cv[clave, 8].Text = $hres!gridsquare
-        cv[clave, 9].Text = $hres!my_gridsquare
-        cv[clave, 10].Text = $hres!qsl_via        
-        cv[clave, 11].Text = $hres!qsl_rcvd
-        cv[clave, 12].Text = $hres!qsl_sent
-
-    $hres.MoveNext()
-    INC clave 
-    
-  LOOP 
-   
-  dbLog.CloseDB()
-  cv.Refresh()
+    lblNumRec.Text = ("Records: ") & $hres.Count 
   
   CATCH 
     
-    Message.Error(("Error in searchQSO") & "\n" & Error.Text & "\n" & Error.Where)
+    DEBUG Error.Text & "\n" & Error.Where
    
+END
+
+PUBLIC SUB cv_Data(Row AS Integer, Column AS Integer)
+    
+    $hres.MoveTo(Row)
+    
+    IF Column = 1 THEN 
+        cv.Data.Text = Format$($hres[$aMyFields[Column]], "dd/mm/yyyy")
+    ELSE       
+        cv.Data.Text = $hres[$aMyFields[Column]]    
+    ENDIF 
+    
+    IF row MOD 2 = 0 THEN cv.Data.Background = Color.LightBackground
+    ' CATCH 
+    '     Message.Error(Error.Text & "\n" & Error.Where)
+  
 END
 
 PRIVATE SUB menuLog()
@@ -151,7 +155,6 @@ END
 PUBLIC SUB mnuEditarQSO_Click()
     IF global.$iQSOn.Count = 1 THEN 
         TRY FMain.modifyQSO(CInt(cv[cv.Row, 0].Text))        
-        cv.Refresh()
         
         ME.Lower()
         FMain.SetFocus()
@@ -160,9 +163,9 @@ PUBLIC SUB mnuEditarQSO_Click()
 END
 
 PUBLIC SUB fillData()
-  
+  INC Application.Busy
   searchQSO()
-  cv.Refresh()
+  DEC Application.Busy
 
 END
 
@@ -174,7 +177,7 @@ PUBLIC SUB mnuBorrarQSO_Click()
     FOR i = 0 TO global.$iQSOn.Count - 1
         dbLog.cnLog.Exec("DELETE FROM log WHERE id=&1;", global.$iQSOn[i])
     NEXT 
-    dbLog.CloseDB()
+    
     fillData()
     FMain.fillData()
      CATCH 
@@ -196,7 +199,7 @@ END
 
 PUBLIC SUB cv_Menu()
      
-  menuLog()
+  TRY menuLog()
   cv.Rows.Unselect()
   
 END
@@ -224,9 +227,8 @@ PUBLIC SUB btnClear_Click()
     IF cv.Rows.Count > 0 THEN 
         IF Message.Warning(("Print queue will be deleted\nDo you want to continue?"), ("Delete"), ("Cancel")) = 2 THEN RETURN
         IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN 
-        dbLog.cnLog.Exec("DELETE FROM qQSL")
-        
-        dbLog.CloseDB()
+        dbLog.cnLog.Exec("DELETE FROM qQSL")        
+        'dbLog.CloseDB()
         fillData() 
     ENDIF  
 

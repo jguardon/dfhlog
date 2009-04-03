@@ -17,14 +17,15 @@
 
 PRIVATE hTable AS Table
 PRIVATE i AS Integer = 0
+PRIVATE pStarted AS Boolean = FALSE
 
 PUBLIC PROCEDURE CreateTableTemp()
 
   DIM hres AS Result
-      
+    lblStage.Text = ("Creating temp table...")  
     IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN 
     IF dbLog.cnLog.Tables.Exist("temp") THEN dbLog.cnLog.Tables.Remove("temp")
-    pb.Value = 0.5
+    pb.Value = 0.25
     hTable = dbLog.cnLog.Tables.Add("temp")
 
   WITH hTable
@@ -47,8 +48,8 @@ PUBLIC PROCEDURE CreateTableTemp()
     .Fields.Add("comment", db.String, 50)
     .Fields.Add("qsl_sent", db.String, 1)
     .Fields.Add("qsl_rcvd", db.String, 1)
-    .Fields.Add("qslsdate", db.String, 10)
-    .Fields.Add("qslrdate", db.String, 10)
+    .Fields.Add("qslsdate", db.Date)
+    .Fields.Add("qslrdate", db.Date)
     .Fields.Add("qsl_via", db.String, 10)
     .Fields.Add("pfx", db.String, 5)
     .Fields.Add("cont", db.String, 3)
@@ -73,8 +74,9 @@ PUBLIC PROCEDURE CreateTableTemp()
     .Update
 
   END WITH
-    pb.Value = 1
+    pb.Value = 0.5
     copyData()
+    lblStage.Text = ("Finished!")
     dbLog.cnLog.Exec("VACUUM")
     dbLog.CloseDB()
     
@@ -88,7 +90,7 @@ END
 PUBLIC PROCEDURE CreateTableLog()
   
   DIM hres AS Result
-
+    lblStage.Text = ("Recreating log table...")
     pb.Value = 0
     IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN 
     IF dbLog.cnLog.Tables.Exist("log") THEN dbLog.cnLog.Tables.Remove("log")
@@ -114,8 +116,8 @@ PUBLIC PROCEDURE CreateTableLog()
     .Fields.Add("comment", db.String, 50)
     .Fields.Add("qsl_sent", db.String, 1)
     .Fields.Add("qsl_rcvd", db.String, 1)
-    .Fields.Add("qslsdate", db.String, 10)
-    .Fields.Add("qslrdate", db.String, 10)
+    .Fields.Add("qslsdate", db.Date)
+    .Fields.Add("qslrdate", db.Date)
     .Fields.Add("qsl_via", db.String, 10)
     .Fields.Add("pfx", db.String, 5)
     .Fields.Add("cont", db.String, 3)
@@ -151,26 +153,15 @@ END
 
 PUBLIC PROCEDURE copyData()
     DIM hres AS Result
-    DIM sql, sql2 AS String
-    pb.Value = 0
-    hres = dbLog.cnLog.Exec("SELECT id FROM log")
-    i = hres.Max + 2
-    sql = "SELECT * FROM log ORDER BY qso_date, time_on;"
-     
-     sql2 = "INSERT INTO temp VALUES (&1,&2,&3,&4,&5,&6,&7,&8,&9,&10,&11,&12,&13,&14,&15,&16,&17,&18," &
-              "&19,&20,&21,&22,&23,&24,&25,&26,&27,&28,&29,&30,&31,&32,&33,&34,&35,&36,&37,&38);"
+    DIM sql AS String
+    pb.Value = 0.75  
+    lblStage.Text = ("Backing up data...")
+    dbLog.cnLog.Begin()
+    sql = "INSERT INTO temp SELECT * FROM log ORDER BY qso_date, time_on;"
     
     hres = dbLog.cnLog.Exec(sql)
-    'dbLog.cnLog.Begin()
-    WHILE hres.Available
-        WAIT 0.01
-        dbLog.cnLog.Exec(sql2, "", hres!qso_date, hres!time_on, hres!time_off, hres!call, hres!freq, hres!freq_rx, hres!band, hres!mode, hres!prop_mode, hres!rst_rcvd, hres!rst_sent, hres!name, hres!gridsquare, hres!qth, hres!comment, hres!qsl_sent, hres!qsl_rcvd, hres!qslsdate, hres!qslrdate, hres!qsl_via, hres!pfx, hres!cont, hres!cqz, hres!ituz, hres!state, hres!cnty, hres!iota, hres!operator, hres!tx_pwr, hres!my_gridsquare, hres!sat_name, hres!sat_mode, hres!email, hres!country, hres!dxcc, hres!TPEA, hres!distance)
-        DEC i
-        pb.Value = 1 / i
-        hres.MoveNext()
+    pb.Value = 1
     
-    WEND
-    'dbLog.cnLog.Commit()
     CreateTableLog()
     
     CATCH 
@@ -181,45 +172,67 @@ END
 PUBLIC PROCEDURE restoreData()
 
     DIM hres AS Result
-    DIM sql AS String
+    DIM rf AS ResultField    
+    DIM sql, sql2 AS String
+    lblStage.Text = ("Restoring data...")
+    pb.Value = 0  
     
-    sql = "INSERT INTO log SELECT * FROM temp ORDER BY qso_date, time_on;"
-    dbLog.cnLog.Begin()
+    sql = "SELECT * FROM temp ORDER BY qso_date, time_on;"
+     
+    sql2 = "INSERT INTO log VALUES (&1,&2,&3,&4,&5,&6,&7,&8,&9,&10,&11,&12,&13,&14,&15,&16,&17,&18," &
+              "&19,&20,&21,&22,&23,&24,&25,&26,&27,&28,&29,&30,&31,&32,&33,&34,&35,&36,&37,&38);"
+    
     hres = dbLog.cnLog.Exec(sql)
-    dbLog.cnLog.Commit()
+    i = hres.Count
+    WHILE hres.Available
+        pb.Value = 1 / i
+        dbLog.cnLog.Exec(sql2, "", hres!qso_date, hres!time_on, hres!time_off, hres!call, hres!freq, hres!freq_rx, hres!band, hres!mode, hres!prop_mode, hres!rst_rcvd, hres!rst_sent, hres!name, hres!gridsquare, hres!qth, hres!comment, hres!qsl_sent, hres!qsl_rcvd, hres!qslsdate, hres!qslrdate, hres!qsl_via, hres!pfx, hres!cont, hres!cqz, hres!ituz, hres!state, hres!cnty, hres!iota, hres!operator, hres!tx_pwr, hres!my_gridsquare, hres!sat_name, hres!sat_mode, hres!email, hres!country, hres!dxcc, hres!TPEA, hres!distance)                
+        hres.MoveNext()
+        DEC i    
+    WEND
+    ' a workaround to get rid of NULL fields
+    lblStage.Text = ("Cleaning up...")
+    hres = dbLog.cnLog.Exec("SELECT * FROM log")
+    pb.Value = 0
+    i = hres.Fields.Count
+    FOR EACH rf IN hres.Fields
+        pb.Value = 1 / i
+        WAIT 0.01
+        sql = "UPDATE log set " & rf.Name & "='' WHERE " & rf.Name & " ISNULL;"
+        dbLog.cnLog.Exec(sql)        
+        DEC i        
+    NEXT 
+    pb.Value = 1 
+    
     IF dbLog.cnLog.Tables.Exist("temp") THEN dbLog.cnLog.Tables.Remove("temp")
-    
+    dbLog.cnLog.Commit()
     CATCH 
-        Message.Error(("Error in RestoreData:\n") & Error.Text)
-    
+        Message.Error(("Error in RestoreData:\n") & Error.Text)    
   
 END
 
 PUBLIC SUB Form_Close()
-
-  dbLog.CloseDB()
-
-END
-
-PUBLIC SUB Button1_Click()
-
-  ME.Close()
+    DEC Application.Busy  
+    dbLog.CloseDB()
 
 END
 
-PUBLIC SUB Button2_Click()
+PUBLIC SUB btnCancel_Click()
+    IF pStarted = TRUE THEN 
+      dbLog.cnLog.Rollback()
+      Message.Warning(("Compacting DB has been aborted!"))
+    ENDIF   
+    ME.Close()
+
+END
+
+PUBLIC SUB btnOK_Click()
     Label1.ForeColor = Color.Red
     Label1.Text = ("Compacting and recalculating records\nPlease, wait for a while...")
-    ME.Mouse = Mouse.Wait
-    WAIT 0.2
-    Button1.Enabled = FALSE
-    Button2.Enabled = FALSE
+    INC Application.Busy
+    pStarted = TRUE    
+    btnOK.Enabled = FALSE
+    WAIT 0.5
     CreateTableTemp()
-
-END
-
-PUBLIC SUB Form_Open()
-
-  
 
 END

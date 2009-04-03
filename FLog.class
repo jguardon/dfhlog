@@ -21,20 +21,23 @@ PRIVATE pages AS Integer
 PRIVATE currentPage AS Integer
 PRIVATE records AS Integer
 PRIVATE start AS Integer
+PRIVATE $rf AS ResultField
+PRIVATE $aMyFields AS NEW String[]
 
 PUBLIC SUB Form_Open()
+    ME.Move(FMain.ScreenX + (FMain.Width - ME.Width) / 2, FMain.ScreenY + (FMain.Height - ME.Height) / 2)
     ME.Title = ("Log Review")
     prepararCV()
     disp = 100
     start = 0
-    IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN 
-    
-    hres = dbLog.cnLog.Exec("SELECT id FROM log")
+    IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN     
+    hres = dbLog.cnLog.Exec("SELECT * FROM log")
     records = hres.Count
-    dbLog.CloseDB()
-    
+    FOR EACH $rf IN hres.Fields   
+      $aMyFields.Add($rf.Name)           
+    NEXT     
     IF records > disp THEN 
-        pages = Round(records / disp)
+        pages = Round(records / disp) + 1
     ELSE 
         pages = 1
     ENDIF
@@ -45,7 +48,7 @@ END
 
 PRIVATE SUB prepararCV()
   
-  cv.Columns.Count = 37
+  cv.Columns.Count = 38
   
   cv.Columns[0].Title = ("Nr")
   cv.Columns[1].Text = ("Date")
@@ -82,10 +85,30 @@ PRIVATE SUB prepararCV()
   cv.Columns[32].Text = ("Sat Mode")
   cv.Columns[33].Text = "Email"
   cv.Columns[34].Text = "DXCC"
-  cv.Columns[35].Text = "TPEA"
-  cv.Columns[36].Text = ("Distance (Km)")
+  cv.Columns[35].Text = "Ref."
+  cv.Columns[36].Text = "TPEA"
+  cv.Columns[37].Text = ("Distance (Km)")
   
   
+END
+
+PUBLIC SUB cv_Data(Row AS Integer, Column AS Integer)
+       
+    hres.moveto(Row)
+
+    SELECT CASE Column
+        CASE 1, 18, 19
+            IF hres[$aMyFields[Column]] <> NULL THEN cv.Data.Text = Format$(hres[$aMyFields[Column]], "dd/mm/yyyy")
+        CASE 2, 3
+            IF hres[$aMyFields[Column]] <> NULL THEN cv.Data.Text = Left(hres[$aMyFields[Column]], 5)
+        CASE ELSE     
+            cv.Data.Text = hres[$aMyFields[Column]]
+    END SELECT
+    
+    IF row MOD 2 = 0 THEN cv.Data.Background = Color.LightBackground
+    CATCH 
+        DEBUG Error.Text
+     
 END
 
 PRIVATE SUB getQSOs(OPTIONAL p AS Integer = 0)
@@ -98,96 +121,10 @@ PRIVATE SUB getQSOs(OPTIONAL p AS Integer = 0)
 
     IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN
     hres = dbLog.cnLog.Exec(sql)
-    cv.Rows.Count = hres.Count 
-    
-    DO WHILE hres.Available
-    
-        cv[clave, 0].Text = hres!id
-        cv[clave, 0].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 1].Text = Format(hres!qso_date, "dd/mm/yyyy") 'Day(hres!qso_date) & "/" & Month(hres!qso_date) & "/" & Year(hres!qso_date)
-        cv[clave, 1].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 2].Text = Left(hres!time_on, 5)
-        cv[clave, 2].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 3].Text = Left(hres!time_off, 5)
-        cv[clave, 3].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 4].Text = hres!call
-        cv[clave, 4].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 5].Text = hres!freq
-        cv[clave, 5].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 6].Text = hres!freq_rx
-        cv[clave, 6].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 7].Text = hres!band
-        cv[clave, 7].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 8].Text = hres!mode
-        cv[clave, 8].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 9].Text = hres!prop_mode
-        cv[clave, 9].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 10].Text = hres!rst_rcvd
-        cv[clave, 10].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 11].Text = hres!rst_sent
-        cv[clave, 11].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 12].Text = hres!name
-        cv[clave, 12].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 13].Text = hres!gridsquare
-        cv[clave, 13].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 14].Text = hres!qth
-        cv[clave, 14].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 15].Text = hres!comment
-        cv[clave, 15].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 16].Text = hres!qsl_sent
-        cv[clave, 16].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 17].Text = hres!qsl_rcvd
-        cv[clave, 17].Background = IIf(swColor, Color.White, Color.LightBackground)
-        IF hres!qslsdate THEN cv[clave, 18].Text = Format(hres!qslsdate, "dd/mm/yyyy")
-        cv[clave, 18].Background = IIf(swColor, Color.White, Color.LightBackground)
-        IF hres!qslrdate THEN cv[clave, 19].Text = Format(hres!qslrdate, "dd/mm/yyyy")
-        cv[clave, 19].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 20].Text = hres!qsl_via
-        cv[clave, 20].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 21].Text = hres!pfx
-        cv[clave, 21].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 22].Text = hres!cont
-        cv[clave, 22].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 23].Text = hres!cqz
-        cv[clave, 23].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 24].Text = hres!ituz
-        cv[clave, 24].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 25].Text = hres!state
-        cv[clave, 25].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 26].Text = hres!cnty
-        cv[clave, 26].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 27].Text = hres!iota
-        cv[clave, 27].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 28].Text = hres!operator
-        cv[clave, 28].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 29].Text = hres!tx_pwr
-        cv[clave, 29].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 30].Text = hres!my_gridsquare
-        cv[clave, 30].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 31].Text = hres!sat_name
-        cv[clave, 31].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 32].Text = hres!sat_mode
-        cv[clave, 32].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 33].Text = hres!email
-        cv[clave, 33].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 34].Text = hres!country
-        cv[clave, 34].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 35].Text = hres!TPEA
-        cv[clave, 35].Background = IIf(swColor, Color.White, Color.LightBackground)
-        cv[clave, 36].Text = Format(hres!distance, "#.0")
-        cv[clave, 36].Background = IIf(swColor, Color.White, Color.LightBackground)
-        
-    hres.MoveNext()
-    INC clave 
-    swColor = NOT swColor 
-  LOOP 
+    cv.Rows.Count = hres.Count     
   
-  
-  dbLog.CloseDB()
-  cv.Refresh()
-  
-  IF pages > 1 THEN currentPage = (start / disp) + 1
-    txtQSOs.Text = currentPage & (" of ") & (pages + 1)
+    IF pages > 1 THEN currentPage = CInt(start / disp) + 1
+    txtQSOs.Text = currentPage & (" of ") & pages
     
     SELECT CASE start
     
@@ -198,7 +135,7 @@ PRIVATE SUB getQSOs(OPTIONAL p AS Integer = 0)
             btnLast.Enabled = TRUE
             btnNext.Enabled = TRUE
     
-        CASE pages * disp
+        CASE (pages * disp) - 100
         
             btnLast.Enabled = FALSE
             btnNext.Enabled = FALSE
@@ -242,7 +179,7 @@ END
 
 PUBLIC SUB btnLast_Click()
 
-  start = pages * disp
+  start = (pages * disp) - 100
   getQSOs(start)
 
 END
@@ -305,26 +242,21 @@ PRIVATE SUB menuLog()
 
   ' pop up 
   IF hMenus THEN hMenus.Popup()
-  
+  TRY cv.Rows.Unselect
   
 END
 
 PUBLIC SUB mnuEditarQSO_Click()
     IF global.$iQSOn.Count = 1 THEN 
-        TRY FMain.modifyQSO(CInt(cv[cv.Row, 0].Text))
-        'getQSOs(currentPage)
-        cv.Refresh()
-        
-        ME.Lower()
-        FMain.SetFocus()
-    ENDIF 
-  
+        TRY FMain.modifyQSO(CInt(cv[cv.Row, 0].Text))        
+        FMain.Visible = TRUE       
+    ENDIF   
 END
 
 PUBLIC SUB fillData()
+  INC Application.Busy
   getQSOs(currentPage)
-  cv.Refresh()
-
+  DEC Application.Busy
 END
 
 
@@ -373,8 +305,8 @@ END
 
 PUBLIC SUB cv_Menu()
      
-  menuLog() 
- cv.Rows.Unselect
+  TRY menuLog() 
+ 
 END
 
 PUBLIC SUB getSelectedQSO()

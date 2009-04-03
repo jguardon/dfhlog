@@ -288,17 +288,21 @@ PRIVATE SUB drawSquares()
     ENDIF 
     IF rbConf.Value = TRUE THEN 
         wkdcfd = "Y"
-        sql = "select gridsquare from log where qso_date between &1 and &2 and band like &3 and mode like &4 and prop_mode like &5 and gridsquare <>'' and qsl_rcvd like &6  and distance > &7 group by substr(gridsquare,0,4) order by gridsquare;"
+        sql = "select gridsquare from log where qso_date between &1 and &2 and band like &3 and mode like &4 and " &
+        "prop_mode like &5 and gridsquare <>'' and qsl_rcvd like &6  and distance >= &7 " &
+        "group by substr(gridsquare,0,4) order by gridsquare;"
             
     ELSE IF rbWorked.Value = TRUE
         wkdcfd = "%"
-        sql = "select gridsquare from log where qso_date between &1 and &2 and band like &3 and mode like &4 and prop_mode like &5 and gridsquare <>'' and qsl_rcvd like &6  and distance > &7 group by substr(gridsquare,0,4) order by gridsquare;"
+        sql = "select gridsquare from log where qso_date between &1 and &2 and band like &3 and mode like &4 and " &
+        "prop_mode like &5 and gridsquare <>'' and qsl_rcvd like &6  and distance >= &7 " &
+        "group by substr(gridsquare,0,4) order by gridsquare;"
     
     ELSE IF rbNotConf.Value = TRUE
         wkdcfd = "Y"
         sql = "select gridsquare from log where substr(gridsquare,0,4) not in (select substr(gridsquare,0,4) from log where " & 
         "qsl_rcvd = &6) and qso_date between &1 and &2 and band like &3 and mode like &4 and prop_mode like &5 and qsl_rcvd <> &6 " &
-        "and distance > &7 group by substr(gridsquare,0,4);"
+        "and distance >= &7 group by substr(gridsquare,0,4);"
         
     ENDIF
     IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN 
@@ -438,7 +442,7 @@ PRIVATE SUB menuFind()
 END
 
 PUBLIC SUB mnufindQSOs_Click()
-  
+  INC Application.Busy
   FFindQSO.searchQSO(locator)
   FFindQSO.Title = ("QSOs with ") & locator
   

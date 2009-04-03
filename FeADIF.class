@@ -133,7 +133,7 @@ PUBLIC SUB btnOK_Click()
             FOR EACH hField IN hres.Fields
                 WITH hField
                     L = Len(Trim(Str(hres[.Name])))
-                    IF L > 0 AND .Name <> "id" AND .Name <> "dxcc" AND .Name <> "TPEA" THEN 
+                    IF L > 0 AND .Name <> "id" AND .Name <> "dxcc" THEN 
                     sField = Trim(Str(hres[.Name]))
                         SELECT CASE .Name
                             CASE "qso_date", "qslrdate", "qslsdate"
