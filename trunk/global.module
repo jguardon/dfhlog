@@ -240,25 +240,19 @@ PUBLIC FUNCTION bearingLoc(loc1 AS String, loc2 AS String) AS Float
   
 END
 
-PUBLIC FUNCTION parseFecha(fecha AS String) AS String
-  
-  DIM Y, M, D, nF AS String
-  DIM F AS String[]
-  fecha = Left(fecha, 10)
-  IF fecha THEN 
-  
-    F = Split(fecha, "-")
+PUBLIC FUNCTION parseFecha(fecha AS String) AS String  
+    DIM Y, M, D, nF AS String
+    DIM F AS String[]
+    fecha = Left(fecha, 10)
+    IF fecha THEN   
+        F = Split(fecha, "-")        
+        Y = F[0]
+        M = F[1]
+        D = F[2]
+        nF = D & "/" & M & "/" & Y  
+    ENDIF  
     
-    Y = F[0]
-    M = F[1]
-    D = F[2]
-    nF = D & "/" & M & "/" & Y
-  
-  ENDIF  
-  
-  RETURN nF
-  
-  
+    RETURN nF
 END
 
 PUBLIC FUNCTION clusterColor(call AS String, band AS String) AS Integer
@@ -274,18 +268,15 @@ PUBLIC FUNCTION clusterColor(call AS String, band AS String) AS Integer
             'DEBUG call, band, hResul!QSL_r
             colorDX = FMain.ini["Colores/Necesitado", Color.Blue]
         ELSE
-            DO WHILE hResul.Available 
-            
+            DO WHILE hResul.Available             
                   IF hResul!qsl_rcvd = "Y" THEN 
                       'DEBUG call, band, hResul!QSL_r
                       colorDX = FMain.ini["Colores/Confirmado", Color.Green]
                       EXIT
                   ELSE 
                       'DEBUG call, band, hResul!QSL_r
-                      colorDX = FMain.ini["Colores/Trabajado", Color.Orange]
-                  
-                  ENDIF 
-                  
+                      colorDX = FMain.ini["Colores/Trabajado", Color.Orange]                  
+                  ENDIF                   
                   hResul.MoveNext()
             LOOP 
         ENDIF 
@@ -295,7 +286,6 @@ PUBLIC FUNCTION clusterColor(call AS String, band AS String) AS Integer
   
     CATCH 
         DEBUG Error.Text, Error.Where
-
 END
 
 PUBLIC SUB addToQueue(id AS Integer)
@@ -308,12 +298,10 @@ PUBLIC SUB addToQueue(id AS Integer)
         "my_gridsquare, qsl_via, qsl_rcvd, qsl_sent FROM log WHERE id=&1;"
         IF FMain.connDB() THEN RETURN 
         hres = dbLog.cnLog.Exec(sql, id)
-    ENDIF 
+    ENDIF
     
-
     CATCH 
-        Message.Error(Error.Text, Error.Where)    
-        
+        Message.Error(Error.Text, Error.Where)
 END
 
 PUBLIC SUB saveADIF(myFile AS String)
@@ -355,42 +343,36 @@ PUBLIC SUB saveADIF(myFile AS String)
                                      L = Len(sField)
                                  CASE "mode"
                                      IF sField = "USB" OR sField = "LSB" THEN sField = "SSB"
-                                                                         
                                  CASE ELSE 
                                      sField = Trim(Str(hres[.Name]))
                              END SELECT
-                                     
-                                     
                              PRINT #hFile, "<" & Upper(.Name) & ":" & Str(L) & ">" & sField;
                          ENDIF 
                      END WITH 
                  NEXT 
-                 PRINT #hFile, " <EOR>"
-                 
-                 WAIT 0.01
-                 
-                 hres.MoveNext()
-                 
+                 PRINT #hFile, " <EOR>"                 
+                 WAIT 0.01                 
+                 hres.MoveNext()                 
             LOOP  
        NEXT 
               
-       FINALLY 
-        FLUSH #hFile
+    FINALLY         
         CLOSE #hFile
-        'dbLog.CloseDB()
-                
-        CATCH
+        'dbLog.CloseDB()                
+    CATCH
         Message.Error(("Error exporting Record\n") & hField!call & " " & hField!qso_date & "\n" & Error.Text)
-
 END
 
 PUBLIC SUB getVersion()
+    DIM distro AS String
+    SHELL "cat /etc/issue" TO distro
+    distro = Replace(distro, "\\n \\l", "")
+    distro = Replace(distro, " ", "_")
     ver = ""
     dwnld.Async = TRUE
     dwnld.Timeout = 5
-    dwnld.URL = "http://www.ea7dfh.com/dfhlog/version.php?call=" & FMain.ini["Estacion/QRZ"] & "&loc=" & FMain.ini["Estacion/Locator"] & "&ver=" & Application.Version   
-    dwnld.Get() 
-  
+    dwnld.URL = "http://www.ea7dfh.com/dfhlog/version.php?call=" & FMain.ini["Estacion/QRZ"] & "&loc=" & FMain.ini["Estacion/Locator"] & "&ver=" & Application.Version & "&dist=" & distro
+    dwnld.Get()  
 END
 
 PUBLIC SUB _getVer_Read()

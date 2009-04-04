@@ -75,6 +75,26 @@ PUBLIC SUB btnClose_Click()
     ME.Close()
 END
 
-PUBLIC SUB btnPrint_Click()    
-    Message("Not yet implemented")
+PUBLIC SUB btnPrint_Click()
+    DIM i, j, k AS Integer
+    DIM s AS String
+    DIM fic AS File
+    DIM path AS String = Temp$ & ".csv"    
+    s &= "\"\","
+    FOR k = 0 TO global.getBandas().Count - 1
+        s &= "\"" & global.getBandas()[k] & "\","
+    NEXT
+    FOR i = 0 TO tblGStats.Rows.Count - 1
+        s &= "\n"
+        FOR j = 0 TO tblGStats.Columns.Count - 1
+            s &= "\"" & tblGStats[i, j].Text & "\","
+        NEXT 
+    NEXT 
+    OPEN path FOR WRITE CREATE AS #fic
+    PRINT #fic, s
+    CLOSE #fic
+    'Desktop.Open(path)
+    SHELL "ooffice -calc " & path 
+    CATCH 
+        Message.Error(Error.Text & "\n" & Error.Where)    
 END
