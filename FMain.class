@@ -863,12 +863,12 @@ PRIVATE FUNCTION strippedCall() AS String
 END
 
 PUBLIC SUB filterLine(dxline AS String)
-    DIM HF AS String = FMain.ini["Filtros/HF", 0]
-    DIM VHF AS String = FMain.ini["Filtros/VHF", 0]
-    DIM WARC AS String = FMain.ini["Filtros/WARC", 0]
-    DIM ANN AS String = FMain.ini["Filtros/ANN", 0]
-    DIM WWV AS String = FMain.ini["Filtros/WWV", 0]
-    DIM WCY AS String = FMain.ini["Filtros/WCY", 0]
+    DIM HF AS String = FMain.ini["Filtros/HF", TRUE]
+    DIM VHF AS String = FMain.ini["Filtros/VHF", TRUE]
+    DIM WARC AS String = FMain.ini["Filtros/WARC", TRUE]
+    DIM ANN AS String = FMain.ini["Filtros/ANN", TRUE]
+    DIM WWV AS String = FMain.ini["Filtros/WWV", TRUE]
+    DIM WCY AS String = FMain.ini["Filtros/WCY", TRUE]
     DIM band AS String
     DIM freq AS Float
     
@@ -877,11 +877,11 @@ PUBLIC SUB filterLine(dxline AS String)
             freq = CFloat(Trim(Mid(dxline, 15, 10)))
             band = global.getBand(freq)        
             SELECT CASE band                
-                CASE "2190M", "160M", "80M", "40M", "20M", "15M", "10M"                'HF bands
+                CASE "2190M", "160M", "80M", "40M", "20M", "15M", "10M"                         'HF bands
                     IF HF = TRUE THEN addLines(dxline, 1)
-                CASE "6M", "2M", "70CM", "23CM", "13CM", "6CM", "3CM", "1.5CM", "6MM"  'V-UHF bands
+                CASE "6M", "4M", "2M", "70CM", "23CM", "13CM", "6CM", "3CM", "1.25CM", "6MM"    'V-UHF bands
                     IF VHF = TRUE THEN addLines(dxline, 1)
-                CASE "30M", "17M", "12M"                                               'WARC bands
+                CASE "30M", "17M", "12M"                                                        'WARC bands
                     IF WARC = TRUE THEN addLines(dxline, 1)
                 CASE NULL
                     addLines(dxline, 0) 
@@ -1330,8 +1330,7 @@ PUBLIC SUB fillData()
     hResulMax = dbLog.cnLog.Exec("SELECT id FROM log")
     DO WHILE hResul.Available
       clave = hResul["id"]
-      grdQSO.Add(clave, clave)
-      
+      grdQSO.Add(clave, clave)      
       grdQSO[clave][1] = Format(hResul!qso_date, "dd/mm/yyyy") 'Day(hResul!qso_date) & "/" & Month(hResul!qso_date) & "/" & Year(hResul!qso_date)
       grdQSO[clave][2] = Left(hResul!time_on, 5)
       grdQSO[clave][3] = hResul!call
@@ -1353,10 +1352,8 @@ PUBLIC SUB fillData()
       grdQSO[clave][19] = hResul!operator
       grdQSO[clave][20] = hResul!tx_pwr
       grdQSO[clave][21] = hResul!my_gridsquare
-      grdQSO[clave][22] = hResul!sat_name
-          
+      grdQSO[clave][22] = hResul!sat_name      
       hResul.MoveNext()
-        
     LOOP 
         
     lblNoQSO.Text = hResulMax.Count + 1

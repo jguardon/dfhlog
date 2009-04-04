@@ -1,7 +1,7 @@
 # Gambas Form File 2.0
 
 { Form Form
-  MoveScaled(0,0,114.2857,85.7143)
+  MoveScaled(0,0,114.1429,85.7143)
   Text = ("Global Stats")
   Icon = Picture["icon:/16/component"]
   Arrangement = Arrange.Vertical
@@ -35,7 +35,7 @@
     }
     { btnPrint Button
       MoveScaled(47,0,16,3)
-      Text = ("&Print")
+      Text = ("E&xport CSV")
     }
     { btnClose Button
       MoveScaled(64,0,16,3)
