@@ -3,7 +3,7 @@
 Title=dfhLog
 Startup=FMain
 Icon=dfhlog.png
-Version=0.0.31
+Version=0.0.32
 Library=gb.qt
 Library=gb.form
 Library=gb.db
@@ -17,7 +17,7 @@ Library=gb.pcre
 Library=gb.qt.ext
 Library=gb.settings
 Library=gb.xml
-Description=Amateur Radio Logging program\n\nImport/Export ADIF files, cluster connection, Hamlib based CAT control, \nQRZ.com support, XPlanet Maps and Custom GridSquare Maps, \nsimple awards support (WAS, DXCC, IOTA, USACA, TPEA).\n\nCurrent available languages:\n\nEnglish, Spanish, Galego, Catalan, Portugues
+Description=Amateur Radio Logging program\n\nImport/Export ADIF files, cluster connection, Hamlib based CAT control, \nQRZ.com support, XPlanet Maps and Custom GridSquare Maps, \nsimple awards support (WAS, DXCC, IOTA, USACA, TPEA).\n\nCurrent available languages:\n\nEnglish, Spanish, Galego, Portugues
 Authors=Jesús Guardón, EA7DFH\nea7dfh@ea7dfh.com
 TabSize=4
 Translate=1

@@ -183,11 +183,13 @@ SearchString=True
 
 [OpenFile]
 File[1]="FMain.form"
-File[2]="FMain.class:1778.33"
+File[2]="FMain.class:1355.23"
 File[3]="FStats.form"
-File[4]="FStats.class:74.14"
-Active=4
-Count=4
+File[4]="FStats.class:95.23"
+File[5]="FiADIF.class:20.0"
+File[6]="global.module:254.13"
+Active=6
+Count=6
 
 [Watches]
 Count=0

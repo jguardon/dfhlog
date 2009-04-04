@@ -1,9 +1,24 @@
+* Sat Apr 04 2009 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.32
+-Improved ADIF import routine. Now it checks for mandatory fields. Also, now only pop up a message error if there were errors at the end of process.
+-Improved UTCNow routine, now it consumes less cpu.
+-Added Partial Statistics while logging a QSO by mode/band.
+-Added Global Statistics on all bands from menu.
+-AutoSpot routine improved. Tristate checkbox to send spots without confirmation, with a previous confirmation or not send spots at all.
+-Improved compact database routine. No more NULL fields breaking searches.
+-Added QRZ.com Web search method (no subscription needed).
+-Improved gridview filling. Fastest with huge amount of records.
+-Added: author keeps track of version and linux distribution when the application asks for new versions (experimental).
+-Updated current translations.
+-Bug Fixed: Did not export TPEA field to ADIF.
+-Bug Fixed: Callsigns splitted incorrectly when '/' symbol included.
+-Bug Fixed: When firstly installed, cluster filters state didn't match internal variables. Thanks to (EA1EYE).
+
 * Sun Mar 22 2009 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.31
 -Forgot to mention KLog EA4TV's based code for the world class. Thanks, Jaime.
  <http://jaime.robles.es/klog>
 -Spanish translation updated
--Galician translation finished
--Portuguese translation finished
+-Galician translation finished. Thanks to (EA3GLJ).
+-Portuguese translation finished. Thanks to (CT1DRB).
 -Database structure modified
 -Locator Map fully operative
 -Changed 'About..' form
