@@ -76,9 +76,8 @@ PRIVATE importing AS Boolean = FALSE
 '------------------------------------------
 PUBLIC SUB _new()
     mycallsign = FMain.ini["Estacion/QRZ"]
-    cCty = NEW cty
-    world.init()    'init the cty.dat class
-    
+    cCty = FMain.c 'cty class
+        
     Fields.Add("<qso_date:", 1)
     Fields.Add("<time_on:", 2)
     Fields.Add("<time_off:", 3)  

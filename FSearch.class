@@ -112,6 +112,7 @@ PRIVATE SUB searchQSO()
     cv.Rows.Count = $hres.Count
      
     lblNumRec.Text = ("Records: ") & $hres.Count
+    cv.Refresh
     
     CATCH 
       

@@ -25,6 +25,8 @@ PRIVATE ent AS NEW cty
 PUBLIC $iQSOn AS NEW Integer[]
 PUBLIC dwnld AS NEW HttpClient AS "_getVer"
 PRIVATE ver AS String
+PUBLIC $alertedMUF AS Boolean = FALSE
+PUBLIC $alertedES AS Boolean = FALSE
 
 PUBLIC FUNCTION UTCNow() AS Date
     
@@ -404,5 +406,60 @@ PUBLIC SUB _getVer_Finished()
     ENDIF 
 END
 
+PUBLIC FUNCTION unixTS() AS Integer 'returns unix timestamp
+    DIM dt AS Date
+    dt = Date(1970, 1, 1, 0, 0, 0)
+    RETURN DateDiff(dt, Now, gb.Second) 
+END
 
+PUBLIC SUB processMapSpots(dxLine AS String) 'insert data into spots table to plot dx lines on map
+    DIM DX, spotter, band, remarks, prop, loc1, loc2 AS String
+    DIM freq AS Float
+    DIM loc AS String[]
+    DIM regx AS Regexp
+    DIM sql AS String = "INSERT INTO spots VALUES(&1,&2,&3,&4,&5,&6,&7);"
+    spotter = Mid(dxLine, 7, InStr(dxLine, ":") - 7)
+    DX = Trim(Mid(dxLine, 27, 10))
+    freq = CFloat(Trim(Mid(dxLine, 15, 10)))
+    band = global.getBand(freq)
+    remarks = Trim(Mid(dxLine, 37, 34))
+    regx = NEW Regexp(remarks, "(?i)([a-r]{2}\\d{2}[a-x]{2}|[a-r]{2}\\d{2})\\s?([\\s<(:]([a-z]{2,3})[\\s>):]|-|->|>|/|><|<->|<>)\\s?(([a-r]{2}\\d{2}[a-x]{2}|[a-r]{2}\\d{2}))")
+    IF regx.SubMatches.Count = 5 THEN 
+        loc1 = Upper(regx.SubMatches[1].Text)
+        prop = Upper(regx.SubMatches[3].Text)
+        loc2 = Upper(regx.SubMatches[4].Text)
+        IF FMain.connDB() THEN RETURN 
+        dbLog.cnLog.Exec(sql, unixTS(), band, spotter, DX, loc1, loc2, prop)
+        dbLog.cnLog.Exec("DELETE FROM spots WHERE timestamp < &1;", (unixTS() - FMain.ini["FMapLoc/DXTime", 1800]))
+    ENDIF
+    alertMUF
+    CATCH 
+        DEBUG Error.Text & "\n" & Error.Where & "\n" & dxLine
+END
 
+PUBLIC SUB alertMUF()    
+    DIM hres AS Result
+    DIM sql AS String
+    DIM spotMUF, spotES AS Integer    
+    sql = "SELECT * from spots WHERE band='6M' AND prop='ES';"
+    IF FMain.connDB() THEN RETURN 
+    hres = dbLog.cnLog.Exec(sql)
+    spotMUF = hres.Count
+    sql = "SELECT * from spots WHERE band='2M' AND prop='ES';"
+    hres = dbLog.cnLog.Exec(sql)
+    spotES = hres.Count
+    
+    IF spotES >= 3 AND $alertedES = FALSE THEN 
+        IF FMain.ini["FMapLoc/MUFAlert"] = TRUE THEN TRY SHELL "aplay -q /usr/share/dfhlog-images/Siren.wav"
+        $alertedES = TRUE
+    ELSE IF spotES < 3 AND $alertedES = TRUE
+        $alertedES = FALSE
+    ENDIF
+         
+    IF spotMUF > 3 AND $alertedMUF = FALSE THEN         
+        IF FMain.ini["FMapLoc/MUFAlert"] = TRUE THEN TRY SHELL "aplay -q /usr/share/dfhlog-images/Siren.wav"
+        $alertedMUF = TRUE
+    ELSE IF spotMUF < 3 AND $alertedMUF = TRUE
+        $alertedMUF = FALSE
+    ENDIF 
+END

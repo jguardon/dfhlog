@@ -16,7 +16,7 @@
 '     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  
 PRIVATE I AS Integer = 0
-PRIVATE c AS cty
+PUBLIC c AS cty
 PRIVATE qrz AS String
 PUBLIC ini AS Settings
 STATIC en AS Boolean
@@ -419,7 +419,7 @@ PUBLIC SUB TimerQSO_Timer()
         vHora.Value = Format(global.UTCNow(), "hh:nn:ss")
     ENDIF     
     vHora2.Value = Format(global.UTCNow(), "hh:nn:ss")
-    lblQSOTimer.Text = ("QSO duration: ") & CDate(CDate(vHora2.Value) - CDate(vHora.Value))  
+    lblQSOTimer.Text = ("QSO duration: ") & CDate(CDate(vHora2.Value) - CDate(vHora.Value))    
 END
 
 PUBLIC SUB chkRT_Click() 
@@ -652,6 +652,7 @@ PUBLIC SUB clearFields()
     txtState.Clear()
     txtCounty.Clear()
     txtFreq2.Clear()
+    statsEntity.Caption = ""
     tabLC[2].Visible = FALSE  
 END
 
@@ -670,7 +671,11 @@ PUBLIC SUB mnuDXMap_Click()
 END
 
 PUBLIC SUB mnuSquares_Click()
-    IF global.MapLoc = FALSE THEN FLoc.Show()
+    IF global.MapLoc = FALSE THEN 
+        INC Application.Busy
+        FLoc.Show()
+        DEC Application.Busy
+    ENDIF 
 END
 
 PUBLIC SUB btnSqrMap_Click()
@@ -880,9 +885,10 @@ PUBLIC SUB filterLine(dxline AS String)
                 CASE "2190M", "160M", "80M", "40M", "20M", "15M", "10M"                         'HF bands
                     IF HF = TRUE THEN addLines(dxline, 1)
                 CASE "6M", "4M", "2M", "70CM", "23CM", "13CM", "6CM", "3CM", "1.25CM", "6MM"    'V-UHF bands
+                    global.processMapSpots(dxline) 'always send map spots to database
                     IF VHF = TRUE THEN addLines(dxline, 1)
                 CASE "30M", "17M", "12M"                                                        'WARC bands
-                    IF WARC = TRUE THEN addLines(dxline, 1)
+                    IF WARC = TRUE THEN addLines(dxline, 1) 
                 CASE NULL
                     addLines(dxline, 0) 
             END SELECT               
@@ -902,10 +908,10 @@ PUBLIC SUB filterLine(dxline AS String)
 END
 
 PUBLIC SUB addLines(linea AS String, OPTIONAL tipo AS Integer = 0)   'añade linea según tipo: 0=default, 1=DX, 2=ANN, 3=WWV, 4=WCY, 5=sh/dx
-    ' añade lineas ya filtradas al tableview
+    ' add filtered lines to gridview
     DIM DX, band AS String
     DIM freq AS Float    
-    tblCluster.Rows.Count = I + 1    
+    tblCluster.Rows.Count = I + 1
     SELECT CASE tipo
         CASE 0
             tblCluster[I, 0].Text = linea
@@ -1778,13 +1784,13 @@ PRIVATE SUB update_stats()
                     IF hres!qsl_rcvd = "Y" THEN 
                         tblStats[0, i].Alignment = 3
                         tblStats[0, i].Font = Font["Bold"]
-                        tblStats[0, i].BackColor = ini["Colores/Confirmado"]
+                        tblStats[0, i].BackColor = ini["Colores/Confirmado", Color.Orange]
                         tblStats[0, i].ForeColor = Color.White
                         tblStats[0, i].Text = ("C")                        
                     ELSE 
                         tblStats[0, i].Alignment = 3
                         tblStats[0, i].Font = Font["Bold"]
-                        tblStats[0, i].BackColor = ini["Colores/Trabajado"]
+                        tblStats[0, i].BackColor = ini["Colores/Trabajado", Color.Green]
                         tblStats[0, i].ForeColor = Color.White
                         tblStats[0, i].Text = ("W")
                     ENDIF 
@@ -1793,13 +1799,13 @@ PRIVATE SUB update_stats()
                     IF hres!qsl_rcvd = "Y" THEN 
                         tblStats[1, i].Alignment = 3
                         tblStats[1, i].Font = Font["Bold"]
-                        tblStats[1, i].BackColor = ini["Colores/Confirmado"]
+                        tblStats[1, i].BackColor = ini["Colores/Confirmado", Color.Orange]
                         tblStats[1, i].ForeColor = Color.White
                         tblStats[1, i].Text = ("C")
                     ELSE 
                         tblStats[1, i].Alignment = 3
                         tblStats[1, i].Font = Font["Bold"]
-                        tblStats[1, i].BackColor = ini["Colores/Trabajado"]
+                        tblStats[1, i].BackColor = ini["Colores/Trabajado", Color.Green]
                         tblStats[1, i].ForeColor = Color.White
                         tblStats[1, i].Text = ("W")
                     ENDIF 
@@ -1808,13 +1814,13 @@ PRIVATE SUB update_stats()
                     IF hres!qsl_rcvd = "Y" THEN 
                         tblStats[2, i].Alignment = 3
                         tblStats[2, i].Font = Font["Bold"]
-                        tblStats[2, i].BackColor = ini["Colores/Confirmado"]
+                        tblStats[2, i].BackColor = ini["Colores/Confirmado", Color.Orange]
                         tblStats[2, i].ForeColor = Color.White
                         tblStats[2, i].Text = ("C")
                     ELSE
                         tblStats[2, i].Alignment = 3 
                         tblStats[2, i].Font = Font["Bold"]
-                        tblStats[2, i].BackColor = ini["Colores/Trabajado"]
+                        tblStats[2, i].BackColor = ini["Colores/Trabajado", Color.Green]
                         tblStats[2, i].ForeColor = Color.White
                         tblStats[2, i].Text = ("W")
                     ENDIF

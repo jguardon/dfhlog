@@ -16,37 +16,35 @@
 '     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-PRIVATE EUR AS Picture
-PRIVATE ASI AS Picture
-PRIVATE AFR AS Picture
-PRIVATE NAM AS Picture
-PRIVATE SAM AS Picture
-PRIVATE OCE AS Picture
-PRIVATE ESP AS Picture
-PRIVATE MUN AS Picture
-PRIVATE Sx AS Float
-PRIVATE Sy AS Float
-PRIVATE Tx AS Float
-PRIVATE Ty AS Float
-PRIVATE locator AS String
-STATIC currentMap AS Picture
+' PRIVATE EUR AS Picture
+' PRIVATE ASI AS Picture
+' PRIVATE AFR AS Picture
+' PRIVATE NAM AS Picture
+' PRIVATE SAM AS Picture
+' PRIVATE OCE AS Picture
+' PRIVATE ESP AS Picture
+PRIVATE $pWorld AS Picture
+PRIVATE $Sx AS Float
+PRIVATE $Sy AS Float
+PRIVATE $Tx AS Float
+PRIVATE $Ty AS Float
+PRIVATE $locator AS String
+PRIVATE $startX AS Integer
+PRIVATE $startY AS Integer
+PRIVATE $device AS Object
+PRIVATE $capture AS NEW Picture
+
+PUBLIC SUB _new()  
+    $device = canvas  
+END
 
 PRIVATE SUB loadImages()
-
-    EUR = Picture["/usr/share/dfhlog-images/pEU.png"]
-    ASI = Picture["/usr/share/dfhlog-images/pAS.png"]
-    AFR = Picture["/usr/share/dfhlog-images/pAF.png"]
-    NAM = Picture["/usr/share/dfhlog-images/pNA.png"]
-    SAM = Picture["/usr/share/dfhlog-images/pSA.png"]
-    OCE = Picture["/usr/share/dfhlog-images/pOC.png"]
-    ESP = Picture["/usr/share/dfhlog-images/pSP.png"]
-    MUN = Picture["/usr/share/dfhlog-images/pWW.png"]
-  
+    $pWorld = Picture["/usr/share/dfhlog-images/bigworld.jpg"]
+    $capture.Resize($pWorld.Width, $pWorld.Height)
 END
 
 PRIVATE FUNCTION parseCbo(cbo AS ComboBox) AS String
-    DIM s AS String
-    
+    DIM s AS String    
     IF cbo.Index = 0 THEN 
       s = "%"
     ELSE 
@@ -54,104 +52,48 @@ PRIVATE FUNCTION parseCbo(cbo AS ComboBox) AS String
     ENDIF 
     
     RETURN s
-
 END
 
-PUBLIC SUB drwMapa(map AS Picture)
-    'lienzo.Clear()
-    currentMap = map
-    SELECT CASE map
-    
-        CASE EUR        
-            
-            Sx = 70.7129
-            Sy = 53.66
-            Tx = 25.5521
-            Ty = 72.1329
-            lienzo.Font = Font["Monospace, 7"]
-            
-        CASE ESP
-            
-            Sx = 18.84
-            Sy = 20.82
-            Tx = 10.1
-            Ty = 50.31
-            lienzo.Font = Font["Monospace, 20"]
-            
-        CASE NAM
-        
-            Sx = 81.1909
-            Sy = 64.7271
-            Tx = 133.5271
-            Ty = 73.5579
-            lienzo.Font = Font["Monospace, 7"]
-            
-        CASE SAM        
-            
-            Sx = 109.2811
-            Sy = 87.1534
-            Tx = 116.7712
-            Ty = 26.9769
-            lienzo.Font = Font["Monospace, 7"]
-            
-        CASE AFR
-            
-            Sx = 96.4288
-            Sy = 76.9039
-            Tx = 29.0535
-            Ty = 40.6753
-            lienzo.Font = Font["Monospace, 7"]
-            
-        CASE OCE
-        
-            Sx = 84.5148
-            Sy = 67.4857
-            Tx = -95.235
-            Ty = 14.2688
-            lienzo.Font = Font["Monospace, 7"]
-            
-        CASE ASI
-        
-            Sx = 109.5392
-            Sy = 87.3592
-            Tx = -43.3746
-            Ty = 84.1883
-            lienzo.Font = Font["Monospace, 7"]
-        
-        CASE MUN        
-            
-            Sx = 360.0
-            Sy = 168.3
-            Tx = 180.0
-            Ty = 84.0
-                           
-    END SELECT
-    
-    
-    lienzo.Width = map.Width
-    lienzo.Height = map.Height
-        
-    Draw.Begin(lienzo)
-    Draw.Picture(map, 0, 0)
-    Draw.End()
-    
+PUBLIC SUB drwMapa()
+    $Sx = 360.0
+    $Sy = 180.0
+    $Tx = 180.0
+    $Ty = 90.0
+    IF $device = canvas THEN 
+        $device.Width = $pWorld.Width
+        $device.Height = $pWorld.Height
+    ELSE 
+    $device = $capture
+    ENDIF     
+    Draw.Begin($device)
+    Draw.Picture($pWorld, 0, 0)
+    Draw.End()    
     IF chkSquares.Value = TRUE THEN drwGrid()
-  
+    'drawDX
 END
 
 PUBLIC SUB Form_Open()
-    DIM propa, banda, modo AS String
-    
-    
+    DIM propa, banda, modo AS String    
     loadImages()
-     ME.Top = FMain.ini["FMapLoc/Top", ME.Top]  
-     ME.Left = FMain.ini["FMapLoc/Left", ME.Left] 
-     ME.Height = FMain.ini["FMapLoc/Height", ME.Height]  
-     ME.Width = FMain.ini["FMapLoc/Width", ME.Width]
-     
+    ME.Top = FMain.ini["FMapLoc/Top", ME.Top]  
+    ME.Left = FMain.ini["FMapLoc/Left", ME.Left] 
+    ME.Height = FMain.ini["FMapLoc/Height", ME.Height]  
+    ME.Width = FMain.ini["FMapLoc/Width", ME.Width]
+    chkPanel.Value = FMain.ini["FMapLoc/ShowPanel", FALSE]
+    cbtnMDiv.Color = FMain.ini["FMapLoc/MainDiv", Color.RGB(200, 140, 80)]
+    cbtnSubDiv.Color = FMain.ini["FMapLoc/SubDiv", Color.Gray]
+    cbtnGSquares.Color = FMain.ini["FMapLoc/GSquares", Color.Green]
+    chkDX.Value = FMain.ini["FMapLoc/ShowLines", FALSE]
+    cbtn6M.Value = FMain.ini["FMapLoc/Line6M", Color.green]
+    cbtn4M.Value = FMain.ini["FMapLoc/Line4M", Color.Orange]
+    cbtn2M.Value = FMain.ini["FMapLoc/Line2M", Color.Red]
+    cbtn70CM.Value = FMain.ini["FMapLoc/Line70CM", Color.Blue]
+    cbtnSHF.Value = FMain.ini["FMapLoc/LineSHF", Color.Magenta]
+    chkMUF.Value = FMain.ini["FMapLoc/MUFAlert", FALSE]
+    spDXTime.Value = FMain.ini["FMapLoc/DXTime", 30] / 60
+    spDXTime.BackColor = Color.White
     global.MapLoc = TRUE
-
-    drwMapa(EUR)
+    drwMapa()
     cboPropa.Add(("All"), 0)
     FOR EACH propa IN global.getPropa()
         cboPropa.Add(propa)
@@ -169,52 +111,51 @@ PUBLIC SUB Form_Open()
     dateFin.Value = global.UTCNow()
     ToolPanel1.Index = 1
     chkSquares.Value = FMain.ini["FMapLoc/Grid", FALSE]
-     
-     CATCH 
-     
-        Message.Error(("Please, install required package \"dfhlog-images\""))
+    FINALLY 
+        ScrollView1.Scroll(FMain.ini["FMapLoc/ScrollX", 0], FMain.ini["FMapLoc/ScrollY", 0])
+
+     CATCH
+        Message.Error(("Please, install required package \"dfhlog-images-1.1-1\""))
         ME.Close()
 
 END
 
 PUBLIC SUB Form_Close()
-
-    global.MapLoc = FALSE
-  
+    global.MapLoc = FALSE  
     FMain.ini["FMapLoc/Top"] = ME.ScreenY
     FMain.ini["FMapLoc/Left"] = ME.ScreenX
     FMain.ini["FMapLoc/Height"] = ME.Height
     FMain.ini["FMapLoc/Width"] = ME.Width
-    
-
+    FMain.ini["FMapLoc/ScrollX"] = ScrollView1.ScrollX
+    FMain.ini["FMapLoc/ScrollY"] = ScrollView1.ScrollY
 END
 
-PUBLIC SUB lienzo_MouseMove()
+PUBLIC SUB canvas_MouseMove()
     DIM x, y AS Float
-    DIM ball AS Balloon
-        x = Mouse.X / (lienzo.Width / Sx) - Tx
-        y = Mouse.Y / (lienzo.Height / Sy) - Ty
-        
-        Label1.Text = ("Latitude: ") & Round(y * -1, -4) & ("  Longitude: ") & Round(x, -4) 
-        ME.Text = "dfhLog - " & global.latLong2locator(y * -1, x)
-        locator = Left(global.latLong2locator(y * -1, x), 4)
-        lienzo.ToolTip = global.latLong2locator(y * -1, x) & "\n" &
-        ("At ") & Round(global.distLoc(global.latLong2locator(y * -1, x), FMain.ini["Estacion/Locator"]), -1) & (" Km from ") & FMain.ini["Estacion/Locator"]
-
- 
+    
+    IF Mouse.Left THEN 'panning the picture around
+        ScrollView1.Scroll(ScrollView1.ScrollX + ($startX - Mouse.X), ScrollView1.ScrollY + ($startY - Mouse.Y))    
+    ENDIF
+    x = Mouse.X / (canvas.Width / $Sx) - $Tx
+    y = Mouse.Y / (canvas.Height / $Sy) - $Ty
+    
+    Label1.Text = ("Latitude: ") & Round(y * -1, -4) & ("  Longitude: ") & Round(x, -4)
+    ME.Text = "dfhLog - " & global.latLong2locator(y * -1, x)
+    $locator = Left(global.latLong2locator(y * -1, x), 4)
+    canvas.ToolTip = global.latLong2locator(y * -1, x) & "\n" &
+    ("At ") & Round(global.distLoc(global.latLong2locator(y * -1, x), FMain.ini["Estacion/Locator"]), -1) & (" Km from ") & FMain.ini["Estacion/Locator"]
 END
 
 PUBLIC SUB drwGrid()
     DIM i, j AS Integer
 
-    WITH Draw
-        
-        .Begin(lienzo)    
-        .ForeColor = Color.LightGray
+    WITH Draw        
+        .Begin($device)    
+        .ForeColor = FMain.ini["FMapLoc/SubDiv", Color.Gray]
         .LineStyle = Line.Solid
         .LineWidth = 0.5
-        .Scale(lienzo.Width / Sx, lienzo.Height / Sy)
-        .Translate(Tx, Ty)
+        .Scale($device.Width / $Sx, $device.Height / $Sy)
+        .Translate($Tx, $Ty)
         
         FOR i = -180 TO 180 STEP 2              
             .Line(i, -90, i, 90)
@@ -224,14 +165,13 @@ PUBLIC SUB drwGrid()
             .Line(-180, j, 180, j)
         NEXT
         
-        .End()
-        
-        .Begin(lienzo)    
-        .ForeColor = Color.RGB(200, 140, 80)
+        .End()        
+        .Begin($device)    
+        .ForeColor = FMain.ini["FMapLoc/MainDiv", Color.RGB(200, 140, 80)]
         .LineStyle = Line.Solid
         .LineWidth = 2
-        .Scale(lienzo.Width / Sx, lienzo.Height / Sy)
-        .Translate(Tx, Ty)
+        .Scale($device.Width / $Sx, $device.Height / $Sy)
+        .Translate($Tx, $Ty)
         
         FOR i = -180 TO 180 STEP 20
             .Line(i, -90, i, 90)
@@ -241,20 +181,11 @@ PUBLIC SUB drwGrid()
             .Line(-180, j, 180, j)
         NEXT
         
-        .End()
-    
+        .End()    
     END WITH
-    
-      
-    ' pic = DrawingArea1.Grab()
-    ' pic.Save(User.Home &/ "mypic.png")
-    ' Desktop.Open(User.Home &/ "mypic.png")
-
- 
 END
 
 PUBLIC SUB btnOK_Click()
-
     IF IsDate(dateIni.Value) AND IsDate(dateFin.Value) THEN 
         IF dateIni.Value > dateFin.Value THEN 
             Message.Warning(("Start Date couldn't be greater than End Date"))
@@ -265,16 +196,14 @@ PUBLIC SUB btnOK_Click()
         drawSquares()
     ELSE 
         Message.Warning(("Check dates, please"))
-    ENDIF 
+    ENDIF
+    IF chkDX.Value = TRUE THEN drawDX() 
     
     CATCH 
         Message.Error(("Error in btnOK_Click") & "\n" & Error.Text & "\n" & Error.Where)
-  
-
 END
 
 PRIVATE SUB drawSquares()
-
     DIM hres AS Result
     DIM sql, sq AS String
     DIM glat, glon AS Float
@@ -285,7 +214,8 @@ PRIVATE SUB drawSquares()
         dist = 0
     ELSE 
         dist = vDist.Value
-    ENDIF 
+    ENDIF
+     
     IF rbConf.Value = TRUE THEN 
         wkdcfd = "Y"
         sql = "select gridsquare from log where qso_date between &1 and &2 and band like &3 and mode like &4 and " &
@@ -310,161 +240,248 @@ PRIVATE SUB drawSquares()
     
     IF hres.Count < 1 THEN 
         Message.Info(("Query has no results!"))
-    ELSE 
-    
-        Draw.Begin(lienzo)
-        Draw.ForeColor = Color.Red
-        'Draw.FillColor = Color.Gray
-        'Draw.FillStyle = Fill.CrossDiagonal
-        Draw.Scale(lienzo.Width / Sx, lienzo.Height / Sy)
-        Draw.Translate(Tx, Ty)
+    ELSE
+        Draw.Begin($device)
+        Draw.ForeColor = FMain.ini["FMapLoc/GSquares", Color.green]
+        Draw.Scale($device.Width / $Sx, $device.Height / $Sy)
+        Draw.Translate($Tx, $Ty)
         
         WHILE hres.Available
-            sq = Left(hres!gridsquare, 4) & "AX"
-            
+            sq = Left(hres!gridsquare, 4) & "AX"            
             glat = Round(global.locator2latlon(sq).lat * -1)
-            glon = Round(global.locator2latlon(sq).lon)
-        '   DEBUG glat, glon, sq
-            Draw.Rect(glon, glat, 2, 1)
-            IF currentMap <> MUN THEN Draw.Text(Left(sq, 4), glon, glat) ', 1, 1, 1)
-            hres.MoveNext()
-        
+            glon = Round(global.locator2latlon(sq).lon)        
+            Draw.Rect(glon, glat, 2, 1)            
+            Draw.Font = Font["Monospace,8"]
+            Draw.Text(Left(sq, 4), glon, glat) ', 1, 1, 1)
+            hres.MoveNext()        
          WEND  
          Draw.End()
-    ENDIF 
+    ENDIF    
     
     CATCH 
         Message.Error(("Error in drawSquares") & "\n" & Error.Text & "\n" & Error.Where)
   
 END
 
-PUBLIC SUB lblEU_MouseDown()
-
-    drwMapa(EUR)
-
-END
-
-PUBLIC SUB lblES_MouseDown()
-
-    drwMapa(ESP)
-
-END
-
-PUBLIC SUB lblNA_MouseDown()
-
-    drwMapa(NAM)
-
-END
-
-PUBLIC SUB lblAF_MouseDown()
-
-    drwMapa(AFR)
-
-END
-
-PUBLIC SUB btnClear_Click()
-
-    lienzo.Clear()
-    drwMapa(currentMap)
-
-END
-
-PUBLIC SUB ToolButton1_Click()
-
-    ME.Close()
-
-END
-
-PUBLIC SUB lblAS_MouseDown()
-
-    drwMapa(ASI)
-
-END
-
-PUBLIC SUB lblOC_MouseDown()
-
-    drwMapa(OCE)
-
-END
-
-PUBLIC SUB lblSA_MouseDown()
-
-    drwMapa(SAM)
-
-END
-
-PUBLIC SUB lblMUN_MouseDown()
-
-    drwMapa(MUN)
-
-END
-
-PUBLIC SUB lienzo_MouseDrag()
-
-    DIM deltaX AS Integer = Mouse.X / 2
-    DIM deltaY AS Integer = Mouse.Y / 2
+PRIVATE SUB drawDX()
+    DIM sql AS String
+    DIM hRes AS Result
+    DIM x1, y1, x2, y2 AS Integer
+    sql = "SELECT * FROM spots;"
+    IF FMain.connDB() THEN RETURN 
+    hRes = dbLog.cnLog.Exec(sql)
     
+    Draw.Begin($device)
+    Draw.LineWidth = 1    
+    
+    DO WHILE hRes.Available
+        SELECT CASE hRes!band
+            CASE "6M"
+                Draw.ForeColor = FMain.ini["FMapLoc/Line6M", Color.green]
+            CASE "4M"
+                Draw.ForeColor = FMain.ini["FMapLoc/Line4M", Color.Orange]
+            CASE "2M"
+                Draw.ForeColor = FMain.ini["FMapLoc/Line2M", Color.Red]
+            CASE "70CM"
+                Draw.ForeColor = FMain.ini["FMapLoc/Line70CM", Color.Blue]
+            CASE ELSE 
+                Draw.ForeColor = FMain.ini["FMapLoc/LineSHF", Color.DarkMagenta]
+        END SELECT 
+        SELECT CASE hRes!prop
+            CASE "TR"
+                Draw.LineStyle = Line.Solid
+            CASE "ES"
+                Draw.LineStyle = Line.Dash
+            CASE "TEP"
+                Draw.LineStyle = Line.DashDot
+            CASE "MS"
+                Draw.LineStyle = Line.Dot
+            CASE ELSE 
+                Draw.LineStyle = Line.DashDotDot
+        END SELECT
+        x1 = (global.locator2latlon(hRes!loc1).lon + 180) * 15 
+        y1 = ((global.locator2latlon(hRes!loc1).lat * -1) + 90) * 15
+        'Draw.Text(hRes!loc1, x1, y1)
+        x2 = (global.locator2latlon(hRes!loc2).lon + 180) * 15
+        y2 = ((global.locator2latlon(hRes!loc2).lat * -1) + 90) * 15
+        'Draw.Text(hRes!loc2, x2, y2)
+        Draw.Line(x1, y1, x2, y2)        
+        hRes.MoveNext
+    LOOP
+    Draw.ForeColor = FMain.ini["FMapLoc/GSquares", Color.green]
+    Draw.LineStyle = Line.Solid 
+    Draw.End() 
+END
+
+
+PUBLIC SUB canvas_MouseDown()
     IF Mouse.Left THEN 
-        ScrollView1.ScrollX = (deltaX - ScrollView1.X) * -1
-        ScrollView1.ScrollY = (deltaY - ScrollView1.Y) * -1
+        canvas.Mouse = Mouse.Pointing
+        $startX = Mouse.X
+        $startY = Mouse.Y
     ENDIF 
 END
 
-PUBLIC SUB lienzo_MouseDown()
+PUBLIC SUB canvas_MouseUp()
+    canvas.Mouse = Mouse.Default
     IF Mouse.Left THEN 
-        lienzo.Mouse = Mouse.Pointing
+        FMain.ini["FMapLoc/ScrollX"] = ScrollView1.ScrollX
+        FMain.ini["FMapLoc/ScrollY"] = ScrollView1.ScrollY
     ENDIF 
-END
-
-PUBLIC SUB lienzo_MouseUp()
-    lienzo.Mouse = Mouse.Default
     IF Mouse.Right THEN 
         menuFind()
     ENDIF
-
 END
 
-PRIVATE SUB menuFind()
-  
-  DIM hmenus AS Menu
-  DIM hmenu AS Menu
-  
-  hMenus = NEW Menu(ME)
-  
-  hMenu = NEW Menu(hMenus) AS "mnufindQSOs"
-  hMenu.Text = ("Find QSOs with ") & locator
-  hMenu.Picture = Picture["find.png"]
-  
-  ' pop up 
-  IF hMenus THEN hMenus.Popup()
-  
-  
+PRIVATE SUB menuFind()  
+    DIM hmenus AS Menu
+    DIM hmenu AS Menu
+    
+    hMenus = NEW Menu(ME)
+    
+    hMenu = NEW Menu(hMenus) AS "mnufindQSOs"
+    hMenu.Text = ("Find QSOs with ") & $locator
+    hMenu.Picture = Picture["find.png"]
+    
+    hMenu = NEW Menu(hMenus)
+    hMenu.Text = ""
+      
+    hMenu = NEW Menu(hMenus) AS "mnuGrabWholeImage"
+    hMenu.Text = ("Save Whole Map as...")
+    hMenu.Picture = Picture["Blob.png"]
+    
+    hMenu = NEW Menu(hMenus) AS "mnuGrabImage"
+    hMenu.Text = ("Save Visible Map as...")
+    hMenu.Picture = Picture["View.png"]
+    
+    ' pop up 
+    IF hMenus THEN hMenus.Popup()  
 END
 
 PUBLIC SUB mnufindQSOs_Click()
-  INC Application.Busy
-  FFindQSO.searchQSO(locator)
-  FFindQSO.Title = ("QSOs with ") & locator
-  
-  
+    INC Application.Busy
+    FFindQSO.searchQSO($locator)
+    FFindQSO.Title = ("QSOs with ") & $locator
+END
+
+PUBLIC SUB mnuGrabWholeImage_Click()    
+    $device = $capture
+    Dialog.Title = ("Save Map as ")
+    Dialog.Filter = ["*.jpg, *.png", ("Image Files")]
+    IF Dialog.SaveFile() = FALSE THEN 
+        drwMapa
+        drawSquares        
+        $capture.Save(Dialog.Path)
+    ENDIF   
+    $device = canvas
+END
+
+PUBLIC SUB mnuGrabImage_Click()
+    DIM cropped AS Picture
+    $device = $capture
+    drwMapa
+    drawSquares    
+    cropped = $capture.Copy(ScrollView1.ScrollX, ScrollView1.ScrollY, ScrollView1.Width, ScrollView1.Height)
+    Dialog.Title = ("Save Map as ")
+    Dialog.Filter = ["*.jpg, *.png", ("Image Files")]
+    IF Dialog.SaveFile() = FALSE THEN
+        cropped.Save(Dialog.Path, 100)
+    ENDIF   
+    $device = canvas
 END
 
 PUBLIC SUB chkSquares_Click()
-
-    FMain.ini["FMapLoc/Grid"] = CBool(chkSquares.Value)
-    'lienzo.Clear()
+    FMain.ini["FMapLoc/Grid"] = CBool(chkSquares.Value)    
     IF chkSquares.Value = TRUE THEN 
-        drwMapa(currentMap)
+        drwMapa()
         drwGrid()
-        'drawSquares()
-        
+        IF chkDX.Value = TRUE THEN drawDX()
     ELSE 
-        drwMapa(currentMap)
-        'drawSquares()
-        
-    ENDIF 
-    
-    
-        
+        drwMapa()
+        IF chkDX.Value = TRUE THEN drawDX()
+    ENDIF
+END
 
+PUBLIC SUB cbtnMDiv_Change()
+    FMain.ini["FMapLoc/MainDiv"] = cbtnMDiv.Color
+END
+
+PUBLIC SUB cbtnSubDiv_Change()
+    FMain.ini["FMapLoc/SubDiv"] = cbtnSubDiv.Color
+END
+
+PUBLIC SUB cbtnGSquares_Change()
+    FMain.ini["FMapLoc/GSquares"] = cbtnGSquares.Color
+END
+
+PUBLIC SUB btnClear_Click()    
+    drwMapa()
+    IF chkDX.Value = TRUE THEN drawDX()
+END
+
+PUBLIC SUB ToolButton1_Click()
+    ME.Close()
+END
+
+PUBLIC SUB chkPanel_Click()    
+    SidePanel1.Hidden = chkPanel.Value
+    FMain.ini["FMapLoc/ShowPanel"] = CBool(chkPanel.Value)
+END
+
+PUBLIC SUB Button1_Click()
+    spDXTime.BackColor = Color.White
+    FMain.ini["FMapLoc/DXTime"] = spDXTime.Value * 60
+    FMain.ini.Save()
+    IF chkDX.Value = TRUE THEN drawDX()
+END
+
+PUBLIC SUB Timer1_Timer()
+    IF chkDX.Value = TRUE THEN drawDX()
+    lblMUF.Font = Font["Bold"]
+    IF global.$alertedES = TRUE THEN 
+        lblMUF.Visible = TRUE
+        lblMUF.Text = "2M SPORADIC"
+        lblMUF.BackColor = Color.Red
+        lblMUF.ForeColor = Color.Yellow
+    ELSE IF global.$alertedMUF = TRUE THEN 
+        lblMUF.Visible = TRUE
+        lblMUF.Text = "HIGH MUF"
+        lblMUF.BackColor = Color.Yellow
+        lblMUF.ForeColor = Color.Red
+    ELSE 
+        lblMUF.Visible = FALSE
+    ENDIF 
+END
+
+PUBLIC SUB chkDX_Click()
+    FMain.ini["FMapLoc/ShowLines"] = CBool(chkDX.Value)
+    IF chkDX.Value = TRUE THEN drawDX()
+END
+
+PUBLIC SUB cbtn6M_Change()
+    FMain.ini["FMapLoc/Line6M"] = cbtn6M.Color
+END
+
+PUBLIC SUB cbtn4M_Change()
+    FMain.ini["FMapLoc/Line4M"] = cbtn4M.Color
+END
+
+PUBLIC SUB cbtn2M_Change()
+    FMain.ini["FMapLoc/Line2M"] = cbtn2M.Color
+END
+
+PUBLIC SUB cbtn70CM_Change()
+    FMain.ini["FMapLoc/Line70CM"] = cbtn70CM.Color
+END
+
+PUBLIC SUB cbtnSHF_Change()
+    FMain.ini["FMapLoc/LineSHF"] = cbtnSHF.Color
+END
+
+PUBLIC SUB chkMUF_Click()
+    FMain.ini["FMapLoc/MUFAlert"] = CBool(chkMUF.Value)
+END
+
+PUBLIC SUB spDXTime_Change()
+    spDXTime.BackColor = Color.Yellow    
 END

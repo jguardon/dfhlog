@@ -92,7 +92,7 @@ PUBLIC SUB searchQSO(locator AS String)
     DIM sql AS String
     loc = locator    
     Form_Open
-    cv.Clear()
+    'cv.Clear()
     
     sql = "SELECT id, qso_date, time_on, call, band, mode, prop_mode, rst_rcvd, rst_sent, name, gridsquare, qsl_sent, qsl_rcvd, " &
     "qsl_via, pfx, country, cont, cqz, ituz, operator, tx_pwr, my_gridsquare, sat_name, distance " &
@@ -102,6 +102,7 @@ PUBLIC SUB searchQSO(locator AS String)
     $hres = dbLog.cnLog.Exec(sql, locator & "%")
     cv.Rows.Count = $hres.Count
     lblNumRec.Text = ("Records: ") & $hres.Count
+    cv.Refresh
     DEC Application.Busy
     
   CATCH 
