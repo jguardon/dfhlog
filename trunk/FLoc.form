@@ -6,77 +6,121 @@
   Icon = Picture["dfhlog.png"]
   Arrangement = Arrange.Horizontal
   { SidePanel1 SidePanel
-    MoveScaled(1,1,30,71)
+    MoveScaled(1,1,30,79)
     Arrangement = Arrange.Fill
     Padding = 3
     Orientation = Align.Right
     Resizable = False
     Border = True
     { ToolPanel1 ToolPanel
-      MoveScaled(1,1,27,67)
+      MoveScaled(1,1,27,75)
       Spacing = 2
       Count = 2
       TextFont = Font["Bold"]
       Animated = True
-      Border = True
       Index = 0
-      Text = ("Maps")
-      Picture = Picture["icon:/16/earth"]
-      { lblEU Label
-        MoveScaled(2,16,24,3)
-        Font = Font["Underline"]
-        Foreground = &H0000C0&
-        Mouse = Mouse.Pointing
-        Text = ("Europe")
+      Text = ("Colors")
+      Picture = Picture["icon:/16/color"]
+      { Frame2 Frame
+        MoveScaled(0,1,27,19)
+        Text = ("Grid")
+        { Label8 Label
+          MoveScaled(2,4,16,3)
+          Text = ("Main Division:")
+        }
+        { cbtnMDiv ColorButton
+          MoveScaled(19,3,6,4)
+          Value = &HC06000&
+        }
+        { Label9 Label
+          MoveScaled(2,9,16,3)
+          Text = ("Sub Division:")
+        }
+        { cbtnSubDiv ColorButton
+          MoveScaled(19,8,6,4)
+          Value = &H909090&
+        }
+        { Label10 Label
+          MoveScaled(2,14,16,3)
+          Text = ("GridSquares:")
+        }
+        { cbtnGSquares ColorButton
+          MoveScaled(19,13,6,4)
+          Value = &H00FF00&
+        }
       }
-      { lblES Label
-        MoveScaled(2,11,24,3)
-        Font = Font["Underline"]
-        Foreground = &H0000C0&
-        Mouse = Mouse.Pointing
-        Text = ("Spain")
+      { Frame3 Frame
+        MoveScaled(0,21,27,29)
+        Text = ("DX Lines")
+        { Label11 Label
+          MoveScaled(2,4,16,3)
+          Text = ("DX on 6M:")
+        }
+        { cbtn6M ColorButton
+          MoveScaled(19,3,6,4)
+          Value = &H00FF00&
+        }
+        { Label12 Label
+          MoveScaled(2,9,16,3)
+          Text = ("DX on 4M:")
+        }
+        { cbtn4M ColorButton
+          MoveScaled(19,8,6,4)
+          Value = &HFF8000&
+        }
+        { Label13 Label
+          MoveScaled(2,14,16,3)
+          Text = ("DX on 2M:")
+        }
+        { cbtn2M ColorButton
+          MoveScaled(19,13,6,4)
+          Value = &HFF0000&
+        }
+        { Label14 Label
+          MoveScaled(2,19,16,3)
+          Text = ("DX on 70CM:")
+        }
+        { cbtn70CM ColorButton
+          MoveScaled(19,18,6,4)
+          Value = &H0000FF&
+        }
+        { Label15 Label
+          MoveScaled(2,24,16,3)
+          Text = ("DX on +23CM:")
+        }
+        { cbtnSHF ColorButton
+          MoveScaled(19,23,6,4)
+          Value = &HFF00FF&
+        }
       }
-      { lblNA Label
-        MoveScaled(2,26,24,3)
-        Font = Font["Underline"]
-        Foreground = &H0000C0&
-        Mouse = Mouse.Pointing
-        Text = ("North America")
+      { Timer1 #Timer
+        #X = 0
+        #Y = 441
+        Enabled = True
+        Delay = 10000
       }
-      { lblSA Label
-        MoveScaled(2,36,24,3)
-        Font = Font["Underline"]
-        Foreground = &H0000C0&
-        Mouse = Mouse.Pointing
-        Text = ("South America")
+      { Button1 Button
+        MoveScaled(6,65,16,3)
+        Text = ("&Save Settings")
       }
-      { lblAS Label
-        MoveScaled(2,6,24,3)
-        Font = Font["Underline"]
-        Foreground = &H0000C0&
-        Mouse = Mouse.Pointing
-        Text = ("Asia")
-      }
-      { lblOC Label
-        MoveScaled(2,31,24,3)
-        Font = Font["Underline"]
-        Foreground = &H0000C0&
-        Mouse = Mouse.Pointing
-        Text = ("Oceania")
-      }
-      { lblAF Label
-        MoveScaled(2,1,24,3)
-        Font = Font["Underline"]
-        Foreground = &H0000C0&
-        Mouse = Mouse.Pointing
-        Text = ("Africa")
-      }
-      { lblMUN Label
-        MoveScaled(2,21,24,3)
-        Font = Font["Underline"]
-        Foreground = &H0000C0&
-        Mouse = Mouse.Pointing
-        Text = ("World")
+      { Frame4 Frame
+        MoveScaled(0,51,27,13)
+        Text = ("Behavior")
+        { chkMUF CheckBox
+          MoveScaled(2,3,24,3)
+          Text = ("Sound Alert on MUF/ES")
+        }
+        { Label16 Label
+          MoveScaled(2,7,12,3)
+          Text = ("DX Minutes:")
+        }
+        { spDXTime SpinBox
+          MoveScaled(16,7,9,3)
+          ToolTip = ("Minutes to hold DX Lines on Map")
+          MinValue = 1
+          MaxValue = 120
+          Value = 30
+        }
       }
       Index = 1
       Text = ("Filter")
@@ -90,16 +134,6 @@
         MoveScaled(13,8,13,3)
         ToolTip = ("End Date")
         Type = ValueBox.Date
-      }
-      { Label2 Label
-        MoveScaled(1,3,12,3)
-        AutoResize = True
-        Text = ("Start:")
-      }
-      { Label3 Label
-        MoveScaled(1,8,12,3)
-        AutoResize = True
-        Text = ("End:")
       }
       { Label4 Label
         MoveScaled(1,13,12,3)
@@ -120,24 +154,6 @@
         MoveScaled(1,28,12,3)
         AutoResize = True
         Text = ("Prop. Mode:")
-      }
-      { cboModo ComboBox
-        MoveScaled(13,18,13,3)
-        ToolTip = ("Mode selection")
-        Text = ("")
-        ReadOnly = True
-      }
-      { cboBand ComboBox
-        MoveScaled(13,23,13,3)
-        ToolTip = ("Band selection")
-        Text = ("")
-        ReadOnly = True
-      }
-      { cboPropa ComboBox
-        MoveScaled(13,28,13,3)
-        ToolTip = ("Prop. Mode Selection")
-        Text = ("")
-        ReadOnly = True
       }
       { Frame1 Frame
         MoveScaled(1,32,25,15)
@@ -160,6 +176,34 @@
         MoveScaled(1,49,25,4)
         Text = ("OK")
       }
+      { Label2 Label
+        MoveScaled(1,3,12,3)
+        AutoResize = True
+        Text = ("Start:")
+      }
+      { Label3 Label
+        MoveScaled(1,8,12,3)
+        AutoResize = True
+        Text = ("End:")
+      }
+      { cboModo ComboBox
+        MoveScaled(13,18,13,3)
+        ToolTip = ("Mode selection")
+        Text = ("")
+        ReadOnly = True
+      }
+      { cboBand ComboBox
+        MoveScaled(13,23,13,3)
+        ToolTip = ("Band selection")
+        Text = ("")
+        ReadOnly = True
+      }
+      { cboPropa ComboBox
+        MoveScaled(13,28,13,3)
+        ToolTip = ("Prop. Mode Selection")
+        Text = ("")
+        ReadOnly = True
+      }
       { vDist ValueBox
         MoveScaled(13,13,13,3)
         ToolTip = ("Distance greater than...")
@@ -168,51 +212,74 @@
     }
   }
   { Panel1 Panel
-    MoveScaled(32,1,77,72)
+    MoveScaled(32,1,77,79)
     Expand = True
     Arrangement = Arrange.Vertical
     { HBox1 HBox
-      MoveScaled(0,0.2857,87,4)
+      MoveScaled(0,0,87,3.1429)
       Spacing = 5
-      Padding = 5
-      { chkSquares ToolButton
-        MoveScaled(1,1,3,3)
-        ToolTip = ("Show Grid")
-        Text = ("")
-        Picture = Picture["sq.png"]
-        Border = True
-        Toggle = True
-      }
-      { btnClear ToolButton
-        MoveScaled(6,1,3,3)
-        ToolTip = ("Clean Map")
-        Text = ("")
-        Picture = Picture["gtk-delete.png"]
-        Border = True
+      { ToolBar1 ToolBar
+        MoveScaled(0,0,36,3)
+        { chkPanel ToolButton
+          MoveScaled(0,0,3,3)
+          ToolTip = ("Show/Hide Panel")
+          Text = ("")
+          Picture = Picture["icon:/16/first"]
+          Toggle = True
+        }
+        { chkSquares ToolButton
+          MoveScaled(5,0,3,3)
+          ToolTip = ("Show Grid")
+          Text = ("")
+          Picture = Picture["sq.png"]
+          Toggle = True
+        }
+        { chkDX ToolButton
+          MoveScaled(9,0,3,3)
+          ToolTip = ("Show DX Lines")
+          Text = ("")
+          Picture = Picture["dxLine.png"]
+          Toggle = True
+        }
+        { btnClear ToolButton
+          MoveScaled(14,0,3,3)
+          ToolTip = ("Clean Map")
+          Text = ("")
+          Picture = Picture["gtk-delete.png"]
+        }
+        { ToolButton1 ToolButton
+          MoveScaled(19,0,3,3)
+          ToolTip = ("Close")
+          Text = ("")
+          Picture = Picture["icon:/16/quit"]
+        }
       }
       { Label1 Label
-        MoveScaled(49,1,21,3)
+        MoveScaled(38,0,21,3)
         Expand = True
-        AutoResize = True
         Text = ("Coords:")
       }
-      { ToolButton1 ToolButton
-        MoveScaled(72,1,3,3)
-        Text = ("")
-        Picture = Picture["icon:/16/quit"]
-        Border = True
+      { lblMUF Label
+        MoveScaled(60,0,17,3)
+        Visible = False
+        Font = Font["Bold"]
+        Background = &HFF0000&
+        Foreground = &HFFFF00&
+        Text = ("2M SPORADIC")
+        Alignment = Align.Center
       }
     }
     { HBox2 HBox
-      MoveScaled(0,5,87,66)
+      MoveScaled(0,4,87,75)
       Expand = True
       { ScrollView1 ScrollView
-        MoveScaled(0,0,77,66)
+        MoveScaled(0,0,77,74)
         Expand = True
-        { lienzo DrawingArea
+        { canvas DrawingArea
           MoveScaled(0,0,117,88)
           Cached = True
           Tracking = True
+          Merge = True
         }
       }
     }

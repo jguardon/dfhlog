@@ -107,7 +107,7 @@ PRIVATE SUB getQSOs(OPTIONAL p AS Integer = 0)
     
     DIM sql AS String
     DIM clave, swColor AS Integer
-    cv.Clear()
+    'cv.Clear()
     'p = start
     sql = "SELECT * FROM log ORDER BY id LIMIT " & p & ", " & disp & ";"
 
@@ -142,6 +142,7 @@ PRIVATE SUB getQSOs(OPTIONAL p AS Integer = 0)
             btnNext.Enabled = TRUE
             
     END SELECT
+    cv.Refresh
 END
 
 PUBLIC SUB btnNext_Click()
