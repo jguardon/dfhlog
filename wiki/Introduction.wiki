@@ -1,6 +1,4 @@
-#summary dfhLog Introduction
-#labels Featured,Phase-Requirements
-
+#labels Featured
 = Introduction =
 
 Hamradio operators need to log their contacts into a Logger Application, spreadsheet or similar. Since a number of them still are using MSWindows as O.S, and they want to definitely migrate to Linux, the lack of related applications is slowing down this migration. 
