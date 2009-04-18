@@ -184,11 +184,11 @@ SearchString=True
 [OpenFile]
 File[1]="FMain.form"
 File[2]="FMain.class:1694.4"
-File[3]="FLoc.class:119.0"
+File[3]="FLoc.class:108.40"
 Active=3
 File[4]="FLoc.form"
 File[5]="FPref.class:259.2"
-File[6]="global.module:461.33"
+File[6]="global.module:419.73"
 Count=6
 
 [Watches]

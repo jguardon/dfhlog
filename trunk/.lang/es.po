@@ -10,613 +10,737 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: FAbout.class:216
-msgid "Thanks to"
-msgstr "Gracias a "
+#: FMain.class:2615
+msgid "..."
+msgstr "-"
 
-#: FAbout.class:277
-msgid "About dfhLog..."
-msgstr "Acerca de dfhLog..."
+#: FMain.class:2781 FeADIF.class:321 FiADIF.class:619
+msgid "0"
+msgstr "-"
+
+#: FMain.class:2403
+msgid "0.00"
+msgstr "-"
+
+#: FMain.class:2980
+msgid "00:00:00"
+msgstr "-"
+
+#: FPref.class:709
+msgid "100"
+msgstr "-"
+
+#: FPref.class:709
+msgid "1000"
+msgstr "-"
+
+#: FPref.class:742
+msgid "115200"
+msgstr "-"
+
+#: FPref.class:742
+msgid "1200"
+msgstr "-"
+
+#: FPref.class:742
+msgid "19200"
+msgstr "-"
+
+#: FPref.class:709
+msgid "200"
+msgstr "-"
+
+#: FPref.class:709
+msgid "2000"
+msgstr "-"
+
+#: FPref.class:742
+msgid "2400"
+msgstr "-"
+
+#: FLoc.class:912
+msgid "2M SPORADIC"
+msgstr "-"
+
+#: FPref.class:709
+msgid "300"
+msgstr "-"
+
+#: FPref.class:742
+msgid "38400"
+msgstr "-"
+
+#: FPref.class:709
+msgid "400"
+msgstr "-"
+
+#: FPref.class:742
+msgid "4800"
+msgstr "-"
+
+#: FPref.class:709
+msgid "500"
+msgstr "-"
+
+#: FPref.class:742
+msgid "57600"
+msgstr "-"
+
+#: FPref.class:742
+msgid "9600"
+msgstr "-"
 
 #: FAbout.class:285
 msgid "About"
 msgstr "Acerca de "
 
-#: FAbout.class:308
-msgid ""
-"<h2 align=center>Licence</h2>\n"
-"\n"
-"<p align=center>This program is FREE SOFTWARE; you can redistribute it AND/"
-"OR modify it under the terms of the GNU General Public License as published "
-"by the Free Software Foundation ; either version 2, or (at your option) any "
-"later version.</p>\n"
-"\n"
-"<p align=center>This program is distributed in the hope that it will be "
-"useful but WITHOUT ANY WARRANTY; without even the implied warranty of  "
-"MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. See the GNU General "
-"Public License for more details.</p>\n"
-msgstr ""
-"<h2 align=center>Licencia</h2>\n"
-"\n"
-"<p align=center>Este programa es software libre: usted puede redistribuirlo "
-"y/o modificarlo conforme a los términos de la Licencia Pública General de "
-"GNU publicada por la Fundación para el Software Libre, ya sea la versión 3 "
-"de esta Licencia o (a su elección) cualquier versión posterior.</p>\n"
-"\n"
-"<p align=center>Este programa se distribuye con el deseo de que le resulte "
-"útil, pero SIN GARANTÍAS DE NINGÚN TIPO; ni siquiera con las garantías "
-"implícitas de COMERCIABILIDAD o APTITUD PARA UN PROPÓSITO DETERMINADO.  Para "
-"más información, consulte la Licencia Pública General de GNU.</p>\n"
+#: FMain.class:2268
+msgid "A&bout..."
+msgstr "Acerca de"
 
-#: FAbout.class:313
-msgid "<h2 align=center>Authors</h2>\n"
-msgstr "<h2 align=center>Autores</h2>\n"
+#: FAbout.class:277
+msgid "About dfhLog..."
+msgstr "Acerca de dfhLog..."
 
-#: FAbout.class:320
-msgid "dfhLog, the Hamradio Logbook"
-msgstr "dfhLog, el Libro de Guardia"
+#: FPref.class:837 Fservers.class:85
+msgid "&Accept"
+msgstr "&Aceptar"
 
-#: FAbout.class:330
-msgid "Support"
-msgstr "Soporte"
+#: FMain.class:2686
+msgid "Accepts & Log QSO"
+msgstr "Acepta y guarda el QSO"
 
-#: FAbout.class:334
-msgid ""
-"You can support <b>dfhLog</b> by writing the help\n"
-"documents, translating to your language, etc.\n"
-"<p>\n"
-"You can also make a gift to the project by using PayPal:"
-msgstr ""
-"Puedes colaborar en <b>dfhLog</b> escribiendo la ayuda\n"
-", traduciendo a tu lengua, etc.\n"
-"<p>\n"
-"También puedes hacer tu donación vía PayPal:"
+#: FPref.class:697
+msgid "Activate"
+msgstr "Activar"
 
-#: FAbout.class:340
-msgid "Make a gift!"
-msgstr "Haz tu donación!"
+#: FDesign.class:436
+msgid "Active"
+msgstr "Activa"
 
-#: FAbout.class:359 FLoc.class:699
-msgid "OK"
+#: FPref.class:591
+msgid "Add"
+msgstr "Añadir"
+
+#: FFindQSO.class:239 FLog.class:286 FMain.class:1493 FSearch.class:244
+msgid "Added "
+msgstr "Añadido "
+
+#: Fservers.class:61
+msgid "Add telnet server"
+msgstr "Añadir servidor telnet"
+
+#: FMain.class:2094 FeADIF.class:209
+msgid "ADIF Export"
+msgstr "Exportar ADIF"
+
+#: FFindQSO.class:216 FLog.class:275 FQueue.class:192 FeADIF.class:56
+msgid "ADIF file"
+msgstr "Fichero ADIF"
+
+#: FMain.class:2088 FiADIF.class:127
+msgid "ADIF Import"
+msgstr "Importar ADIF"
+
+#: FLoc.class:104 FSearch.class:33 FSquares.class:25 FSummary.class:25
+msgid "All"
+msgstr "Todo"
+
+#: FMain.class:1280 FiADIF.class:128
+msgid "All Files"
+msgstr "Todos los ficheros"
+
+#: .project:2
+msgid "Amateur Radio Logging program\n\nImport/Export ADIF files, cluster connection, Hamlib based CAT control, \nQRZ.com support, XPlanet Maps and Custom GridSquare Maps, \nsimple awards support (WAS, DXCC, IOTA, USACA, TPEA).\n\nCurrent available languages:\n\nEnglish, Spanish, Galego, Portugues"
 msgstr "-"
 
-#: FAbout.class:376 FMain.class:2046
-msgid "dfhLog"
+#: FSquares.class:89
+msgid " and Propagation mode = "
+msgstr " y Modo de Propagación = "
+
+#: FPref.class:625
+msgid "Ann Messages"
+msgstr "Mensajes Ann"
+
+#: FMap.class:226
+msgid "&Apply Changes"
+msgstr "&Aplicar Cambios"
+
+#: FPref.class:787
+msgid "(A subscription to QRZ.com(xml) is needed)"
+msgstr "(Necesaria suscripción a QRZ.com(xml))"
+
+#: FLoc.class:152
+msgid "At "
+msgstr "A "
+
+#: FPref.class:597
+msgid "Auto-connect"
+msgstr "Auto conectar"
+
+#: FPref.class:596
+msgid "Auto connect to server with\nyour current callsign "
+msgstr "Conectar automáticamente\ncon tu indicativo actual"
+
+#: FMain.class:2841
+msgid "AutoSpot"
+msgstr "AutoSpot"
+
+#: FDesign.class:427
+msgid "Background"
+msgstr "Fondo"
+
+#: FmtoBD.class:158
+msgid "Backing up data..."
+msgstr "Haciendo copia de seguridad..."
+
+#: FMain.class:2113
+msgid "Backup DB"
+msgstr "Respaldar BD"
+
+#: FQueue.class:53 FSearch.class:69
+msgid "Band"
+msgstr "Banda"
+
+#: FSquares.class:286 FSummary.class:405
+msgid "Band:"
+msgstr "Banda:"
+
+#: FLoc.class:825
+msgid "Band selection"
+msgstr "Selección de Banda"
+
+#: FMain.class:2447
+msgid "Band Selection"
+msgstr "Seleccion de Banda"
+
+#: FPref.class:752
+msgid "bauds"
+msgstr "baudios"
+
+#: FLoc.class:718
+msgid "Behavior"
+msgstr "Comportamiento"
+
+#: FeADIF.class:258
+msgid "Between two dates"
+msgstr "Entre dos fechas"
+
+#: FiADIF.class:593
+msgid "&Browse"
+msgstr "&Buscar"
+
+#: FMain.class:2595
+msgid "Bureau"
 msgstr "-"
 
-#: FAbout.class:393
-msgid "http://code.google.com/p/dfhlog"
+#: FSquares.class:89
+msgid " by "
+msgstr " por "
+
+#: FMain.class:1789 FStats.class:68
+msgid "C"
 msgstr "-"
 
 #: FAbout.class:400
 msgid "(c) 2000-2009 EA7DFH"
 msgstr "-"
 
-#: FAbout.class:411
-msgid "Cty.dat version:"
+#: FSearch.class:68
+msgid "Callsign"
+msgstr "Indicativo"
+
+#: FMain.class:2434 FSearch.class:468
+msgid "Callsign:"
+msgstr "Indicativo:"
+
+#: FQueue.class:175 FSearch.class:218
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: FeADIF.class:54 FiADIF.class:654 FmtoBD.class:272 Fservers.class:80
+msgid "&Cancel"
+msgstr "&Cancelar"
+
+#: FMain.class:2346
+msgid "CAT"
 msgstr "-"
 
-#: FAwards.class:48
-msgid "EA Reference"
-msgstr "Referencia EA"
+#: FLoc.class:206
+msgid "Check dates, please"
+msgstr "Comprueba las fechas, por favor..."
 
-#: FAwards.class:49
-msgid "Province"
-msgstr "Provincia"
+#: FFindQSO.class:155 FLog.class:213 FMain.class:1450 FSearch.class:173
+msgid "Check QSL as recvd."
+msgstr "Marcar QSL recibida"
 
-#: FAwards.class:76 FFindQSO.class:58 FLog.class:62 FMain.class:1306
-#: FSearch.class:74
-msgid "Name"
-msgstr "Nombre"
-
-#: FAwards.class:103 FLog.class:75
-msgid "State"
-msgstr "Estado"
-
-#: FAwards.class:129
-msgid "County Ref."
-msgstr "Ref. Condado"
-
-#: FAwards.class:311
-msgid "Search:"
-msgstr "Buscar:"
+#: FFindQSO.class:160 FLog.class:218 FMain.class:1455 FSearch.class:178
+msgid "Check QSL as sent."
+msgstr "Marcar QSL enviada"
 
 #: FDesign.class:242
 msgid "Choose a background image"
 msgstr "Elige una imagen e fondo"
 
-#: FDesign.class:243
-msgid "Picture files"
-msgstr "Ficheros de Imagen"
+#: FmtoBD.class:194
+msgid "Cleaning up..."
+msgstr "Limpiando..."
 
-#: FDesign.class:311
-msgid "QSL Design"
-msgstr "Diseño QSL"
+#: FMap.class:232
+msgid "&Clean Map"
+msgstr "&Limpiar Mapa"
 
-#: FDesign.class:316 FMain.class:2296 FMap.class:185 FPref.class:472
-msgid "Settings"
-msgstr "Configuración"
+#: FLoc.class:883
+msgid "Clean Map"
+msgstr "Limpiar Mapa"
 
-#: FDesign.class:319
-msgid "Design"
-msgstr "Diseño"
+#: FQueue.class:289
+msgid "Clear Queue"
+msgstr "Borrar cola"
 
-#: FDesign.class:352 FQueue.class:62
-msgid "My Call"
+#: FLoc.class:894
+msgid "Close"
+msgstr "Cerrar"
+
+#: FSearch.class:540 FStats.class:179 FeADIF.class:172 FiADIF.class:202
+msgid "&Close"
+msgstr "&Cerrar"
+
+#: FMap.class:237
+msgid "Close window"
+msgstr "Cerrar Ventana"
+
+#: FMain.class:2225 FPref.class:571
+msgid "C&luster"
 msgstr "-"
 
-#: FDesign.class:352
-msgid "His Call"
+#: FMain.class:3042
+msgid "Cl&uster"
 msgstr "-"
 
-#: FDesign.class:352 FFindQSO.class:50 FLog.class:51 FMain.class:531
-#: FQueue.class:50 FSearch.class:66
-msgid "Date"
-msgstr "Fecha"
+#: FLoc.class:613 FPref.class:646
+msgid "Colors"
+msgstr "Colores"
 
-#: FDesign.class:352
-msgid "UTC"
+#: FPref.class:642
+msgid "C&olors"
+msgstr "C&olores"
+
+#: FSquares.class:258 FSummary.class:377
+msgid "ComboBox1"
 msgstr "-"
 
-#: FDesign.class:352
-msgid "RST"
+#: FSquares.class:264 FSummary.class:383
+msgid "ComboBox2"
 msgstr "-"
 
-#: FDesign.class:352 FFindQSO.class:53 FLog.class:57 FMain.class:530
-#: FQueue.class:53 FSearch.class:69
-msgid "Band"
-msgstr "Banda"
+#: FmtoBD.class:254
+msgid "Compact Database"
+msgstr "Compactar Base de Datos"
 
-#: FDesign.class:352 FFindQSO.class:54 FLog.class:58 FMain.class:1302
-#: FQueue.class:54 FSearch.class:70
-msgid "Mode"
-msgstr "Modo"
+#: FMain.class:2107
+msgid "Compact DB"
+msgstr "Compactar BD"
 
-#: FDesign.class:352
-msgid "Prop"
-msgstr "-"
+#: FmtoBD.class:231
+msgid "Compacting and recalculating records\nPlease, wait for a while..."
+msgstr "Compactando y recalculando registros\nEspera un momento..."
 
-#: FDesign.class:352
-msgid "My Loc"
-msgstr "-"
+#: FmtoBD.class:223
+msgid "Compacting DB has been aborted!"
+msgstr "Compactado de BD abortado!"
 
-#: FDesign.class:352
-msgid "His Loc"
-msgstr "His Loc"
+#: FSquares.class:197 FSummary.class:313
+msgid "confirmed"
+msgstr "confirmado"
 
-#: FDesign.class:352
-msgid "X (PSE QSL)"
-msgstr "-"
+#: FLoc.class:790 FSearch.class:446 FSquares.class:280 FSummary.class:399
+msgid "Confirmed"
+msgstr "Confirmado"
 
-#: FDesign.class:352
-msgid "X (TNX QSL)"
-msgstr "-"
+#: FPref.class:670
+msgid "Confirmed:"
+msgstr "Confirmado:"
 
-#: FDesign.class:352
-msgid "Mgr"
-msgstr "-"
+#: FMain.class:2338
+msgid "Conn/Dis. Cluster"
+msgstr "Conectar/Desconectar Cluster"
 
-#: FDesign.class:357
-msgid "Label"
-msgstr "Etiqueta"
+#: FMain.class:2229
+msgid "&Connect"
+msgstr "&Conectar"
 
-#: FDesign.class:385
-msgid "Font"
-msgstr "Fuente"
+#: FMain.class:2865
+msgid "Cont:"
+msgstr "Cont:"
 
-#: FDesign.class:394
-msgid "X:"
-msgstr "-"
-
-#: FDesign.class:399
-msgid "X"
-msgstr "-"
-
-#: FDesign.class:405
-msgid "Y:"
-msgstr "-"
-
-#: FDesign.class:410
-msgid "Y"
-msgstr "-"
-
-#: FDesign.class:416
-msgid "mm"
-msgstr "-"
-
-#: FDesign.class:427
-msgid "Background"
-msgstr "Fondo"
-
-#: FDesign.class:431
-msgid "Image"
-msgstr "Imagen"
-
-#: FDesign.class:436
-msgid "Active"
-msgstr "Activa"
-
-#: FDesign.class:442
-msgid "Setup"
-msgstr "Configurar"
-
-#: FDesign.class:447
-msgid "Print Test"
-msgstr "Prueba Impr. "
-
-#: FDesign.class:452 FFindQSO.class:199 FLog.class:248 FMain.class:1469
-#: FQueue.class:175 FSearch.class:217
-msgid "Cancel"
-msgstr "Cancelar"
-
-#: FDesign.class:466
-msgid "Path"
-msgstr "Ruta "
-
-#: FDesign.class:473
-msgid "Printer"
-msgstr "Impresora"
-
-#: FDesign.class:480
-msgid "Resolution"
-msgstr "Resolución "
+#: FMain.class:2262
+msgid "Con&tent"
+msgstr "Con&tenido"
 
 #: FDesign.class:487
 msgid "Coords"
 msgstr "-"
 
-#: FFindQSO.class:29 FLoc.class:447
-msgid "QSOs with "
-msgstr "QSOs con "
-
-#: FFindQSO.class:49 FLog.class:50 FMain.class:1297 FQueue.class:49
-#: FSearch.class:65
-msgid "Nr"
-msgstr "Nº"
-
-#: FFindQSO.class:51 FLog.class:52 FMain.class:532 FQueue.class:51
-#: FSearch.class:67
-msgid "Time"
-msgstr "Hora Inicio"
-
-#: FFindQSO.class:52 FLog.class:54 FMain.class:529 FQueue.class:52
-#: FSearch.class:68
-msgid "Callsign"
-msgstr "Indicativo"
-
-#: FFindQSO.class:55 FLog.class:59 FQueue.class:55 FSearch.class:71
-msgid "Propa."
-msgstr "-"
-
-#: FFindQSO.class:60 FLog.class:66 FMain.class:534 FQueue.class:61
-#: FSearch.class:76
-msgid "QSL(S)"
-msgstr "QSL(E)"
-
-#: FFindQSO.class:63 FLog.class:71 FMain.class:1311 FSearch.class:79
-msgid "Prefix"
-msgstr "Prefijo"
-
-#: FFindQSO.class:68 FLog.class:78 FMain.class:1316 FSearch.class:84
-msgid "Operator"
-msgstr "Operador"
-
-#: FFindQSO.class:69 FLog.class:79 FMain.class:1317 FSearch.class:85
-msgid "Power"
-msgstr "Potencia"
-
-#: FFindQSO.class:70 FLog.class:80 FMain.class:1318 FQueue.class:58
-#: FSearch.class:86
-msgid "My Locator"
-msgstr "Mi Locator"
-
-#: FFindQSO.class:71 FMain.class:1319 FSearch.class:87
-msgid "Satellite"
-msgstr "Satélite"
-
-#: FFindQSO.class:72 FLog.class:87 FSearch.class:88
-msgid "Distance (Km)"
-msgstr "Distancia (Km)"
-
-#: FFindQSO.class:104 FQueue.class:78 FSearch.class:114
-msgid "Records: "
-msgstr "Registros: "
-
-#: FFindQSO.class:109
-msgid "Error in searchQSO"
-msgstr "Error en searchQSO"
-
-#: FFindQSO.class:123 FLog.class:181 FQueue.class:112 FSearch.class:149
-msgid "For selected QSOs: "
-msgstr "Para los QSOs seleccionados: "
-
-#: FFindQSO.class:125 FLog.class:183 FMain.class:1424 FQueue.class:114
-#: FSearch.class:151
-msgid "For QSO with: "
-msgstr "Para el QSO con: "
-
-#: FFindQSO.class:132 FLog.class:190 FMain.class:1430 FQueue.class:121
-#: FSearch.class:158
-msgid "Edit QSO"
-msgstr "Editar QSO"
-
-#: FFindQSO.class:138 FLog.class:196 FMain.class:1436 FQueue.class:127
-#: FSearch.class:164
-msgid "Delete QSO"
-msgstr "Borrar QSO"
-
-#: FFindQSO.class:146 FLog.class:204 FQueue.class:135
-msgid "Export to ADIF"
-msgstr "Exportar ADIF"
-
-#: FFindQSO.class:154 FLog.class:212 FMain.class:1444 FSearch.class:172
-msgid "Check QSL as recvd."
-msgstr "Marcar QSL recibida"
-
-#: FFindQSO.class:159 FLog.class:217 FMain.class:1449 FSearch.class:177
-msgid "Check QSL as sent."
-msgstr "Marcar QSL enviada"
-
-#: FFindQSO.class:164 FLog.class:222 FMain.class:1454 FSearch.class:182
-msgid "Print QSL"
-msgstr "Imprimir QSL"
-
-#: FFindQSO.class:199 FLog.class:248 FMain.class:1469 FQueue.class:175
-#: FSearch.class:217
-msgid ""
-"Selected QSO will be deleted\n"
-"Do you want to continue?"
-msgstr ""
-"El QSO seleccionado se borrará\n"
-"¿Deseas continuar?"
-
-#: FFindQSO.class:207 FLog.class:257 FMain.class:1474 FQueue.class:184
-#: FSearch.class:225
-msgid "Error deleting QSO\n"
-msgstr "Error al borrar QSO\n"
-
-#: FFindQSO.class:214 FLog.class:273 FQueue.class:191 FeADIF.class:55
-msgid "Save ADIF file"
-msgstr "Guardar fichero ADIF"
-
-#: FFindQSO.class:215 FLog.class:274 FQueue.class:192 FeADIF.class:56
-msgid "ADIF file"
-msgstr "Fichero ADIF"
-
-#: FFindQSO.class:238 FLog.class:285 FMain.class:1487 FSearch.class:243
-msgid "Added "
-msgstr "Añadido "
-
-#: FFindQSO.class:238 FLog.class:285 FMain.class:1487 FSearch.class:243
-msgid " QSOs to the QSL print queue."
-msgstr " QSOs a la cola de impresión de QSL."
-
-#: FFindQSO.class:277
-msgid "QSOs with gridsquare: "
-msgstr "QSOs con locator:  "
-
-#: FFindQSO.class:303 FQueue.class:278 FSearch.class:528
-msgid "Records:"
-msgstr "Registros:"
-
-#: FFindQSO.class:314 FLog.class:397 FMap.class:238 FQueue.class:299
-#: FSearch.class:539 FStats.class:164 FeADIF.class:172 FiADIF.class:203
-msgid "&Close"
-msgstr "&Cerrar"
-
-#: FLoc.class:155 FSearch.class:33 FSquares.class:25 FSummary.class:25
-msgid "All"
-msgstr "Todo"
-
-#: FLoc.class:175
-msgid "Please, install required package \"dfhlog-images\""
-msgstr "Por favor, instala el paquete requerido \"dfhlog-images\""
-
-#: FLoc.class:198
-msgid "Latitude: "
-msgstr "Latitud: "
-
-#: FLoc.class:198
-msgid "  Longitude: "
-msgstr " Longitud: "
-
-#: FLoc.class:202
-msgid "At "
-msgstr "A "
-
-#: FLoc.class:202
-msgid " Km from "
-msgstr " Km de "
-
-#: FLoc.class:260
-msgid "Start Date couldn't be greater than End Date"
-msgstr "La fecha de inicio no puede ser mayor que la de fin"
-
-#: FLoc.class:267
-msgid "Check dates, please"
-msgstr "Comprueba las fechas, por favor..."
-
-#: FLoc.class:271
-msgid "Error in btnOK_Click"
-msgstr "Error en btnOK_Click"
-
-#: FLoc.class:312
-msgid "Query has no results!"
-msgstr "La consulta no ha devuelto resultados."
-
-#: FLoc.class:337
-msgid "Error in drawSquares"
-msgstr "Error en drawSquares"
-
-#: FLoc.class:435
-msgid "Find QSOs with "
-msgstr "Buscar QSOs con "
-
-#: FLoc.class:537
-msgid "Maps"
-msgstr "Mapas"
-
-#: FLoc.class:545
-msgid "Europe"
-msgstr "Europa"
-
-#: FLoc.class:553
-msgid "Spain"
-msgstr "España"
-
-#: FLoc.class:561
-msgid "North America"
-msgstr "Norte América"
-
-#: FLoc.class:569
-msgid "South America"
-msgstr "Sudamérica"
-
-#: FLoc.class:577
-msgid "Asia"
-msgstr "Asia"
-
-#: FLoc.class:585
-msgid "Oceania"
-msgstr "-"
-
-#: FLoc.class:593
-msgid "Africa"
-msgstr "-"
-
-#: FLoc.class:601
-msgid "World"
-msgstr "Mundo"
-
-#: FLoc.class:604
-msgid "Filter"
-msgstr "Filtro"
-
-#: FLoc.class:609
-msgid "Start Date"
-msgstr "Fecha inicio"
-
-#: FLoc.class:615
-msgid "End Date"
-msgstr "Fecha fin"
-
-#: FLoc.class:622 FeADIF.class:279
-msgid "Start:"
-msgstr "Inicio:"
-
-#: FLoc.class:628 FeADIF.class:284
-msgid "End:"
-msgstr "Fin:"
-
-#: FLoc.class:634 FSearch.class:504
-msgid "Distance >:"
-msgstr "Distancia >:"
-
-#: FLoc.class:640 FMain.class:2781 FPref.class:560 FSearch.class:482
-#: FSquares.class:291 FSummary.class:410
-msgid "Mode:"
-msgstr "Modo:"
-
-#: FLoc.class:646 FMain.class:2787 FPref.class:549 FSearch.class:487
-#: FSquares.class:286 FSummary.class:405
-msgid "Band:"
-msgstr "Banda:"
-
-#: FLoc.class:652 FMain.class:2690 FSquares.class:306
-msgid "Prop. Mode:"
-msgstr "Propagación:"
-
-#: FLoc.class:657
-msgid "Mode selection"
-msgstr "Selección de modo"
-
-#: FLoc.class:664
-msgid "Band selection"
-msgstr "Selección de Banda"
-
-#: FLoc.class:671
-msgid "Prop. Mode Selection"
-msgstr "Selección de modo de propagación"
-
-#: FLoc.class:682 FSearch.class:439 FSquares.class:274 FSummary.class:393
-msgid "Worked"
-msgstr "Trabajado "
-
-#: FLoc.class:688 FSearch.class:445 FSquares.class:280 FSummary.class:399
-msgid "Confirmed"
-msgstr "Confirmado"
-
-#: FLoc.class:693
-msgid "Not Confirmed"
-msgstr "No Confirmado"
-
-#: FLoc.class:704 FSearch.class:498
-msgid "Distance greater than..."
-msgstr "Distancia mayor que..."
-
-#: FLoc.class:722
-msgid "Show Grid"
-msgstr "Mostrar cuadrículas"
-
-#: FLoc.class:731
-msgid "Clean Map"
-msgstr "Limpiar Mapa"
-
-#: FLoc.class:741
+#: FLoc.class:903
 msgid "Coords:"
 msgstr "Coordenadas:"
 
-#: FLog.class:29
-msgid "Log Review"
-msgstr "Examinar Log"
-
-#: FLog.class:53
-msgid "Time Off"
-msgstr "Hora Fin"
-
-#: FLog.class:55
-msgid "Freq"
-msgstr "Frecuencia"
-
-#: FLog.class:56
-msgid "Freq RX"
-msgstr "Frecuencia RX"
-
-#: FLog.class:61 FMain.class:1305
-msgid "RST(S)"
-msgstr "RST(E)"
-
-#: FLog.class:65 FMain.class:2545
-msgid "Remarks"
-msgstr "Comentarios"
-
-#: FLog.class:68
-msgid "QSL(S) Date"
-msgstr "Fecha QSL(E)"
-
-#: FLog.class:69
-msgid "QSL(R) Date"
-msgstr "Fecha QSL(R)"
+#: FMain.class:1550
+msgid "Copy saved as:\n"
+msgstr "Copia guardada como:\n"
 
 #: FLog.class:76
 msgid "County"
 msgstr "Condado"
 
-#: FLog.class:81 FMain.class:2650
-msgid "Sat Name"
-msgstr "Nombre Sat."
+#: FAwards.class:129
+msgid "County Ref."
+msgstr "Ref. Condado"
 
-#: FLog.class:82
-msgid "Sat Mode"
-msgstr "Modo Sat."
+#: FMain.class:2799
+msgid "County (USA):"
+msgstr "Condado(USA):"
 
-#: FLog.class:119
-msgid " of "
-msgstr " de "
+#: FMain.class:2907
+msgid "CQ:"
+msgstr "-"
 
-#: FLog.class:379
-msgid "Page:"
-msgstr "Página: "
+#: FMain.class:1254
+msgid "Create new log"
+msgstr "Crear nuevo log"
+
+#: FmtoBD.class:25
+msgid "Creating temp table..."
+msgstr "Creando tabla temporal..."
+
+#: FAbout.class:411
+msgid "Cty.dat version:"
+msgstr "-"
+
+#: FMain.class:2962
+msgid "Current DXCC"
+msgstr "DXCC Actual"
+
+#: FMain.class:1846
+msgid "CW:"
+msgstr "-"
+
+#: FMain.class:2104
+msgid "&Database"
+msgstr "Base de &Datos"
+
+#: FMain.class:3126
+msgid "Database:"
+msgstr "Base de datos:"
+
+#: FQueue.class:50 FSearch.class:66
+msgid "Date"
+msgstr "Fecha"
+
+#: FMain.class:2750
+msgid "Date:"
+msgstr "Fecha:"
+
+#: FMain.class:2572
+msgid "Date of QSL rcvd"
+msgstr "Fecha de recepción de QSL"
+
+#: FMain.class:2586
+msgid "Date of QSL sent"
+msgstr "Fecha de envío de QSL"
+
+#: FMain.class:2471
+msgid "Date of QSO"
+msgstr "Fecha del QSO"
+
+#: FMain.class:2999 FSearch.class:389 FeADIF.class:289
+msgid "DatePicker"
+msgstr "Selector de Fecha"
+
+#: FPref.class:685
+msgid "Default:"
+msgstr "Por defecto:"
+
+#: FMain.class:3071 FPref.class:586 FQueue.class:228
+msgid "Delete"
+msgstr "Borrar"
+
+#: FMap.class:231
+msgid "Delete all labels"
+msgstr "Borrar etiquetas"
+
+#: FSearch.class:165
+msgid "Delete QSO"
+msgstr "Borrar QSO"
+
+#: FDesign.class:319
+msgid "Design"
+msgstr "Diseño"
+
+#: FPref.class:730
+msgid "Device:"
+msgstr "Dispositivo:"
+
+#: FPref.class:735
+msgid "/dev/ttyS0"
+msgstr "-"
+
+#: .project:1 FAbout.class:376 FMain.class:2052
+msgid "dfhLog"
+msgstr "-"
+
+#: FMain.class:1255
+msgid "dfhLog Database"
+msgstr "Base de datos dfhLog"
+
+#: FAbout.class:320
+msgid "dfhLog, the Hamradio Logbook"
+msgstr "dfhLog, el Libro de Guardia"
+
+#: FMain.class:1847
+msgid "Digi:"
+msgstr "-"
+
+#: FMain.class:2595
+msgid "Direct"
+msgstr "Directa"
+
+#: FMain.class:2235
+msgid "&Disconnect"
+msgstr "&Desconectar"
+
+#: FLoc.class:757 FSearch.class:505
+msgid "Distance >:"
+msgstr "Distancia >:"
+
+#: FMain.class:2879
+msgid "Distance:"
+msgstr "Distancia:"
+
+#: FiADIF.class:271
+msgid "Distance error in qso: "
+msgstr "Error en distancia con qso:  "
+
+#: FLoc.class:839 FSearch.class:499
+msgid "Distance greater than..."
+msgstr "Distancia mayor que..."
+
+#: FFindQSO.class:72 FLog.class:87 FSearch.class:88
+msgid "Distance (Km)"
+msgstr "Distancia (Km)"
+
+#: FMain.class:1617
+msgid " doesn't exist!"
+msgstr " no existe!"
+
+#: FPref.class:818
+msgid "Don't fetch data from QRZ.com"
+msgstr "No buscar datos en QRZ.com"
+
+#: FMain.class:577
+msgid "Do you want to spot\n"
+msgstr "¿Quieres anunciar\n"
+
+#: FiADIF.class:229
+msgid "Dupe: id="
+msgstr "Duplicado: id="
+
+#: FiADIF.class:641
+msgid "Duplicated:"
+msgstr "Duplicados:"
+
+#: FMain.class:2440
+msgid "DX Callsign"
+msgstr "Indicativo DX"
+
+#: FMain.class:2155
+msgid "DXCC"
+msgstr "-"
+
+#: FMain.class:335
+msgid "DXCC Confirmed on "
+msgstr "DXCC Confirmado en "
+
+#: FiADIF.class:291
+msgid "DXCC not found for: "
+msgstr "DXCC no encontrado para: "
+
+#: FSummary.class:56
+msgid "DXCC Summary"
+msgstr "Resumen DXCC"
+
+#: FMain.class:341
+msgid "DXCC Worked on "
+msgstr "DXCC Trabajado en "
+
+#: FMain.class:2544
+msgid "DX City"
+msgstr "Ciudad del DX"
+
+#: FMain.class:3016
+msgid "DX email"
+msgstr "Email del DX"
+
+#: FMain.class:2529
+msgid "DX GridSquare"
+msgstr "Locator del DX"
+
+#: FLoc.class:653
+msgid "DX Lines"
+msgstr "Lineas DX"
+
+#: FMain.class:2246
+msgid "DXMap"
+msgstr "Mapa DX"
+
+#: FMain.class:2365
+msgid "DX Map"
+msgstr "Mapa DX"
+
+#: FLoc.class:727
+msgid "DX Minutes:"
+msgstr "Minutos DX:"
+
+#: FMain.class:2537
+msgid "DX Name"
+msgstr "Nombre del DX"
+
+#: FLoc.class:697
+msgid "DX on +23CM:"
+msgstr "DX en +23CM"
+
+#: FLoc.class:677
+msgid "DX on 2M:"
+msgstr "DX en 2M:"
+
+#: FLoc.class:667
+msgid "DX on 4M:"
+msgstr "DX en 4M:"
+
+#: FLoc.class:657
+msgid "DX on 6M:"
+msgstr "DX en 6M:"
+
+#: FLoc.class:687
+msgid "DX on 70CM:"
+msgstr "DX en 70CM:"
+
+#: FAwards.class:48
+msgid "EA Reference"
+msgstr "Referencia EA"
+
+#: FMain.class:2327
+msgid "Edit Last QSO"
+msgstr "Editar último QSO"
+
+#: FSearch.class:159
+msgid "Edit QSO"
+msgstr "Editar QSO"
+
+#: FMain.class:2744
+msgid "E-mail:"
+msgstr "-"
+
+#: FMain.class:2191
+msgid "EME Initials"
+msgstr "Iniciales EME"
+
+#: FSquares.class:64
+msgid "EME Summary"
+msgstr "Resumen EME"
+
+#: FLoc.class:813 FeADIF.class:284
+msgid "End:"
+msgstr "Fin:"
+
+#: FSearch.class:463
+msgid "End date:"
+msgstr "Fecha fin:"
+
+#: FLoc.class:750
+msgid "End Date"
+msgstr "Fecha fin"
+
+#: FStats.class:33
+msgid "Entity/Band"
+msgstr "Entidad/Banda"
+
+#: dbLog.module:38
+msgid "Error connecting to database: "
+msgstr "Error conectando a base de datos: "
+
+#: FMain.class:1271
+msgid "Error creating new Log\n"
+msgstr "Error al crear nuevo log\n"
+
+#: FSearch.class:226
+msgid "Error deleting QSO\n"
+msgstr "Error al borrar QSO\n"
+
+#: FeADIF.class:175 global.module:365
+msgid "Error exporting Record\n"
+msgstr "Error exportando registro\n"
+
+#: FSquares.class:109 FSummary.class:108
+msgid "Error in "
+msgstr "Error en "
+
+#: FMain.class:948
+msgid "Error in addLines\n"
+msgstr "Error en addLines\\n"
+
+#: FMain.class:1553
+msgid "Error in BackupDB\n"
+msgstr "Error en backupDB\n"
+
+#: FMain.class:709
+msgid "Error in btnCAT_Click\n"
+msgstr "Error en btnCAT_Click\n"
+
+#: FMain.class:830
+msgid "Error in btnConn_Click\n"
+msgstr "Error en btnConn_Click\n"
+
+#: FLoc.class:212
+msgid "Error in btnOK_Click"
+msgstr "Error en btnOK_Click"
+
+#: FMain.class:591
+msgid "Error in btnOK_Click\n"
+msgstr "Error en btnOK_Click\n"
+
+#: FMain.class:316
+msgid "Error in buscar\n"
+msgstr "Error en buscar\n"
+
+#: FMain.class:296
+msgid "Error in cboEntidad QSO\n"
+msgstr "Error en cboEntidad QSO\n"
+
+#: FmtoBD.class:168
+msgid "Error in CopyData:\n"
+msgstr "Error en CopyData:\n"
+
+#: FmtoBD.class:150
+msgid "Error in CreateTableLog:\n"
+msgstr "Error en CreateTableLog:\n"
+
+#: FmtoBD.class:86
+msgid "Error in CreateTableTemp:\n"
+msgstr "Error en CreateTableTemp:\n"
+
+#: FLoc.class:326
+msgid "Error in drawDX"
+msgstr "Error en drawDX"
+
+#: FLoc.class:273
+msgid "Error in drawSquares"
+msgstr "Error en drawSquares"
+
+#: FMain.class:1370
+msgid "Error in fillData\n"
+msgstr "Error en fillData\n"
 
 #: FMain.class:61
 msgid "Error in Fmain_new\n"
@@ -630,846 +754,421 @@ msgstr "Error en Form Close\n"
 msgid "Error in Form Load\n"
 msgstr "Error en Form Load\n"
 
-#: FMain.class:296
-msgid "Error in cboEntidad QSO\n"
-msgstr "Error en cboEntidad QSO\n"
+#: FMain.class:968
+msgid "Error in markersSpot\n"
+msgstr "Error en markersSpot\n"
 
-#: FMain.class:316
-msgid "Error in buscar\n"
-msgstr "Error en buscar\n"
+#: FMain.class:1622
+msgid "Error in modifyQSO\n"
+msgstr "Error en modifyQSO\n"
 
-#: FMain.class:328
-msgid "New DXCC on "
-msgstr "Nuevo DXCC en "
+#: FiADIF.class:253
+msgid "Error in Process Record\n"
+msgstr "Error en Process Record\n"
 
-#: FMain.class:335
-msgid "DXCC Confirmed on "
-msgstr "DXCC Confirmado en "
+#: FmtoBD.class:210
+msgid "Error in RestoreData:\n"
+msgstr "Error en RestoreData:\n"
 
-#: FMain.class:341
-msgid "DXCC Worked on "
-msgstr "DXCC Trabajado en "
+#: FFindQSO.class:110
+msgid "Error in searchQSO"
+msgstr "Error en searchQSO"
 
-#: FMain.class:364
-msgid " New square on "
-msgstr " Nuevo locator en "
-
-#: FMain.class:371
-msgid " Square Cfmd on "
-msgstr " Cuadrícula conf. en "
-
-#: FMain.class:377
-msgid " Square Wkd on "
-msgstr " Cuadrícula trab. en "
-
-#: FMain.class:422
-msgid "QSO duration: "
-msgstr "Duración QSO: "
-
-#: FMain.class:508
-msgid "&Wkd Before"
-msgstr "QSOs A&nteriores"
-
-#: FMain.class:523
-msgid "Error in wkdB4\n"
-msgstr "Error en wkdB4\n"
-
-#: FMain.class:528
-msgid "QSO Nr"
-msgstr "QSO Nº "
-
-#: FMain.class:533
-msgid "QSL(R)"
-msgstr "-"
-
-#: FMain.class:560
-msgid "Incorrect Locator!"
-msgstr "Locator incorrecto!"
-
-#: FMain.class:577
-msgid "Do you want to spot\n"
-msgstr "¿Quieres anunciar\n"
-
-#: FMain.class:577
-msgid ""
-"\n"
-" to the Cluster Net?"
-msgstr ""
-"\n"
-" a la Red de Cluster?"
-
-#: FMain.class:577 FiADIF.class:208 global.module:423
-msgid "Yes"
-msgstr "Sí"
-
-#: FMain.class:586
-msgid "You must fill at least: Callsign, RST_r, RST_s and Frequency"
-msgstr "Debes rellenar al menos: Indicativo, RST_r, RST_e y Frecuencia TX"
-
-#: FMain.class:591
-msgid "Error in btnOK_Click\n"
-msgstr "Error en btnOK_Click\n"
+#: FMain.class:780
+msgid "Error in setModeBand\n"
+msgstr "Error en setModeBand\n"
 
 #: FMain.class:609
 msgid "Error in spotQSO\n"
 msgstr "Error en spotQSO\n"
 
-#: FMain.class:704
-msgid "Error in btnCAT_Click\n"
-msgstr "Error en btnCAT_Click\n"
-
-#: FMain.class:775
-msgid "Error in setModeBand\n"
-msgstr "Error en setModeBand\n"
-
-#: FMain.class:821
-msgid "Not yet configured any Cluster server in your settings."
-msgstr "No hay configurado aún ningún Cluster en tus preferencias."
-
-#: FMain.class:825
-msgid "Error in btnConn_Click\n"
-msgstr "Error en btnConn_Click\n"
-
-#: FMain.class:942
-msgid "Error in addLines\n"
-msgstr "Error en addLines\\n"
-
-#: FMain.class:962
-msgid "Error in markersSpot\n"
-msgstr "Error en markersSpot\n"
-
-#: FMain.class:1005
+#: FMain.class:1011
 msgid "Error in tblCluster_Click()\n"
 msgstr "Error en tblCluster_Click()\n"
 
-#: FMain.class:1033
+#: FMain.class:1039
 msgid "Error in tblCluster_doubleClick\n"
 msgstr "Error en tblCluster_doubleClick\n"
 
-#: FMain.class:1201
-msgid "Not more than 1 decimal point allowed!"
-msgstr "No puede haber más de un punto decimal!"
+#: FMain.class:523
+msgid "Error in wkdB4\n"
+msgstr "Error en wkdB4\n"
 
-#: FMain.class:1217
-msgid "Not valid TX Freq!"
-msgstr "Frecuencia TX no válida!"
+#: FiADIF.class:433
+msgid "Error logging in Log_qso\n"
+msgstr "Error logging en Log_qso\n"
 
-#: FMain.class:1238
-msgid "Not valid RX Freq!"
-msgstr "Frecuencia RX no válida!"
-
-#: FMain.class:1248
-msgid "Create new log"
-msgstr "Crear nuevo log"
-
-#: FMain.class:1249
-msgid "dfhLog Database"
-msgstr "Base de datos dfhLog"
-
-#: FMain.class:1252
-msgid "Path to database not found, please open or create a new one"
-msgstr ""
-"Ruta a la base de datos no encontrada, por favor\n"
-"abre o crea una nueva"
-
-#: FMain.class:1265
-msgid "Error creating new Log\n"
-msgstr "Error al crear nuevo log\n"
-
-#: FMain.class:1273
-msgid "Open log"
-msgstr "Abrir Log"
-
-#: FMain.class:1274 FiADIF.class:129
-msgid "All Files"
-msgstr "Todos los ficheros"
-
-#: FMain.class:1288
-msgid "Error opening Log\n"
-msgstr "Error abriendo Log\n"
-
-#: FMain.class:1364
-msgid "Error in fillData\n"
-msgstr "Error en fillData\n"
-
-#: FMain.class:1411
+#: FMain.class:1417
 msgid "Error loging QSO\n"
 msgstr "Error registrando QSO\n"
 
-#: FMain.class:1544
-msgid "Copy saved as:\n"
-msgstr "Copia guardada como:\n"
-
-#: FMain.class:1547
-msgid "Error in BackupDB\n"
-msgstr "Error en backupDB\n"
-
-#: FMain.class:1568
-msgid "Modify"
-msgstr "Modificar"
-
-#: FMain.class:1611
-msgid "QSO Nr "
-msgstr "QSO Nº "
-
-#: FMain.class:1611
-msgid " doesn't exist!"
-msgstr " no existe!"
-
-#: FMain.class:1616
-msgid "Error in modifyQSO\n"
-msgstr "Error en modifyQSO\n"
-
-#: FMain.class:1644
+#: FMain.class:1650
 msgid "Error Modifying QSO\n"
 msgstr "Error Modificando QSO\n"
 
-#: FMain.class:1661
+#: FMain.class:1294
+msgid "Error opening Log\n"
+msgstr "Error abriendo Log\n"
+
+#: QRZ.class:172
+msgid "Error reading XML (Data QRZ.COM)\n Line: "
+msgstr "Error leyendo XML (Data QRZ.COM)\n Linea: "
+
+#: FiADIF.class:608
+msgid "Errors:"
+msgstr "Errores:"
+
+#: FMain.class:1667
 msgid "Error setting QSL Rcvd QSO\n"
 msgstr "Error marcando QSL recibida\n"
 
-#: FMain.class:1677
+#: FMain.class:1683
 msgid "Error setting QSL Sent QSO\n"
 msgstr "Error marcando QSL enviada\n"
 
-#: FMain.class:1783 FStats.class:53
-msgid "C"
-msgstr "-"
-
-#: FMain.class:1789 FStats.class:59
-msgid "W"
-msgstr "T"
-
-#: FMain.class:1839
-msgid "Phone:"
-msgstr "Fonía:"
-
-#: FMain.class:1840
-msgid "CW:"
-msgstr "-"
-
-#: FMain.class:1841
-msgid "Digi:"
-msgstr "-"
-
-#: FMain.class:2051
-msgid "&File"
-msgstr "&Archivo"
-
-#: FMain.class:2055
-msgid "&New Log"
-msgstr "&Nuevo Log"
-
-#: FMain.class:2062
-msgid "Open L&og"
-msgstr "Abrir L&og"
-
-#: FMain.class:2072
-msgid "Watch &Log"
-msgstr "Revisar &Log"
-
-#: FMain.class:2082 FiADIF.class:128
-msgid "ADIF Import"
-msgstr "Importar ADIF"
-
-#: FMain.class:2088 FeADIF.class:209
-msgid "ADIF Export"
-msgstr "Exportar ADIF"
-
-#: FMain.class:2098
-msgid "&Database"
-msgstr "Base de &Datos"
-
-#: FMain.class:2101
-msgid "Compact DB"
-msgstr "Compactar BD"
-
-#: FMain.class:2107
-msgid "Backup DB"
-msgstr "Respaldar BD"
-
-#: FMain.class:2119
-msgid "Se&ttings"
-msgstr "Con&figuración"
-
-#: FMain.class:2129
+#: FMain.class:2135
 msgid "E&xit"
 msgstr "&Salir"
 
-#: FMain.class:2136 FSearch.class:451
-msgid "&Search"
-msgstr "Bu&scar"
+#: FeADIF.class:310
+msgid "&Export"
+msgstr "&Exportar"
 
-#: FMain.class:2139
-msgid "Searc&h QSOs"
-msgstr "&Buscar QSOs"
+#: FStats.class:174
+msgid "E&xport CSV"
+msgstr "E&xportar CSV"
 
-#: FMain.class:2146
-msgid "Summar&y"
-msgstr "Resu&men"
+#: FFindQSO.class:147 FLog.class:205 FQueue.class:135
+msgid "Export to ADIF"
+msgstr "Exportar ADIF"
 
-#: FMain.class:2149
-msgid "DXCC"
-msgstr "-"
+#: FMain.class:2057
+msgid "&File"
+msgstr "&Archivo"
 
-#: FMain.class:2153
-msgid "WAC"
-msgstr "-"
+#: FeADIF.class:229 FiADIF.class:598
+msgid "File:"
+msgstr "Archivo:"
 
-#: FMain.class:2157
-msgid "WAS"
-msgstr "-"
+#: FPref.class:823
+msgid "Fill QSO data from QRZ.com"
+msgstr "Completar datos de QSO desde QRZ.com"
 
-#: FMain.class:2161
-msgid "USACA"
-msgstr "-"
+#: FPref.class:813
+msgid "Fill QSO data from QRZ.com (Web method)"
+msgstr "Completar datos de QSO desde QRZ.com (Método Web)"
 
-#: FMain.class:2165
-msgid "IOTA"
-msgstr "-"
+#: FLoc.class:739
+msgid "Filter"
+msgstr "Filtro"
 
-#: FMain.class:2169
-msgid "TPEA"
-msgstr "-"
+#: FPref.class:603
+msgid "Filters"
+msgstr "Filtros"
 
-#: FMain.class:2177
-msgid "Main GridSquares"
-msgstr "Cuadrículas principales"
+#: FLoc.class:356
+msgid "Find QSOs with "
+msgstr "Buscar QSOs con "
 
-#: FMain.class:2181
-msgid "GridSquares"
-msgstr "Cuadrículas"
+#: FmtoBD.class:79
+msgid "Finished!"
+msgstr "Finalizado!"
 
-#: FMain.class:2185
-msgid "EME Initials"
-msgstr "Iniciales EME"
+#: FDesign.class:385
+msgid "Font"
+msgstr "Fuente"
 
-#: FMain.class:2193 FStats.class:119
-msgid "Global Stats"
-msgstr "Estadísticas Globales"
+#: FSearch.class:152
+msgid "For QSO with: "
+msgstr "Para el QSO con: "
 
-#: FMain.class:2199
-msgid "&Printing"
-msgstr "&Impresión"
+#: FFindQSO.class:124 FLog.class:182 FQueue.class:112 FSearch.class:150
+msgid "For selected QSOs: "
+msgstr "Para los QSOs seleccionados: "
 
-#: FMain.class:2202
-msgid "QSL &Design"
-msgstr "&Diseño QSL"
+#: FLog.class:55
+msgid "Freq"
+msgstr "Frecuencia"
 
-#: FMain.class:2207
-msgid "QSL queu&e"
-msgstr "Cola d&e QSL"
-
-#: FMain.class:2212
-msgid "Print QSLs"
-msgstr "Imprimir QSLs"
-
-#: FMain.class:2219 FPref.class:571
-msgid "C&luster"
-msgstr "-"
-
-#: FMain.class:2223
-msgid "&Connect"
-msgstr "&Conectar"
-
-#: FMain.class:2229
-msgid "&Disconnect"
-msgstr "&Desconectar"
-
-#: FMain.class:2236
-msgid "&Maps"
-msgstr "Ma&pas"
-
-#: FMain.class:2240
-msgid "DXMap"
-msgstr "Mapa DX"
-
-#: FMain.class:2246
-msgid "GridS&quares"
-msgstr "Cuad&rículas"
-
-#: FMain.class:2253
-msgid "&Help"
-msgstr "A&yuda"
-
-#: FMain.class:2256
-msgid "Con&tent"
-msgstr "Con&tenido"
-
-#: FMain.class:2262
-msgid "A&bout..."
-msgstr "Acerca de"
-
-#: FMain.class:2276
-msgid "New Log"
-msgstr "Nuevo Log"
-
-#: FMain.class:2284
-msgid "Open Log"
-msgstr "Abrir Log"
-
-#: FMain.class:2307
-msgid "Watch Log"
-msgstr "Revisar Log"
-
-#: FMain.class:2314 FSearch.class:366
-msgid "Search QSOs"
-msgstr "Buscar QSOs"
-
-#: FMain.class:2321
-msgid "Edit Last QSO"
-msgstr "Editar último QSO"
-
-#: FMain.class:2332
-msgid "Conn/Dis. Cluster"
-msgstr "Conectar/Desconectar Cluster"
-
-#: FMain.class:2340
-msgid "CAT"
-msgstr "-"
-
-#: FMain.class:2352
-msgid "GridSquares Map"
-msgstr "Mapa de Locator"
-
-#: FMain.class:2359
-msgid "DX Map"
-msgstr "Mapa DX"
-
-#: FMain.class:2380
-msgid "S 0 1  3  5  7  9 +20 +40 +60"
-msgstr "-"
-
-#: FMain.class:2397
-msgid "0.00"
-msgstr "-"
-
-#: FMain.class:2416
-msgid "QSO"
-msgstr "-"
-
-#: FMain.class:2428 FSearch.class:467
-msgid "Callsign:"
-msgstr "Indicativo:"
-
-#: FMain.class:2434
-msgid "DX Callsign"
-msgstr "Indicativo DX"
-
-#: FMain.class:2441
-msgid "Band Selection"
-msgstr "Seleccion de Banda"
-
-#: FMain.class:2449
-msgid "Mode Selection"
-msgstr "Selección de modo"
-
-#: FMain.class:2458
-msgid "Propagation Type"
-msgstr "Tipo de propagación"
-
-#: FMain.class:2465
-msgid "Date of QSO"
-msgstr "Fecha del QSO"
-
-#: FMain.class:2472
-msgid "Time on"
-msgstr "Hora inicio"
-
-#: FMain.class:2479
-msgid "Time off"
-msgstr "Hora fin"
-
-#: FMain.class:2486
+#: FMain.class:2492
 msgid "Freq. in KHZ "
 msgstr "Frecuencia en KHz"
 
-#: FMain.class:2505
-msgid "RST Received"
-msgstr "RST Recibido"
+#: FLog.class:56
+msgid "Freq RX"
+msgstr "Frecuencia RX"
 
-#: FMain.class:2514
-msgid "RST Sent"
-msgstr "RST Enviado"
-
-#: FMain.class:2523
-msgid "DX GridSquare"
-msgstr "Locator del DX"
-
-#: FMain.class:2531
-msgid "DX Name"
-msgstr "Nombre del DX"
-
-#: FMain.class:2538
-msgid "DX City"
-msgstr "Ciudad del DX"
-
-#: FMain.class:2551
-msgid "TX Power"
-msgstr "Potencia TX"
-
-#: FMain.class:2559
-msgid "QSL rcvd"
-msgstr "-"
-
-#: FMain.class:2560
-msgid "QSL Recvd:"
-msgstr "-"
-
-#: FMain.class:2566
-msgid "Date of QSL rcvd"
-msgstr "Fecha de recepción de QSL"
-
-#: FMain.class:2573
-msgid "QSL sent"
-msgstr "QSL enviada"
-
-#: FMain.class:2574
-msgid "QSL Sent:"
-msgstr "QSL enviada:"
-
-#: FMain.class:2580
-msgid "Date of QSL sent"
-msgstr "Fecha de envío de QSL"
-
-#: FMain.class:2586
-msgid "QSL via..."
-msgstr "-"
-
-#: FMain.class:2589
-msgid "Bureau"
-msgstr "-"
-
-#: FMain.class:2589
-msgid "Manager"
-msgstr "-"
-
-#: FMain.class:2589
-msgid "Direct"
-msgstr "Directa"
-
-#: FMain.class:2589 FPref.class:782
-msgid "QRZ.com"
-msgstr "-"
-
-#: FMain.class:2589
-msgid "No QSL"
-msgstr "-"
-
-#: FMain.class:2596
-msgid "QSL via Mgr"
-msgstr "-"
-
-#: FMain.class:2602
-msgid "TPEA award"
-msgstr "Diploma TPEA"
-
-#: FMain.class:2609
-msgid "..."
-msgstr "-"
-
-#: FMain.class:2614
-msgid "IOTA award"
-msgstr "Diploma IOTA"
-
-#: FMain.class:2626
-msgid "WAS award"
-msgstr "Diploma WAS"
-
-#: FMain.class:2638
-msgid "USACA award"
-msgstr "Diploma USACA"
-
-#: FMain.class:2661
-msgid "Sat mode"
-msgstr "Modo Sat."
-
-#: FMain.class:2672
-msgid "Whipes current entered data"
-msgstr "Borra los datos introducidos"
-
-#: FMain.class:2674 FPref.class:842 FSquares.class:301 FSummary.class:420
-#: FeADIF.class:54 FiADIF.class:655 FmtoBD.class:272 Fservers.class:80
-msgid "&Cancel"
-msgstr "&Cancelar"
-
-#: FMain.class:2680
-msgid "Accepts & Log QSO"
-msgstr "Acepta y guarda el QSO"
-
-#: FMain.class:2682
-msgid "OK [Enter]"
-msgstr "-"
-
-#: FMain.class:2696
-msgid "RST(R):"
-msgstr "-"
-
-#: FMain.class:2702
-msgid "RST(S):"
-msgstr "RST(E):"
-
-#: FMain.class:2708 FSearch.class:472
-msgid "Locator:"
-msgstr "-"
-
-#: FMain.class:2714
-msgid "Name:"
-msgstr "Nombre:"
-
-#: FMain.class:2720
-msgid "QTH:"
-msgstr "-"
-
-#: FMain.class:2726
-msgid "Via:"
-msgstr "-"
-
-#: FMain.class:2732
-msgid "Manager:"
-msgstr "-"
-
-#: FMain.class:2738
-msgid "E-mail:"
-msgstr "-"
-
-#: FMain.class:2744
-msgid "Date:"
-msgstr "Fecha:"
-
-#: FMain.class:2750
-msgid "Time on:"
-msgstr "Hora inicio:"
-
-#: FMain.class:2756
-msgid "Time off:"
-msgstr "Hora fin:"
-
-#: FMain.class:2762
-msgid "Remarks:"
-msgstr "Comentarios:"
-
-#: FMain.class:2768
-msgid "Nr:"
-msgstr "Nº:"
-
-#: FMain.class:2775 FeADIF.class:321 FiADIF.class:620
-msgid "0"
-msgstr "-"
-
-#: FMain.class:2793
-msgid "County (USA):"
-msgstr "Condado(USA):"
-
-#: FMain.class:2799
-msgid "IOTA:"
-msgstr "-"
-
-#: FMain.class:2805
-msgid "TPEA:"
-msgstr "-"
-
-#: FMain.class:2811
-msgid "Satellite:"
-msgstr "Satélite:"
-
-#: FMain.class:2817
-msgid "Sat Mode:"
-msgstr "Modo Sat:"
-
-#: FMain.class:2823
-msgid "State (USA):"
-msgstr "Estado (USA)"
-
-#: FMain.class:2829
-msgid "Power:"
-msgstr "Potencia:"
-
-#: FMain.class:2834
-msgid ""
-"Status:\n"
-"Red=Send spot without confirmation\n"
-"Orange=Send spot after confirmation\n"
-"Unchecked=Don't send spots\n"
-"\n"
-"For convenience, status is not saved\n"
-"between sessions."
-msgstr ""
-"Estado:\n"
-"Rojo=Enviar spot sin confirmación\n"
-"Naranja=Enviar spot tras confirmación\n"
-"No marcado=No enviar spots\n"
-"\n"
-"Por conveniencia, el estado\n"
-"no se guarda entre sesiones."
-
-#: FMain.class:2835
-msgid "AutoSpot"
-msgstr "AutoSpot"
-
-#: FMain.class:2841
-msgid "Real Time QSO"
-msgstr "QSO en T. Real"
-
-#: FMain.class:2847
-msgid "Info"
-msgstr "-"
-
-#: FMain.class:2859
-msgid "Cont:"
-msgstr "Cont:"
-
-#: FMain.class:2873
-msgid "Distance:"
-msgstr "Distancia:"
-
-#: FMain.class:2894
-msgid "Prefix:"
-msgstr "Prefijo:"
-
-#: FMain.class:2901
-msgid "CQ:"
-msgstr "-"
-
-#: FMain.class:2915
-msgid "Rhumb:"
-msgstr "Rumbo:"
-
-#: FMain.class:2936
-msgid "ITU:"
-msgstr "-"
-
-#: FMain.class:2956
-msgid "Current DXCC"
-msgstr "DXCC Actual"
-
-#: FMain.class:2974
-msgid "00:00:00"
-msgstr "-"
-
-#: FMain.class:2981
-msgid "Freq.TX:"
-msgstr "-"
-
-#: FMain.class:2987
+#: FMain.class:2993
 msgid "Freq.RX:"
 msgstr "-"
 
-#: FMain.class:2993 FSearch.class:388 FeADIF.class:289
-msgid "DatePicker"
-msgstr "Selector de Fecha"
-
-#: FMain.class:3010
-msgid "DX email"
-msgstr "Email del DX"
-
-#: FMain.class:3022
-msgid "Lo&g"
+#: FMain.class:2987
+msgid "Freq.TX:"
 msgstr "-"
 
-#: FMain.class:3036
-msgid "Cl&uster"
+#: FMain.class:2199 FStats.class:134
+msgid "Global Stats"
+msgstr "Estadísticas Globales"
+
+#: FLoc.class:618
+msgid "Grid"
+msgstr "Cuadrícula"
+
+#: FPref.class:502
+msgid "*GridSquare:"
+msgstr "*Locator:"
+
+#: FMain.class:2187
+msgid "GridSquares"
+msgstr "Cuadrículas"
+
+#: FMain.class:2252
+msgid "GridS&quares"
+msgstr "Cuad&rículas"
+
+#: FLoc.class:642
+msgid "GridSquares:"
+msgstr "Cuadrículas:"
+
+#: FMain.class:2358
+msgid "GridSquares Map"
+msgstr "Mapa de Locator"
+
+#: FSquares.class:62
+msgid "Gridsquares Summary"
+msgstr "Resumen de Cuadrículas"
+
+#: FAbout.class:313
+msgid "<h2 align=center>Authors</h2>\n"
+msgstr "<h2 align=center>Autores</h2>\n"
+
+#: FAbout.class:308
+msgid "<h2 align=center>Licence</h2>\n\n<p align=center>This program is FREE SOFTWARE; you can redistribute it AND/OR modify it under the terms of the GNU General Public License as published by the Free Software Foundation ; either version 2, or (at your option) any later version.</p>\n\n<p align=center>This program is distributed in the hope that it will be useful but WITHOUT ANY WARRANTY; without even the implied warranty of  MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</p>\n"
+msgstr "<h2 align=center>Licencia</h2>\n\n<p align=center>Este programa es software libre: usted puede redistribuirlo y/o modificarlo conforme a los términos de la Licencia Pública General de GNU publicada por la Fundación para el Software Libre, ya sea la versión 3 de esta Licencia o (a su elección) cualquier versión posterior.</p>\n\n<p align=center>Este programa se distribuye con el deseo de que le resulte útil, pero SIN GARANTÍAS DE NINGÚN TIPO; ni siquiera con las garantías implícitas de COMERCIABILIDAD o APTITUD PARA UN PROPÓSITO DETERMINADO.  Para más información, consulte la Licencia Pública General de GNU.</p>\n"
+
+#: FSquares.class:128
+msgid "<h2>Gridsquares "
+msgstr "<h2>Cuadrículas  "
+
+#: FSquares.class:89
+msgid "<h2>Main Squares "
+msgstr "<h2>Cuadrículas principales  "
+
+#: FPref.class:689
+msgid "&Hamlib"
 msgstr "-"
 
-#: FMain.class:3065 FPref.class:586 FQueue.class:228
-msgid "Delete"
-msgstr "Borrar"
-
-#: FMain.class:3070
-msgid "Send"
-msgstr "Enviar"
-
-#: FMain.class:3089
-msgid "St&ats"
-msgstr "&Estadisticas"
-
-#: FMain.class:3120
-msgid "Database:"
-msgstr "Base de datos:"
-
-#: FMap.class:189
-msgid "Observer Latitude"
-msgstr "Latitud del Observador"
-
-#: FMap.class:196
-msgid "Latitude:"
-msgstr "Latitud: "
-
-#: FMap.class:201
-msgid "Longitude:"
-msgstr "Longitud: "
-
-#: FMap.class:206
-msgid "Observer Longitude"
-msgstr "Longitud del Observador"
-
-#: FMap.class:213
-msgid "Zoom:"
-msgstr "-"
-
-#: FMap.class:218
-msgid ""
-"Zoom: Less value = closer view,\n"
-"More value = far away view"
-msgstr ""
-"Zoom: Menor valor = vista cercana,\n"
-"Mayor valor = vista lejana"
-
-#: FMap.class:226
-msgid "&Apply Changes"
-msgstr "&Aplicar Cambios"
-
-#: FMap.class:231
-msgid "Delete all labels"
-msgstr "Borrar etiquetas"
-
-#: FMap.class:232
-msgid "&Clean Map"
-msgstr "&Limpiar Mapa"
-
-#: FMap.class:237
-msgid "Close window"
-msgstr "Cerrar Ventana"
-
-#: FPref.class:28
-msgid "Incorrect GridSquare"
-msgstr "Locator incorrecto"
-
-#: FPref.class:80
-msgid ""
-"You need to fill the mandatory fields\n"
-"or GridSquare is incorrect"
-msgstr ""
-"Es necesario completar los campos obligatorios\n"
-"o el Locator es incorrecto"
+#: FPref.class:693
+msgid "Hamlib (CAT) Parameters"
+msgstr "Parámetros Hamlib (CAT)"
 
 #: FPref.class:237
 msgid "Hamlib not installed!"
 msgstr "Hamlib no está instalado!"
 
-#: FPref.class:284
-msgid "Xplanet not installed!"
-msgstr "Xplanet no está instalado!"
+#: FMain.class:2259
+msgid "&Help"
+msgstr "A&yuda"
 
-#: FPref.class:484
-msgid "My &Station"
-msgstr "Mi E&stación"
+#: FPref.class:607
+msgid "HF Spots"
+msgstr "Anuncios HF"
 
-#: FPref.class:488
-msgid "My Station Data"
-msgstr "Datos de mi Estación"
-
-#: FPref.class:492
-msgid "*QRZ:"
+#: FDesign.class:352
+msgid "His Call"
 msgstr "-"
 
-#: FPref.class:497
-msgid "*Name:"
-msgstr "*Nombre:"
+#: FDesign.class:352
+msgid "His Loc"
+msgstr "His Loc"
 
-#: FPref.class:502
-msgid "*GridSquare:"
-msgstr "*Locator:"
+#: FAbout.class:393
+msgid "http://code.google.com/p/dfhlog"
+msgstr "-"
+
+#: FDesign.class:431
+msgid "Image"
+msgstr "Imagen"
+
+#: FLoc.class:383
+msgid "Image Files"
+msgstr "Ficheros de Imagen "
+
+#: FiADIF.class:659
+msgid "&Import"
+msgstr "&Importar"
+
+#: FiADIF.class:531
+msgid "Importing ADIF has been aborted!"
+msgstr "¡La importación de ADIF ha sido abortada!"
+
+#: FSquares.class:128
+msgid " in band = "
+msgstr " en banda = "
+
+#: FSquares.class:89
+msgid " in Band = "
+msgstr " en Banda = "
+
+#: FeADIF.class:124
+msgid "Incorrect dates. Start date cannot be greater than End date."
+msgstr "Fecha incorrecta. La fecha de inicio no puede ser menor que la de fin."
+
+#: Fservers.class:36
+msgid "Incorrect format\nCheck for : (colon) between address and port number."
+msgstr "Formato incorrecto\nComprueba que has escrito : (dos puntos) entre\nla dirección y el nº de puerto."
+
+#: FPref.class:28
+msgid "Incorrect GridSquare"
+msgstr "Locator incorrecto"
+
+#: FMain.class:560
+msgid "Incorrect Locator!"
+msgstr "Locator incorrecto!"
+
+#: FMain.class:2853
+msgid "Info"
+msgstr "-"
+
+#: FMain.class:2171
+msgid "IOTA"
+msgstr "-"
+
+#: FMain.class:2805
+msgid "IOTA:"
+msgstr "-"
+
+#: FMain.class:2620
+msgid "IOTA award"
+msgstr "Diploma IOTA"
+
+#: FSummary.class:64
+msgid "IOTA Summary"
+msgstr "Resumen IOTA"
+
+#: FMain.class:2942
+msgid "ITU:"
+msgstr "-"
+
+#: FLoc.class:152
+msgid " Km from "
+msgstr " Km de "
+
+#: FDesign.class:357
+msgid "Label"
+msgstr "Etiqueta"
+
+#: FMap.class:196
+msgid "Latitude:"
+msgstr "Latitud: "
+
+#: FLoc.class:148
+msgid "Latitude: "
+msgstr "Latitud: "
+
+#: FMain.class:2714 FSearch.class:473
+msgid "Locator:"
+msgstr "-"
+
+#: FMain.class:3028
+msgid "Lo&g"
+msgstr "-"
+
+#: FLog.class:29
+msgid "Log Review"
+msgstr "Examinar Log"
+
+#: FSearch.class:31
+msgid "Log Search"
+msgstr "Buscar en Log"
+
+#: FLoc.class:148
+msgid "  Longitude: "
+msgstr " Longitud: "
+
+#: FMap.class:201
+msgid "Longitude:"
+msgstr "Longitud: "
+
+#: FLoc.class:622
+msgid "Main Division:"
+msgstr "División Princ.:"
+
+#: FMain.class:2183
+msgid "Main GridSquares"
+msgstr "Cuadrículas principales"
+
+#: FSquares.class:60
+msgid "Main Squares Summary"
+msgstr "Resumen Cuadrículas Principales"
+
+#: FAbout.class:340
+msgid "Make a gift!"
+msgstr "Haz tu donación!"
+
+#: FMain.class:2595
+msgid "Manager"
+msgstr "-"
+
+#: FMain.class:2738
+msgid "Manager:"
+msgstr "-"
+
+#: FPref.class:832
+msgid "* (Mandatory Fields)"
+msgstr "*(Campos Obligatorios)"
+
+#: FMain.class:2242
+msgid "&Maps"
+msgstr "Ma&pas"
+
+#: FDesign.class:352
+msgid "Mgr"
+msgstr "-"
+
+#: FLoc.class:732
+msgid "Minutes to hold DX Lines on Map"
+msgstr "Min. a mantener líneas en Mapa"
+
+#: FiADIF.class:246
+msgid "Missing field/s in ADIF record. Not logged!: "
+msgstr "Campo/s no encontrado/s en ADIF. QSO no registrado!:"
+
+#: FDesign.class:416
+msgid "mm"
+msgstr "-"
+
+#: FSquares.class:128
+msgid ", mode = "
+msgstr ", modo = "
+
+#: FQueue.class:54 FSearch.class:70
+msgid "Mode"
+msgstr "Modo"
+
+#: FSquares.class:291 FSummary.class:410
+msgid "Mode:"
+msgstr "Modo:"
+
+#: FLoc.class:818
+msgid "Mode selection"
+msgstr "Selección de modo"
+
+#: FMain.class:2455
+msgid "Mode Selection"
+msgstr "Selección de modo"
+
+#: FMain.class:1574
+msgid "Modify"
+msgstr "Modificar"
+
+#: FPref.class:714
+msgid "msec."
+msgstr "ms."
+
+#: FDesign.class:352 FQueue.class:62
+msgid "My Call"
+msgstr "-"
 
 #: FPref.class:507
 msgid "My Callsign"
@@ -1483,679 +1182,871 @@ msgstr "Mi Nombre"
 msgid "My GridSquare"
 msgstr "Mi Locator"
 
-#: FPref.class:535
-msgid "QSO begin/end time"
-msgstr "Hora inicio/fin QSO"
+#: FDesign.class:352
+msgid "My Loc"
+msgstr "-"
 
-#: FPref.class:539
-msgid "Use equal begin/end time in QSO"
-msgstr "Usar la misma hora de inicio y fin de QSO"
+#: FSearch.class:86
+msgid "My Locator"
+msgstr "Mi Locator"
 
-#: FPref.class:545
-msgid "Preferred Band && Mode"
-msgstr "Banda y Modo preferido"
+#: FPref.class:484
+msgid "My &Station"
+msgstr "Mi E&stación"
 
-#: FPref.class:575
-msgid "Telnet Server"
-msgstr "Servidor Telnet"
+#: FPref.class:488
+msgid "My Station Data"
+msgstr "Datos de mi Estación"
 
-#: FPref.class:591
-msgid "Add"
-msgstr "Añadir"
+#: FSearch.class:74
+msgid "Name"
+msgstr "Nombre"
 
-#: FPref.class:596
-msgid ""
-"Auto connect to server with\n"
-"your current callsign "
-msgstr ""
-"Conectar automáticamente\n"
-"con tu indicativo actual"
+#: FPref.class:497
+msgid "*Name:"
+msgstr "*Nombre:"
 
-#: FPref.class:597
-msgid "Auto-connect"
-msgstr "Auto conectar"
-
-#: FPref.class:603
-msgid "Filters"
-msgstr "Filtros"
-
-#: FPref.class:607
-msgid "HF Spots"
-msgstr "Anuncios HF"
-
-#: FPref.class:613
-msgid "V/UHF Spots"
-msgstr "Anuncios V/UHF"
-
-#: FPref.class:619
-msgid "WARC Spots"
-msgstr "Anuncios WARC"
-
-#: FPref.class:625
-msgid "Ann Messages"
-msgstr "Mensajes Ann"
-
-#: FPref.class:631
-msgid "WWV Messages"
-msgstr "Mensajes WWV"
-
-#: FPref.class:637
-msgid "WCY Messages"
-msgstr "Mensajes WCY"
-
-#: FPref.class:642
-msgid "C&olors"
-msgstr "C&olores"
-
-#: FPref.class:646
-msgid "Colors"
-msgstr "Colores"
-
-#: FPref.class:670
-msgid "Confirmed:"
-msgstr "Confirmado:"
-
-#: FPref.class:675
-msgid "Worked:"
-msgstr "Trabajado:"
+#: FMain.class:2720
+msgid "Name:"
+msgstr "Nombre:"
 
 #: FPref.class:680
 msgid "Needed:"
 msgstr "No Trabajado:"
 
-#: FPref.class:685
-msgid "Default:"
-msgstr "Por defecto:"
+#: FMain.class:328
+msgid "New DXCC on "
+msgstr "Nuevo DXCC en "
 
-#: FPref.class:689
-msgid "&Hamlib"
+#: FMain.class:2061
+msgid "&New Log"
+msgstr "&Nuevo Log"
+
+#: FMain.class:2282
+msgid "New Log"
+msgstr "Nuevo Log"
+
+#: FMain.class:364
+msgid " New square on "
+msgstr " Nuevo locator en "
+
+#: FMain.class:2595
+msgid "No QSL"
 msgstr "-"
 
-#: FPref.class:693
-msgid "Hamlib (CAT) Parameters"
-msgstr "Parámetros Hamlib (CAT)"
+#: FLoc.class:795
+msgid "Not Confirmed"
+msgstr "No Confirmado"
 
-#: FPref.class:697
-msgid "Activate"
-msgstr "Activar"
+#: QRZ.class:275
+msgid "Not Found"
+msgstr "No encontrado"
 
-#: FPref.class:702
-msgid "Poll every:"
-msgstr "Consultar cada:"
+#: FMain.class:1207
+msgid "Not more than 1 decimal point allowed!"
+msgstr "No puede haber más de un punto decimal!"
 
-#: FPref.class:709
-msgid "100"
-msgstr "-"
+#: FMain.class:1244
+msgid "Not valid RX Freq!"
+msgstr "Frecuencia RX no válida!"
 
-#: FPref.class:709
-msgid "200"
-msgstr "-"
+#: FMain.class:1223
+msgid "Not valid TX Freq!"
+msgstr "Frecuencia TX no válida!"
 
-#: FPref.class:709
-msgid "300"
-msgstr "-"
+#: FMain.class:826
+msgid "Not yet configured any Cluster server in your settings."
+msgstr "No hay configurado aún ningún Cluster en tus preferencias."
 
-#: FPref.class:709
-msgid "400"
-msgstr "-"
+#: FSearch.class:65
+msgid "Nr"
+msgstr "Nº"
 
-#: FPref.class:709
-msgid "500"
-msgstr "-"
+#: FMain.class:2774
+msgid "Nr:"
+msgstr "Nº:"
 
-#: FPref.class:709
-msgid "1000"
-msgstr "-"
+#: FMain.class:577
+msgid "\n to the Cluster Net?"
+msgstr "\n a la Red de Cluster?"
 
-#: FPref.class:709
-msgid "2000"
-msgstr "-"
+#: FMap.class:189
+msgid "Observer Latitude"
+msgstr "Latitud del Observador"
 
-#: FPref.class:714
-msgid "msec."
-msgstr "ms."
+#: FMap.class:206
+msgid "Observer Longitude"
+msgstr "Longitud del Observador"
 
-#: FPref.class:719
-msgid "Rig select:"
-msgstr "Seleccionar Equipo"
+#: FLog.class:119
+msgid " of "
+msgstr " de "
 
-#: FPref.class:730
-msgid "Device:"
-msgstr "Dispositivo:"
-
-#: FPref.class:735
-msgid "/dev/ttyS0"
-msgstr "-"
-
-#: FPref.class:742
-msgid "1200"
-msgstr "-"
-
-#: FPref.class:742
-msgid "2400"
-msgstr "-"
-
-#: FPref.class:742
-msgid "4800"
-msgstr "-"
-
-#: FPref.class:742
-msgid "9600"
-msgstr "-"
-
-#: FPref.class:742
-msgid "19200"
-msgstr "-"
-
-#: FPref.class:742
-msgid "38400"
-msgstr "-"
-
-#: FPref.class:742
-msgid "57600"
-msgstr "-"
-
-#: FPref.class:742
-msgid "115200"
-msgstr "-"
-
-#: FPref.class:747
-msgid "Speed:"
-msgstr "Velocidad:"
-
-#: FPref.class:752
-msgid "bauds"
-msgstr "baudios"
-
-#: FPref.class:762
-msgid "Ot&hers"
-msgstr "Otros"
-
-#: FPref.class:766
-msgid "XPlanet"
-msgstr "-"
-
-#: FPref.class:770
-msgid "Use Xplanet Maps (If installed)"
-msgstr "Usar Mapas Xplanet (Si está instalado)"
-
-#: FPref.class:787
-msgid "(A subscription to QRZ.com(xml) is needed)"
-msgstr "(Necesaria suscripción a QRZ.com(xml))"
-
-#: FPref.class:803
-msgid "User:"
-msgstr "Usuario:"
-
-#: FPref.class:808
-msgid "Password:"
-msgstr "Contraseña:"
-
-#: FPref.class:813
-msgid "Fill QSO data from QRZ.com (Web method)"
-msgstr "Completar datos de QSO desde QRZ.com (Método Web)"
-
-#: FPref.class:818
-msgid "Don't fetch data from QRZ.com"
-msgstr "No buscar datos en QRZ.com"
-
-#: FPref.class:823
-msgid "Fill QSO data from QRZ.com"
-msgstr "Completar datos de QSO desde QRZ.com"
-
-#: FPref.class:832
-msgid "* (Mandatory Fields)"
-msgstr "*(Campos Obligatorios)"
-
-#: FPref.class:837 Fservers.class:85
-msgid "&Accept"
-msgstr "&Aceptar"
-
-#: FQueue.class:29
-msgid "QSL Print Queue"
-msgstr "Cola de impresión de QSL"
-
-#: FQueue.class:228
-msgid ""
-"Print queue will be deleted\n"
-"Do you want to continue?"
-msgstr ""
-"La cola de impresión se borrará\n"
-"¿Deseas continuar?"
-
-#: FQueue.class:289
-msgid "Clear Queue"
-msgstr "Borrar cola"
-
-#: FQueue.class:294
-msgid "Print"
-msgstr "Imprimir"
-
-#: FSearch.class:31
-msgid "Log Search"
-msgstr "Buscar en Log"
-
-#: FSearch.class:379
-msgid "Search QSO"
-msgstr "Buscar QSO"
-
-#: FSearch.class:457
-msgid "Start date:"
-msgstr "Fecha inicio:"
-
-#: FSearch.class:462
-msgid "End date:"
-msgstr "Fecha fin:"
-
-#: FSearch.class:477
-msgid "Prop. Type:"
-msgstr "Tipo Prop."
-
-#: FSearch.class:493
-msgid "Reset Dates"
-msgstr "Reiniciar Fechas"
-
-#: FSquares.class:60
-msgid "Main Squares Summary"
-msgstr "Resumen Cuadrículas Principales"
-
-#: FSquares.class:62
-msgid "Gridsquares Summary"
-msgstr "Resumen de Cuadrículas"
-
-#: FSquares.class:64
-msgid "EME Summary"
-msgstr "Resumen EME"
-
-#: FSquares.class:89
-msgid "<h2>Main Squares "
-msgstr "<h2>Cuadrículas principales  "
-
-#: FSquares.class:89
-msgid " by "
-msgstr " por "
-
-#: FSquares.class:89
-msgid " in Band = "
-msgstr " en Banda = "
-
-#: FSquares.class:89
-msgid " and Propagation mode = "
-msgstr " y Modo de Propagación = "
-
-#: FSquares.class:90
-msgid ""
-"<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr"
-"\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>Prop. Mode</"
-"td><td>QSL_rcvd</td><td>QSL_sent</td><td>Country</td><td>Gridsquare</"
-"td><td>Main Grid</td><td>QSOs</td></tr>"
-msgstr ""
-"<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr"
-"\"><td>Callsign</td><td>Fecha</td><td>Banda</td><td>Modo</td><td>Modo Prop.</"
-"td><td>QSL_rcvd</td><td>QSL_env</td><td>Entidad</td><td>Locator</"
-"td><td>Cuadrícula princ.</td><td>QSOs</td></tr>"
-
-#: FSquares.class:98
-msgid ""
-"<tr><td colspan=\"8\"></td><td><b>Total References</b></td><td align=\"right"
-"\">"
-msgstr ""
-"<tr><td colspan=\"8\"></td><td><b>Referencias Totales</b></td><td align="
-"\"right\">"
-
-#: FSquares.class:99
-msgid ""
-"<tr><td colspan=\"8\"></td><td><b>Total QSO</b></td><td align=\"right\" "
-"colspan=\"2\">"
-msgstr ""
-"<tr><td colspan=\"8\"></td><td><b>QSOs totales</b></td><td align=\"right\" "
-"colspan=\"2\">"
-
-#: FSquares.class:109 FSummary.class:108
-msgid "Error in "
-msgstr "Error en "
-
-#: FSquares.class:128
-msgid "<h2>Gridsquares "
-msgstr "<h2>Cuadrículas  "
-
-#: FSquares.class:128
-msgid " in band = "
-msgstr " en banda = "
-
-#: FSquares.class:128
-msgid ", mode = "
-msgstr ", modo = "
-
-#: FSquares.class:197 FSummary.class:313
-msgid "confirmed"
-msgstr "confirmado"
-
-#: FSquares.class:200 FSummary.class:316
-msgid "worked"
-msgstr "trabajado "
-
-#: FSquares.class:243
-msgid "Squares Summary"
-msgstr "Resumen Cuadrículas"
-
-#: FSquares.class:258 FSummary.class:377
-msgid "ComboBox1"
-msgstr "-"
-
-#: FSquares.class:264 FSummary.class:383
-msgid "ComboBox2"
+#: FAbout.class:359 FLoc.class:801
+msgid "OK"
 msgstr "-"
 
 #: FSquares.class:296 FSummary.class:415 FmtoBD.class:277
 msgid "&OK"
 msgstr "-"
 
-#: FStats.class:18
-msgid "Entity/Band"
-msgstr "Entidad/Banda"
-
-#: FStats.class:65
-msgid "Total Entities Worked: "
-msgstr "Total Entidades Trabajadas: "
-
-#: FStats.class:68
-msgid "Total Entities Confirmed: "
-msgstr "Total Entidades Confirmadas: "
-
-#: FStats.class:137
-msgid "Total QSOs"
+#: FMain.class:2688
+msgid "OK [Enter]"
 msgstr "-"
 
-#: FStats.class:159
-msgid "E&xport CSV"
-msgstr "E&xportar CSV"
+#: FMain.class:1279
+msgid "Open log"
+msgstr "Abrir Log"
 
-#: FSummary.class:56
-msgid "DXCC Summary"
-msgstr "Resumen DXCC"
+#: FMain.class:2290
+msgid "Open Log"
+msgstr "Abrir Log"
 
-#: FSummary.class:58
-msgid "WAC Summary"
-msgstr "Resumen WAC "
+#: FMain.class:2068
+msgid "Open L&og"
+msgstr "Abrir L&og"
 
-#: FSummary.class:60
-msgid "WAS Summary"
-msgstr "Resumen WAS "
+#: FFindQSO.class:68 FLog.class:78 FMain.class:1322 FSearch.class:84
+msgid "Operator"
+msgstr "Operador"
 
-#: FSummary.class:62
-msgid "USACA Summary"
-msgstr "Resumen USACA "
+#: FPref.class:762
+msgid "Ot&hers"
+msgstr "Otros"
 
-#: FSummary.class:64
-msgid "IOTA Summary"
-msgstr "Resumen IOTA"
+#: FLog.class:380
+msgid "Page:"
+msgstr "Página: "
 
-#: FSummary.class:66
-msgid "TPEA Summary"
-msgstr "Resumen TPEA "
+#: FPref.class:808
+msgid "Password:"
+msgstr "Contraseña:"
 
-#: FSummary.class:89
-msgid ""
-"<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr"
-"\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>QSL_rcvd</"
-"td><td>QSL_sent</td><td>Country</td><td>QSOs</td></tr>"
-msgstr ""
-"<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr"
-"\"><td>Indicativo</td><td>Fecha</td><td>Banda</td><td>Modo</td><td>QSL_rcvd</"
-"td><td>QSL_env</td><td>Entidad</td><td>QSOs</td></tr>"
+#: FDesign.class:466
+msgid "Path"
+msgstr "Ruta "
 
-#: FSummary.class:128
-msgid ""
-"<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr"
-"\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>QSL_rcvd</"
-"td><td>QSL_sent</td><td>Country</td><td>Continent</td><td>QSOs</td></tr>"
-msgstr ""
-"<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr"
-"\"><td>Indicativo</td><td>Fecha</td><td>Banda</td><td>Modo</td><td>QSL_rcvd</"
-"td><td>QSL_env</td><td>Entidad</td><td>Continente</td><td>QSOs</td></tr>"
+#: FMain.class:1258
+msgid "Path to database not found, please open or create a new one"
+msgstr "Ruta a la base de datos no encontrada, por favor\nabre o crea una nueva"
 
-#: FSummary.class:168
-msgid ""
-"<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr"
-"\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>QSL_rcvd</"
-"td><td>QSL_sent</td><td>Country</td><td>State</td><td>QSOs</td></tr>"
-msgstr ""
-"<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr"
-"\"><td>Indicativo</td><td>Fecha</td><td>Banda</td><td>Modo</td><td>QSL_rcvd</"
-"td><td>QSL_env</td><td>Entidad</td><td>Estado</td><td>QSOs</td></tr>"
+#: FMain.class:1845
+msgid "Phone:"
+msgstr "Fonía:"
 
-#: FSummary.class:207
-msgid ""
-"<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr"
-"\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>QSL_rcvd</"
-"td><td>QSL_sent</td><td>State</td><td>County</td><td>QSOs</td></tr>"
-msgstr ""
-"<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr"
-"\"><td>Indicativo</td><td>Fecha</td><td>Banda</td><td>Modo</td><td>QSL_rcvd</"
-"td><td>QSL_env</td><td>Estado</td><td>Condado</td><td>QSOs</td></tr>"
+#: FDesign.class:243
+msgid "Picture files"
+msgstr "Ficheros de Imagen"
 
-#: FSummary.class:246
-msgid ""
-"<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr"
-"\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>QSL_rcvd</"
-"td><td>QSL_sent</td><td>Country</td><td>IOTA</td><td>QSOs</td></tr>"
-msgstr ""
-"<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr"
-"\"><td>Indicativo</td><td>Fecha</td><td>Banda</td><td>Modo</td><td>QSL_rcvd</"
-"td><td>QSL_env</td><td>Entidad</td><td>IOTA</td><td>QSOs</td></tr>"
+#: FLoc.class:125
+msgid "Please, install required package \"dfhlog-images-1.1-1\""
+msgstr "Por favor, instala en paquete requerido \"dfhlog-images-1.1-1\""
 
-#: FSummary.class:285
-msgid ""
-"<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr"
-"\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>QSL_rcvd</"
-"td><td>QSL_sent</td><td>Country</td><td>TPEA</td><td>QSOs</td></tr>"
-msgstr ""
-"<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr"
-"\"><td>Indicativo</td><td>Fecha</td><td>Banda</td><td>Modo</td><td>QSL_rcvd</"
-"td><td>QSL_env</td><td>Entidad</td><td>TPEA</td><td>QSOs</td></tr>"
+#: FPref.class:702
+msgid "Poll every:"
+msgstr "Consultar cada:"
 
-#: FSummary.class:362
-msgid "Summary"
-msgstr "Resumen "
+#: FFindQSO.class:69 FLog.class:79 FMain.class:1323 FSearch.class:85
+msgid "Power"
+msgstr "Potencia"
 
-#: FeADIF.class:124
-msgid "Incorrect dates. Start date cannot be greater than End date."
-msgstr "Fecha incorrecta. La fecha de inicio no puede ser menor que la de fin."
+#: FMain.class:2835
+msgid "Power:"
+msgstr "Potencia:"
 
-#: FeADIF.class:175 global.module:383
-msgid "Error exporting Record\n"
-msgstr "Error exportando registro\n"
+#: FPref.class:545
+msgid "Preferred Band && Mode"
+msgstr "Banda y Modo preferido"
 
-#: FeADIF.class:224
-msgid "&Save as..."
-msgstr "&Guardar como..."
+#: FFindQSO.class:63 FLog.class:71 FMain.class:1317 FSearch.class:79
+msgid "Prefix"
+msgstr "Prefijo"
 
-#: FeADIF.class:229 FiADIF.class:599
-msgid "File:"
-msgstr "Archivo:"
+#: FMain.class:2900
+msgid "Prefix:"
+msgstr "Prefijo:"
 
-#: FeADIF.class:243 FiADIF.class:637
+#: FQueue.class:294
+msgid "Print"
+msgstr "Imprimir"
+
+#: FDesign.class:473
+msgid "Printer"
+msgstr "Impresora"
+
+#: FMain.class:2205
+msgid "&Printing"
+msgstr "&Impresión"
+
+#: FFindQSO.class:165 FLog.class:223 FMain.class:1460 FSearch.class:183
+msgid "Print QSL"
+msgstr "Imprimir QSL"
+
+#: FMain.class:2218
+msgid "Print QSLs"
+msgstr "Imprimir QSLs"
+
+#: FQueue.class:228
+msgid "Print queue will be deleted\nDo you want to continue?"
+msgstr "La cola de impresión se borrará\n¿Deseas continuar?"
+
+#: FDesign.class:447
+msgid "Print Test"
+msgstr "Prueba Impr. "
+
+#: FDesign.class:352
+msgid "Prop"
+msgstr "-"
+
+#: FFindQSO.class:55 FLog.class:59 FQueue.class:55 FSearch.class:71
+msgid "Propa."
+msgstr "-"
+
+#: FMain.class:2464
+msgid "Propagation Type"
+msgstr "Tipo de propagación"
+
+#: FLoc.class:775 FMain.class:2696 FSquares.class:306
+msgid "Prop. Mode:"
+msgstr "Propagación:"
+
+#: FLoc.class:832
+msgid "Prop. Mode Selection"
+msgstr "Selección de modo de propagación"
+
+#: FSearch.class:478
+msgid "Prop. Type:"
+msgstr "Tipo Prop."
+
+#: FAwards.class:49
+msgid "Province"
+msgstr "Provincia"
+
+#: FPref.class:492
+msgid "*QRZ:"
+msgstr "-"
+
+#: FMain.class:2595 FPref.class:782
+msgid "QRZ.com"
+msgstr "-"
+
+#: FDesign.class:311
+msgid "QSL Design"
+msgstr "Diseño QSL"
+
+#: FMain.class:2208
+msgid "QSL &Design"
+msgstr "&Diseño QSL"
+
+#: FQueue.class:29
+msgid "QSL Print Queue"
+msgstr "Cola de impresión de QSL"
+
+#: FMain.class:2213
+msgid "QSL queu&e"
+msgstr "Cola d&e QSL"
+
+#: FMain.class:533
+msgid "QSL(R)"
+msgstr "-"
+
+#: FMain.class:2565
+msgid "QSL rcvd"
+msgstr "-"
+
+#: FLog.class:69
+msgid "QSL(R) Date"
+msgstr "Fecha QSL(R)"
+
+#: FMain.class:2566
+msgid "QSL Recvd:"
+msgstr "-"
+
+#: FSearch.class:76
+msgid "QSL(S)"
+msgstr "QSL(E)"
+
+#: FLog.class:68
+msgid "QSL(S) Date"
+msgstr "Fecha QSL(E)"
+
+#: FMain.class:2579
+msgid "QSL sent"
+msgstr "QSL enviada"
+
+#: FMain.class:2580
+msgid "QSL Sent:"
+msgstr "QSL enviada:"
+
+#: FMain.class:2592
+msgid "QSL via..."
+msgstr "-"
+
+#: FMain.class:2602
+msgid "QSL via Mgr"
+msgstr "-"
+
+#: FMain.class:2422
+msgid "QSO"
+msgstr "-"
+
+#: FeADIF.class:243 FiADIF.class:636
 msgid "QSO:"
 msgstr "-"
 
-#: FeADIF.class:252
-msgid "Whole Log"
-msgstr "Log completo "
+#: FPref.class:535
+msgid "QSO begin/end time"
+msgstr "Hora inicio/fin QSO"
 
-#: FeADIF.class:258
-msgid "Between two dates"
-msgstr "Entre dos fechas"
+#: FMain.class:422
+msgid "QSO duration: "
+msgstr "Duración QSO: "
 
-#: FeADIF.class:310
-msgid "&Export"
-msgstr "&Exportar"
+#: FMain.class:528
+msgid "QSO Nr"
+msgstr "QSO Nº "
 
-#: FeADIF.class:315 FiADIF.class:604
+#: FMain.class:1617
+msgid "QSO Nr "
+msgstr "QSO Nº "
+
+#: FeADIF.class:315 FiADIF.class:603
 msgid "QSOs:"
 msgstr "-"
 
-#: FiADIF.class:208
-msgid ""
-"Some errors found.\n"
-"Check 'ImportErrors.txt' into User Folder?"
-msgstr ""
-"Algunos errores encontrados. ¿Comprobar\n"
-"'ImportErrors.txt' en la carpeta de usuario?"
+#: FFindQSO.class:239 FLog.class:286 FMain.class:1493 FSearch.class:244
+msgid " QSOs to the QSL print queue."
+msgstr " QSOs a la cola de impresión de QSL."
 
-#: FiADIF.class:230
-msgid "Dupe: id="
-msgstr "Duplicado: id="
+#: FFindQSO.class:29 FLoc.class:377
+msgid "QSOs with "
+msgstr "QSOs con "
 
-#: FiADIF.class:247
-msgid "Missing field/s in ADIF record. Not logged!: "
-msgstr "Campo/s no encontrado/s en ADIF. QSO no registrado!:"
+#: FFindQSO.class:278
+msgid "QSOs with gridsquare: "
+msgstr "QSOs con locator:  "
 
-#: FiADIF.class:254
-msgid "Error in Process Record\n"
-msgstr "Error en Process Record\n"
+#: FMain.class:2726
+msgid "QTH:"
+msgstr "-"
 
-#: FiADIF.class:272
-msgid "Distance error in qso: "
-msgstr "Error en distancia con qso:  "
+#: FLoc.class:252
+msgid "Query has no results!"
+msgstr "La consulta no ha devuelto resultados."
 
-#: FiADIF.class:292
-msgid "DXCC not found for: "
-msgstr "DXCC no encontrado para: "
+#: FMain.class:2847
+msgid "Real Time QSO"
+msgstr "QSO en T. Real"
 
-#: FiADIF.class:434
-msgid "Error logging in Log_qso\n"
-msgstr "Error logging en Log_qso\n"
+#: FFindQSO.class:304 FQueue.class:278 FSearch.class:529
+msgid "Records:"
+msgstr "Registros:"
 
-#: FiADIF.class:532
-msgid "Importing ADIF has been aborted!"
-msgstr "¡La importación de ADIF ha sido abortada!"
-
-#: FiADIF.class:594
-msgid "&Browse"
-msgstr "&Buscar"
-
-#: FiADIF.class:609
-msgid "Errors:"
-msgstr "Errores:"
-
-#: FiADIF.class:642
-msgid "Duplicated:"
-msgstr "Duplicados:"
-
-#: FiADIF.class:660
-msgid "&Import"
-msgstr "&Importar"
-
-#: FmtoBD.class:25
-msgid "Creating temp table..."
-msgstr "Creando tabla temporal..."
-
-#: FmtoBD.class:79
-msgid "Finished!"
-msgstr "Finalizado!"
-
-#: FmtoBD.class:86
-msgid "Error in CreateTableTemp:\n"
-msgstr "Error en CreateTableTemp:\n"
+#: FFindQSO.class:104 FQueue.class:78 FSearch.class:114
+msgid "Records: "
+msgstr "Registros: "
 
 #: FmtoBD.class:93
 msgid "Recreating log table..."
 msgstr "Creando tabla log..."
 
-#: FmtoBD.class:150
-msgid "Error in CreateTableLog:\n"
-msgstr "Error en CreateTableLog:\n"
+#: FLog.class:65 FMain.class:2551
+msgid "Remarks"
+msgstr "Comentarios"
 
-#: FmtoBD.class:158
-msgid "Backing up data..."
-msgstr "Haciendo copia de seguridad..."
+#: FMain.class:2768
+msgid "Remarks:"
+msgstr "Comentarios:"
 
-#: FmtoBD.class:168
-msgid "Error in CopyData:\n"
-msgstr "Error en CopyData:\n"
+#: FSearch.class:494
+msgid "Reset Dates"
+msgstr "Reiniciar Fechas"
+
+#: FDesign.class:480
+msgid "Resolution"
+msgstr "Resolución "
 
 #: FmtoBD.class:177
 msgid "Restoring data..."
 msgstr "Restaurando datos..."
 
-#: FmtoBD.class:194
-msgid "Cleaning up..."
-msgstr "Limpiando..."
+#: FMain.class:2921
+msgid "Rhumb:"
+msgstr "Rumbo:"
 
-#: FmtoBD.class:210
-msgid "Error in RestoreData:\n"
-msgstr "Error en RestoreData:\n"
+#: FPref.class:719
+msgid "Rig select:"
+msgstr "Seleccionar Equipo"
 
-#: FmtoBD.class:223
-msgid "Compacting DB has been aborted!"
-msgstr "Compactado de BD abortado!"
+#: FDesign.class:352
+msgid "RST"
+msgstr "-"
 
-#: FmtoBD.class:231
-msgid ""
-"Compacting and recalculating records\n"
-"Please, wait for a while..."
-msgstr ""
-"Compactando y recalculando registros\n"
-"Espera un momento..."
+#: FMain.class:2702
+msgid "RST(R):"
+msgstr "-"
 
-#: FmtoBD.class:254
-msgid "Compact Database"
-msgstr "Compactar Base de Datos"
+#: FMain.class:2511
+msgid "RST Received"
+msgstr "RST Recibido"
+
+#: FLog.class:61 FMain.class:1311
+msgid "RST(S)"
+msgstr "RST(E)"
+
+#: FMain.class:2708
+msgid "RST(S):"
+msgstr "RST(E):"
+
+#: FMain.class:2520
+msgid "RST Sent"
+msgstr "RST Enviado"
+
+#: FMain.class:2386
+msgid "S 0 1  3  5  7  9 +20 +40 +60"
+msgstr "-"
+
+#: FFindQSO.class:71 FMain.class:1325 FSearch.class:87
+msgid "Satellite"
+msgstr "Satélite"
+
+#: FMain.class:2817
+msgid "Satellite:"
+msgstr "Satélite:"
+
+#: FMain.class:2667
+msgid "Sat mode"
+msgstr "Modo Sat."
+
+#: FLog.class:82
+msgid "Sat Mode"
+msgstr "Modo Sat."
+
+#: FMain.class:2823
+msgid "Sat Mode:"
+msgstr "Modo Sat:"
+
+#: FLog.class:81 FMain.class:2656
+msgid "Sat Name"
+msgstr "Nombre Sat."
+
+#: FFindQSO.class:215 FLog.class:274 FQueue.class:191 FeADIF.class:55
+msgid "Save ADIF file"
+msgstr "Guardar fichero ADIF"
+
+#: FeADIF.class:224
+msgid "&Save as..."
+msgstr "&Guardar como..."
+
+#: FLoc.class:382
+msgid "Save Map as "
+msgstr "Guardar Mapa como..."
+
+#: FLoc.class:713
+msgid "&Save Settings"
+msgstr "&Guardar Config."
+
+#: FLoc.class:367
+msgid "Save Visible Map as..."
+msgstr "Guardar Mapa Visible como..."
+
+#: FLoc.class:363
+msgid "Save Whole Map as..."
+msgstr "Guardar Mapa Completo como..."
+
+#: FMain.class:2142 FSearch.class:452
+msgid "&Search"
+msgstr "Bu&scar"
+
+#: FAwards.class:311
+msgid "Search:"
+msgstr "Buscar:"
+
+#: FSearch.class:380
+msgid "Search QSO"
+msgstr "Buscar QSO"
+
+#: FMain.class:2145
+msgid "Searc&h QSOs"
+msgstr "&Buscar QSOs"
+
+#: FMain.class:2320 FSearch.class:367
+msgid "Search QSOs"
+msgstr "Buscar QSOs"
+
+#: FSearch.class:218
+msgid "Selected QSO will be deleted\nDo you want to continue?"
+msgstr "El QSO seleccionado se borrará\n¿Deseas continuar?"
+
+#: FMain.class:3076
+msgid "Send"
+msgstr "Enviar"
+
+#: FDesign.class:316 FMain.class:2302 FMap.class:185 FPref.class:472
+msgid "Settings"
+msgstr "Configuración"
+
+#: FMain.class:2125
+msgid "Se&ttings"
+msgstr "Con&figuración"
+
+#: FDesign.class:442
+msgid "Setup"
+msgstr "Configurar"
+
+#: FLoc.class:875
+msgid "Show DX Lines"
+msgstr "Mostrar líneas DX"
+
+#: FLoc.class:867
+msgid "Show Grid"
+msgstr "Mostrar cuadrículas"
+
+#: FLoc.class:859
+msgid "Show/Hide Panel"
+msgstr "Mostrar/Esconder Panel"
+
+#: FiADIF.class:207
+msgid "Some errors found.\nCheck 'ImportErrors.txt' into User Folder?"
+msgstr "Algunos errores encontrados. ¿Comprobar\n'ImportErrors.txt' en la carpeta de usuario?"
+
+#: FLoc.class:722
+msgid "Sound Alert on MUF/ES"
+msgstr "Alertar en MUF/ES"
+
+#: FPref.class:747
+msgid "Speed:"
+msgstr "Velocidad:"
+
+#: FMain.class:371
+msgid " Square Cfmd on "
+msgstr " Cuadrícula conf. en "
+
+#: FSquares.class:243
+msgid "Squares Summary"
+msgstr "Resumen Cuadrículas"
+
+#: FMain.class:377
+msgid " Square Wkd on "
+msgstr " Cuadrícula trab. en "
+
+#: FLoc.class:807 FeADIF.class:279
+msgid "Start:"
+msgstr "Inicio:"
+
+#: FSearch.class:458
+msgid "Start date:"
+msgstr "Fecha inicio:"
+
+#: FLoc.class:744
+msgid "Start Date"
+msgstr "Fecha inicio"
+
+#: FLoc.class:198
+msgid "Start Date couldn't be greater than End Date"
+msgstr "La fecha de inicio no puede ser mayor que la de fin"
+
+#: FAwards.class:103 FLog.class:75
+msgid "State"
+msgstr "Estado"
+
+#: FMain.class:2829
+msgid "State (USA):"
+msgstr "Estado (USA)"
+
+#: FMain.class:3095
+msgid "St&ats"
+msgstr "&Estadisticas"
+
+#: FMain.class:2840
+msgid "Status:\nRed=Send spot without confirmation\nOrange=Send spot after confirmation\nUnchecked=Don't send spots\n\nFor convenience, status is not saved\nbetween sessions."
+msgstr "Estado:\nRojo=Enviar spot sin confirmación\nNaranja=Enviar spot tras confirmación\nNo marcado=No enviar spots\n\nPor conveniencia, el estado\nno se guarda entre sesiones."
+
+#: FLoc.class:632
+msgid "Sub Division:"
+msgstr "División Sec.:"
+
+#: FSummary.class:362
+msgid "Summary"
+msgstr "Resumen "
+
+#: FMain.class:2152
+msgid "Summar&y"
+msgstr "Resu&men"
+
+#: FAbout.class:330
+msgid "Support"
+msgstr "Soporte"
+
+#: FSquares.class:90
+msgid "<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>Prop. Mode</td><td>QSL_rcvd</td><td>QSL_sent</td><td>Country</td><td>Gridsquare</td><td>Main Grid</td><td>QSOs</td></tr>"
+msgstr "<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr\"><td>Callsign</td><td>Fecha</td><td>Banda</td><td>Modo</td><td>Modo Prop.</td><td>QSL_rcvd</td><td>QSL_env</td><td>Entidad</td><td>Locator</td><td>Cuadrícula princ.</td><td>QSOs</td></tr>"
+
+#: FSummary.class:128
+msgid "<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>QSL_rcvd</td><td>QSL_sent</td><td>Country</td><td>Continent</td><td>QSOs</td></tr>"
+msgstr "<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr\"><td>Indicativo</td><td>Fecha</td><td>Banda</td><td>Modo</td><td>QSL_rcvd</td><td>QSL_env</td><td>Entidad</td><td>Continente</td><td>QSOs</td></tr>"
+
+#: FSummary.class:246
+msgid "<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>QSL_rcvd</td><td>QSL_sent</td><td>Country</td><td>IOTA</td><td>QSOs</td></tr>"
+msgstr "<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr\"><td>Indicativo</td><td>Fecha</td><td>Banda</td><td>Modo</td><td>QSL_rcvd</td><td>QSL_env</td><td>Entidad</td><td>IOTA</td><td>QSOs</td></tr>"
+
+#: FSummary.class:89
+msgid "<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>QSL_rcvd</td><td>QSL_sent</td><td>Country</td><td>QSOs</td></tr>"
+msgstr "<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr\"><td>Indicativo</td><td>Fecha</td><td>Banda</td><td>Modo</td><td>QSL_rcvd</td><td>QSL_env</td><td>Entidad</td><td>QSOs</td></tr>"
+
+#: FSummary.class:168
+msgid "<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>QSL_rcvd</td><td>QSL_sent</td><td>Country</td><td>State</td><td>QSOs</td></tr>"
+msgstr "<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr\"><td>Indicativo</td><td>Fecha</td><td>Banda</td><td>Modo</td><td>QSL_rcvd</td><td>QSL_env</td><td>Entidad</td><td>Estado</td><td>QSOs</td></tr>"
+
+#: FSummary.class:285
+msgid "<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>QSL_rcvd</td><td>QSL_sent</td><td>Country</td><td>TPEA</td><td>QSOs</td></tr>"
+msgstr "<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr\"><td>Indicativo</td><td>Fecha</td><td>Banda</td><td>Modo</td><td>QSL_rcvd</td><td>QSL_env</td><td>Entidad</td><td>TPEA</td><td>QSOs</td></tr>"
+
+#: FSummary.class:207
+msgid "<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>QSL_rcvd</td><td>QSL_sent</td><td>State</td><td>County</td><td>QSOs</td></tr>"
+msgstr "<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr\"><td>Indicativo</td><td>Fecha</td><td>Banda</td><td>Modo</td><td>QSL_rcvd</td><td>QSL_env</td><td>Estado</td><td>Condado</td><td>QSOs</td></tr>"
+
+#: FPref.class:575
+msgid "Telnet Server"
+msgstr "Servidor Telnet"
+
+#: FAbout.class:216
+msgid "Thanks to"
+msgstr "Gracias a "
+
+#: global.module:403
+msgid "There is a new version of dfhLog.\nDo you want to visit the download page?"
+msgstr "Hay una nueva versión de dfhLog.\n¿Deseas visitar la página de descarga?"
 
 #: FmtoBD.class:262
-msgid ""
-"This operates in the database itself.\n"
-"Now it will compact and recalculate records numbers,\n"
-"so it's advisable to backup the database before\n"
-"proceeding."
-msgstr ""
-"Esto modifica la base de datos\n"
-"Se compactará y recalculará los numeros de registros,\n"
-"por lo que es aconsejable realizar un respaldo\n"
-"antes de proceder."
+msgid "This operates in the database itself.\nNow it will compact and recalculate records numbers,\nso it's advisable to backup the database before\nproceeding."
+msgstr "Esto modifica la base de datos\nSe compactará y recalculará los numeros de registros,\npor lo que es aconsejable realizar un respaldo\nantes de proceder."
 
-#: Fservers.class:36
-msgid ""
-"Incorrect format\n"
-"Check for : (colon) between address and port number."
-msgstr ""
-"Formato incorrecto\n"
-"Comprueba que has escrito : (dos puntos) entre\n"
-"la dirección y el nº de puerto."
+#: FSearch.class:67
+msgid "Time"
+msgstr "Hora Inicio"
 
-#: Fservers.class:61
-msgid "Add telnet server"
-msgstr "Añadir servidor telnet"
+#: FMain.class:2485
+msgid "Time off"
+msgstr "Hora fin"
+
+#: FMain.class:2762
+msgid "Time off:"
+msgstr "Hora fin:"
+
+#: FLog.class:53
+msgid "Time Off"
+msgstr "Hora Fin"
+
+#: FMain.class:2478
+msgid "Time on"
+msgstr "Hora inicio"
+
+#: FMain.class:2756
+msgid "Time on:"
+msgstr "Hora inicio:"
+
+#: FStats.class:83
+msgid "Total Entities Confirmed: "
+msgstr "Total Entidades Confirmadas: "
+
+#: FStats.class:80
+msgid "Total Entities Worked: "
+msgstr "Total Entidades Trabajadas: "
+
+#: FStats.class:152
+msgid "Total QSOs"
+msgstr "-"
+
+#: FMain.class:2175
+msgid "TPEA"
+msgstr "-"
+
+#: FMain.class:2811
+msgid "TPEA:"
+msgstr "-"
+
+#: FMain.class:2608
+msgid "TPEA award"
+msgstr "Diploma TPEA"
+
+#: FSummary.class:66
+msgid "TPEA Summary"
+msgstr "Resumen TPEA "
+
+#: FSquares.class:99
+msgid "<tr><td colspan=\"8\"></td><td><b>Total QSO</b></td><td align=\"right\" colspan=\"2\">"
+msgstr "<tr><td colspan=\"8\"></td><td><b>QSOs totales</b></td><td align=\"right\" colspan=\"2\">"
+
+#: FSquares.class:98
+msgid "<tr><td colspan=\"8\"></td><td><b>Total References</b></td><td align=\"right\">"
+msgstr "<tr><td colspan=\"8\"></td><td><b>Referencias Totales</b></td><td align=\"right\">"
+
+#: FMain.class:2557
+msgid "TX Power"
+msgstr "Potencia TX"
+
+#: FMain.class:2167
+msgid "USACA"
+msgstr "-"
+
+#: FMain.class:2644
+msgid "USACA award"
+msgstr "Diploma USACA"
+
+#: FSummary.class:62
+msgid "USACA Summary"
+msgstr "Resumen USACA "
+
+#: FPref.class:539
+msgid "Use equal begin/end time in QSO"
+msgstr "Usar la misma hora de inicio y fin de QSO"
+
+#: FPref.class:803
+msgid "User:"
+msgstr "Usuario:"
+
+#: FPref.class:770
+msgid "Use Xplanet Maps (If installed)"
+msgstr "Usar Mapas Xplanet (Si está instalado)"
+
+#: FDesign.class:352
+msgid "UTC"
+msgstr "-"
+
+#: FMain.class:2732
+msgid "Via:"
+msgstr "-"
+
+#: FPref.class:613
+msgid "V/UHF Spots"
+msgstr "Anuncios V/UHF"
+
+#: FMain.class:1795 FStats.class:74
+msgid "W"
+msgstr "T"
+
+#: FMain.class:2159
+msgid "WAC"
+msgstr "-"
+
+#: FSummary.class:58
+msgid "WAC Summary"
+msgstr "Resumen WAC "
+
+#: FPref.class:619
+msgid "WARC Spots"
+msgstr "Anuncios WARC"
+
+#: FMain.class:2163
+msgid "WAS"
+msgstr "-"
+
+#: FMain.class:2632
+msgid "WAS award"
+msgstr "Diploma WAS"
+
+#: FSummary.class:60
+msgid "WAS Summary"
+msgstr "Resumen WAS "
+
+#: FMain.class:2313
+msgid "Watch Log"
+msgstr "Revisar Log"
+
+#: FMain.class:2078
+msgid "Watch &Log"
+msgstr "Revisar &Log"
+
+#: FPref.class:637
+msgid "WCY Messages"
+msgstr "Mensajes WCY"
+
+#: FMain.class:2678
+msgid "Whipes current entered data"
+msgstr "Borra los datos introducidos"
+
+#: FeADIF.class:252
+msgid "Whole Log"
+msgstr "Log completo "
+
+#: FMain.class:508
+msgid "&Wkd Before"
+msgstr "QSOs A&nteriores"
+
+#: FSquares.class:200 FSummary.class:316
+msgid "worked"
+msgstr "trabajado "
+
+#: FLoc.class:784 FSearch.class:440 FSquares.class:274 FSummary.class:393
+msgid "Worked"
+msgstr "Trabajado "
+
+#: FPref.class:675
+msgid "Worked:"
+msgstr "Trabajado:"
 
 #: Fservers.class:69
-msgid ""
-"Write down server address followed by :port<br>\n"
-"i.e.:  <span style=\"color:#0000FF;\">eadx.net:23</span>"
-msgstr ""
-"Escribe la direccion del servidor seguida de :puerto<br>\n"
-"p.ej.:  <span style=\"color:#0000FF;\">eadx.net:23</span>"
+msgid "Write down server address followed by :port<br>\ni.e.:  <span style=\"color:#0000FF;\">eadx.net:23</span>"
+msgstr "Escribe la direccion del servidor seguida de :puerto<br>\np.ej.:  <span style=\"color:#0000FF;\">eadx.net:23</span>"
 
-#: QRZ.class:172
-msgid ""
-"Error reading XML (Data QRZ.COM)\n"
-" Line: "
-msgstr ""
-"Error leyendo XML (Data QRZ.COM)\n"
-" Linea: "
+#: FPref.class:631
+msgid "WWV Messages"
+msgstr "Mensajes WWV"
 
-#: QRZ.class:275
-msgid "Not Found"
-msgstr "No encontrado"
+#: FDesign.class:399
+msgid "X"
+msgstr "-"
 
-#: dbLog.module:38
-msgid "Error connecting to database: "
-msgstr "Error conectando a base de datos: "
+#: FDesign.class:394
+msgid "X:"
+msgstr "-"
 
-#: global.module:423
-msgid ""
-"There is a new version of dfhLog.\n"
-"Do you want to visit the download page?"
-msgstr ""
-"Hay una nueva versión de dfhLog.\n"
-"¿Deseas visitar la página de descarga?"
+#: FPref.class:766
+msgid "XPlanet"
+msgstr "-"
+
+#: FPref.class:284
+msgid "Xplanet not installed!"
+msgstr "Xplanet no está instalado!"
+
+#: FDesign.class:352
+msgid "X (PSE QSL)"
+msgstr "-"
+
+#: FDesign.class:352
+msgid "X (TNX QSL)"
+msgstr "-"
+
+#: FDesign.class:410
+msgid "Y"
+msgstr "-"
+
+#: FDesign.class:405
+msgid "Y:"
+msgstr "-"
+
+#: FMain.class:577 FiADIF.class:207 global.module:403
+msgid "Yes"
+msgstr "Sí"
+
+#: FAbout.class:334
+msgid "You can support <b>dfhLog</b> by writing the help\ndocuments, translating to your language, etc.\n<p>\nYou can also make a gift to the project by using PayPal:"
+msgstr "Puedes colaborar en <b>dfhLog</b> escribiendo la ayuda\n, traduciendo a tu lengua, etc.\n<p>\nTambién puedes hacer tu donación vía PayPal:"
+
+#: FMain.class:586
+msgid "You must fill at least: Callsign, RST_r, RST_s and Frequency"
+msgstr "Debes rellenar al menos: Indicativo, RST_r, RST_e y Frecuencia TX"
+
+#: FPref.class:80
+msgid "You need to fill the mandatory fields\nor GridSquare is incorrect"
+msgstr "Es necesario completar los campos obligatorios\no el Locator es incorrecto"
+
+#: FMap.class:213
+msgid "Zoom:"
+msgstr "-"
+
+#: FMap.class:218
+msgid "Zoom: Less value = closer view,\nMore value = far away view"
+msgstr "Zoom: Menor valor = vista cercana,\nMayor valor = vista lejana"
+
