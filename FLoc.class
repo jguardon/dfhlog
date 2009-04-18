@@ -15,24 +15,20 @@
 '     You should have received a copy of the GNU General Public License
 '     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-' PRIVATE EUR AS Picture
-' PRIVATE ASI AS Picture
-' PRIVATE AFR AS Picture
-' PRIVATE NAM AS Picture
-' PRIVATE SAM AS Picture
-' PRIVATE OCE AS Picture
-' PRIVATE ESP AS Picture
 PRIVATE $pWorld AS Picture
-PRIVATE $Sx AS Float
-PRIVATE $Sy AS Float
-PRIVATE $Tx AS Float
-PRIVATE $Ty AS Float
+PRIVATE $pWorldGrid AS Picture
+PRIVATE $currentPic AS Picture
+PRIVATE $Sx AS Float = 360.0
+PRIVATE $Sy AS Float = 180.0
+PRIVATE $Tx AS Float = 180.0
+PRIVATE $Ty AS Float = 90.0
 PRIVATE $locator AS String
 PRIVATE $startX AS Integer
 PRIVATE $startY AS Integer
 PRIVATE $device AS Object
 PRIVATE $capture AS NEW Picture
+PRIVATE $squaresDrawed AS Boolean = FALSE
+
 
 PUBLIC SUB _new()  
     $device = canvas  
@@ -40,7 +36,12 @@ END
 
 PRIVATE SUB loadImages()
     $pWorld = Picture["/usr/share/dfhlog-images/bigworld.jpg"]
+    $pWorldGrid = $pWorld.Copy(0, 0, $pWorld.Width, $pWorld.Height)
+    drwGrid()
     $capture.Resize($pWorld.Width, $pWorld.Height)
+    ' canvas.Width = $pWorld.Width 
+    ' canvas.Height = $pWorld.Height
+    
 END
 
 PRIVATE FUNCTION parseCbo(cbo AS ComboBox) AS String
@@ -54,21 +55,18 @@ PRIVATE FUNCTION parseCbo(cbo AS ComboBox) AS String
     RETURN s
 END
 
-PUBLIC SUB drwMapa()
-    $Sx = 360.0
-    $Sy = 180.0
-    $Tx = 180.0
-    $Ty = 90.0
+PUBLIC SUB drwMapa(pic AS Picture)
+    
     IF $device = canvas THEN 
-        $device.Width = $pWorld.Width
-        $device.Height = $pWorld.Height
+        $device.Width = pic.Width
+        $device.Height = pic.Height
     ELSE 
     $device = $capture
     ENDIF     
     Draw.Begin($device)
-    Draw.Picture($pWorld, 0, 0)
+    Draw.Picture(pic, 0, 0)
     Draw.End()    
-    IF chkSquares.Value = TRUE THEN drwGrid()
+    'IF chkSquares.Value = TRUE THEN drwGrid()
     'drawDX
 END
 
@@ -93,7 +91,16 @@ PUBLIC SUB Form_Open()
     spDXTime.Value = FMain.ini["FMapLoc/DXTime", 30] / 60
     spDXTime.BackColor = Color.White
     global.MapLoc = TRUE
-    drwMapa()
+    chkSquares.Value = FMain.ini["FMapLoc/Grid", FALSE]
+    IF chkSquares.Value = TRUE THEN 
+        $currentPic = $pWorldGrid
+        drwMapa($currentPic)
+        IF chkDX.Value = TRUE THEN drawDX()
+    ELSE         
+        $currentPic = $pWorld
+        drwMapa($currentPic)
+        IF chkDX.Value = TRUE THEN drawDX()
+    ENDIF
     cboPropa.Add(("All"), 0)
     FOR EACH propa IN global.getPropa()
         cboPropa.Add(propa)
@@ -110,9 +117,9 @@ PUBLIC SUB Form_Open()
     dateIni.Value = Date(1900, 1, 1)
     dateFin.Value = global.UTCNow()
     ToolPanel1.Index = 1
-    chkSquares.Value = FMain.ini["FMapLoc/Grid", FALSE]
+    
     FINALLY 
-        ScrollView1.Scroll(FMain.ini["FMapLoc/ScrollX", 0], FMain.ini["FMapLoc/ScrollY", 0])
+        ScrollView1.Scroll(FMain.ini["FMapLoc/ScrollX", 2370], FMain.ini["FMapLoc/ScrollY", 500])
 
      CATCH
         Message.Error(("Please, install required package \"dfhlog-images-1.1-1\""))
@@ -131,8 +138,7 @@ PUBLIC SUB Form_Close()
 END
 
 PUBLIC SUB canvas_MouseMove()
-    DIM x, y AS Float
-    
+    DIM x, y AS Float    
     IF Mouse.Left THEN 'panning the picture around
         ScrollView1.Scroll(ScrollView1.ScrollX + ($startX - Mouse.X), ScrollView1.ScrollY + ($startY - Mouse.Y))    
     ENDIF
@@ -146,15 +152,15 @@ PUBLIC SUB canvas_MouseMove()
     ("At ") & Round(global.distLoc(global.latLong2locator(y * -1, x), FMain.ini["Estacion/Locator"]), -1) & (" Km from ") & FMain.ini["Estacion/Locator"]
 END
 
-PUBLIC SUB drwGrid()
+PUBLIC SUB drwGrid() 
     DIM i, j AS Integer
-
+    
     WITH Draw        
-        .Begin($device)    
+        .Begin($pWorldGrid)    
         .ForeColor = FMain.ini["FMapLoc/SubDiv", Color.Gray]
         .LineStyle = Line.Solid
         .LineWidth = 0.5
-        .Scale($device.Width / $Sx, $device.Height / $Sy)
+        .Scale($pWorldGrid.Width / $Sx, $pWorldGrid.Height / $Sy)
         .Translate($Tx, $Ty)
         
         FOR i = -180 TO 180 STEP 2              
@@ -166,11 +172,11 @@ PUBLIC SUB drwGrid()
         NEXT
         
         .End()        
-        .Begin($device)    
+        .Begin($pWorldGrid)    
         .ForeColor = FMain.ini["FMapLoc/MainDiv", Color.RGB(200, 140, 80)]
         .LineStyle = Line.Solid
         .LineWidth = 2
-        .Scale($device.Width / $Sx, $device.Height / $Sy)
+        .Scale($pWorldGrid.Width / $Sx, $pWorldGrid.Height / $Sy)
         .Translate($Tx, $Ty)
         
         FOR i = -180 TO 180 STEP 20
@@ -183,6 +189,7 @@ PUBLIC SUB drwGrid()
         
         .End()    
     END WITH
+
 END
 
 PUBLIC SUB btnOK_Click()
@@ -194,8 +201,10 @@ PUBLIC SUB btnOK_Click()
         ENDIF 
         btnClear_Click()
         drawSquares()
+        $squaresDrawed = TRUE
     ELSE 
         Message.Warning(("Check dates, please"))
+        $squaresDrawed = FALSE
     ENDIF
     IF chkDX.Value = TRUE THEN drawDX() 
     
@@ -238,8 +247,10 @@ PRIVATE SUB drawSquares()
     IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN 
     hres = dbLog.cnLog.Exec(sql, dateIni.Value, dateFin.Value, parseCbo(cboBand), parseCbo(cboModo), parseCbo(cboPropa), wkdcfd, dist)
     
-    IF hres.Count < 1 THEN 
+    IF hres.Count < 1 THEN
+        $squaresDrawed = FALSE 
         Message.Info(("Query has no results!"))
+        RETURN 
     ELSE
         Draw.Begin($device)
         Draw.ForeColor = FMain.ini["FMapLoc/GSquares", Color.green]
@@ -255,7 +266,7 @@ PRIVATE SUB drawSquares()
             Draw.Text(Left(sq, 4), glon, glat) ', 1, 1, 1)
             hres.MoveNext()        
          WEND  
-         Draw.End()
+         Draw.End()         
     ENDIF    
     
     CATCH 
@@ -288,29 +299,31 @@ PRIVATE SUB drawDX()
                 Draw.ForeColor = FMain.ini["FMapLoc/LineSHF", Color.DarkMagenta]
         END SELECT 
         SELECT CASE hRes!prop
-            CASE "TR"
+            CASE "TR", "", NULL 'tropo or unknown
                 Draw.LineStyle = Line.Solid
-            CASE "ES"
-                Draw.LineStyle = Line.Dash
-            CASE "TEP"
+            CASE "ES" 'sporadic-e
                 Draw.LineStyle = Line.DashDot
-            CASE "MS"
+            CASE "TEP" 'transequatorial
+                Draw.LineStyle = Line.Dash
+            CASE "MS", "RS", "BS" 'some kind of scatter
                 Draw.LineStyle = Line.Dot
             CASE ELSE 
                 Draw.LineStyle = Line.DashDotDot
         END SELECT
         x1 = (global.locator2latlon(hRes!loc1).lon + 180) * 15 
         y1 = ((global.locator2latlon(hRes!loc1).lat * -1) + 90) * 15
-        'Draw.Text(hRes!loc1, x1, y1)
+        'Draw.Text(hRes!call1, x1, y1)
         x2 = (global.locator2latlon(hRes!loc2).lon + 180) * 15
         y2 = ((global.locator2latlon(hRes!loc2).lat * -1) + 90) * 15
-        'Draw.Text(hRes!loc2, x2, y2)
+        'Draw.Text(hRes!call2, x2, y2)
         Draw.Line(x1, y1, x2, y2)        
         hRes.MoveNext
     LOOP
     Draw.ForeColor = FMain.ini["FMapLoc/GSquares", Color.green]
     Draw.LineStyle = Line.Solid 
-    Draw.End() 
+    Draw.End()
+    CATCH 
+        Message.Error(("Error in drawDX") & "\n" & Error.Text & "\n" & Error.Where) 
 END
 
 
@@ -369,8 +382,9 @@ PUBLIC SUB mnuGrabWholeImage_Click()
     Dialog.Title = ("Save Map as ")
     Dialog.Filter = ["*.jpg, *.png", ("Image Files")]
     IF Dialog.SaveFile() = FALSE THEN 
-        drwMapa
-        drawSquares        
+        drwMapa($currentPic)        
+        IF $squaresDrawed = TRUE THEN drawSquares()       
+        IF chkDX.Value = TRUE THEN drawDX        
         $capture.Save(Dialog.Path)
     ENDIF   
     $device = canvas
@@ -379,8 +393,9 @@ END
 PUBLIC SUB mnuGrabImage_Click()
     DIM cropped AS Picture
     $device = $capture
-    drwMapa
-    drawSquares    
+    drwMapa($currentPic)
+    IF $squaresDrawed = TRUE THEN drawSquares()
+    IF chkDX.Value = TRUE THEN drawDX 
     cropped = $capture.Copy(ScrollView1.ScrollX, ScrollView1.ScrollY, ScrollView1.Width, ScrollView1.Height)
     Dialog.Title = ("Save Map as ")
     Dialog.Filter = ["*.jpg, *.png", ("Image Files")]
@@ -391,13 +406,17 @@ PUBLIC SUB mnuGrabImage_Click()
 END
 
 PUBLIC SUB chkSquares_Click()
-    FMain.ini["FMapLoc/Grid"] = CBool(chkSquares.Value)    
+    FMain.ini["FMapLoc/Grid"] = CBool(chkSquares.Value)
+    'canvas.Clear    
     IF chkSquares.Value = TRUE THEN 
-        drwMapa()
-        drwGrid()
+        $currentPic = $pWorldGrid
+        drwMapa($currentPic)
+        IF $squaresDrawed = TRUE THEN drawSquares
         IF chkDX.Value = TRUE THEN drawDX()
-    ELSE 
-        drwMapa()
+    ELSE         
+        $currentPic = $pWorld
+        drwMapa($currentPic)
+        IF $squaresDrawed = TRUE THEN drawSquares
         IF chkDX.Value = TRUE THEN drawDX()
     ENDIF
 END
@@ -414,8 +433,9 @@ PUBLIC SUB cbtnGSquares_Change()
     FMain.ini["FMapLoc/GSquares"] = cbtnGSquares.Color
 END
 
-PUBLIC SUB btnClear_Click()    
-    drwMapa()
+PUBLIC SUB btnClear_Click()
+    $squaresDrawed = FALSE    
+    drwMapa($currentPic)
     IF chkDX.Value = TRUE THEN drawDX()
 END
 
@@ -428,15 +448,22 @@ PUBLIC SUB chkPanel_Click()
     FMain.ini["FMapLoc/ShowPanel"] = CBool(chkPanel.Value)
 END
 
-PUBLIC SUB Button1_Click()
+PUBLIC SUB btnSave_Click()
     spDXTime.BackColor = Color.White
     FMain.ini["FMapLoc/DXTime"] = spDXTime.Value * 60
     FMain.ini.Save()
-    IF chkDX.Value = TRUE THEN drawDX()
+    drwGrid
+    drwMapa($currentPic)
+    IF $squaresDrawed = TRUE THEN drawSquares()
+    IF chkDX.Value = TRUE THEN drawDX()    
 END
 
 PUBLIC SUB Timer1_Timer()
-    IF chkDX.Value = TRUE THEN drawDX()
+    IF chkDX.Value = TRUE THEN 
+        drwMapa($currentPic)
+        IF $squaresDrawed = TRUE THEN drawSquares
+        drawDX()
+    ENDIF 
     lblMUF.Font = Font["Bold"]
     IF global.$alertedES = TRUE THEN 
         lblMUF.Visible = TRUE
@@ -453,9 +480,21 @@ PUBLIC SUB Timer1_Timer()
     ENDIF 
 END
 
-PUBLIC SUB chkDX_Click()
+PUBLIC SUB chkDX_Click()    
     FMain.ini["FMapLoc/ShowLines"] = CBool(chkDX.Value)
-    IF chkDX.Value = TRUE THEN drawDX()
+    IF chkDX.Value = TRUE THEN 
+        IF chkSquares.Value = TRUE THEN 
+            $currentPic = $pWorldGrid
+        ELSE 
+            $currentPic = $pWorld
+        ENDIF 
+        drwMapa($currentPic)
+        IF $squaresDrawed = TRUE THEN drawSquares
+        drawDX()
+    ELSE 
+        drwMapa($currentPic)
+        IF $squaresDrawed = TRUE THEN drawSquares
+    ENDIF 
 END
 
 PUBLIC SUB cbtn6M_Change()

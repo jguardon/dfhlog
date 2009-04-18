@@ -3,7 +3,7 @@
 Title=dfhLog
 Startup=FMain
 Icon=dfhlog.png
-Version=0.0.32
+Version=0.0.33
 Library=gb.qt
 Library=gb.form
 Library=gb.db
@@ -30,5 +30,5 @@ UseRelease=1
 CreateEachDirectory=1
 Systems=debian,fedora,mandriva,suse,ubuntu,autotools
 Menus=Apps/Hamradio,Network/Ham Radio,More Applications/Databases,Network/Ham Radio,Apps/Hamradio,
-Categories=,HamRadio;Network,Database,HamRadio;Network,,
+Categories=HamRadio,HamRadio;Network,Database,HamRadio;Network,,
 Groups=Databases,Applications/Databases,Databases,Productivity/Hamradio/Logging,Databases,

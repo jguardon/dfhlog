@@ -360,20 +360,20 @@ PUBLIC SUB getSqWkdCfd(sq AS String, band AS String)
         hResul = dbLog.cnLog.Exec("SELECT qsl_rcvd, band FROM log WHERE gridsquare LIKE '" & sq & "%' AND band='" & band & "';")
         IF NOT hResul.Available THEN 
               'DEBUG sq, band
-            colorDX = FMain.ini["Colores/Necesitado"]
+            colorDX = FMain.ini["Colores/Necesitado", Color.Blue]
             lblSqWorked.Text = sq & (" New square on ") & band
             lblSqWorked.ForeColor = colorDX
         ELSE
             DO WHILE hResul.Available              
                 IF hResul!qsl_rcvd = "Y" THEN 
                     'DEBUG sq, band, hResul!QSL_r
-                    colorDX = FMain.ini["Colores/Confirmado"]
+                    colorDX = FMain.ini["Colores/Confirmado", Color.Green]
                     lblSqWorked.Text = sq & (" Square Cfmd on ") & band
                     lblSqWorked.ForeColor = colorDX
                     BREAK 
                 ELSE 
                     'DEBUG sq, band, hResul!QSL_r
-                    colorDX = FMain.ini["Colores/Trabajado"]
+                    colorDX = FMain.ini["Colores/Trabajado", Color.Red]
                     lblSqWorked.Text = sq & (" Square Wkd on ") & band
                     lblSqWorked.ForeColor = colorDX                
                 ENDIF                 

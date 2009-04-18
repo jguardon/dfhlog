@@ -418,7 +418,7 @@ PUBLIC SUB processMapSpots(dxLine AS String) 'insert data into spots table to pl
     DIM loc AS String[]
     DIM regx AS Regexp
     DIM sql AS String = "INSERT INTO spots VALUES(&1,&2,&3,&4,&5,&6,&7);"
-    spotter = Mid(dxLine, 7, InStr(dxLine, ":") - 7)
+    spotter = Mid(dxLine, 7, InStr(dxLine, ":") - 7) 'something weird happens when spotter contains "/" !?!?
     DX = Trim(Mid(dxLine, 27, 10))
     freq = CFloat(Trim(Mid(dxLine, 15, 10)))
     band = global.getBand(freq)

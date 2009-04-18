@@ -1,3 +1,8 @@
+* Sat Apr 18 2009 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.33
+- Bug Fixed: Initialized variables of colors in statistics. Thanks to (EA7EJG)
+- Completely revisited MapLoc
+- Database structure changed to fit MapLoc
+
 * Sat Apr 04 2009 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.32
 -Improved ADIF import routine. Now it checks for mandatory fields. Also, now only pop up a message error if there were errors at the end of process.
 -Improved UTCNow routine, now it consumes less cpu.
