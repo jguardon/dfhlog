@@ -63,13 +63,13 @@ PRIVATE SUB createStats()
             IF hres!qsl_rcvd = "Y" THEN 
                 tblGStats[iRow, iCol].Alignment = 3
                 tblGStats[iRow, iCol].Font = Font["Bold"]
-                tblGStats[iRow, iCol].BackColor = FMain.ini["Colores/Confirmado"]
+                tblGStats[iRow, iCol].BackColor = FMain.ini["Colores/Confirmado", Color.Green]
                 tblGStats[iRow, iCol].ForeColor = Color.White
                 tblGStats[iRow, iCol].Text = ("C")
             ELSE
                 tblGStats[iRow, iCol].Alignment = 3 
                 tblGStats[iRow, iCol].Font = Font["Bold"]
-                tblGStats[iRow, iCol].BackColor = FMain.ini["Colores/Trabajado"]
+                tblGStats[iRow, iCol].BackColor = FMain.ini["Colores/Trabajado", Color.Orange]
                 tblGStats[iRow, iCol].ForeColor = Color.White
                 tblGStats[iRow, iCol].Text = ("W")
             ENDIF 

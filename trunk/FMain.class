@@ -98,6 +98,7 @@ PUBLIC SUB Form_Open()
     DIM hResul AS Result
     DIM i AS Integer = 1
     DIM propa, banda, modo, entidad AS String    
+    
     ME.Title = "dfhLog - v " & Application.Version & " - " & ini["Estacion/QRZ"]
     PanelSmeter.Visible = FALSE
     lcdQRG.Visible = FALSE    
@@ -162,7 +163,8 @@ PUBLIC SUB Form_Open()
     ELSE
         connDB()   
         fillData()
-    ENDIF     
+    ENDIF
+         
     TRY global.getVersion()
     txtCall.SetFocus()
     
@@ -466,7 +468,7 @@ PUBLIC SUB txtCall_LostFocus()
         IF en THEN lblQSOTimer.Visible = TRUE
     ENDIF 
   
-    IF ini["QRZcom/Activado"] = TRUE THEN
+    IF ini["qrzCom/Value"] = 1 OR ini["qrzCom/Value"] = 2 THEN
         IF Len(txtCall.Text) > 2 THEN
             IF InStr(call, "/") > 0 THEN 
                 pa = Left(call, InStr(call, "/") - 1)
@@ -481,7 +483,7 @@ PUBLIC SUB txtCall_LostFocus()
                     ENDIF 
                 ENDIF
             ENDIF 
-            IF modificando = FALSE THEN qrzcom.getQRZcom(call) 'search in qrz.com             
+            IF modificando = FALSE THEN qrzcom.getQRZcom(call) 'search in qrz.com
         ENDIF 
     ENDIF 
     IF c <> NULL AND Len(txtCall.Text) > 2 THEN getWkdCfd(c.entity, cboBanda.Text)
@@ -891,7 +893,8 @@ PUBLIC SUB filterLine(dxline AS String)
                     IF WARC = TRUE THEN addLines(dxline, 1) 
                 CASE NULL
                     addLines(dxline, 0) 
-            END SELECT               
+            END SELECT
+            
         CASE "To AL"  
             IF ANN = TRUE THEN addLines(dxline, 2)
         CASE "WWV d" 
@@ -928,6 +931,12 @@ PUBLIC SUB addLines(linea AS String, OPTIONAL tipo AS Integer = 0)   'añade lin
             tblCluster[I, 0].ForeColor = global.clusterColor(DX, band) 
             tblCluster[I, 0].Text = linea            
             markers_spot(linea)
+            'notify DX on trayicon
+                IF ME.Minimized = TRUE THEN 
+                    FNotify.setDX(linea, global.clusterColor(DX, band))                    
+                ELSE 
+                    FNotify.Visible = FALSE
+                ENDIF 
         CASE 2, 3, 4
             tblCluster[I, 0].RichText = "<i><font color=\"#C0C0C0\">" & linea & "</font></i>"
             'tblCluster[I, 0].ForeColor = ini["Colores/Default", 0]
@@ -1861,4 +1870,20 @@ PRIVATE SUB clearTblStats()
     tblStats[0, 0].Text = ("Phone:")    
     tblStats[1, 0].Text = ("CW:")    
     tblStats[2, 0].Text = ("Digi:")  
+END
+
+PUBLIC SUB TrayIcon1_Menu()
+
+  
+
+END
+
+PUBLIC SUB TrayIcon1_DblClick()
+    ME.Visible = TRUE
+END
+
+PUBLIC SUB TrayIcon1_Enter()
+
+  
+
 END

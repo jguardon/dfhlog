@@ -89,7 +89,7 @@ PRIVATE SUB getDXCC(banda AS String, modo AS String, wcd AS String)
     PRINT #f, ("<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>QSL_rcvd</td><td>QSL_sent</td><td>Country</td><td>QSOs</td></tr>")
     
     DO WHILE hres.Available    
-      PRINT #f, "<tr><td>" & hres!call & "</td><td>" & global.parseFecha(hres!qso_date) & "</td><td>" & hres!band & "</td><td>" & hres!mode & "</td><td>" & hres!qsl_rcvd & "</td><td>" & hres!qsl_sent & "</td><td>" & hres!country & "</td><td align=\"right\">" & hres!num & "</td></tr>"
+      PRINT #f, "<tr><td>" & hres!call & "</td><td>" & (hres!qso_date) & "</td><td>" & hres!band & "</td><td>" & hres!mode & "</td><td>" & hres!qsl_rcvd & "</td><td>" & hres!qsl_sent & "</td><td>" & hres!country & "</td><td align=\"right\">" & hres!num & "</td></tr>"
       INC countRef
       totalQSO += CInt(hres!num)
       hres.MoveNext()
@@ -128,7 +128,7 @@ PRIVATE SUB getWAC(banda AS String, modo AS String, wcd AS String)
     PRINT #f, ("<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>QSL_rcvd</td><td>QSL_sent</td><td>Country</td><td>Continent</td><td>QSOs</td></tr>")
     
     DO WHILE hres.Available    
-      PRINT #f, "<tr><td>" & hres!call & "</td><td>" & global.parseFecha(hres!qso_date) & "</td><td>" & hres!band & "</td><td>" & hres!mode & "</td><td>" & hres!qsl_rcvd & "</td><td>" & hres!qsl_sent & "</td><td>" & hres!country & "</td><td>" & hres!cont & "</td><td align=\"right\">" & hres!num & "</td></tr>"
+      PRINT #f, "<tr><td>" & hres!call & "</td><td>" & (hres!qso_date) & "</td><td>" & hres!band & "</td><td>" & hres!mode & "</td><td>" & hres!qsl_rcvd & "</td><td>" & hres!qsl_sent & "</td><td>" & hres!country & "</td><td>" & hres!cont & "</td><td align=\"right\">" & hres!num & "</td></tr>"
       INC countRef
       totalQSO += CInt(hres!num)
       hres.MoveNext()
@@ -168,7 +168,7 @@ PRIVATE SUB getWAS(banda AS String, modo AS String, wcd AS String)
     PRINT #f, ("<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>QSL_rcvd</td><td>QSL_sent</td><td>Country</td><td>State</td><td>QSOs</td></tr>")
     
     DO WHILE hres.Available    
-      PRINT #f, "<tr><td>" & hres!call & "</td><td>" & global.parseFecha(hres!qso_date) & "</td><td>" & hres!band & "</td><td>" & hres!mode & "</td><td>" & hres!qsl_rcvd & "</td><td>" & hres!qsl_sent & "</td><td>" & hres!country & "</td><td>" & hres!state & "</td><td align=\"right\">" & hres!num & "</td></tr>"
+      PRINT #f, "<tr><td>" & hres!call & "</td><td>" & (hres!qso_date) & "</td><td>" & hres!band & "</td><td>" & hres!mode & "</td><td>" & hres!qsl_rcvd & "</td><td>" & hres!qsl_sent & "</td><td>" & hres!country & "</td><td>" & hres!state & "</td><td align=\"right\">" & hres!num & "</td></tr>"
       INC countRef
       totalQSO += CInt(hres!num)
       hres.MoveNext()
@@ -207,7 +207,7 @@ PRIVATE SUB getUSACA(banda AS String, modo AS String, wcd AS String)
     PRINT #f, ("<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>QSL_rcvd</td><td>QSL_sent</td><td>State</td><td>County</td><td>QSOs</td></tr>")
     
     DO WHILE hres.Available    
-      PRINT #f, "<tr><td>" & hres!call & "</td><td>" & global.parseFecha(hres!qso_date) & "</td><td>" & hres!band & "</td><td>" & hres!mode & "</td><td>" & hres!qsl_rcvd & "</td><td>" & hres!qsl_sent & "</td><td>" & hres!state & "</td><td>" & hres!cnty & "</td><td align=\"right\">" & hres!num & "</td></tr>"
+      PRINT #f, "<tr><td>" & hres!call & "</td><td>" & (hres!qso_date) & "</td><td>" & hres!band & "</td><td>" & hres!mode & "</td><td>" & hres!qsl_rcvd & "</td><td>" & hres!qsl_sent & "</td><td>" & hres!state & "</td><td>" & hres!cnty & "</td><td align=\"right\">" & hres!num & "</td></tr>"
       INC countRef
       totalQSO += CInt(hres!num)
       hres.MoveNext()
@@ -246,7 +246,7 @@ PRIVATE SUB getIOTA(banda AS String, modo AS String, wcd AS String)
     PRINT #f, ("<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>QSL_rcvd</td><td>QSL_sent</td><td>Country</td><td>IOTA</td><td>QSOs</td></tr>")
     
     DO WHILE hres.Available    
-      PRINT #f, "<tr><td>" & hres!call & "</td><td>" & global.parseFecha(hres!qso_date) & "</td><td>" & hres!band & "</td><td>" & hres!mode & "</td><td>" & hres!qsl_rcvd & "</td><td>" & hres!qsl_sent & "</td><td>" & hres!country & "</td><td>" & hres!iota & "</td><td align=\"right\">" & hres!num & "</td></tr>"
+      PRINT #f, "<tr><td>" & hres!call & "</td><td>" & (hres!qso_date) & "</td><td>" & hres!band & "</td><td>" & hres!mode & "</td><td>" & hres!qsl_rcvd & "</td><td>" & hres!qsl_sent & "</td><td>" & hres!country & "</td><td>" & hres!iota & "</td><td align=\"right\">" & hres!num & "</td></tr>"
       INC countRef
       totalQSO += CInt(hres!num)
       hres.MoveNext()
@@ -285,7 +285,7 @@ PRIVATE SUB getTPEA(banda AS String, modo AS String, wcd AS String)
     PRINT #f, ("<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>QSL_rcvd</td><td>QSL_sent</td><td>Country</td><td>TPEA</td><td>QSOs</td></tr>")
     
     DO WHILE hres.Available    
-      PRINT #f, "<tr><td>" & hres!call & "</td><td>" & global.parseFecha(hres!qso_date) & "</td><td>" & hres!band & "</td><td>" & hres!mode & "</td><td>" & hres!qsl_rcvd & "</td><td>" & hres!qsl_sent & "</td><td>" & hres!country & "</td><td>" & hres!TPEA & "</td><td align=\"right\">" & hres!num & "</td></tr>"
+      PRINT #f, "<tr><td>" & hres!call & "</td><td>" & (hres!qso_date) & "</td><td>" & hres!band & "</td><td>" & hres!mode & "</td><td>" & hres!qsl_rcvd & "</td><td>" & hres!qsl_sent & "</td><td>" & hres!country & "</td><td>" & hres!TPEA & "</td><td align=\"right\">" & hres!num & "</td></tr>"
       INC countRef
       totalQSO += CInt(hres!num)
       hres.MoveNext()

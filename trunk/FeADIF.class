@@ -118,8 +118,8 @@ PUBLIC SUB btnOK_Click()
             hres = dbLog.cnLog.Exec(sql)
        ELSE 
             sql = "SELECT * FROM log WHERE qso_date BETWEEN &1 and &2 ORDER BY id;"
-            hres = dbLog.cnLog.Exec(sql, global.parseFecha(vStart.Text), global.parseFecha(vEnd.Text))
-            
+            'hres = dbLog.cnLog.Exec(sql, global.parseFecha(vStart.Text), global.parseFecha(vEnd.Text))
+            hres = dbLog.cnLog.Exec(sql, vStart.Value, vEnd.Value)
             IF checkDates() = FALSE THEN 
                 Message.Warning(("Incorrect dates. Start date cannot be greater than End date."))
                 RETURN 

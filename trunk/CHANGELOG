@@ -1,3 +1,12 @@
+* Fri May 08 2009 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.34
+- Specific debian/ubuntu package which includes all libraries; other distros remains solving proper dependencies on its own.
+- Added a notify window that shows dx from cluster when minimized
+
+* Mon May 04 2009 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.34
+- Bug Fixed: Error when exporting to ADIF between two dates. Thanks to (EA7TB).
+- Bug Fixed: Bad key in config file not allowing QRZ.com searches. Thanks to (EA7EJG)
+- Improved CPU time in sockets -hamlib and telnet- by updating Gambas2 libraries.
+
 * Sat Apr 18 2009 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.33
 - Bug Fixed: Initialized variables of colors in statistics. Thanks to (EA7EJG)
 - Completely revisited MapLoc
