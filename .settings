@@ -182,14 +182,15 @@ SearchComment=True
 SearchString=True
 
 [OpenFile]
-File[1]="FMain.form"
-File[2]="FMain.class:1694.4"
-File[3]="FLoc.class:108.40"
-Active=3
-File[4]="FLoc.form"
-File[5]="FPref.class:259.2"
-File[6]="global.module:419.73"
-Count=6
+File[1]="FMain.class:1201.3"
+File[2]="FAbout.class:0.0"
+File[3]="FDesign.class:101.22"
+File[4]="FLoc.class:154.20"
+File[5]="FNotify.class:0.0"
+File[6]="FmtoBD.form"
+File[7]="FmtoBD.class:229.4"
+Active=7
+Count=7
 
 [Watches]
 Count=0

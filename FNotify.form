@@ -1,0 +1,25 @@
+# Gambas Form File 2.0
+
+{ Form Form
+  MoveScaled(0,0,66,3)
+  Visible = False
+  Background = &HFFFFDF&
+  Text = ("")
+  Picture = Picture["ImgNotify.png"]
+  Mask = True
+  Border = Window.None
+  Stacking = Window.Above
+  Sticky = True
+  SkipTaskbar = True
+  { Label1 Label
+    MoveScaled(2,0,62,3)
+    Font = Font["Monospace"]
+    Text = ("")
+  }
+  { Timer1 #Timer
+    #X = 420
+    #Y = -14
+    Enabled = True
+    Delay = 3000
+  }
+}

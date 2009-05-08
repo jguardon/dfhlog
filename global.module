@@ -245,6 +245,7 @@ END
 PUBLIC FUNCTION parseFecha(fecha AS String) AS String  
     DIM Y, M, D, nF AS String
     DIM F AS String[]
+    PRINT fecha
     fecha = Left(fecha, 10)
     IF fecha THEN   
         F = Split(fecha, "-")        
@@ -423,7 +424,7 @@ PUBLIC SUB processMapSpots(dxLine AS String) 'insert data into spots table to pl
     freq = CFloat(Trim(Mid(dxLine, 15, 10)))
     band = global.getBand(freq)
     remarks = Trim(Mid(dxLine, 37, 34))
-    regx = NEW Regexp(remarks, "(?i)([a-r]{2}\\d{2}[a-x]{2}|[a-r]{2}\\d{2})\\s?([\\s<(:]([a-z]{2,3})[\\s>):]|-|->|>|/|><|<->|<>)\\s?(([a-r]{2}\\d{2}[a-x]{2}|[a-r]{2}\\d{2}))")
+    regx = NEW Regexp(remarks, "(?i)([a-r]{2}\\d{2}[a-x]{2}|[a-r]{2}\\d{2})\\s?([\\s<(:]([a-z]{2,5})[\\s>):]|-|->|>|/|><|<->|<>)\\s?(([a-r]{2}\\d{2}[a-x]{2}|[a-r]{2}\\d{2}))")
     IF regx.SubMatches.Count = 5 THEN 
         loc1 = Upper(regx.SubMatches[1].Text)
         prop = Upper(regx.SubMatches[3].Text)

@@ -1,0 +1,29 @@
+' Gambas class file
+
+PUBLIC FUNCTION setDX(dxLine AS String, dxColor AS Integer) AS String
+    DIM start AS Integer
+    
+    ME.X = (Desktop.Width / 2) - ME.Width
+    ME.Y = 0 
+    ME.Visible = TRUE
+    FMain.SetFocus
+    ME.TopOnly = TRUE
+    Timer1.Enabled = FALSE
+    Timer1.Enabled = TRUE
+    start = InStr(dxLine, ":") + 1
+    Label1.text = Trim(Mid(dxLine, start, Len(dxLine) - start))
+    Label1.ForeColor = dxColor
+    
+END
+
+PUBLIC SUB Label1_MouseUp()
+    FMain.Visible = TRUE
+    ME.Close
+END
+
+PUBLIC SUB Timer1_Timer()
+
+  ME.Hide
+  Timer1.Enabled = FALSE
+
+END
