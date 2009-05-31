@@ -27,6 +27,8 @@ PRIVATE file_l AS Integer
 PRIVATE n_char AS Integer
 PRIVATE cCty AS cty
 PRIVATE mycallsign AS String
+PRIVATE myGrid AS String
+PRIVATE myCurrentCall AS String
 
 '   ---------------   for Data Base ---------------------
 PRIVATE qso_date AS String
@@ -121,6 +123,8 @@ PUBLIC SUB Form_Open()
     DIM hRes AS Result
     ME.Move(FMain.ScreenX + (FMain.Width - ME.Width) / 2, FMain.ScreenY + (FMain.Height - ME.Height) / 2) 
     btnOK.Enabled = FALSE
+    myGrid = FMain.ini["Estacion/Locator"]
+    myCurrentCall = FMain.ini["Estacion/QRZ"]
 END 
 
 PUBLIC SUB btnOpn_Click()
@@ -280,7 +284,7 @@ PUBLIC SUB FindDXCC(callsign AS String)
     entidad = cCty.entity
     IF pfx = "" THEN pfx = cCty.pfx
     IF cqz = "" THEN cqz = cCty.cqz
-    IF ituz = "" THEN cqz = cCty.ituz
+    IF ituz = "" THEN ituz = cCty.ituz
     IF cont = "" THEN cont = cCty.continent
     'DEBUG entidad
    
@@ -395,7 +399,7 @@ PUBLIC SUB Process_Field(field AS String, p AS Integer)
         CASE "<tx_pwr:"
            tx_pwr = Valor
         CASE "<own_gridsq:", "<my_gridsquare:"
-           own_gridsq = Upper$(Valor)
+           own_gridsq = Upper$(Valor) 
         CASE "<sat_name:"
            sat_name = Valor
         CASE "<sat_mode:"
@@ -413,6 +417,8 @@ PUBLIC SUB Log_qso()
     DIM Insert$ AS String
     
     IF time_off = "" THEN time_off = time_on
+    IF NOT own_gridsq THEN own_gridsq = myGrid    
+    IF NOT operator THEN operator = myCurrentCall    
   
     Insert$ = "INSERT INTO log VALUES (&1,&2,&3,&4,&5,&6,&7,&8,&9,&10,&11,&12,&13,&14,&15,&16,&17,&18," &
               "&19,&20,&21,&22,&23,&24,&25,&26,&27,&28,&29,&30,&31,&32,&33,&34,&35,&36,&37,&38);" 
@@ -494,33 +500,6 @@ PUBLIC SUB CleanRecord()
     Record_t = Replace$(Record_t, ":m>", ">")
     Record_t = Replace$(Record_t, ":l>", ">")
     ' Add more if needed
-END
-
-PUBLIC SUB UpdateStats() ' if logged a new country add a record into sattistics
-'  DIM rData AS Result
-'  DIM quale AS String
-'  
-'   quale = " 1 "
-'   rData = FMain.$hConn.Exec("SELECT c_" & Band & " from statistics where dxcc = '" & Str(dxcc) & "' ;")  
-'    IF NOT rData.Available THEN  ' New Country
-'         IF qsl_rcvd = "Y" THEN 
-'            quale = " 2 "
-'          rData = FMain.$hConn.Exec("INSERT INTO statistics (dxcc, c_" & Band &
-'                    " )VALUES( '" & Str(dxcc) & "', TRUE) ;")
-'         ELSE   ' New country but no qsl
-'             quale = " 3 "  
-'           rData = FMain.$hConn.Exec("INSERT INTO statistics (dxcc, c_" & Band &
-'                    " )VALUES( '" & Str(dxcc) & "', FALSE) ;") 
-'         END IF     
-'    ELSE  ' not new
-'         IF qsl_rcvd = "Y" AND rData[0] = FALSE THEN
-'              quale = " 4 "
-'            rData = FMain.$hConn.Exec("UPDATE statistics SET c_" & Band & " = TRUE WHERE dxcc = '" &
-'                      Str(dxcc) & "' ;")
-'         END IF 
-'    END IF 
-' CATCH
-'   Message.Error("Update Statistics in importing ADIF " & quale & Error.Text)  
 END
 
 PUBLIC SUB btnCancel_Click()

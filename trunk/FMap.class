@@ -87,12 +87,13 @@ PUBLIC SUB btnAply_Click()
     FMain.ini["Map/Lat"] = iLat
     FMain.ini["Map/Lon"] = iLon
     FMain.ini["Map/Zoom"] = iZoom
+    FMain.ini.Save
     
     fic = User.Home &/ ".xplanet/origin/do"
     
     F = OPEN fic FOR WRITE CREATE 
     
-    PRINT #F, "20081231.1200", iZoom, Format(iLat, "00#.00"), Format(iLon, "00#.00")
+    PRINT #F, "20090531.1200", iZoom, Replace(Format(iLat, "00#.00"), ",", "."), Replace(Format(iLon, "00#.00"), ",", ".")
     
     CLOSE #F
     
@@ -108,7 +109,7 @@ END
 
 PUBLIC SUB SpinLat_Change()
 
-  ilat = SpinLat.Value
+  iLat = SpinLat.Value
 
 END
 

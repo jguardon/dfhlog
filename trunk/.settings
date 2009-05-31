@@ -22,6 +22,12 @@ Geometry=[0,25,301,301]
 [DebugWindow/FLoc.Window]
 Geometry=[0,25,301,301]
 
+[DebugWindow/FMain.Controls]
+Geometry=[0,0,301,301]
+
+[DebugWindow/FMain.Controls[hCtl.Name]]
+Geometry=[0,0,301,301]
+
 [DebugWindow/HSplit1]
 ShowHidden=True
 Geometry=[0,25,301,301]
@@ -30,7 +36,7 @@ Geometry=[0,25,301,301]
 Geometry=[0,25,301,301]
 
 [DebugWindow/ME]
-Geometry=[0,0,231,163]
+Geometry=[0,0,305,352]
 
 [DebugWindow/Mouse]
 Geometry=[0,25,301,301]
@@ -85,6 +91,9 @@ Geometry=[0,25,301,301]
 Geometry=[0,25,301,301]
 
 [DebugWindow/global.getBandas()]
+Geometry=[0,0,301,301]
+
+[DebugWindow/hCtl]
 Geometry=[0,0,301,301]
 
 [DebugWindow/hMenue]
@@ -182,15 +191,16 @@ SearchComment=True
 SearchString=True
 
 [OpenFile]
-File[1]="FMain.class:1201.3"
-File[2]="FAbout.class:0.0"
-File[3]="FDesign.class:101.22"
-File[4]="FLoc.class:154.20"
-File[5]="FNotify.class:0.0"
-File[6]="FmtoBD.form"
-File[7]="FmtoBD.class:229.4"
-Active=7
-Count=7
+File[1]="FMain.class:712.14"
+File[2]="FMain.form"
+File[3]="global.module:446.115"
+File[4]="FLoc.form"
+File[5]="FLoc.class:471.29"
+File[6]="FiADIF.class:428.14"
+File[7]="FCatDebug.form"
+File[8]="FCatDebug.class:29.22"
+Active=8
+Count=8
 
 [Watches]
 Count=0

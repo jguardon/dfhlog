@@ -34,6 +34,9 @@ PRIVATE $mode AS String
 PRIVATE $markedSpot AS Boolean = FALSE
 PRIVATE $i AS Integer
 PRIVATE $cEntities AS NEW Collection
+' PRIVATE pRPChamlib AS Process
+' PRIVATE pRigctl AS Process
+' PRIVATE pGrig AS Process
 
 PUBLIC $diff AS Integer
 PUBLIC modificando AS Boolean = FALSE
@@ -42,6 +45,7 @@ PUBLIC sIOTA AS String
 PUBLIC sWAS AS String
 PUBLIC sUSAC AS String
 PUBLIC $qrzCom AS Integer
+PUBLIC hProcess AS Process
 
 PUBLIC SUB _new()    
     getDiff()
@@ -76,10 +80,10 @@ PUBLIC SUB Form_Close()
     ini["Window/Left"] = ME.ScreenX
     ini["Window/Height"] = ME.Height
     ini["Window/Width"] = ME.Width
-    ini["SplitterV/pos"] = VSplit1.Settings 
+    ini["SplitterV/pos"] = VSplit1.Settings
+    ini["GrdQSO/Settings"] = grdQSO.Settings 
     ini.Save()    
-    EXEC ["killall", "rigctld"]
-    EXEC ["killall", "xplanet"]    
+      
     IF sktCluster.Status = Net.Connected THEN 
           sktCluster.Close()
           sktCluster = NULL
@@ -87,8 +91,11 @@ PUBLIC SUB Form_Close()
     IF sktHamlib.Status = Net.Connected THEN 
           sktHamlib.Close()
           sktHamlib = NULL
-    ENDIF    
+    ENDIF
     dbLog.CloseDB()
+    EXEC ["killall", "rigctld"]
+    EXEC ["killall", "xplanet"]     
+    
     
     CATCH     
         Message.Error(("Error in Form Close\n") & Error.Text & "\n" & Error.Where)    
@@ -143,7 +150,7 @@ PUBLIC SUB Form_Open()
     ENDIF   
     cboBanda.Text = ini["Estacion/PrefBanda"]
     cboModo.Text = ini["Estacion/PrefModo"]
-    cboPropa.Text = ini["Main/Propa"]
+    cboPropa.Text = ini["Main/Propa"]     
     lblPath.Text = "Log: " & ini["Log/File"]
     chkRT.Value = ini["Main/RT", FALSE]
     $qrzCom = ini["qrzCom/Value", 0]    
@@ -406,7 +413,8 @@ PUBLIC SUB txtCall_KeyPress()
 END
 
 PUBLIC SUB Timer1_Timer()     
-    Label2.Caption = Format(global.UTCNow(), "dd/mm/yyyy hh:nn:ss Z") 
+    Label2.Caption = Format(global.UTCNow(), "dd/mm/yyyy hh:nn:ss Z")
+    IF global.pidOf("fldigi") = TRUE AND modificando = FALSE THEN TRY fldigiXMLRPC 
 END
 
 PUBLIC SUB options_Click()
@@ -488,7 +496,11 @@ PUBLIC SUB txtCall_LostFocus()
     ENDIF 
     IF c <> NULL AND Len(txtCall.Text) > 2 THEN getWkdCfd(c.entity, cboBanda.Text)
     IF sktHamlib.Status = Net.Connected THEN txtFreq.Text = Left(lcdQRG.Text, Len(lcdQRG.Text) - 1)
-    cboModo_Click()
+    IF btnQuick.Value = TRUE THEN 
+        txtRSTe.Text = 59 
+        txtRSTr.Text = 59
+    ENDIF 
+    'cboModo_Click()
     wkdB4(call) 'worked before?
     btnOK.Default = TRUE
     
@@ -582,6 +594,7 @@ PUBLIC SUB btnOK_Click()
         
         clearFields()
         txtCall.Clear()
+        IF global.pidOf("fldigi") THEN fldigiClearfiedls()
         modificando = FALSE
         update_stats()        
     ELSE    
@@ -623,6 +636,7 @@ PUBLIC SUB btnClear_Click()
     modificando = FALSE
     clearFields()
     txtCall.Clear()
+    IF global.pidOf("fldigi") THEN fldigiClearfiedls()
     fillData()        
 END
 
@@ -687,40 +701,64 @@ END
 '*****************************HAMLIB************************************
 
 PUBLIC SUB btnCAT_Click()
-    'lanzar rigctl y preguntar segun params
+    DIM msg AS String = ("rpc.rigd (Hamlib) needs to run with administrative privileges.\nPlease, enter your password:")
+    'need to install portmap to get it to work
     IF ini["Hamlib/Activado"] = TRUE THEN
         IF btnCAT.Value = TRUE THEN 
-            timerCAT.Delay = CInt(ini["Hamlib/Polling", 300])
-            'EXEC ["rigctld", "-r", "/dev/ttyS0", "-m", "214", "-s", "9600", "&"]
-            EXEC ["rigctld", "-r", ini["Hamlib/Device", "/dev/ttyS0"], "-m", ini["Hamlib/Rig", 1], "-s", ini["Hamlib/Speed", 9600], "&"]
-            'DEBUG "rigctld", "-r", ini["Hamlib/Device", "/dev/ttyS0"], "-m", ini["Hamlib/Rig", 1], "-s", ini["Hamlib/Speed", 9600], "&"
-            connectHamlib()
-            PanelSmeter.Visible = TRUE
+            IF FMain.ini["CAT/Debug"] = TRUE THEN FCatDebug.Show
+            timerCAT.Delay = CInt(ini["Hamlib/Polling", 300])            
+            'EXEC ["rigctld", "-r", ini["Hamlib/Device", "/dev/ttyS0"], "-m", ini["Hamlib/Rig", 1], "-s", ini["Hamlib/Speed", 9600], "&"]
+            
+            'launch rpc.rigd with root privileges. Use suid wrapper depending on environment.
+            'As rpc.rigd is a daemon running in background, we can't WAIT for the process end
+            'causing premature start of rigctld and grig 
+            IF global.pidOf("rpc.rigd") = FALSE THEN
+                IF Application.Env["KDE_FULL_SESSION"] THEN                    
+                    SHELL "kdesu 'rpc.rigd -m " & ini["Hamlib/Rig", 1] & " -r " & ini["Hamlib/Device", "/dev/ttyS0"] & " -s " & ini["Hamlib/Speed", 9600] & " &'"
+                ELSE IF Application.Env["GNOME_DESKTOP_SESSION_ID"] THEN                     
+                    SHELL "gksu -m '" & msg & "' 'rpc.rigd -m " & ini["Hamlib/Rig", 1] & " -r " & ini["Hamlib/Device", "/dev/ttyS0"] & " -s " & ini["Hamlib/Speed", 9600] & " &'"
+                ENDIF
+            ENDIF 
+            'PanelSmeter.Visible = TRUE
             lcdQRG.Visible = TRUE
+            IF global.pidOf("rpc.rigd") = FALSE THEN WAIT 15 'a workaround for assure rpc.rigd is running before launch rigctld & grig
+            SHELL "rigctld -m 1901 -r localhost &"
+            IF ini["Hamlib/Grig"] = TRUE THEN SHELL "grig -m 1901 -p -P -r localhost"
+            
+            connectHamlib()
         ELSE
             timerCAT.Enabled = FALSE
             sktHamlib.Close()
             lcdQRG.Text = 0
-            pbSmeter.Value = 0
-            PanelSmeter.Visible = FALSE
+            'pbSmeter.Value = 0
+            'PanelSmeter.Visible = FALSE
             lcdQRG.Visible = FALSE
+            
+            SHELL "killall grig rigctld"
+            ' IF Application.Env["KDE_FULL_SESSION"] THEN                
+            '     SHELL "kdesu -u root 'killall -9 rpc.rigd'" 
+            ' ELSE IF Application.Env["GNOME_DESKTOP_SESSION_ID"] THEN                  
+            '     SHELL "gksu -u root 'killall -9 rpc.rigd'" 
+            ' ENDIF            
         ENDIF 
     ENDIF
     
-    CATCH
-        Message.Error(("Error in btnCAT_Click\n") & Error.Text & "\n" & Error.Where)
+    ' CATCH
+    '     Message.Error(("Error in btnCAT_Click\n") & Error.Text & "\n" & Error.Where)
 END
 
 PUBLIC SUB connectHamlib()
+    'sktHamlib.Host = "localhost"
     IF sktHamlib.Status <> Net.Connected THEN      
         WAIT 1
-        TRY sktHamlib.Connect()
+        TRY sktHamlib.Connect("localhost", 4532)
     ENDIF
 END
 
 PUBLIC SUB timerCAT_Timer()    
     DIM s AS String
-    s = "fml STRENGTH\n"
+    s = "fm\n"
+    's = "fml STRENGTH\n"
     IF sktHamlib.Status = Net.Connected THEN
         TRY WRITE #sktHamlib, s, Len(s)
     ENDIF
@@ -734,8 +772,10 @@ PUBLIC SUB sktHamlib_Read()
     IF sktHamlib.Status = Net.Connected THEN
         LINE INPUT #sktHamlib, S
         'DEBUG S
-        IF S <> "END" THEN
+        FCatDebug.setText(S)
+        'IF S <> "END" THEN
             'DEBUG S
+        
             IF Len(S) > 6 THEN 
                   qrg = Val(S) / 1000
                   TRY lcdQRG.text = Replace(Format$(qrg, "#.00"), ",", ".")                  
@@ -745,20 +785,22 @@ PUBLIC SUB sktHamlib_Read()
                 IF S = "USB" OR S = "LSB" OR S = "AM" OR S = "FM" OR S = "CW" OR S = "CW" OR S = "FMN" OR S = "FSK" OR S = "AMN" OR S = "RTTY"
                       $mode = S
                       txtModeChange.Text = $mode
-                ELSE IF Val(S) < 61 THEN
-                    smeter = 54 + Val(S)
-                    'DEBUG "smeter=" & smeter
-                    TRY pbSmeter.Value = smeter / 114
-                ENDIF
+                ENDIF 
+                ' ELSE IF Val(S) < 61 THEN
+                '     smeter = 54 + Val(S)
+                '     'DEBUG "smeter=" & smeter
+                '     TRY pbSmeter.Value = smeter / 114
+                ' ENDIF
             ENDIF
-         ENDIF
+         'ENDIF
+        
     ENDIF 
     
     CATCH 
         DEBUG Error.Text, Error.Where
-        timerCAT.Enabled = FALSE
-        sktHamlib.Close()
-        btnCAT.Value = FALSE
+        ' timerCAT.Enabled = FALSE
+        ' sktHamlib.Close()
+        ' btnCAT.Value = FALSE
 END
 
 PUBLIC SUB sktHamlib_Ready()  
@@ -1331,7 +1373,8 @@ PRIVATE SUB prepararGrid()
     grdQSO.Columns[19].Text = ("Operator")
     grdQSO.Columns[20].Text = ("Power")
     grdQSO.Columns[21].Text = ("My Locator")
-    grdQSO.Columns[22].Text = ("Satellite")  
+    grdQSO.Columns[22].Text = ("Satellite")
+    'grdQSO.Settings = ini["GrdQSO/Settings"]  
 END
 
 PUBLIC SUB fillData()
@@ -1886,4 +1929,99 @@ PUBLIC SUB TrayIcon1_Enter()
 
   
 
+END
+'*************************** XML-RPC fldigi **************************
+PUBLIC SUB fldigiXMLRPC()
+    'This retrieves the values of log fields from "fldigi" app 
+    'as in http://www.w1hkj.com/FldigiHelp/xmlrpc-control.html
+    'Download binary at http://www.w1hkj.com/fldigi-distro/fldigi-3.11.4.bin.tgz
+    'No installation needed!
+    DIM RpcF AS RpcFunction
+    DIM client AS RpcClient
+    DIM hVar AS NEW Variant[]  
+    
+    hVar.Add(NULL)
+    RpcF = NEW RpcFunction("log.get_call", [3], 3) 'DataType and Ret are string. Tested with 'PRINT XmlRpc.xString'
+    client = NEW RpcClient(RpcF)  
+    client.URL = "http://localhost:7362/RPC2"       
+    txtCall.Text = client.Call(hVar)                                                    'call
+    RpcF = NEW RpcFunction("modem.get_name", [3], 3) 
+    client = NEW RpcClient(RpcF)
+    client.URL = "http://localhost:7362/RPC2"      
+    txtComment.Text = client.Call(hVar)                                                 'modem
+    RpcF = NEW RpcFunction("main.get_sideband", [3], 3) 
+    client = NEW RpcClient(RpcF)
+    client.URL = "http://localhost:7362/RPC2"      
+    cboModo.Text = client.Call(hVar)                                                    'mode (sideband)
+    RpcF = NEW RpcFunction("log.get_frequency", [3], 3) 
+    client = NEW RpcClient(RpcF)
+    client.URL = "http://localhost:7362/RPC2"                                           'freq
+    IF global.pidOf("rigctld") = FALSE THEN txtFreq.Text = Left(client.Call(hVar), Len(client.Call(hVar)) - 2)   
+    RpcF = NEW RpcFunction("log.get_rst_in", [3], 3)                     
+    client = NEW RpcClient(RpcF)
+    client.URL = "http://localhost:7362/RPC2"      
+    txtRSTr.Text = client.Call(hVar)                                                    'rst r
+    RpcF = NEW RpcFunction("log.get_rst_out", [3], 3) 
+    client = NEW RpcClient(RpcF)
+    client.URL = "http://localhost:7362/RPC2"      
+    txtRSTe.Text = client.Call(hVar)                                                    'rst s
+    RpcF = NEW RpcFunction("log.get_locator", [3], 3) 
+    client = NEW RpcClient(RpcF)
+    client.URL = "http://localhost:7362/RPC2"      
+    txtLocQSO.Text = client.Call(hVar)                                                 'locator
+    RpcF = NEW RpcFunction("log.get_name", [3], 3) 
+    client = NEW RpcClient(RpcF)
+    client.URL = "http://localhost:7362/RPC2"      
+    txtNameQSO.Text = client.Call(hVar)                                                 'name
+    RpcF = NEW RpcFunction("log.get_qth", [3], 3) 
+    client = NEW RpcClient(RpcF)
+    client.URL = "http://localhost:7362/RPC2"      
+    txtQTHqso.Text = client.Call(hVar)                                                  'qth
+    
+
+END
+
+PUBLIC SUB fldigiClearfiedls()
+    'This clean the  log fields in "fldigi" app 
+    'Does not send/return any values, but no way to match xml-rpc value types to "nil",
+    'so it throws an error
+    DIM RpcF AS RpcFunction
+    DIM client AS RpcClient
+    DIM hVar AS NEW Variant[]  
+    
+    hVar.Add("nil")
+    
+    RpcF = NEW RpcFunction("log.clear", [XmlRpc.xString], XmlRpc.xString) 'DataType and Ret are null
+    client = NEW RpcClient(RpcF)  
+    client.URL = "http://localhost:7362/RPC2"       
+    client.Call(hVar) 
+    CATCH 
+        'ignore 
+        'PRINT Error.Text, Error.Where
+END 
+
+
+
+PUBLIC SUB btnQuick_Click()     'toggle button
+
+    DIM hCtl AS Control        
+     
+    FOR EACH hCtl IN FMain.Controls
+        IF hCtl IS TextBox OR hCtl IS ComboBox OR hCtl IS CheckBox OR hCtl IS ValueBox OR hCtl IS Button THEN 
+            IF hCtl.Tag = "exclude" THEN 
+                IF btnQuick.Value = TRUE THEN
+                    hCtl.Enabled = FALSE                    
+                    txtRSTe.ForeColor = Color.DarkGray
+                    txtRSTr.ForeColor = Color.DarkGray
+                ELSE
+                    hCtl.Enabled = TRUE
+                    txtRSTe.Text = ""
+                    txtRSTr.Text = ""
+                    txtRSTe.ForeColor = Color.Black
+                    txtRSTr.ForeColor = Color.Black
+                ENDIF                   
+            ENDIF 
+        ENDIF 
+    NEXT 
+    
 END
