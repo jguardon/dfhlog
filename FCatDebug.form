@@ -1,0 +1,25 @@
+# Gambas Form File 2.0
+
+{ Form Form
+  MoveScaled(0,0,40,39)
+  Text = ("CAT Debug")
+  Icon = Picture["icon:/16/warning"]
+  Border = Window.Fixed
+  { TextArea1 TextArea
+    MoveScaled(1,1,38,33)
+    Font = Font["Liberation Mono,-1"]
+    Text = ("")
+  }
+  { btnStop Button
+    MoveScaled(1,35,12,3)
+    Text = ("Stop")
+  }
+  { Button2 Button
+    MoveScaled(14,35,12,3)
+    Text = ("Export Text")
+  }
+  { Button3 Button
+    MoveScaled(27,35,12,3)
+    Text = ("Close")
+  }
+}

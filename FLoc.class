@@ -128,7 +128,8 @@ PUBLIC SUB Form_Open()
 END
 
 PUBLIC SUB Form_Close()
-    global.MapLoc = FALSE  
+    global.MapLoc = FALSE
+    cleanTable  
     FMain.ini["FMapLoc/Top"] = ME.ScreenY
     FMain.ini["FMapLoc/Left"] = ME.ScreenX
     FMain.ini["FMapLoc/Height"] = ME.Height
@@ -136,6 +137,12 @@ PUBLIC SUB Form_Close()
     FMain.ini["FMapLoc/ScrollX"] = ScrollView1.ScrollX
     FMain.ini["FMapLoc/ScrollY"] = ScrollView1.ScrollY
 END
+
+PUBLIC SUB cleanTable()  
+    IF FMain.connDB() THEN RETURN
+    dbLog.cnLog.Exec("DELETE FROM spots")  
+END
+
 
 PUBLIC SUB canvas_MouseMove()
     DIM x, y AS Float    
@@ -410,15 +417,13 @@ PUBLIC SUB chkSquares_Click()
     'canvas.Clear    
     IF chkSquares.Value = TRUE THEN 
         $currentPic = $pWorldGrid
-        drwMapa($currentPic)
-        IF $squaresDrawed = TRUE THEN drawSquares
-        IF chkDX.Value = TRUE THEN drawDX()
+        drwMapa($currentPic)        
     ELSE         
         $currentPic = $pWorld
-        drwMapa($currentPic)
-        IF $squaresDrawed = TRUE THEN drawSquares
-        IF chkDX.Value = TRUE THEN drawDX()
+        drwMapa($currentPic)        
     ENDIF
+    IF $squaresDrawed = TRUE THEN drawSquares
+    IF chkDX.Value = TRUE THEN drawDX()
 END
 
 PUBLIC SUB cbtnMDiv_Change()
@@ -452,11 +457,25 @@ PUBLIC SUB btnSave_Click()
     spDXTime.BackColor = Color.White
     FMain.ini["FMapLoc/DXTime"] = spDXTime.Value * 60
     FMain.ini.Save()
-    drwGrid
+    redraw
     drwMapa($currentPic)
     IF $squaresDrawed = TRUE THEN drawSquares()
     IF chkDX.Value = TRUE THEN drawDX()    
 END
+
+PUBLIC SUB redraw()
+    loadImages
+    IF chkSquares.Value = TRUE THEN 
+        $currentPic = $pWorldGrid
+        drwMapa($currentPic)        
+    ELSE         
+        $currentPic = $pWorld
+        drwMapa($currentPic)        
+    ENDIF
+    IF $squaresDrawed = TRUE THEN drawSquares
+    IF chkDX.Value = TRUE THEN drawDX()  
+END
+
 
 PUBLIC SUB Timer1_Timer()
     IF chkDX.Value = TRUE THEN 

@@ -34,6 +34,19 @@ PUBLIC FUNCTION UTCNow() AS Date
    
 END
 
+PUBLIC FUNCTION pidOf(program AS String) AS Boolean 'checks if a program is running
+    DIM gotpid AS String = ""
+    DIM running AS Boolean = FALSE
+    TRY SHELL "pidof " & program TO gotpid
+    IF gotpid THEN
+        running = TRUE
+    ELSE 
+        running = FALSE
+    ENDIF 
+    RETURN running  
+END
+
+
 PUBLIC FUNCTION chkLoc(loc AS String) AS Boolean
 '[a-r]{2}\\d{2}|[a-r]{2}\\d{2}[a-x]{2}
     DIM bLoc AS Boolean

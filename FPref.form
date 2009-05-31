@@ -184,7 +184,7 @@
     Index = 3
     Text = ("&Hamlib")
     { Frame6 Frame
-      MoveScaled(1,1,65,40)
+      MoveScaled(1,1,65,41)
       Text = ("Hamlib (CAT) Parameters")
       { chkHamlib CheckBox
         MoveScaled(6,7,14,3)
@@ -214,11 +214,11 @@
         ReadOnly = True
       }
       { Label13 Label
-        MoveScaled(6,27,24,3)
+        MoveScaled(6,24,24,3)
         Text = ("Device:")
       }
       { txtDevHamlib TextBox
-        MoveScaled(6,32,53,3)
+        MoveScaled(6,28,53,3)
         Text = ("/dev/ttyS0")
       }
       { cboSpd ComboBox
@@ -237,6 +237,20 @@
       }
       { lblHamlibInst Label
         MoveScaled(6,12,53,3)
+        Foreground = &H804000&
+        Text = ("")
+      }
+      { chkDebug CheckBox
+        MoveScaled(38,36,23,3)
+        ToolTip = ("Output debugger. Use it when you have problems")
+        Text = ("Debug output")
+      }
+      { chkGrig CheckBox
+        MoveScaled(6,36,30,3)
+        Text = ("Use Grig (if installed)")
+      }
+      { lblGrig Label
+        MoveScaled(6,32,53,3)
         Foreground = &H804000&
         Text = ("")
       }
