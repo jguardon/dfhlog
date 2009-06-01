@@ -1,3 +1,9 @@
+* Mon Jun 01 2009 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.35
+- Bug Fixed: Bad detection of CQ/ITU Zones when importing from ADIF not including these fields. Thanks to (EA7AH).
+- Added a new button (Quick entry) for disable some entry fields, leving only Call & locator for a quick entry when rushing, i.e: Sporadics-E on VHF. Idea from (EA7AH).
+- Modified CAT system, using now RPC daemon to connect to Rig. Alas, it needs to run as root, so a workaround has been made. No very elegant but works.
+- Added RPC interconnection to fldigi application <http://www.w1hkj.com/Fldigi.html> to get fields text into dfhlog, ready to log QSO. Idea from (EA3ABB). BTW, this feature and above needs 'portmap' package to be installed.
+
 * Fri May 08 2009 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.34
 - Specific debian/ubuntu package which includes all libraries; other distros remains solving proper dependencies on its own.
 - Added a notify window that shows dx from cluster when minimized
