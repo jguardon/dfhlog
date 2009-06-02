@@ -35,7 +35,7 @@ PRIVATE $markedSpot AS Boolean = FALSE
 PRIVATE $i AS Integer
 PRIVATE $cEntities AS NEW Collection
 ' PRIVATE pRPChamlib AS Process
-' PRIVATE pRigctl AS Process
+ PRIVATE pRigctl AS Process
 ' PRIVATE pGrig AS Process
 
 PUBLIC $diff AS Integer
@@ -94,7 +94,8 @@ PUBLIC SUB Form_Close()
     ENDIF
     dbLog.CloseDB()
     EXEC ["killall", "rigctld"]
-    EXEC ["killall", "xplanet"]     
+    EXEC ["killall", "xplanet"] 
+    TRY pRigctl.Kill    
     
     
     CATCH     
@@ -702,30 +703,35 @@ END
 
 PUBLIC SUB btnCAT_Click()
     DIM msg AS String = ("rpc.rigd (Hamlib) needs to run with administrative privileges.\nPlease, enter your password:")
+    DIM sAux, sRes AS String
+    DIM test AS String[] = ["kdesudo", "kdesu", "gksudo", "gksu"]
     'need to install portmap to get it to work
     IF ini["Hamlib/Activado"] = TRUE THEN
         IF btnCAT.Value = TRUE THEN 
             IF FMain.ini["CAT/Debug"] = TRUE THEN FCatDebug.Show
             timerCAT.Delay = CInt(ini["Hamlib/Polling", 300])            
-            'EXEC ["rigctld", "-r", ini["Hamlib/Device", "/dev/ttyS0"], "-m", ini["Hamlib/Rig", 1], "-s", ini["Hamlib/Speed", 9600], "&"]
+            '''EXEC ["rigctld", "-r", ini["Hamlib/Device", "/dev/ttyS0"], "-m", ini["Hamlib/Rig", 1], "-s", ini["Hamlib/Speed", 9600], "&"]'''
             
             'launch rpc.rigd with root privileges. Use suid wrapper depending on environment.
             'As rpc.rigd is a daemon running in background, we can't WAIT for the process end
             'causing premature start of rigctld and grig 
             IF global.pidOf("rpc.rigd") = FALSE THEN
-                IF Application.Env["KDE_FULL_SESSION"] THEN                    
-                    SHELL "kdesu 'rpc.rigd -m " & ini["Hamlib/Rig", 1] & " -r " & ini["Hamlib/Device", "/dev/ttyS0"] & " -s " & ini["Hamlib/Speed", 9600] & " &'"
-                ELSE IF Application.Env["GNOME_DESKTOP_SESSION_ID"] THEN                     
-                    SHELL "gksu -m '" & msg & "' 'rpc.rigd -m " & ini["Hamlib/Rig", 1] & " -r " & ini["Hamlib/Device", "/dev/ttyS0"] & " -s " & ini["Hamlib/Speed", 9600] & " &'"
-                ENDIF
+                FOR EACH sAux IN test
+                    SHELL "which " & sAux TO sRes
+                    IF sRes THEN 
+                        sRes = Trim(Mid(sRes, RInStr(sRes, "/") + 1, Len(sRes)))
+                        BREAK 
+                    ENDIF 
+                    WAIT 0.3 
+                NEXT
+                pRigctl = SHELL sRes & " -u root 'rpc.rigd -m " & ini["Hamlib/Rig", 1] & " -r " & ini["Hamlib/Device", "/dev/ttyS0"] & " -s " & ini["Hamlib/Speed", 9600] & " &'"                
             ENDIF 
             'PanelSmeter.Visible = TRUE
             lcdQRG.Visible = TRUE
-            IF global.pidOf("rpc.rigd") = FALSE THEN WAIT 15 'a workaround for assure rpc.rigd is running before launch rigctld & grig
+            IF global.pidOf("rpc.rigd") = FALSE THEN WAIT 15 'a workaround for assure rpc.rigd is running before launch rigctld & grig            
             SHELL "rigctld -m 1901 -r localhost &"
-            IF ini["Hamlib/Grig"] = TRUE THEN SHELL "grig -m 1901 -p -P -r localhost"
-            
             connectHamlib()
+            IF ini["Hamlib/Grig"] = TRUE THEN SHELL "grig -m 1901 -p -P -r localhost"            
         ELSE
             timerCAT.Enabled = FALSE
             sktHamlib.Close()
@@ -735,11 +741,7 @@ PUBLIC SUB btnCAT_Click()
             lcdQRG.Visible = FALSE
             
             SHELL "killall grig rigctld"
-            ' IF Application.Env["KDE_FULL_SESSION"] THEN                
-            '     SHELL "kdesu -u root 'killall -9 rpc.rigd'" 
-            ' ELSE IF Application.Env["GNOME_DESKTOP_SESSION_ID"] THEN                  
-            '     SHELL "gksu -u root 'killall -9 rpc.rigd'" 
-            ' ENDIF            
+            
         ENDIF 
     ENDIF
     
@@ -1930,7 +1932,7 @@ PUBLIC SUB TrayIcon1_Enter()
   
 
 END
-'*************************** XML-RPC fldigi **************************
+'*************************** XML-RPC fldigi ************************** need to install portmap to get it to work
 PUBLIC SUB fldigiXMLRPC()
     'This retrieves the values of log fields from "fldigi" app 
     'as in http://www.w1hkj.com/FldigiHelp/xmlrpc-control.html

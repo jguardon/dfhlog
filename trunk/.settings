@@ -191,7 +191,8 @@ SearchComment=True
 SearchString=True
 
 [OpenFile]
-File[1]="FMain.class:712.14"
+File[1]="FMain.class:85.6"
+Active=1
 File[2]="FMain.form"
 File[3]="global.module:446.115"
 File[4]="FLoc.form"
@@ -199,7 +200,6 @@ File[5]="FLoc.class:471.29"
 File[6]="FiADIF.class:428.14"
 File[7]="FCatDebug.form"
 File[8]="FCatDebug.class:29.22"
-Active=8
 Count=8
 
 [Watches]
