@@ -218,8 +218,14 @@ PUBLIC SUB Form_Close()
 END
 
 PUBLIC SUB btnPrint_Click()
-
-    Message("Not yet operative") 
+    DIM sKugar AS String
+    SHELL "which kugar" TO sKugar
+    IF sKugar THEN 
+        FMain.printQSLs()
+        cv.Refresh()    
+    ELSE 
+        Message.Info(("Currently Kugar is not installed.\nIn order to print QSLs, you might\ninstall Kugar from repositories."))
+    ENDIF 
 
 END
 

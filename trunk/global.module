@@ -23,6 +23,7 @@ PRIVATE LL AS NEW latlon
 PUBLIC MapLoc AS Boolean = FALSE
 PRIVATE ent AS NEW cty
 PUBLIC $iQSOn AS NEW Integer[]
+PUBLIC $iAdded2Queue AS Integer 
 PUBLIC dwnld AS NEW HttpClient AS "_getVer"
 PRIVATE ver AS String
 PUBLIC $alertedMUF AS Boolean = FALSE
@@ -306,14 +307,18 @@ END
 
 PUBLIC SUB addToQueue(id AS Integer)
     DIM hres AS Result
-    DIM sql AS String
+    DIM sql, sql1 AS String
     
     IF id <> NULL THEN 
-        sql = "INSERT OR IGNORE INTO qQSL " &
-        "SELECT id, operator, call, qso_date, time_on, band, mode, prop_mode, rst_sent, gridsquare, " &
-        "my_gridsquare, qsl_via, qsl_rcvd, qsl_sent FROM log WHERE id=&1;"
-        IF FMain.connDB() THEN RETURN 
-        hres = dbLog.cnLog.Exec(sql, id)
+        sql1 = "INSERT OR IGNORE INTO qQSL "
+        sql = "SELECT id, operator, call, qso_date, time_on, band, mode, prop_mode, rst_sent, gridsquare, " &
+        "my_gridsquare, qsl_via, qsl_rcvd, qsl_sent FROM log WHERE id=&1 AND qsl_sent <> 'Y';"
+        IF FMain.connDB() THEN RETURN         
+        hres = dbLog.cnLog.Exec(sql, id)        
+        IF hres.Available
+            INC $iAdded2Queue
+            dbLog.cnLog.Exec(sql1 & sql, id)
+        ENDIF
     ENDIF
     
     CATCH 
