@@ -5,7 +5,6 @@
   Text = ("dfhLog")
   Icon = Picture["dfhlog.png"]
   Arrangement = Arrange.Vertical
-  AutoResize = True
   { Archivo Menu
     Text = ("&File")
     Shortcut = "Alt+F"
@@ -128,14 +127,16 @@
     { mnuDesign Menu
       Text = ("QSL &Design")
       Picture = Picture["icon:/16/desktop"]
+      Enabled = False
     }
     { mnuQueue Menu
       Text = ("QSL queu&e")
       Picture = Picture["icon:/16/layers"]
     }
-    { Menu2 Menu
+    { mnuGoPrint Menu
       Text = ("Print QSLs")
       Picture = Picture["icon:/16/print"]
+      Enabled = False
       Shortcut = "Ctrl+Alt+P"
     }
   }

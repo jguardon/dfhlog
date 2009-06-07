@@ -50,14 +50,15 @@ PUBLIC hProcess AS Process
 PUBLIC SUB _new()    
     getDiff()
     TRY world.init()
-    ini = NEW Settings(User.Home &/ "/.dfh_Log/dfhLog.conf", "dfhLog Settings")    
+    ini = NEW Settings(User.Home &/ "/.dfh_Log/dfhLog.conf", "dfhLog Settings")
+    IF NOT Exist(User.Home &/ ".dfh_Log/qsl.ktf") THEN TRY COPY "qsl.ktf" TO User.Home &/ ".dfh_Log/qsl.ktf"    
     IF NOT Exist(User.Home &/ "/.xplanet/config/dfh") THEN        
         TRY MKDIR User.Home &/ "/.xplanet/"
         TRY MKDIR User.Home &/ "/.xplanet/config/"
         TRY MKDIR User.Home &/ "/.xplanet/markers/"
         TRY MKDIR User.Home &/ "/.xplanet/origin/"
         TRY COPY "dfh" TO User.Home &/ "/.xplanet/config/dfh"
-        TRY COPY "do" TO User.Home &/ "/.xplanet/origin/do"        
+        TRY COPY "do" TO User.Home &/ "/.xplanet/origin/do"                
     ENDIF    
     IF NOT Exist(User.Home &/ "/.dfh_Log/tablas.db") THEN TRY COPY "tablas.db" TO User.Home &/ "/.dfh_Log/tablas.db"   
     
@@ -105,7 +106,7 @@ END
 PUBLIC SUB Form_Open()
     DIM hResul AS Result
     DIM i AS Integer = 1
-    DIM propa, banda, modo, entidad AS String    
+    DIM propa, banda, modo, entidad, sKugar AS String    
     
     ME.Title = "dfhLog - v " & Application.Version & " - " & ini["Estacion/QRZ"]
     PanelSmeter.Visible = FALSE
@@ -165,7 +166,12 @@ PUBLIC SUB Form_Open()
     tblCluster.Columns.Count = 1   
     tblCluster.Rows.Height = 10
     prepararGrid()
-    prepareWkdB4()    
+    prepareWkdB4()
+    SHELL "which kugar" TO sKugar
+    IF sKugar THEN 
+        mnuDesign.Enabled = TRUE
+        mnuGoPrint.Enabled = TRUE
+    ENDIF     
     IF ini["Log/File"] = NULL OR NOT Exist(ini["Log/File"]) THEN 
         btnNewLog_Click()
     ELSE
@@ -275,7 +281,19 @@ PUBLIC SUB txtCall_Change()
     qrzcom.clearQRZ()
     txtCall.Text = Upper(txtCall.Text)
     IF Len(txtCall.Text) > 1 THEN   
-        IF modificando = FALSE THEN TRY buscar()     
+        'IF modificando = FALSE THEN 
+        TRY buscar()
+        SELECT CASE cboModo.Text    
+            CASE "SSB", "USB", "LSB", "AM", "FM"
+                txtRSTe.Text = 59
+                txtRSTr.Text = 59
+            CASE "JT65A", "JT65B", "JT65C"
+                txtRSTe.Text = "OOO"
+                txtRSTr.Text = "OOO"
+            CASE ELSE 
+                txtRSTe.Text = 599
+                txtRSTr.Text = 599
+        END SELECT     
     ELSE 
         clearFields()
         clearTblStats()    
@@ -497,11 +515,7 @@ PUBLIC SUB txtCall_LostFocus()
     ENDIF 
     IF c <> NULL AND Len(txtCall.Text) > 2 THEN getWkdCfd(c.entity, cboBanda.Text)
     IF sktHamlib.Status = Net.Connected THEN txtFreq.Text = Left(lcdQRG.Text, Len(lcdQRG.Text) - 1)
-    IF btnQuick.Value = TRUE THEN 
-        txtRSTe.Text = 59 
-        txtRSTr.Text = 59
-    ENDIF 
-    'cboModo_Click()
+    
     wkdB4(call) 'worked before?
     btnOK.Default = TRUE
     
@@ -1510,6 +1524,22 @@ PRIVATE SUB menuLog()
     hMenu.Picture = Picture["gtk-undo-rtl.png"]
     hMenu.Shortcut = "F6"
     
+    hMenu = NEW Menu(hMenus)
+    hMenu.Text = ""
+    
+    hMenu = NEW Menu(hMenus) AS "mnuQSLnotrec"
+    hMenu.Text = ("Uncheck QSL as recvd.")
+    hMenu.Picture = Picture["gtk-redo-not.png"]
+    hMenu.Shortcut = "F7"
+    
+    hMenu = NEW Menu(hMenus) AS "mnuQSLnotenv"
+    hMenu.Text = ("Uncheck QSL as sent.")
+    hMenu.Picture = Picture["gtk-undo-not.png"]
+    hMenu.Shortcut = "F8"
+    
+    hMenu = NEW Menu(hMenus)
+    hMenu.Text = ""
+    
     hMenu = NEW Menu(hMenus) AS "mnuPrintQSL"
     hMenu.Text = ("Print QSL")
     hMenu.Picture = Picture["gtk-print.png"]
@@ -1542,9 +1572,18 @@ PUBLIC SUB mnuQSLenv_Click()
     IF global.$iQSOn.Count = 1 THEN setQSLsent(global.$iQSOn)
 END
 
+PUBLIC SUB mnuQSLnotrec_Click()  
+    IF global.$iQSOn.Count = 1 THEN setQSLrcvd(global.$iQSOn, TRUE)
+END
+
+PUBLIC SUB mnuQSLnotenv_Click()
+    IF global.$iQSOn.Count = 1 THEN setQSLsent(global.$iQSOn, TRUE)
+END
+
 PUBLIC SUB mnuPrintQSL_Click()    
     IF global.$iQSOn.Count = 1 THEN TRY global.addToQueue(global.$iQSOn[0])   
-    IF NOT ERROR THEN Message.Info(("Added ") & global.$iQSOn.Count & (" QSOs to the QSL print queue."))
+    IF NOT ERROR THEN Message.Info(("Added ") & global.$iAdded2Queue & (" QSOs to the QSL print queue."))
+    global.$iAdded2Queue = 0
 END
 
 PUBLIC SUB grdQSO_Menu()
@@ -1628,7 +1667,7 @@ PUBLIC SUB modifyQSO(idQSO AS Integer)
     btnOK.Text = ("Modify")
     btnOK.ForeColor = Color.Red
     frameQSO.Text = ("Edit QSO")
-    chkAutoSpot.Value = FALSE
+    'chkAutoSpot.Value = FALSE
     chkAutoSpot.Visible = FALSE
     chkRT.Value = FALSE
     chkRT.Visible = FALSE    
@@ -1639,6 +1678,7 @@ PUBLIC SUB modifyQSO(idQSO AS Integer)
     hres = dbLog.cnLog.Exec(sql, idQSO)
     IF hres.Available THEN     
         txtCall.Text = hres!call
+        'buscar() '******************************************************************************************************************************
         vFecha.Value = hres!qso_date
         vHora.Value = hres!time_on
         IF hres!time_off THEN vHora2.Value = hres!time_off
@@ -1666,7 +1706,8 @@ PUBLIC SUB modifyQSO(idQSO AS Integer)
         txtSatMode.Text = hres!sat_mode
         lblEmail.Text = hres!email
         txtTPEA.Text = hres!TPEA        
-        cboEntidad.Text = hres!country        
+        cboEntidad.Text = hres!country
+        cboEntidad_Click()        
     ELSE     
         Message.Error(("QSO Nr ") & idQSO & (" doesn't exist!"))
         btnClear_Click()
@@ -1696,7 +1737,7 @@ PRIVATE SUB logModifiedQSO(id AS Integer)
      "rst_rcvd=&10, rst_sent=&11, name=&12, gridsquare=&13, qth=&14, comment=&15, qsl_sent=&16, qsl_rcvd=&17, qslsdate=&18, qslrdate=&19, qsl_via=&20, " &
      "pfx=&21, cont=&22, cqz=&23, ituz=&24, state=&25, cnty=&26, iota=&27, operator=&28, tx_pwr=&29, my_gridsquare=&30," &
      "sat_name=&31, sat_mode=&32, email=&33, country=&34, dxcc=&35, TPEA=&36 WHERE id = " & id & ";"
-    dbLog.cnLog.Exec(sql, vFecha.Value, vHora.Text, vHora2.Text, txtCall.Text, parseFreq(txtFreq.Text), parseFreq(txtFreq2.Text), cboBanda.Text, modo, cboPropa.Text, txtRSTr.Text, txtRSTe.Text, txtNameQSO.Text, txtLocQSO.Text, txtQTHqso.Text, txtComment.Text, QSLsent(), QSLrec(), dteQSLe.Value, dteQSLr.Value, txtMgrQSO.Text, c.pfx, c.continent, c.cqz, c.ituz, txtState.Text, txtCounty.Text, txtIOTA.Text, ini["Estacion/QRZ"], txtPwr.Text, ini["Estacion/Locator"], txtSatName.Text, txtSatMode.Text, lblEmail.Text, c.entity, c.number, txtTPEA.Text)             
+    dbLog.cnLog.Exec(sql, vFecha.Value, vHora.Text, vHora2.Text, txtCall.Text, parseFreq(txtFreq.Text), parseFreq(txtFreq2.Text), cboBanda.Text, modo, cboPropa.Text, txtRSTr.Text, txtRSTe.Text, txtNameQSO.Text, txtLocQSO.Text, txtQTHqso.Text, txtComment.Text, QSLsent(), QSLrec(), dteQSLe.Value, dteQSLr.Value, txtMgrQSO.Text, lblPfx.Text, lblCont.Text, lblCQ.Text, lblITU.Text, txtState.Text, txtCounty.Text, txtIOTA.Text, ini["Estacion/QRZ"], txtPwr.Text, ini["Estacion/Locator"], txtSatName.Text, txtSatMode.Text, lblEmail.Text, cboEntidad.Text, cboEntidad.Index, txtTPEA.Text)             
     fillData()
     IF FLog.Visible = TRUE THEN FLog.fillData()
         
@@ -1704,12 +1745,17 @@ PRIVATE SUB logModifiedQSO(id AS Integer)
         Message.Error(("Error Modifying QSO\n") & Error.Text & "\n" & Error.Where)  
 END
 
-PUBLIC SUB setQSLrcvd(id AS Integer[])
+PUBLIC SUB setQSLrcvd(id AS Integer[], OPTIONAL unset AS Boolean = FALSE)
     DIM i AS Integer
     DIM sql AS String
+    
     IF connDB() THEN RETURN 
-    FOR i = 0 TO id.Count - 1    
-        sql = "UPDATE log SET qsl_rcvd='Y' WHERE id = " & id[i] & ";"
+    FOR i = 0 TO id.Count - 1        
+        IF unset = TRUE THEN 
+            sql = "UPDATE log SET qsl_rcvd='N' WHERE id = " & id[i] & ";"
+        ELSE 
+            sql = "UPDATE log SET qsl_rcvd='Y' WHERE id = " & id[i] & ";"
+        ENDIF
         dbLog.cnLog.Exec(sql)
     NEXT 
     'dbLog.CloseDB()
@@ -1721,12 +1767,17 @@ PUBLIC SUB setQSLrcvd(id AS Integer[])
         Message.Error(("Error setting QSL Rcvd QSO\n") & Error.Text & "\n" & Error.Where)  
 END
 
-PUBLIC SUB setQSLsent(id AS Integer[])
+PUBLIC SUB setQSLsent(id AS Integer[], OPTIONAL unset AS Boolean = FALSE)
     DIM i AS Integer
-    DIM sql AS String   
+    DIM sql AS String
+     
     IF connDB() THEN RETURN 
     FOR i = 0 TO id.Count - 1
-        sql = "UPDATE log SET qsl_sent='Y' WHERE id = " & id[i] & ";"
+        IF unset = TRUE THEN 
+            sql = "UPDATE log SET qsl_sent='N' WHERE id = " & id[i] & ";"
+        ELSE 
+            sql = "UPDATE log SET qsl_sent='Y' WHERE id = " & id[i] & ";"
+        ENDIF
         dbLog.cnLog.Exec(sql)
     NEXT 
     'dbLog.CloseDB()
@@ -1798,7 +1849,8 @@ PUBLIC SUB mnuGStats_Click()
 END
 
 PUBLIC SUB mnuDesign_Click()
-  FDesign.ShowModal
+  'FDesign.ShowModal
+  SHELL "kudesigner " & User.Home &/ ".dfh_Log/qsl.ktf"
 END
 
 PUBLIC SUB mnuQueue_Click()
@@ -2026,4 +2078,79 @@ PUBLIC SUB btnQuick_Click()     'toggle button
         ENDIF 
     NEXT 
     
+END
+
+PUBLIC SUB printQSLs()
+    mnuGoPrint_Click()  
+END
+
+PUBLIC SUB mnuGoPrint_Click()
+
+    DIM hres AS Result
+    DIM flname, data, sQSLr AS String
+    DIM hfile AS file
+    'check if qsl queue is not empty
+    IF connDB() THEN RETURN
+    hres = dbLog.cnLog.Exec("SELECT id FROM qQSL")
+    IF hres.Count < 1 THEN 
+        Message.Info(("QSL queue is empty!"))
+        RETURN
+    ELSE
+
+        flname = User.Home &/ ".dfh_Log/qsl.kdf" 
+        
+        IF Exist(flname) THEN TRY KILL flname
+          TRY OPEN flname FOR WRITE CREATE AS #hFile
+            'Make Kugar file data in XML
+            PRINT #hfile, "<?xml version='1.0' encoding='UTF-8'?>"
+            PRINT #hfile, ""
+            PRINT #hfile, "<!DOCTYPE KugarData ["
+            PRINT #hfile, "    <!ELEMENT KugarData (Row* )>"
+            PRINT #hfile, "    <!ATTLIST KugarData"
+            PRINT #hfile, "        Template CDATA #REQUIRED>"
+            PRINT #hfile, ""
+            PRINT #hfile, "    <!ELEMENT Row EMPTY>"
+            PRINT #hfile, "    <!ATTLIST Row"
+            PRINT #hfile, "        level CDATA #REQUIRED"
+            PRINT #hfile, "        call CDATA #REQUIRED"
+            PRINT #hfile, "        hiscall CDATA #REQUIRED"
+            PRINT #hfile, "        hisloc CDATA #REQUIRED"
+            PRINT #hfile, "        date CDATA #REQUIRED"
+            PRINT #hfile, "        band CDATA #REQUIRED"
+            PRINT #hfile, "        mode CDATA #REQUIRED"
+            PRINT #hfile, "        utc CDATA #REQUIRED"
+            PRINT #hfile, "        rst CDATA #REQUIRED"
+            PRINT #hfile, "        prop CDATA #REQUIRED"
+            PRINT #hfile, "        via CDATA #REQUIRED"
+            PRINT #hfile, "        qsl CDATA #REQUIRED"
+            PRINT #hfile, "        ver CDATA #REQUIRED>"
+            PRINT #hfile, "]>"
+            PRINT #hfile, ""          
+            PRINT #hfile, "<KugarData Template='qsl.ktf'>"
+            ' thanks to Marc Miralles from gambas-user@lists.sourceforge.net
+            hres = dbLog.cnLog.Exec("SELECT * FROM qQSL ORDER BY call;")
+            WHILE hres.Available
+                IF hres!qsl_rcvd = "Y" THEN 
+                    sQSLr = "TNX QSL"
+                ELSE 
+                    sQSLr = "PSE QSL"
+                ENDIF 
+                PRINT #hfile, "    <Row level= '0' call= '" & hres!my_call & "' hiscall= '" & hres!call & "' hisloc= '" & hres!gridsquare & "' date= '" & hres!date & "'" &
+                " band= '" & hres!band & "' mode= '" & hres!mode & "' utc= '" & Left(hres!time, 5) & "' rst= '" & hres!rst_sent & "' prop= '" & hres!prop_mode & "'" &
+                " via= '" & hres!qsl_via & "' qsl= '" & sQSLr & "' ver= 'Generated by dfhLog " & Application.Version & "'/>"
+                dbLog.cnLog.Exec("UPDATE log SET qsl_sent='Y' WHERE id=&1;", hres!id)
+                hres.MoveNext()
+            WEND             
+            PRINT #hfile, "</KugarData>"    
+            TRY CLOSE #hFile
+            
+            SHELL "kugar --caption 'dfhLog - Print QSL' " & flname WAIT 
+            IF Message.Question(("Delete printed QSL from queue?"), ("Yes"), "No") = 1 THEN dbLog.cnLog.Exec("DELETE FROM qQSL")
+            fillData()
+            FQueue.fillData()
+    ENDIF 
+    
+    CATCH 
+        Message.Error(Error.Text & "\n" & Error.Where)
+
 END

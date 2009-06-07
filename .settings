@@ -191,16 +191,17 @@ SearchComment=True
 SearchString=True
 
 [OpenFile]
-File[1]="FMain.class:85.6"
+File[1]="FMain.class:2067.8"
 Active=1
 File[2]="FMain.form"
 File[3]="global.module:446.115"
 File[4]="FLoc.form"
-File[5]="FLoc.class:471.29"
+File[5]="FLoc.class:116.36"
 File[6]="FiADIF.class:428.14"
 File[7]="FCatDebug.form"
 File[8]="FCatDebug.class:29.22"
-Count=8
+File[9]="world.module:149.0"
+Count=9
 
 [Watches]
 Count=0

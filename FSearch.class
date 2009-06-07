@@ -179,6 +179,22 @@ PRIVATE SUB menuLog()
   hMenu.Picture = Picture["gtk-undo-rtl.png"]
   hMenu.Shortcut = "F6"
   
+  hMenu = NEW Menu(hMenus)
+  hMenu.Text = ""
+  
+  hMenu = NEW Menu(hMenus) AS "mnuQSLnotrec"
+  hMenu.Text = ("Uncheck QSL as recvd.")
+  hMenu.Picture = Picture["gtk-redo-not.png"]
+  hMenu.Shortcut = "F7"
+  
+  hMenu = NEW Menu(hMenus) AS "mnuQSLnotenv"
+  hMenu.Text = ("Uncheck QSL as sent.")
+  hMenu.Picture = Picture["gtk-undo-not.png"]
+  hMenu.Shortcut = "F8"
+  
+  hMenu = NEW Menu(hMenus)
+  hMenu.Text = ""
+  
   hMenu = NEW Menu(hMenus) AS "mnuPrintQSL"
   hMenu.Text = ("Print QSL")
   hMenu.Picture = Picture["gtk-print.png"]
@@ -236,12 +252,22 @@ PUBLIC SUB mnuQSLenv_Click()
   fillData()
 END
 
+PUBLIC SUB mnuQSLnotrec_Click()
+    FMain.setQSLrcvd(global.$iQSOn, TRUE)
+    fillData()  
+END
+
+PUBLIC SUB mnuQSLnotenv_Click()
+    FMain.setQSLsent(global.$iQSOn, TRUE)
+    fillData()
+END
+
 PUBLIC SUB mnuPrintQSL_Click()
-  DIM i AS Integer
+    DIM i AS Integer
     FOR i = 0 TO global.$iQSOn.Count - 1
         TRY global.addToQueue(global.$iQSOn[i])
     NEXT
-    IF NOT ERROR THEN Message.Info(("Added ") & global.$iQSOn.Count & (" QSOs to the QSL print queue."))
+    IF NOT ERROR THEN Message.Info(("Added ") & global.$iAdded2Queue & (" QSOs to the QSL print queue."))
 END
 
 PUBLIC SUB cv_Menu()

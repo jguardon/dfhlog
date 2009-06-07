@@ -120,6 +120,7 @@ PUBLIC SUB Form_Open()
     
     FINALLY 
         ScrollView1.Scroll(FMain.ini["FMapLoc/ScrollX", 2370], FMain.ini["FMapLoc/ScrollY", 500])
+        cleanTable  
 
      CATCH
         Message.Error(("Please, install required package \"dfhlog-images-1.1-1\""))
@@ -128,8 +129,7 @@ PUBLIC SUB Form_Open()
 END
 
 PUBLIC SUB Form_Close()
-    global.MapLoc = FALSE
-    cleanTable  
+    global.MapLoc = FALSE    
     FMain.ini["FMapLoc/Top"] = ME.ScreenY
     FMain.ini["FMapLoc/Left"] = ME.ScreenX
     FMain.ini["FMapLoc/Height"] = ME.Height
@@ -139,8 +139,8 @@ PUBLIC SUB Form_Close()
 END
 
 PUBLIC SUB cleanTable()  
-    IF FMain.connDB() THEN RETURN
-    dbLog.cnLog.Exec("DELETE FROM spots")  
+    IF FMain.connDB() THEN RETURN   
+    dbLog.cnLog.Exec("DELETE FROM spots WHERE timestamp < &1;", (global.unixTS() - FMain.ini["FMapLoc/DXTime", 1800]))
 END
 
 
