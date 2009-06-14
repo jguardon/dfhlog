@@ -187,21 +187,21 @@
       MoveScaled(1,1,65,41)
       Text = ("Hamlib (CAT) Parameters")
       { chkHamlib CheckBox
-        MoveScaled(6,7,14,3)
+        MoveScaled(6,8,14,3)
         Text = ("Activate")
       }
       { Label10 Label
-        MoveScaled(26,7,16,3)
+        MoveScaled(26,8,16,3)
         Text = ("Poll every:")
       }
       { cboPolling ComboBox
-        MoveScaled(42,7,11,3)
+        MoveScaled(42,8,11,3)
         Text = ("")
         ReadOnly = True
         List = [("100"), ("200"), ("300"), ("400"), ("500"), ("1000"), ("2000")]
       }
       { Label11 Label
-        MoveScaled(54,7,8,3)
+        MoveScaled(54,8,8,3)
         Text = ("msec.")
       }
       { Label12 Label
@@ -236,7 +236,7 @@
         Text = ("bauds")
       }
       { lblHamlibInst Label
-        MoveScaled(6,12,53,3)
+        MoveScaled(6,13,53,3)
         Foreground = &H804000&
         Text = ("")
       }
@@ -253,6 +253,12 @@
         MoveScaled(6,32,53,3)
         Foreground = &H804000&
         Text = ("")
+      }
+      { chkHamlibRPC CheckBox
+        MoveScaled(6,4,14,3)
+        Foreground = &H000080&
+        ToolTip = ("If checked, I will try to use rpc rig service to\nallow multiple connections to a single rig.")
+        Text = ("Use rpc.rigd")
       }
     }
     Index = 4

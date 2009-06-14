@@ -1,5 +1,8 @@
-* Tue Jun 02 2009 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.35
-
+* Sun Jun 14 2009 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.36
+- Changed the name of executable file to all lowercase.
+- Added printing support using kugar package, marked as dependency.
+- Fixed some bugs related to CAT and RPC.
+- Changed the CAT button icon on toolbar.
 
 * Mon Jun 01 2009 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.35
 - Bug Fixed: Bad detection of CQ/ITU Zones when importing from ADIF not including these fields. Thanks to (EA7AH).

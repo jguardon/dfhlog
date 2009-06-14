@@ -5,6 +5,7 @@
   Text = ("dfhLog")
   Icon = Picture["dfhlog.png"]
   Arrangement = Arrange.Vertical
+  Padding = 2
   { Archivo Menu
     Text = ("&File")
     Shortcut = "Alt+F"
@@ -243,7 +244,7 @@
         MoveScaled(28,0,3,3)
         ToolTip = ("CAT")
         Text = ("")
-        Picture = Picture["icon:/16/network"]
+        Picture = Picture["ic910.png"]
         Toggle = True
       }
       { Separator2 Separator
