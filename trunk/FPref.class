@@ -110,6 +110,7 @@ PUBLIC SUB Form_Open()
     cboServer.Text = FMain.ini["Telnet/Server"]
     chkAutoLogin.Value = FMain.ini["Telnet/Autologin", FALSE]
     chkHamlib.Value = FMain.ini["Hamlib/Activado", FALSE]
+    chkHamlibRPC.Value = FMain.ini["Hamlib/RPC", FALSE]
     chkGrig.Value = FMain.ini["Hamlib/Grig", FALSE]
     chkXplanet.Value = FMain.ini["Xplanet/Activado", FALSE]
     getRbQRZ()
@@ -196,13 +197,20 @@ PUBLIC SUB chkHamlib_Click()
    
   IF isHamlib = FALSE THEN 
         chkHamlib.Value = FALSE
+        chkHamlibRPC.Value = FALSE
         FMain.ini["Hamlib/Activado"] = isHamlib
         lblHamlibInst.Text = ("Hamlib not installed!")
-     
+        chkHamlibRPC.Value = FALSE
+        FMain.activateBtnCat(FALSE)
   ELSE 
         lblHamlibInst.Text = ""
         FMain.ini["Hamlib/Activado"] = CBool(chkHamlib.Value)
-         
+        IF chkHamlib.Value = FALSE THEN 
+            chkHamlibRPC.Value = FALSE
+            FMain.activateBtnCat(FALSE)
+        ELSE 
+            FMain.activateBtnCat(TRUE)
+        ENDIF
   ENDIF 
 
 END
@@ -242,10 +250,8 @@ PUBLIC SUB chkXplanet_Click()
         lblXplanetInst.Text = ("Xplanet not installed!")
     ELSE 
         lblXplanetInst.Text = ""
-        FMain.ini["Xplanet/Activado"] = CBool(chkXplanet.Value)
-        
     ENDIF 
-
+    FMain.ini["Xplanet/Activado"] = CBool(chkXplanet.Value)
 END
 
 PUBLIC SUB cboRigHamlib_Click()
@@ -363,8 +369,19 @@ PUBLIC SUB chkGrig_Click()
     IF Left($test, 4) <> "grig" THEN 
         chkGrig.Value = FALSE
         lblGrig.Text = ("Grig not installed!")
+    ELSE IF chkHamlibRPC.Value = FALSE THEN 
+        chkGrig.Value = FALSE
+        lblGrig.Text = ("Grig needs rpc.rigd to work!")
     ELSE 
         lblGrig.Text = ""
         FMain.ini["Hamlib/Grig"] = CBool(chkGrig.Value)        
     ENDIF
+END
+
+PUBLIC SUB chkHamlibRPC_Click()
+
+    chkHamlib.Value = TRUE
+    FMain.ini["Hamlib/RPC"] = CBool(chkHamlibRPC.Value)
+    IF chkHamlibRPC.Value = FALSE THEN chkGrig.Value = FALSE
+
 END

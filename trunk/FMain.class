@@ -94,9 +94,7 @@ PUBLIC SUB Form_Close()
           sktHamlib = NULL
     ENDIF
     dbLog.CloseDB()
-    EXEC ["killall", "rigctld"]
-    EXEC ["killall", "xplanet"] 
-    TRY pRigctl.Kill    
+    SHELL "killall rigctld grig"
     
     
     CATCH     
@@ -431,9 +429,11 @@ PUBLIC SUB txtCall_KeyPress()
     END SELECT
 END
 
-PUBLIC SUB Timer1_Timer()     
+PUBLIC SUB Timer1_Timer()
+    DIM sAux AS String     
     Label2.Caption = Format(global.UTCNow(), "dd/mm/yyyy hh:nn:ss Z")
-    IF global.pidOf("fldigi") = TRUE AND modificando = FALSE THEN TRY fldigiXMLRPC 
+    SHELL "ps aux | grep [f]ldigi" TO sAux
+    IF sAux AND modificando = FALSE THEN TRY fldigiXMLRPC 
 END
 
 PUBLIC SUB options_Click()
@@ -609,7 +609,7 @@ PUBLIC SUB btnOK_Click()
         
         clearFields()
         txtCall.Clear()
-        IF global.pidOf("fldigi") THEN fldigiClearfiedls()
+        TRY fldigiClearfiedls()
         modificando = FALSE
         update_stats()        
     ELSE    
@@ -651,7 +651,7 @@ PUBLIC SUB btnClear_Click()
     modificando = FALSE
     clearFields()
     txtCall.Clear()
-    IF global.pidOf("fldigi") THEN fldigiClearfiedls()
+    TRY fldigiClearfiedls()
     fillData()        
 END
 
@@ -716,36 +716,27 @@ END
 '*****************************HAMLIB************************************
 
 PUBLIC SUB btnCAT_Click()
-    DIM msg AS String = ("rpc.rigd (Hamlib) needs to run with administrative privileges.\nPlease, enter your password:")
-    DIM sAux, sRes AS String
-    DIM test AS String[] = ["kdesudo", "kdesu", "gksudo", "gksu"]
     'need to install portmap to get it to work
     IF ini["Hamlib/Activado"] = TRUE THEN
         IF btnCAT.Value = TRUE THEN 
+            INC Application.Busy
             IF FMain.ini["CAT/Debug"] = TRUE THEN FCatDebug.Show
-            timerCAT.Delay = CInt(ini["Hamlib/Polling", 300])            
-            '''EXEC ["rigctld", "-r", ini["Hamlib/Device", "/dev/ttyS0"], "-m", ini["Hamlib/Rig", 1], "-s", ini["Hamlib/Speed", 9600], "&"]'''
-            
-            'launch rpc.rigd with root privileges. Use suid wrapper depending on environment.
-            'As rpc.rigd is a daemon running in background, we can't WAIT for the process end
-            'causing premature start of rigctld and grig 
-            IF global.pidOf("rpc.rigd") = FALSE THEN
-                FOR EACH sAux IN test
-                    SHELL "which " & sAux TO sRes
-                    IF sRes THEN 
-                        sRes = Trim(Mid(sRes, RInStr(sRes, "/") + 1, Len(sRes)))
-                        BREAK 
-                    ENDIF 
-                    WAIT 0.3 
-                NEXT
-                pRigctl = SHELL sRes & " -u root 'rpc.rigd -m " & ini["Hamlib/Rig", 1] & " -r " & ini["Hamlib/Device", "/dev/ttyS0"] & " -s " & ini["Hamlib/Speed", 9600] & " &'"                
+            timerCAT.Delay = CInt(ini["Hamlib/Polling", 300])
+            IF FMain.ini["Hamlib/RPC"] = TRUE THEN 
+                IF global.pidOf("rpc.rigd") = FALSE THEN
+                    SHELL "rpc.rigd -m " & ini["Hamlib/Rig", 1] & " -r " & ini["Hamlib/Device", "/dev/ttyS0"] & " -s " & ini["Hamlib/Speed", 9600] & " &"
+                    WAIT 0.5
+                ENDIF
+                SHELL "rigctld -m 1901 -r localhost &"
+                IF ini["Hamlib/Grig"] = TRUE THEN SHELL "grig -m 1901 -p -P -r localhost"
+            ELSE 
+                SHELL "rigctld -m " & ini["Hamlib/Rig", 1] & " -r " & ini["Hamlib/Device", "/dev/ttyS0"] & " -s " & ini["Hamlib/Speed", 9600] & " &"                             
             ENDIF 
             'PanelSmeter.Visible = TRUE
             lcdQRG.Visible = TRUE
-            IF global.pidOf("rpc.rigd") = FALSE THEN WAIT 15 'a workaround for assure rpc.rigd is running before launch rigctld & grig            
-            SHELL "rigctld -m 1901 -r localhost &"
+            WAIT 0.5
             connectHamlib()
-            IF ini["Hamlib/Grig"] = TRUE THEN SHELL "grig -m 1901 -p -P -r localhost"            
+            DEC Application.Busy
         ELSE
             timerCAT.Enabled = FALSE
             sktHamlib.Close()
@@ -753,14 +744,20 @@ PUBLIC SUB btnCAT_Click()
             'pbSmeter.Value = 0
             'PanelSmeter.Visible = FALSE
             lcdQRG.Visible = FALSE
-            
             SHELL "killall grig rigctld"
-            
-        ENDIF 
+        ENDIF
     ENDIF
     
-    ' CATCH
-    '     Message.Error(("Error in btnCAT_Click\n") & Error.Text & "\n" & Error.Where)
+    CATCH
+        Message.Error(("Error in btnCAT_Click\n") & Error.Text & "\n" & Error.Where)
+END
+
+PUBLIC SUB activateBtnCat(t AS Boolean)
+    IF t = TRUE THEN 
+        btnCAT.Enabled = TRUE
+    ELSE
+        btnCAT.Enabled = FALSE
+    ENDIF 
 END
 
 PUBLIC SUB connectHamlib()
@@ -1848,17 +1845,16 @@ PUBLIC SUB mnuGStats_Click()
     FStats.Show
 END
 
-PUBLIC SUB mnuDesign_Click()
-  'FDesign.ShowModal
-  SHELL "kudesigner " & User.Home &/ ".dfh_Log/qsl.ktf"
+PUBLIC SUB mnuDesign_Click()  
+    SHELL "kudesigner " & User.Home &/ ".dfh_Log/qsl.ktf"
 END
 
 PUBLIC SUB mnuQueue_Click()
-  FQueue.Show()
+    FQueue.Show()
 END
 
 PUBLIC SUB btnWatch_Click()
-  mnuRlog_Click()
+    mnuRlog_Click()
 END
 
 PUBLIC SUB btnEditLast_Click()
@@ -2031,6 +2027,8 @@ PUBLIC SUB fldigiXMLRPC()
     client = NEW RpcClient(RpcF)
     client.URL = "http://localhost:7362/RPC2"      
     txtQTHqso.Text = client.Call(hVar)                                                  'qth
+    CATCH 
+        PRINT Error.Text, Error.Where                                                  
     
 
 END
