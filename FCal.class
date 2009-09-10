@@ -16,22 +16,33 @@
 '     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 PRIVATE $fecha AS Date
+PRIVATE $target AS String
 
 PUBLIC SUB DateChooser1_Activate()
     $fecha = DateChooser1.Value
     
+    SELECT CASE $target
+        CASE "fmain"        
+            FMain.setDate($fecha)
+        CASE "feadif_i"
+            FeADIF.setDateIni($fecha)
+        CASE "feadif_f"
+            FeADIF.setDateFin($fecha)
+        CASE "fsearch_i"
+            FSearch.setDateIni($fecha)
+        CASE "fsearch_f"
+            FSearch.setDateFin($fecha)
+    END SELECT
     
     ME.Close()
-
+    
 END
 
-PUBLIC SUB Form_Open()
-
-END
-
-PUBLIC FUNCTION getDatePicker() AS Date
-  ME.ShowModal()
-  RETURN $fecha
-  
+PUBLIC SUB getDatePicker(ctl AS Control, tgt AS String)
+    $target = tgt
+    ME.Stacking = Window.Above  
+    ME.Move(ctl.ScreenX, ctl.ScreenY)
+    ME.Show()
+    
 END
 

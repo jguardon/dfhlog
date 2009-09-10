@@ -5,10 +5,10 @@ Count=0
 Count=0
 
 [DebugWindow/$aMyFields]
-Geometry=[0,0,301,301]
+Geometry=[0,25,301,301]
 
 [DebugWindow/$hres]
-Geometry=[0,0,301,301]
+Geometry=[0,41,301,301]
 
 [DebugWindow/Action]
 Geometry=[0,25,301,301]
@@ -145,6 +145,9 @@ Geometry=[0,0,301,301]
 [DebugWindow/rf]
 Geometry=[0,0,301,301]
 
+[DebugWindow/sArr]
+Geometry=[0,25,301,301]
+
 [DebugWindow/sCampos]
 Geometry=[0,25,301,301]
 
@@ -185,22 +188,16 @@ Geometry=[0,0,301,301]
 
 [FFind]
 SearchIn="Module"
-CaseSensitive=True
+CaseSensitive=False
 SearchWord=False
 SearchComment=True
 SearchString=True
 
 [OpenFile]
-File[1]="FMain.class:739.12"
+File[1]="FMain.class:1717.47"
+Active=1
 File[2]="FMain.form"
-File[3]="global.module:300.8"
-File[4]="Fservers.class:0.0"
-File[5]="FPref.class:245.42"
-File[6]="FPref.form"
-File[7]="FQueue.class:85.53"
-File[8]="FDesign.form"
-Active=8
-Count=8
+Count=2
 
 [Watches]
 Count=0

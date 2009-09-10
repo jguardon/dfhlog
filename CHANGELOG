@@ -1,3 +1,13 @@
+* Thu Sep 10 2009 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.37
+- Modified the QRZ.com Web query, as they changed the page structure very often.
+- Added a button in the QRZ.com textbox to launch the default browser with the current callsign.
+- Now when log a QSO or cancel it, the focus returns to the callsign textbox. Thanks to (EA7TB).
+- Added Save to TXT feature in Search form, to export results in plain formatted text. Suggested by (EA7TB).
+- Modified the behaviour of DateChooser.
+- Possibility to log the cluster comments into log as an option in the preferences form. Suggested by (EA7TB).
+- Translations to Galego, Portugues and Spanish updated.
+- Some minor bugs were fixed.
+
 * Sun Jun 14 2009 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.36
 - Changed the name of executable file to all lowercase.
 - Added printing support using kugar package, marked as dependency.

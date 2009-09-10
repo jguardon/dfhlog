@@ -34,10 +34,8 @@ PRIVATE $mode AS String
 PRIVATE $markedSpot AS Boolean = FALSE
 PRIVATE $i AS Integer
 PRIVATE $cEntities AS NEW Collection
-' PRIVATE pRPChamlib AS Process
- PRIVATE pRigctl AS Process
-' PRIVATE pGrig AS Process
-
+PRIVATE pRigctl AS Process
+PRIVATE $homecall AS String
 PUBLIC $diff AS Integer
 PUBLIC modificando AS Boolean = FALSE
 PUBLIC sTPEA AS String
@@ -46,6 +44,7 @@ PUBLIC sWAS AS String
 PUBLIC sUSAC AS String
 PUBLIC $qrzCom AS Integer
 PUBLIC hProcess AS Process
+
 
 PUBLIC SUB _new()    
     getDiff()
@@ -488,6 +487,7 @@ END
 PUBLIC SUB txtCall_LostFocus()
     DIM pa, pb AS String
     DIM call AS String = txtCall.Text
+    DIM homecall AS String
     
     IF Len(txtCall.Text) > 2 AND ini["Estacion/TimeOnOff", FALSE] = FALSE THEN 
         stopped = TRUE
@@ -500,20 +500,20 @@ PUBLIC SUB txtCall_LostFocus()
             IF InStr(call, "/") > 0 THEN 
                 pa = Left(call, InStr(call, "/") - 1)
                 pb = Right(call, Len(call) - InStr(call, "/"))
+                'homecall QRZ search
                 IF Len(pa) > Len(pb) THEN 
-                    call = pa
+                    homecall = pa                
                 ELSE 
-                    IF pb <> "P" AND pb <> "MM" AND pb <> "B" AND pb <> "M" AND pb <> "QRP" AND pb <> "AM" AND pb <> "" &
-                        "0" AND pb <> "1" AND pb <> "2" AND pb <> "3" AND pb <> "4" AND pb <> "5" AND pb <> "6" & 
-                        "" AND pb <> "7" AND pb <> "8" AND pb <> "9" THEN
-                        call = pb
-                    ENDIF 
+                    homecall = pb
                 ENDIF
+            ELSE 
+                homecall = call
             ENDIF 
-            IF modificando = FALSE THEN qrzcom.getQRZcom(call) 'search in qrz.com
+            IF modificando = FALSE THEN qrzcom.getQRZcom(homecall) 'search in qrz.com
         ENDIF 
     ENDIF 
-    IF c <> NULL AND Len(txtCall.Text) > 2 THEN getWkdCfd(c.entity, cboBanda.Text)
+    $homecall = homecall
+    IF c <> NULL AND Len(call) > 2 THEN getWkdCfd(c.entity, cboBanda.Text)
     IF sktHamlib.Status = Net.Connected THEN txtFreq.Text = Left(lcdQRG.Text, Len(lcdQRG.Text) - 1)
     
     wkdB4(call) 'worked before?
@@ -616,7 +616,7 @@ PUBLIC SUB btnOK_Click()
         Message.Info(("You must fill at least: Callsign, RST_r, RST_s and Frequency"))
         RETURN
     END IF    
-            
+    txtCall.SetFocus       
     CATCH    
         Message.Error(("Error in btnOK_Click\n") & Error.Text & "\n" & Error.Where)    
 END
@@ -632,7 +632,7 @@ PRIVATE SUB spotQSO()
     END SELECT
      
     IF sktCluster.Status = Net.Connected THEN     
-        WRITE #sktCluster strSpot & "\r\n", Len(strSpot) + 2        
+        WRITE #sktCluster, strSpot & "\r\n", Len(strSpot) + 2        
     ENDIF
     
     CATCH     
@@ -653,6 +653,7 @@ PUBLIC SUB btnClear_Click()
     txtCall.Clear()
     TRY fldigiClearfiedls()
     fillData()        
+    txtCall.SetFocus
 END
 
 PUBLIC SUB clearFields()
@@ -1077,7 +1078,7 @@ END
 PUBLIC SUB tblCluster_DblClick()
     DIM dxCall AS String
     DIM dxFreq AS Float
-    DIM dxline AS String 
+    DIM dxline, dxcomment, pa, pb, homecall AS String 
     
     stopped = FALSE
     IF tblCluster.Rows.Count > 0 THEN 
@@ -1085,18 +1086,40 @@ PUBLIC SUB tblCluster_DblClick()
         IF Left$(dxline, 5) = "DX de" THEN 
                 dxFreq = CFloat(Trim(Mid(dxline, 15, 10)))
                 dxCall = Trim(Mid(dxline, 27, 10))
+                dxcomment = Trim(Mid(dxline, 40, 29))
         ENDIF
         IF IsDigit(Trim(Left(dxline, 6))) = TRUE AND InStr(dxline, ".") > 6 AND InStr(dxline, ".") < 15 THEN  
                 dxCall = Trim(Mid(dxline, 11, 12))
                 dxFreq = CFloat(Trim(Left(dxline, 10)))
+                dxcomment = Trim(Mid(dxline, 42, 28))
         ENDIF 
         clearFields()
         vHora.Value = Format(global.UTCNow(), "hh:nn:ss") 'reset counter
         txtCall.Text = dxCall
+        IF ini["Estacion/SetComment", FALSE] = TRUE THEN txtComment.Text = dxcomment
         setModeBand(dxFreq)
-        txtCall.SetFocus()
+        'txtCall.SetFocus()
         'IF sktHamlib.Status <> Net.Connected THEN 
         txtFreq.Text = Replace(CStr(dxFreq), ",", ".")
+        
+        IF ini["qrzCom/Value"] = 1 OR ini["qrzCom/Value"] = 2 THEN
+        IF Len(txtCall.Text) > 2 THEN
+            IF InStr(txtCall.Text, "/") > 0 THEN 
+                pa = Left(txtCall.Text, InStr(txtCall.Text, "/") - 1)
+                pb = Right(txtCall.Text, Len(txtCall.Text) - InStr(txtCall.Text, "/"))
+                'homecall QRZ search
+                IF Len(pa) > Len(pb) THEN 
+                    homecall = pa                
+                ELSE 
+                    homecall = pb
+                ENDIF
+            ELSE 
+                homecall = txtCall.Text
+            ENDIF 
+            IF modificando = FALSE THEN qrzcom.getQRZcom(homecall) 'search in qrz.com
+        ENDIF 
+    ENDIF 
+    $homecall = homecall
         btnOK.SetFocus()
         
         CATCH 
@@ -1475,7 +1498,12 @@ PRIVATE SUB logQSO()
     sql = "INSERT INTO log VALUES (&1,&2,&3,&4,&5,&6,&7,&8,&9,&10,&11,&12,&13,&14,&15,&16,&17,&18," &
               "&19,&20,&21,&22,&23,&24,&25,&26,&27,&28,&29,&30,&31,&32,&33,&34,&35,&36,&37,&38);"
     
-    dbLog.cnLog.Exec(sql, "", vFecha.Value, vHora.Text, vHora2.Text, txtCall.Text, parseFreq(txtFreq.Text), parseFreq(txtFreq2.Text), cboBanda.Text, modo, cboPropa.Text, txtRSTr.Text, txtRSTe.Text, txtNameQSO.Text, txtLocQSO.Text, txtQTHqso.Text, txtComment.Text, QSLsent(), QSLrec(), dteQSLe.Value, dteQSLr.Value, txtMgrQSO.Text, c.pfx, c.continent, c.cqz, c.ituz, txtState.Text, txtCounty.Text, txtIOTA.Text, ini["Estacion/QRZ"], txtPwr.Text, ini["Estacion/Locator"], txtSatName.Text, txtSatMode.Text, lblEmail.Text, c.entity, c.number, txtTPEA.Text, dist)             
+    dbLog.cnLog.Exec(sql, "", vFecha.Value, vHora.Text, vHora2.Text, txtCall.Text, parseFreq(txtFreq.Text),
+                    parseFreq(txtFreq2.Text), cboBanda.Text, modo, cboPropa.Text, txtRSTr.Text, txtRSTe.Text, txtNameQSO.Text,
+                    txtLocQSO.Text, txtQTHqso.Text, txtComment.Text, QSLsent(), QSLrec(), dteQSLe.Value, dteQSLr.Value,
+                    txtMgrQSO.Text, c.pfx, c.continent, c.cqz, c.ituz, txtState.Text, txtCounty.Text, txtIOTA.Text,
+                    ini["Estacion/QRZ"], txtPwr.Text, ini["Estacion/Locator"], txtSatName.Text, txtSatMode.Text,
+                    lblEmail.Text, c.entity, c.number, txtTPEA.Text, dist)             
     fillData()
     
     CATCH     
@@ -1679,7 +1707,7 @@ PUBLIC SUB modifyQSO(idQSO AS Integer)
         vFecha.Value = hres!qso_date
         vHora.Value = hres!time_on
         IF hres!time_off THEN vHora2.Value = hres!time_off
-        txtFreq.Text = Replace(CStr(CFloat(hres!freq) * 1000), ",", ".")
+        IF hres!freq THEN txtFreq.Text = Replace(CStr(CFloat(hres!freq) * 1000), ",", ".")
         IF hres!freq_rx THEN txtFreq2.Text = Replace(CStr(CFloat(hres!freq_rx) * 1000), ",", ".")
         cboBanda.Text = hres!band
         cboModo.Text = hres!mode
@@ -1786,7 +1814,12 @@ PUBLIC SUB setQSLsent(id AS Integer[], OPTIONAL unset AS Boolean = FALSE)
 END
 
 PUBLIC SUB btnCalIni_Click()
-    IF vFecha.Enabled THEN vFecha.Value = FCal.getDatePicker()
+    IF vFecha.Enabled THEN FCal.getDatePicker(btnCalIni, "fmain")
+    vHora.SetFocus
+END
+
+PUBLIC SUB setDate(d AS Date)
+    vFecha.Value = d  
 END
 
 PUBLIC SUB mnuAdifExport_Click()
@@ -2151,4 +2184,25 @@ PUBLIC SUB mnuGoPrint_Click()
     CATCH 
         Message.Error(Error.Text & "\n" & Error.Where)
 
+END
+
+PUBLIC SUB frQRZ_Enter()
+    btnShowQRZpage.Text = ("Show ") & $homecall & (" QRZ Webpage")
+    IF Len(txtDataQRZ.Text) > 13 THEN btnShowQRZpage.Visible = TRUE
+END
+
+PUBLIC SUB frQRZ_Leave()
+    IF Len(txtDataQRZ.Text) > 13 THEN btnShowQRZpage.Visible = FALSE
+END
+
+PUBLIC SUB btnShowQRZpage_Click()
+    Desktop.Open("http://www.qrz.com/db/" & $homecall)
+END
+
+PUBLIC SUB tabLC_Click()
+    IF modificando = TRUE THEN 
+        IF tabLC.Index <> 0 THEN 
+            tabLC.Index = 0
+        ENDIF 
+    ENDIF 
 END

@@ -44,7 +44,7 @@ PUBLIC SUB Form_Open()
     NEXT
     IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN 
     sql = "SELECT id, qso_date, time_on, call, band, mode, prop_mode, rst_rcvd, rst_sent, name, gridsquare, qsl_sent, qsl_rcvd, " &
-    "qsl_via, pfx, country, cont, cqz, ituz, operator, tx_pwr, my_gridsquare, sat_name, distance " &
+    "qsl_via, pfx, country, cont, cqz, ituz, operator, tx_pwr, my_gridsquare, sat_name, distance, comment " &
     "FROM log;"   
     resul = dbLog.cnLog.Exec(sql)
     
@@ -60,7 +60,7 @@ END
 
 PRIVATE SUB prepararCV()
   
-  cv.Columns.Count = 24
+  cv.Columns.Count = 25
   
   cv.Columns[0].Title = ("Nr")
   cv.Columns[1].Text = ("Date")
@@ -86,6 +86,7 @@ PRIVATE SUB prepararCV()
   cv.Columns[21].Text = ("My Locator")
   cv.Columns[22].Text = ("Satellite")
   cv.Columns[23].Text = ("Distance (Km)")
+  cv.Columns[24].Text = ("Remarks")
   
   
 END
@@ -94,7 +95,7 @@ PRIVATE SUB searchQSO()
     
     DIM sql AS String    
     DIM dist AS Integer 
-   
+    INC Application.Busy
     IF vDist.Value = NULL THEN 
         dist = 0
     ELSE 
@@ -103,7 +104,7 @@ PRIVATE SUB searchQSO()
     'cv.Clear()
     
     sql = "SELECT id, qso_date, time_on, call, band, mode, prop_mode, rst_rcvd, rst_sent, name, gridsquare, qsl_sent, qsl_rcvd, " &
-    "qsl_via, pfx, country, cont, cqz, ituz, operator, tx_pwr, my_gridsquare, sat_name, distance " &
+    "qsl_via, pfx, country, cont, cqz, ituz, operator, tx_pwr, my_gridsquare, sat_name, distance, comment " &
     "FROM log WHERE qso_date BETWEEN &1 AND &2 AND call LIKE &3 AND band LIKE &4 and mode LIKE &5 " &
     "AND prop_mode LIKE &6 AND qsl_rcvd LIKE &7 AND gridsquare LIKE &8 AND distance >= &9 ORDER BY id ASC;"
     
@@ -113,11 +114,72 @@ PRIVATE SUB searchQSO()
      
     lblNumRec.Text = ("Records: ") & $hres.Count
     cv.Refresh
+    DEC Application.Busy
     
-    CATCH 
-      
+    CATCH       
       DEBUG Error.Text & "\n" & Error.Where
     
+END
+
+PUBLIC SUB btnSave2txt_Click()
+    
+    DIM ii AS Integer = 70
+    DIM F AS File
+    DIM comm AS String
+    DIM filename AS String = Temp$
+    DIM sql AS String    
+    DIM dist AS Integer 
+    DIM hres AS Result
+    INC Application.Busy
+    IF vDist.Value = NULL THEN 
+        dist = 0
+    ELSE 
+        dist = vDist.Value
+    ENDIF 
+    'cv.Clear()
+    
+    sql = "SELECT id, qso_date, time_on, call, band, mode, prop_mode, rst_rcvd, rst_sent, name, gridsquare, qsl_sent, qsl_rcvd, " &
+    "qsl_via, pfx, country, cont, cqz, ituz, operator, tx_pwr, my_gridsquare, sat_name, distance, comment " &
+    "FROM log WHERE qso_date BETWEEN &1 AND &2 AND call LIKE &3 AND band LIKE &4 and mode LIKE &5 " &
+    "AND prop_mode LIKE &6 AND qsl_rcvd LIKE &7 AND gridsquare LIKE &8 AND distance >= &9 ORDER BY id ASC;"
+    
+    IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN    
+    hres = dbLog.cnLog.Exec(sql, dtIni.Value, dtFin.Value, txtCall.Text & "%", parseCbo(cboBand), parseCbo(cboMode), parseCbo(cboProp), parseQSL(), txtLoc.Text & "%", dist)
+    cv.Rows.Count = hres.Count
+    
+    F = OPEN filename FOR OUTPUT CREATE
+    PRINT #F, fitText("Date", 11) & fitText("UTC", 6) & fitText("Callsign", 13) & fitText("Band", 7, TRUE) & fitText("Mode", 7) & fitText("Locator", 8) & fitText("Cfmd", 5) & fitText("MGR", 8) & "Remarks"
+    PRINT #F, String(100, "-")
+    IF hres THEN 
+        WHILE hres.Available
+            INC ii
+            PRINT #F, fitText(global.parseFecha(hres!qso_date), 11) & fitText(Left(hres!time_on, 5), 6) & fitText(hres!call, 13) & fitText(hres!band, 7, TRUE) & fitText(hres!mode, 7) & fitText(hres!gridsquare, 8) & fitText(hres!qsl_rcvd, 5) & fitText(hres!qsl_via, 8) & Left(hres!comment, 35)
+            IF ii MOD 70 = 0 THEN 
+                PRINT #F, fitText("Date", 11) & fitText("UTC", 6) & fitText("Callsign", 13) & fitText("Band", 7, TRUE) & fitText("Mode", 7) & fitText("Locator", 8) & fitText("Cfmd", 5) & fitText("MGR", 8) & "Remarks"
+                PRINT #F, String(100, "-")
+            ENDIF     
+            hres.MoveNext
+        WEND 
+        PRINT #F, "\n"
+        PRINT #F, ("Records: ") & hres.Count
+        CLOSE #F
+        DEC Application.Busy
+        Desktop.Open(filename) 
+    ENDIF
+    
+    CATCH       
+      DEBUG Error.Text & "\n" & Error.Where 
+END
+
+PUBLIC FUNCTION fitText(subject AS String, lenght AS Integer, OPTIONAL alignRight AS Boolean) AS String
+    DIM iSpaces AS Integer
+    DIM iLen AS Integer = Len(subject)
+    iSpaces = lenght - iLen
+    IF alignRight THEN 
+        RETURN Space(iSpaces - 1) & subject & Space(1)
+    ELSE 
+        RETURN subject & Space(iSpaces)
+    ENDIF 
 END
 
 PUBLIC SUB cv_Data(Row AS Integer, Column AS Integer)
@@ -132,10 +194,8 @@ PUBLIC SUB cv_Data(Row AS Integer, Column AS Integer)
     IF row MOD 2 = 0 THEN cv.Data.Background = Color.LightBackground
     CATCH 
         DEBUG Error.Text & "\n" & Error.Where 
-        
-    
-END
 
+END
 
 PRIVATE SUB menuLog()
   
@@ -320,15 +380,19 @@ PUBLIC SUB btnReset_Click()
 END
 
 PUBLIC SUB btnCalIni_Click()
+    FCal.getDatePicker(btnCalIni, "fsearch_i")
+END
 
-  dtIni.Value = FCal.getDatePicker()
-
+PUBLIC SUB setDateIni(d AS Date)
+    dtIni.Value = d
 END
 
 PUBLIC SUB btnCalFin_Click()
+    FCal.getDatePicker(btnCalFin, "fsearch_f")
+END
 
-  dtFin.Value = FCal.getDatePicker()
-
+PUBLIC SUB setDateFin(d AS Date)
+    dtFin.Value = d
 END
 
 PUBLIC SUB txtCall_Change()
@@ -348,4 +412,6 @@ PUBLIC SUB txtLoc_Change()
   txtLoc.Text = Upper(txtLoc.Text)
 
 END
+
+
 
