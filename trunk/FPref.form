@@ -264,7 +264,7 @@
     Index = 4
     Text = ("Ot&hers")
     { Frame7 Frame
-      MoveScaled(1,31,65,11)
+      MoveScaled(1,26,65,10)
       Text = ("XPlanet")
       { chkXplanet CheckBox
         MoveScaled(9,3,53,3)
@@ -277,7 +277,7 @@
       }
     }
     { Frame8 Frame
-      MoveScaled(1,1,65,29)
+      MoveScaled(1,1,65,25)
       Text = ("QRZ.com")
       { Label17 Label
         MoveScaled(12,7,41,3)
@@ -302,16 +302,24 @@
         Text = ("Password:")
       }
       { rbQRZcomWeb RadioButton
-        MoveScaled(9,18,54,3)
+        MoveScaled(9,17,54,3)
         Text = ("Fill QSO data from QRZ.com (Web method)")
       }
       { rbNotQRZcom RadioButton
-        MoveScaled(9,24,54,3)
+        MoveScaled(9,21,54,3)
         Text = ("Don't fetch data from QRZ.com")
       }
       { rbQRZcom RadioButton
         MoveScaled(9,3,52,3)
         Text = ("Fill QSO data from QRZ.com")
+      }
+    }
+    { Frame10 Frame
+      MoveScaled(1,36,65,6)
+      Text = ("Cluster")
+      { chkLogRemarks CheckBox
+        MoveScaled(9,2,49,3)
+        Text = ("Log Cluster Remarks")
       }
     }
     Index = 0

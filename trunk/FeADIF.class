@@ -64,15 +64,19 @@ PUBLIC SUB btnSaveAs_Click()
 END
 
 PUBLIC SUB btnStart_Click()
+    FCal.getDatePicker(btnStart, "feadif_i")
+END
 
-    vStart.Value = FCal.getDatePicker()
-
+PUBLIC SUB setDateIni(d AS Date)
+    vStart.Value = d
 END
 
 PUBLIC SUB btnEnd_Click()
+    FCal.getDatePicker(btnEnd, "feadif_f")
+END
 
-    vEnd.Value = FCal.getDatePicker()
-
+PUBLIC SUB setDateFin(d AS Date)
+    vStart.Value = d
 END
 
 PUBLIC FUNCTION checkDates() AS Boolean

@@ -138,9 +138,13 @@
       Text = ("Records:")
     }
     { Label2 Label
-      MoveScaled(36,1,24,3)
+      MoveScaled(26,1,24,3)
       Expand = True
       Text = ("")
+    }
+    { btnSave2txt Button
+      MoveScaled(50,1,16,3)
+      Text = ("Save TXT")
     }
     { btnClose Button
       MoveScaled(67,1,16,3)

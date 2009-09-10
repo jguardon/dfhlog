@@ -131,7 +131,8 @@ PUBLIC SUB Form_Open()
     chkWCY.Value = FMain.ini["Filtros/WCY", TRUE]
     txtUserQRZ.Text = FMain.ini["Estacion/UserQRZ"]
     txtPassQRZ.Text = FMain.ini["Estacion/PassQRZ"]
-    chkDebug.Value = FMain.ini["CAT/Debug", FALSE]  
+    chkDebug.Value = FMain.ini["CAT/Debug", FALSE]
+    chkLogRemarks.Value = FMain.ini["Estacion/SetComment", FALSE]
 
 END
 
@@ -360,6 +361,11 @@ PUBLIC SUB chkDebug_Click()
 
 END
 
+PUBLIC SUB chkLogRemarks_Click()
+    FMain.ini["Estacion/SetComment"] = CBool(chkLogRemarks.Value) 
+
+END
+
 PUBLIC SUB chkGrig_Click()
 
     DIM $test AS String
@@ -385,3 +391,5 @@ PUBLIC SUB chkHamlibRPC_Click()
     IF chkHamlibRPC.Value = FALSE THEN chkGrig.Value = FALSE
 
 END
+
+

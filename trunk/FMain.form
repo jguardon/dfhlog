@@ -794,15 +794,21 @@
             Alignment = Align.Left
             Border = Border.Sunken
           }
-          { Frame3 Frame
-            MoveScaled(1,25,31,17)
+          { frQRZ Frame
+            MoveScaled(1,24,31,18)
             Text = ("QRZ.com")
             { txtDataQRZ TextArea
-              MoveScaled(1,3,29,13)
+              MoveScaled(1,3,29,14)
+              Font = Font["-1"]
               Text = ("")
               ReadOnly = True
               Border = False
               ScrollBar = Scroll.Horizontal
+            }
+            { btnShowQRZpage Button
+              MoveScaled(1,3,29,2)
+              Visible = False
+              Text = ("Show QRZ Webpage")
             }
           }
           { cboEntidad ComboBox
