@@ -3,11 +3,12 @@
 Title=dfhlog
 Startup=Mstart
 Icon=dfhlog.png
-Version=0.0.38
+Version=0.0.39
 Library=gb.qt
 Library=gb.form
 Library=gb.db
 Library=gb.db.form
+Library=gb.db.sqlite3
 Library=gb.desktop
 Library=gb.form.dialog
 Library=gb.form.mdi
