@@ -187,17 +187,26 @@ Geometry=[0,25,301,301]
 Geometry=[0,0,301,301]
 
 [FFind]
-SearchIn="Module"
+SearchIn="Project"
 CaseSensitive=False
 SearchWord=False
 SearchComment=True
 SearchString=True
 
 [OpenFile]
-File[1]="FMain.class:1717.47"
-Active=1
-File[2]="FMain.form"
-Count=2
+File[1]="FMain.form"
+File[2]="global.module:47.3"
+File[3]="QRZ.class:183.0"
+File[4]="dbTablas.module:0.0"
+File[5]="dbLog.module:0.0"
+File[6]="FmtoBD.form"
+File[7]="FmtoBD.class:96.34"
+File[8]="FLoc.class:34.3"
+File[9]="FMain.class:511.50"
+File[10]="FStats.form"
+File[11]="FStats.class:114.3"
+Active=11
+Count=11
 
 [Watches]
 Count=0

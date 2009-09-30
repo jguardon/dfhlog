@@ -247,7 +247,7 @@ END
 PRIVATE FUNCTION stripField(s AS String) AS String  
   IF s THEN 
     s = Trim(s)
-    s = Mid(s, InStr(s, "\">") + 3, InStr(s, "</") - (InStr(s, "\">") + 3))
+    s = Mid(s, InStr(s, "p>") + 2, InStr(s, "</") - (InStr(s, "p>") + 2))
   ENDIF 
   RETURN s
 END
@@ -259,35 +259,53 @@ PUBLIC SUB extractData(S AS String)
     DIM i, j AS Integer
     DIM sArr AS NEW String[]
 
-    IF InStr(S, "calldata") THEN 
-        i = InStr(S, "#calldata")
+    ' IF InStr(S, "#calldata") AND InStr(S, "* user style:") < 0 THEN 
+    '     i = InStr(S, "id=\"calldata")
+    '     j = InStr(S, "style=\"margin-top:1.5em;")
+    '     IF j > i THEN calldata = Mid(S, i, (j - i))
+    '     'callsign
+    '     regex = NEW Regexp(calldata, "(?<=\\)\">).+(?=</b)")
+    '     sArr.Add(regex.Text)
+    '     'CSS class identifier
+    '     regex = NEW Regexp(calldata, "(?<=calldata\\s\\.).+(?=\\s\\{display:b)")
+    '     id = regex.Text
+    '     
+    '     REPEAT
+    '         regex = NEW Regexp(calldata, "(?<=" & id & "\">).+(?=<)")
+    '         TRY calldata = Mid(calldata, regex.Offset + Len(regex.Text), Len(calldata) - regex.Offset)
+    '         sArr.Add(regex.Text)
+    '     UNTIL regex.Text = NULL
+    '      
+    '     $qcall = sArr[0]
+    '     $fname = sArr[1]
+    '     $addr1 = sArr[2]
+    '     $addr2 = sArr[3]
+    '     $country = sArr[4]
+    '     sArr.Clear
+    '     
+    ' ELSE 
+    IF InStr(S, "<!-- begin calldata") THEN    
+    
+        i = InStr(S, ")\">")
         j = InStr(S, "style=\"margin-top:1.5em;")
         IF j > i THEN calldata = Mid(S, i, (j - i))
-        'callsign
-        regex = NEW Regexp(calldata, "(?<=\\)\">).+(?=</b)")
-        sArr.Add(regex.Text)
-        'CSS class identifier
-        regex = NEW Regexp(calldata, "(?<=calldata\\s\\.).+(?=\\s\\{display:b)")
-        id = regex.Text
+        sArr = Split(calldata, "\n", "", TRUE)  
         
-        REPEAT
-            regex = NEW Regexp(calldata, "(?<=" & id & "\">).+(?=<)")
-            TRY calldata = Mid(calldata, regex.Offset + Len(regex.Text), Len(calldata) - regex.Offset)
-            sArr.Add(regex.Text)
-        UNTIL regex.Text = NULL
-         
-        $qcall = sArr[0]
-        $fname = sArr[1]
-        $addr1 = sArr[2]
-        $addr2 = sArr[3]
-        $country = sArr[4]
+        callsign = Replace(sArr[0], ")\"", "p", 1) 'to match stripField() function
+        $qcall = stripField(callsign) 
+        $fname = stripField(sArr[1])
+        $addr1 = stripField(sArr[2])
+        $addr2 = stripField(sArr[3])
+        $country = stripField(sArr[4])
         sArr.Clear
-        
-        IF InStr(S, "Info:") THEN $qslmgr = stripField(Upper(Mid(S, InStr(S, "Info:") + 24)))
-        IF InStr(S, "Square:") THEN $grid = Upper(Mid(S, InStr(S, "Square:") + 27, 6))
-    ELSE 
+    ELSE
         $qcall = ("Not Found")
     ENDIF 
+    IF InStr(S, "Info:") THEN $qslmgr = stripField(Upper(Mid(S, InStr(S, "Info:") + 24)))
+    IF InStr(S, "Square:") THEN $grid = Upper(Mid(S, InStr(S, "Square:") + 27, 6))
+    
+    CATCH 
+        Message.Error(Error.Text & "\n" & Error.Where)
  
 END
 

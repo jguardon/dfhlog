@@ -512,7 +512,7 @@ PUBLIC SUB txtCall_LostFocus()
             IF modificando = FALSE THEN qrzcom.getQRZcom(homecall) 'search in qrz.com
         ENDIF 
     ENDIF 
-    $homecall = homecall
+    '$homecall = homecall
     IF c <> NULL AND Len(call) > 2 THEN getWkdCfd(c.entity, cboBanda.Text)
     IF sktHamlib.Status = Net.Connected THEN txtFreq.Text = Left(lcdQRG.Text, Len(lcdQRG.Text) - 1)
     
@@ -982,14 +982,14 @@ PUBLIC SUB addLines(linea AS String, OPTIONAL tipo AS Integer = 0)   'añade lin
             'DEBUG DX;; freq;; band
             IF Right(linea, 1) = Chr(7) THEN 
                 linea = Replace(linea, Chr(7), "*")
-                TRY SHELL "echo -e \"\\007\" >/dev/tty10"
+                TRY SHELL "beep" 
             ENDIF 
             tblCluster[I, 0].ForeColor = global.clusterColor(DX, band) 
-            tblCluster[I, 0].Text = linea            
+            tblCluster[I, 0].Text = linea
             markers_spot(linea)
             'notify DX on trayicon
                 IF ME.Minimized = TRUE THEN 
-                    FNotify.setDX(linea, global.clusterColor(DX, band))                    
+                    FNotify.setDX(linea, global.clusterColor(DX, band))
                 ELSE 
                     FNotify.Visible = FALSE
                 ENDIF 
@@ -1096,35 +1096,20 @@ PUBLIC SUB tblCluster_DblClick()
         clearFields()
         vHora.Value = Format(global.UTCNow(), "hh:nn:ss") 'reset counter
         txtCall.Text = dxCall
+        
         IF ini["Estacion/SetComment", FALSE] = TRUE THEN txtComment.Text = dxcomment
         setModeBand(dxFreq)
-        'txtCall.SetFocus()
-        'IF sktHamlib.Status <> Net.Connected THEN 
+        
         txtFreq.Text = Replace(CStr(dxFreq), ",", ".")
+        IF modificando = FALSE THEN txtCall_LostFocus() 'qrzcom.getQRZcom(homecall) 'search in qrz.com
         
-        IF ini["qrzCom/Value"] = 1 OR ini["qrzCom/Value"] = 2 THEN
-        IF Len(txtCall.Text) > 2 THEN
-            IF InStr(txtCall.Text, "/") > 0 THEN 
-                pa = Left(txtCall.Text, InStr(txtCall.Text, "/") - 1)
-                pb = Right(txtCall.Text, Len(txtCall.Text) - InStr(txtCall.Text, "/"))
-                'homecall QRZ search
-                IF Len(pa) > Len(pb) THEN 
-                    homecall = pa                
-                ELSE 
-                    homecall = pb
-                ENDIF
-            ELSE 
-                homecall = txtCall.Text
-            ENDIF 
-            IF modificando = FALSE THEN qrzcom.getQRZcom(homecall) 'search in qrz.com
-        ENDIF 
     ENDIF 
-    $homecall = homecall
-        btnOK.SetFocus()
+    
+    btnOK.SetFocus()
         
-        CATCH 
-            DEBUG ("Error in tblCluster_doubleClick\n"), Error.Text, Error.Where
-    ENDIF     
+    CATCH 
+        DEBUG ("Error in tblCluster_doubleClick\n"), Error.Text, Error.Where
+    
 END
 
 '**************************Manejo de algunos controles**********************
