@@ -76,7 +76,7 @@ PUBLIC SUB btnEnd_Click()
 END
 
 PUBLIC SUB setDateFin(d AS Date)
-    vStart.Value = d
+    vEnd.Value = d
 END
 
 PUBLIC FUNCTION checkDates() AS Boolean

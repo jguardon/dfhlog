@@ -512,7 +512,7 @@ PUBLIC SUB txtCall_LostFocus()
             IF modificando = FALSE THEN qrzcom.getQRZcom(homecall) 'search in qrz.com
         ENDIF 
     ENDIF 
-    '$homecall = homecall
+    $homecall = homecall
     IF c <> NULL AND Len(call) > 2 THEN getWkdCfd(c.entity, cboBanda.Text)
     IF sktHamlib.Status = Net.Connected THEN txtFreq.Text = Left(lcdQRG.Text, Len(lcdQRG.Text) - 1)
     
@@ -866,7 +866,8 @@ PUBLIC SUB btnConn_Click()
         sServer = Split(S, ":")
         sHost = sServer[0]
         sPort = sServer[1]  
-        IF btnConn.Value = TRUE THEN       
+        IF btnConn.Value = TRUE THEN 
+            TRY sktCluster.Close()
             IF sktCluster.Status <> Net.Connected THEN 
                 sktCluster.Host = sHost
                 sktCluster.Port = sPort
@@ -1984,8 +1985,7 @@ PRIVATE SUB clearTblStats()
 END
 
 PUBLIC SUB TrayIcon1_Menu()
-
-  
+    Archivo.Popup()
 
 END
 
@@ -1993,11 +1993,6 @@ PUBLIC SUB TrayIcon1_DblClick()
     ME.Visible = TRUE
 END
 
-PUBLIC SUB TrayIcon1_Enter()
-
-  
-
-END
 '*************************** XML-RPC fldigi ************************** need to install portmap to get it to work
 PUBLIC SUB fldigiXMLRPC()
     'This retrieves the values of log fields from "fldigi" app 
