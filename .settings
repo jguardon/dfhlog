@@ -28,6 +28,9 @@ Geometry=[0,0,301,301]
 [DebugWindow/FMain.Controls[hCtl.Name]]
 Geometry=[0,0,301,301]
 
+[DebugWindow/Fields]
+Geometry=[0,25,301,301]
+
 [DebugWindow/HSplit1]
 ShowHidden=True
 Geometry=[0,25,301,301]
@@ -196,17 +199,20 @@ SearchString=True
 [OpenFile]
 File[1]="FMain.form"
 File[2]="global.module:47.3"
-File[3]="QRZ.class:183.0"
-File[4]="dbTablas.module:0.0"
-File[5]="dbLog.module:0.0"
-File[6]="FmtoBD.form"
-File[7]="FmtoBD.class:96.34"
-File[8]="FLoc.class:34.3"
-File[9]="FMain.class:511.50"
-File[10]="FStats.form"
-File[11]="FStats.class:114.3"
-Active=11
-Count=11
+File[3]="FMain.class:1749.100"
+File[4]="FeADIF.form"
+File[5]="FeADIF.class:89.13"
+File[6]="FCal.class:40.0"
+Active=6
+File[7]="FLoc.class:405.108"
+File[8]="FiADIF.class:509.0"
+File[9]="FiADIF.form"
+File[10]="FmtoBD.form"
+File[11]="FmtoBD.class:31.0"
+File[12]="dbLog.module:43.3"
+File[13]="dbTablas.module:0.0"
+File[14]="Mstart.module:24.22"
+Count=14
 
 [Watches]
 Count=0

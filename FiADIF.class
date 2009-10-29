@@ -129,7 +129,7 @@ END
 
 PUBLIC SUB btnOpn_Click()
     Dialog.Title = ("ADIF Import")
-    Dialog.Filter = ["*.adi;*.ADI", "ADIF", "*", ("All Files")]
+    Dialog.Filter = ["*.adi;*.ADI;*.adif", "ADIF", "*", ("All Files")]
     Dialog.Path = user.Home
     
     IF Dialog.OpenFile() THEN RETURN 
@@ -143,7 +143,11 @@ PUBLIC SUB importQSOs()
     DIM Linea AS String
     DIM FoundEOH AS Boolean
     DIM final AS Boolean 
+    DIM Teol AS Integer
     'btnCancel.Enabled = FALSE
+    IF chkLinux.Value = TRUE THEN Teol = gb.Unix
+    IF chkMac.Value = TRUE THEN Teol = gb.Mac
+    IF chkWindows.Value = TRUE THEN Teol = gb.Windows
     WAIT 0.1
     
     FoundEOH = FALSE 
@@ -160,7 +164,7 @@ PUBLIC SUB importQSOs()
 
     OPEN user.Home &/ "ImportErrors.txt" FOR WRITE CREATE AS #hFileError
     OPEN dialog.Path FOR READ AS #hFileADIF
-    
+    hFileADIF.EndOfLine = Teol
     WITH Stat(dialog.Path)
         file_l = .Size  ' file lenght
     END WITH 
@@ -253,8 +257,8 @@ PUBLIC SUB Process_Record()
         'UpdateStats()    
     END IF
     
-    CATCH
-        Message.Error(("Error in Process Record\n") & call & " " & qso_date & "\n" & Error.Text)
+    'CATCH
+    '    Message.Error(("Error in Process Record\n") & call & " " & qso_date & "\n" & Error.Text)
 END
 
 PUBLIC SUB findDistance(indic AS String, locator AS String)
@@ -485,6 +489,7 @@ END
 
 PUBLIC SUB CleanRecord()
     ' Remove idiot ADIF items
+    Record = Replace$(Record, ":C>", ">", 1)
     Record = Replace$(Record, ":D>", ">", 1)
     Record = Replace$(Record, ":T>", ">", 1)
     Record = Replace$(Record, ":B>", ">", 1)
@@ -492,6 +497,7 @@ PUBLIC SUB CleanRecord()
     Record = Replace$(Record, ":S>", ">", 1)
     Record = Replace$(Record, ":M>", ">", 1)
     Record = Replace$(Record, ":L>", ">", 1)
+    Record_t = Replace$(Record_t, ":c>", ">")
     Record_t = Replace$(Record_t, ":d>", ">")
     Record_t = Replace$(Record_t, ":t>", ">")
     Record_t = Replace$(Record_t, ":b>", ">")
