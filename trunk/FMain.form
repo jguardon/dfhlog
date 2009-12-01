@@ -3,7 +3,7 @@
 { Form Form
   MoveScaled(0,0,114,91)
   Text = ("dfhLog")
-  Icon = Picture["dfhlog.png"]
+  Icon = Picture["icons/dfhlog.png"]
   Arrangement = Arrange.Vertical
   Padding = 2
   { Archivo Menu
@@ -46,6 +46,7 @@
     }
     { BD Menu
       Text = ("&Database")
+      Picture = Picture["icon:/16/package"]
       { mnuBDcompact Menu
         Text = ("Compact DB")
         Picture = Picture["icon:/16/archive"]
@@ -103,42 +104,58 @@
     { mnuTPEA Menu
       Text = ("TPEA")
     }
-    { Menu1 Menu
+    { sep5 Menu
       Text = ("")
     }
     { mnuMGridSq Menu
       Text = ("Main GridSquares")
+      Picture = Picture["icons/sq.png"]
     }
     { mnuGridSq Menu
       Text = ("GridSquares")
+      Picture = Picture["icons/Subsq.png"]
     }
     { mnuInitials Menu
       Text = ("EME Initials")
     }
-    { Menu3 Menu
+    { sep6 Menu
       Text = ("")
     }
     { mnuGStats Menu
       Text = ("Global Stats")
+      Picture = Picture["icons/chart_bar.png"]
       Shortcut = "Ctrl+G"
     }
   }
   { mnuPrint Menu
     Text = ("&Printing")
-    { mnuDesign Menu
-      Text = ("QSL &Design")
-      Picture = Picture["icon:/16/desktop"]
-      Enabled = False
-    }
     { mnuQueue Menu
       Text = ("QSL queu&e")
       Picture = Picture["icon:/16/layers"]
     }
-    { mnuGoPrint Menu
+    { sep7 Menu
+      Text = ("")
+    }
+    { mnuQSLDesign Menu
+      Text = ("QSL &Design")
+      Picture = Picture["icon:/16/desktop"]
+    }
+    { mnuLblDesign Menu
+      Text = ("&Label Design")
+      Picture = Picture["icon:/16/desktop"]
+    }
+    { sep8 Menu
+      Text = ("")
+    }
+    { mnuGoPrintQSLs Menu
       Text = ("Print QSLs")
       Picture = Picture["icon:/16/print"]
-      Enabled = False
       Shortcut = "Ctrl+Alt+P"
+    }
+    { mnuGoPrintLbls Menu
+      Text = ("Print Labels")
+      Picture = Picture["icon:/16/view-split-v"]
+      Shortcut = "Ctrl+Alt+L"
     }
   }
   { Cluster Menu
@@ -165,7 +182,7 @@
     }
     { mnuSquares Menu
       Text = ("GridS&quares")
-      Picture = Picture["sq.png"]
+      Picture = Picture["icons/sq.png"]
       Shortcut = "Alt+Q"
     }
   }
@@ -244,7 +261,7 @@
         MoveScaled(28,0,3,3)
         ToolTip = ("CAT")
         Text = ("")
-        Picture = Picture["ic910.png"]
+        Picture = Picture["icons/ic910.png"]
         Toggle = True
       }
       { Separator2 Separator
@@ -254,7 +271,7 @@
         MoveScaled(32,0,3,3)
         ToolTip = ("GridSquares Map")
         Text = ("")
-        Picture = Picture["sq.png"]
+        Picture = Picture["icons/sq.png"]
       }
       { btnMap ToolButton
         MoveScaled(35,0,3,3)
@@ -269,7 +286,7 @@
         MoveScaled(40,0,3,3)
         ToolTip = ("Activate quick entry method, i.e. for Sporadics E in VHF")
         Text = ("")
-        Picture = Picture["quick.png"]
+        Picture = Picture["icons/quick.png"]
         Toggle = True
       }
     }
@@ -916,7 +933,7 @@
         }
         Index = 2
         Text = ("&Wkd Before")
-        Picture = Picture["T.png"]
+        Picture = Picture["icons/T.png"]
         { HBox7 HBox
           MoveScaled(30,0,24,24)
           Expand = True

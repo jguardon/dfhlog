@@ -34,8 +34,8 @@ PUBLIC SUB getCtyDat()
   DIM t, ctyd, y, m, d AS String
     DIM da AS Date
     DIM F AS File
-    IF Exist(User.Home &/ "/.dfh_Log/cty.dat") THEN
-        F = OPEN User.Home &/ "/.dfh_Log/cty.dat" FOR INPUT
+    IF Exist(User.Home &/ ".config/dfhlog/cty.dat") THEN
+        F = OPEN User.Home &/ ".config/dfhlog/cty.dat" FOR INPUT
         
         WHILE NOT Eof(F)
             LINE INPUT #F, t  
@@ -150,7 +150,7 @@ PRIVATE SUB GetAuthor()
   DIM sMail AS String
   DIM sCountry AS String
 
-  hFic = OPEN "authors.txt"
+  hFic = OPEN "data/authors.txt"
 
   WHILE NOT Eof(hFic)
 
@@ -205,7 +205,7 @@ PRIVATE SUB GetSupport()
 
   DIM iInd AS Integer
 
-  $aSupport = Split(Trim(File.Load("support.txt")), "\n")
+  $aSupport = Split(Trim(File.Load("data/support.txt")), "\n")
 
   FOR iInd = 0 TO $aSupport.Count - 1
 

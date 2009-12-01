@@ -19,6 +19,7 @@ PRIVATE I AS Integer = 0
 PUBLIC c AS cty
 PRIVATE qrz AS String
 PUBLIC ini AS Settings
+PUBLIC lblini AS Settings
 STATIC en AS Boolean
 PUBLIC p AS Process
 PUBLIC p_hamlib AS Process
@@ -49,17 +50,18 @@ PUBLIC hProcess AS Process
 PUBLIC SUB _new()    
     getDiff()
     TRY world.init()
-    ini = NEW Settings(User.Home &/ "/.dfh_Log/dfhLog.conf", "dfhLog Settings")
-    IF NOT Exist(User.Home &/ ".dfh_Log/qsl.ktf") THEN TRY COPY "qsl.ktf" TO User.Home &/ ".dfh_Log/qsl.ktf"    
-    IF NOT Exist(User.Home &/ "/.xplanet/config/dfh") THEN        
-        TRY MKDIR User.Home &/ "/.xplanet/"
-        TRY MKDIR User.Home &/ "/.xplanet/config/"
-        TRY MKDIR User.Home &/ "/.xplanet/markers/"
-        TRY MKDIR User.Home &/ "/.xplanet/origin/"
-        TRY COPY "dfh" TO User.Home &/ "/.xplanet/config/dfh"
-        TRY COPY "do" TO User.Home &/ "/.xplanet/origin/do"                
+    IF Exist(User.Home &/ ".dfh_Log") THEN SHELL "rm -r " & User.Home &/ ".dfh_Log"
+    ini = NEW Settings(User.Home &/ ".config/dfhlog/dfhlog.conf", "dfhLog Settings")
+    lblini = NEW Settings(User.Home &/ ".config/dfhlog/labels.conf", "Labels Settings")
+    IF NOT Exist(User.Home &/ ".xplanet/config/dfh") THEN        
+        TRY MKDIR User.Home &/ ".xplanet/"
+        TRY MKDIR User.Home &/ ".xplanet/config/"
+        TRY MKDIR User.Home &/ ".xplanet/markers/"
+        TRY MKDIR User.Home &/ ".xplanet/origin/"
+        TRY COPY "data/dfh" TO User.Home &/ ".xplanet/config/dfh"
+        TRY COPY "data/do" TO User.Home &/ ".xplanet/origin/do"                
     ENDIF    
-    IF NOT Exist(User.Home &/ "/.dfh_Log/tablas.db") THEN TRY COPY "tablas.db" TO User.Home &/ "/.dfh_Log/tablas.db"   
+    IF NOT Exist(User.Home &/ ".config/dfhlog/tablas.db") THEN TRY COPY "data/tablas.db" TO User.Home &/ ".config/dfhlog/tablas.db"
     
     CATCH
         Message.Error(("Error in Fmain_new\n") & Error.Text & "\n" & Error.Where)
@@ -104,7 +106,7 @@ PUBLIC SUB Form_Open()
     DIM hResul AS Result
     DIM i AS Integer = 1
     DIM propa, banda, modo, entidad, sKugar AS String    
-    
+     
     ME.Title = "dfhLog - v " & Application.Version & " - " & ini["Estacion/QRZ"]
     PanelSmeter.Visible = FALSE
     lcdQRG.Visible = FALSE    
@@ -123,7 +125,7 @@ PUBLIC SUB Form_Open()
     ME.Height = ini["Window/Height", ME.Height]
     ME.Width = ini["Window/Width", ME.Width]  
     VSplit1.Settings = ini["SplitterV/pos"]  
-    checkSettings()    
+    checkSettings()   
     FOR EACH propa IN global.getPropa()
         cboPropa.Add(propa)
     NEXT    
@@ -164,11 +166,7 @@ PUBLIC SUB Form_Open()
     tblCluster.Rows.Height = 10
     prepararGrid()
     prepareWkdB4()
-    SHELL "which kugar" TO sKugar
-    IF sKugar THEN 
-        mnuDesign.Enabled = TRUE
-        mnuGoPrint.Enabled = TRUE
-    ENDIF     
+    
     IF ini["Log/File"] = NULL OR NOT Exist(ini["Log/File"]) THEN 
         btnNewLog_Click()
     ELSE
@@ -1330,7 +1328,7 @@ PUBLIC SUB nuevo_Click()
         ini["Log/File"] = ""
         Message.Warning(("Path to database not found, please open or create a new one"))
     ELSE     
-        COPY "nuevoLog.db" TO Dialog.Path & ".db"
+        COPY "data/nuevoLog.db" TO Dialog.Path & ".db"
         ini["Log/File"] = Dialog.Path & ".db"
         ini.Save()
         lblPath.Text = "Log: " & ini["Log/File"]
@@ -1513,13 +1511,13 @@ PRIVATE SUB menuLog()
     
     hMenue = NEW Menu(hMenus) AS "mnuEditarQSO"
     hMenue.Text = ("Edit QSO")
-    hMenue.Picture = Picture["gtk-edit.png"]
+    hMenue.Picture = Picture["icons/gtk-edit.png"]
     hMenue.Shortcut = "Ctrl+M"
     'IF global.$iQSOn.Count > 1 THEN hMenue.enabled = FALSE
     
     hMenu = NEW Menu(hMenus) AS "mnuBorrarQSO"
     hMenu.Text = ("Delete QSO")
-    hMenu.Picture = Picture["gtk-delete.png"]
+    hMenu.Picture = Picture["icons/gtk-delete.png"]
     hMenu.Shortcut = "Ctrl+D"
     
     hMenu = NEW Menu(hMenus)
@@ -1527,12 +1525,12 @@ PRIVATE SUB menuLog()
     
     hMenu = NEW Menu(hMenus) AS "mnuQSLrec"
     hMenu.Text = ("Check QSL as recvd.")
-    hMenu.Picture = Picture["gtk-redo-rtl.png"]
+    hMenu.Picture = Picture["icons/gtk-redo-rtl.png"]
     hMenu.Shortcut = "F5"
     
     hMenu = NEW Menu(hMenus) AS "mnuQSLenv"
     hMenu.Text = ("Check QSL as sent.")
-    hMenu.Picture = Picture["gtk-undo-rtl.png"]
+    hMenu.Picture = Picture["icons/gtk-undo-rtl.png"]
     hMenu.Shortcut = "F6"
     
     hMenu = NEW Menu(hMenus)
@@ -1540,12 +1538,12 @@ PRIVATE SUB menuLog()
     
     hMenu = NEW Menu(hMenus) AS "mnuQSLnotrec"
     hMenu.Text = ("Uncheck QSL as recvd.")
-    hMenu.Picture = Picture["gtk-redo-not.png"]
+    hMenu.Picture = Picture["icons/gtk-redo-not.png"]
     hMenu.Shortcut = "F7"
     
     hMenu = NEW Menu(hMenus) AS "mnuQSLnotenv"
     hMenu.Text = ("Uncheck QSL as sent.")
-    hMenu.Picture = Picture["gtk-undo-not.png"]
+    hMenu.Picture = Picture["icons/gtk-undo-not.png"]
     hMenu.Shortcut = "F8"
     
     hMenu = NEW Menu(hMenus)
@@ -1553,7 +1551,7 @@ PRIVATE SUB menuLog()
     
     hMenu = NEW Menu(hMenus) AS "mnuPrintQSL"
     hMenu.Text = ("Print QSL")
-    hMenu.Picture = Picture["gtk-print.png"]
+    hMenu.Picture = Picture["icons/gtk-print.png"]
     hMenu.Shortcut = "Ctrl+P"
     ' pop up 
     IF hMenus THEN hMenus.Popup()  
@@ -1864,8 +1862,22 @@ PUBLIC SUB mnuGStats_Click()
     FStats.Show
 END
 
-PUBLIC SUB mnuDesign_Click()  
-    SHELL "kudesigner " & User.Home &/ ".dfh_Log/qsl.ktf"
+PUBLIC SUB mnuQSLDesign_Click()  
+    ' TODO
+END
+
+PUBLIC SUB mnuLblDesign_Click()
+    FSetup.ShowModal
+END
+
+PUBLIC SUB mnuGoPrintQSLs_Click()
+
+  
+
+END
+
+PUBLIC SUB mnuGoPrintLbls_Click()
+    FPreview.ShowModal
 END
 
 PUBLIC SUB mnuQueue_Click()
@@ -1890,7 +1902,7 @@ PRIVATE SUB update_stats()
     DIM sql AS String
     DIM banda, mode AS String 
     DIM sAux AS String 
-    DIM i AS Integer 
+    DIM i, iRow AS Integer 
     
     clearTblStats    
     sql = "SELECT country, band, mode, qsl_rcvd FROM log WHERE country=&1 GROUP BY qsl_rcvd, mode, band ORDER BY qsl_rcvd;"
@@ -1902,51 +1914,27 @@ PRIVATE SUB update_stats()
             i = global.getBandas().Find(hres!band) + 1
             SELECT CASE hres!mode
                 CASE "AM", "FM", "USB", "LSB", "SSB"
-                    IF hres!qsl_rcvd = "Y" THEN 
-                        tblStats[0, i].Alignment = 3
-                        tblStats[0, i].Font = Font["Bold"]
-                        tblStats[0, i].BackColor = ini["Colores/Confirmado", Color.Orange]
-                        tblStats[0, i].ForeColor = Color.White
-                        tblStats[0, i].Text = ("C")                        
-                    ELSE 
-                        tblStats[0, i].Alignment = 3
-                        tblStats[0, i].Font = Font["Bold"]
-                        tblStats[0, i].BackColor = ini["Colores/Trabajado", Color.Green]
-                        tblStats[0, i].ForeColor = Color.White
-                        tblStats[0, i].Text = ("W")
-                    ENDIF 
-                   'PRINT "Fonia " & sAux, hres!qsl_rcvd, hres!band
+                    iRow = 0                    
                 CASE "CW"
-                    IF hres!qsl_rcvd = "Y" THEN 
-                        tblStats[1, i].Alignment = 3
-                        tblStats[1, i].Font = Font["Bold"]
-                        tblStats[1, i].BackColor = ini["Colores/Confirmado", Color.Orange]
-                        tblStats[1, i].ForeColor = Color.White
-                        tblStats[1, i].Text = ("C")
-                    ELSE 
-                        tblStats[1, i].Alignment = 3
-                        tblStats[1, i].Font = Font["Bold"]
-                        tblStats[1, i].BackColor = ini["Colores/Trabajado", Color.Green]
-                        tblStats[1, i].ForeColor = Color.White
-                        tblStats[1, i].Text = ("W")
-                    ENDIF 
-                    'PRINT "CW " & sAux, hres!qsl_rcvd, hres!band
+                    iRow = 1
                 CASE ELSE 
-                    IF hres!qsl_rcvd = "Y" THEN 
-                        tblStats[2, i].Alignment = 3
-                        tblStats[2, i].Font = Font["Bold"]
-                        tblStats[2, i].BackColor = ini["Colores/Confirmado", Color.Orange]
-                        tblStats[2, i].ForeColor = Color.White
-                        tblStats[2, i].Text = ("C")
-                    ELSE
-                        tblStats[2, i].Alignment = 3 
-                        tblStats[2, i].Font = Font["Bold"]
-                        tblStats[2, i].BackColor = ini["Colores/Trabajado", Color.Green]
-                        tblStats[2, i].ForeColor = Color.White
-                        tblStats[2, i].Text = ("W")
-                    ENDIF
-                    'PRINT "Digi " & sAux, hres!qsl_rcvd, hres!band
-            END SELECT           
+                    iRow = 2
+            END SELECT
+            
+            IF hres!qsl_rcvd = "Y" THEN 
+                tblStats[iRow, i].Alignment = 3
+                tblStats[iRow, i].Font = Font["Bold"]
+                tblStats[iRow, i].BackColor = ini["Colores/Confirmado", Color.Orange]
+                tblStats[iRow, i].ForeColor = Color.White
+                tblStats[iRow, i].Text = ("C")
+            ELSE
+                tblStats[iRow, i].Alignment = 3 
+                tblStats[iRow, i].Font = Font["Bold"]
+                tblStats[iRow, i].BackColor = ini["Colores/Trabajado", Color.Green]
+                tblStats[iRow, i].ForeColor = Color.White
+                tblStats[iRow, i].Text = ("W")
+            ENDIF
+                    'PRINT "Digi " & sAux, hres!qsl_rcvd, hres!band           
         ENDIF     
     NEXT
     
@@ -1986,7 +1974,7 @@ END
 
 PUBLIC SUB TrayIcon1_Menu()
     Archivo.Popup()
-
+   
 END
 
 PUBLIC SUB TrayIcon1_DblClick()
@@ -2091,80 +2079,81 @@ PUBLIC SUB btnQuick_Click()     'toggle button
     
 END
 
-PUBLIC SUB printQSLs()
-    mnuGoPrint_Click()  
-END
+' PUBLIC SUB printQSLs()
+'     mnuGoPrint_Click()  
+' END
 
-PUBLIC SUB mnuGoPrint_Click()
-
-    DIM hres AS Result
-    DIM flname, data, sQSLr AS String
-    DIM hfile AS file
-    'check if qsl queue is not empty
-    IF connDB() THEN RETURN
-    hres = dbLog.cnLog.Exec("SELECT id FROM qQSL")
-    IF hres.Count < 1 THEN 
-        Message.Info(("QSL queue is empty!"))
-        RETURN
-    ELSE
-
-        flname = User.Home &/ ".dfh_Log/qsl.kdf" 
-        
-        IF Exist(flname) THEN TRY KILL flname
-          TRY OPEN flname FOR WRITE CREATE AS #hFile
-            'Make Kugar file data in XML
-            PRINT #hfile, "<?xml version='1.0' encoding='UTF-8'?>"
-            PRINT #hfile, ""
-            PRINT #hfile, "<!DOCTYPE KugarData ["
-            PRINT #hfile, "    <!ELEMENT KugarData (Row* )>"
-            PRINT #hfile, "    <!ATTLIST KugarData"
-            PRINT #hfile, "        Template CDATA #REQUIRED>"
-            PRINT #hfile, ""
-            PRINT #hfile, "    <!ELEMENT Row EMPTY>"
-            PRINT #hfile, "    <!ATTLIST Row"
-            PRINT #hfile, "        level CDATA #REQUIRED"
-            PRINT #hfile, "        call CDATA #REQUIRED"
-            PRINT #hfile, "        hiscall CDATA #REQUIRED"
-            PRINT #hfile, "        hisloc CDATA #REQUIRED"
-            PRINT #hfile, "        date CDATA #REQUIRED"
-            PRINT #hfile, "        band CDATA #REQUIRED"
-            PRINT #hfile, "        mode CDATA #REQUIRED"
-            PRINT #hfile, "        utc CDATA #REQUIRED"
-            PRINT #hfile, "        rst CDATA #REQUIRED"
-            PRINT #hfile, "        prop CDATA #REQUIRED"
-            PRINT #hfile, "        via CDATA #REQUIRED"
-            PRINT #hfile, "        qsl CDATA #REQUIRED"
-            PRINT #hfile, "        ver CDATA #REQUIRED>"
-            PRINT #hfile, "]>"
-            PRINT #hfile, ""          
-            PRINT #hfile, "<KugarData Template='qsl.ktf'>"
-            ' thanks to Marc Miralles from gambas-user@lists.sourceforge.net
-            hres = dbLog.cnLog.Exec("SELECT * FROM qQSL ORDER BY call;")
-            WHILE hres.Available
-                IF hres!qsl_rcvd = "Y" THEN 
-                    sQSLr = "TNX QSL"
-                ELSE 
-                    sQSLr = "PSE QSL"
-                ENDIF 
-                PRINT #hfile, "    <Row level= '0' call= '" & hres!my_call & "' hiscall= '" & hres!call & "' hisloc= '" & hres!gridsquare & "' date= '" & hres!date & "'" &
-                " band= '" & hres!band & "' mode= '" & hres!mode & "' utc= '" & Left(hres!time, 5) & "' rst= '" & hres!rst_sent & "' prop= '" & hres!prop_mode & "'" &
-                " via= '" & hres!qsl_via & "' qsl= '" & sQSLr & "' ver= 'Generated by dfhLog " & Application.Version & "'/>"
-                dbLog.cnLog.Exec("UPDATE log SET qsl_sent='Y' WHERE id=&1;", hres!id)
-                hres.MoveNext()
-            WEND             
-            PRINT #hfile, "</KugarData>"    
-            TRY CLOSE #hFile
-            
-            SHELL "kugar --caption 'dfhLog - Print QSL' " & flname WAIT 
-            IF Message.Question(("Delete printed QSL from queue?"), ("Yes"), "No") = 1 THEN dbLog.cnLog.Exec("DELETE FROM qQSL")
-            fillData()
-            FQueue.fillData()
-    ENDIF 
-    
-    CATCH 
-        Message.Error(Error.Text & "\n" & Error.Where)
-
-END
+' PUBLIC SUB mnuGoPrint_Click()
+' 
+'     DIM hres AS Result
+'     DIM flname, data, sQSLr AS String
+'     DIM hfile AS file
+'     'check if qsl queue is not empty
+'     IF connDB() THEN RETURN
+'     hres = dbLog.cnLog.Exec("SELECT id FROM qQSL")
+'     IF hres.Count < 1 THEN 
+'         Message.Info(("QSL queue is empty!"))
+'         RETURN
+'     ELSE
+' 
+'         flname = User.Home &/ ".dfh_Log/qsl.kdf" 
+'         
+'         IF Exist(flname) THEN TRY KILL flname
+'           TRY OPEN flname FOR WRITE CREATE AS #hFile
+'             'Make Kugar file data in XML
+'             PRINT #hfile, "<?xml version='1.0' encoding='UTF-8'?>"
+'             PRINT #hfile, ""
+'             PRINT #hfile, "<!DOCTYPE KugarData ["
+'             PRINT #hfile, "    <!ELEMENT KugarData (Row* )>"
+'             PRINT #hfile, "    <!ATTLIST KugarData"
+'             PRINT #hfile, "        Template CDATA #REQUIRED>"
+'             PRINT #hfile, ""
+'             PRINT #hfile, "    <!ELEMENT Row EMPTY>"
+'             PRINT #hfile, "    <!ATTLIST Row"
+'             PRINT #hfile, "        level CDATA #REQUIRED"
+'             PRINT #hfile, "        call CDATA #REQUIRED"
+'             PRINT #hfile, "        hiscall CDATA #REQUIRED"
+'             PRINT #hfile, "        hisloc CDATA #REQUIRED"
+'             PRINT #hfile, "        date CDATA #REQUIRED"
+'             PRINT #hfile, "        band CDATA #REQUIRED"
+'             PRINT #hfile, "        mode CDATA #REQUIRED"
+'             PRINT #hfile, "        utc CDATA #REQUIRED"
+'             PRINT #hfile, "        rst CDATA #REQUIRED"
+'             PRINT #hfile, "        prop CDATA #REQUIRED"
+'             PRINT #hfile, "        via CDATA #REQUIRED"
+'             PRINT #hfile, "        qsl CDATA #REQUIRED"
+'             PRINT #hfile, "        ver CDATA #REQUIRED>"
+'             PRINT #hfile, "]>"
+'             PRINT #hfile, ""          
+'             PRINT #hfile, "<KugarData Template='qsl.ktf'>"
+'             ' thanks to Marc Miralles from gambas-user@lists.sourceforge.net
+'             hres = dbLog.cnLog.Exec("SELECT * FROM qQSL ORDER BY call;")
+'             WHILE hres.Available
+'                 IF hres!qsl_rcvd = "Y" THEN 
+'                     sQSLr = "TNX QSL"
+'                 ELSE 
+'                     sQSLr = "PSE QSL"
+'                 ENDIF 
+'                 PRINT #hfile, "    <Row level= '0' call= '" & hres!my_call & "' hiscall= '" & hres!call & "' hisloc= '" & hres!gridsquare & "' date= '" & hres!date & "'" &
+'                 " band= '" & hres!band & "' mode= '" & hres!mode & "' utc= '" & Left(hres!time, 5) & "' rst= '" & hres!rst_sent & "' prop= '" & hres!prop_mode & "'" &
+'                 " via= '" & hres!qsl_via & "' qsl= '" & sQSLr & "' ver= 'Generated by dfhLog " & Application.Version & "'/>"
+'                 ' update qsl status in log
+'                 dbLog.cnLog.Exec("UPDATE log SET qsl_sent='Y' WHERE id=&1;", hres!id)
+'                 hres.MoveNext()
+'             WEND             
+'             PRINT #hfile, "</KugarData>"    
+'             TRY CLOSE #hFile
+'             
+'             SHELL "kugar --caption 'dfhLog - Print QSL' " & flname WAIT 
+'             IF Message.Question(("Delete printed QSL from queue?"), ("Yes"), "No") = 1 THEN dbLog.cnLog.Exec("DELETE FROM qQSL")
+'             fillData()
+'             FQueue.fillData()
+'     ENDIF 
+'     
+'     CATCH 
+'         Message.Error(Error.Text & "\n" & Error.Where)
+' 
+' END
 
 PUBLIC SUB frQRZ_Enter()
     btnShowQRZpage.Text = ("Show ") & $homecall & (" QRZ Webpage")
@@ -2186,3 +2175,5 @@ PUBLIC SUB tabLC_Click()
         ENDIF 
     ENDIF 
 END
+
+

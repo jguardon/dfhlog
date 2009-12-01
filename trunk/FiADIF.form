@@ -3,6 +3,7 @@
 { Form Form
   MoveScaled(0,0,64,40)
   Text = ("ADIF Import")
+  Icon = Picture["icon:/16/down"]
   Border = Window.Fixed
   { Frame1 Frame
     MoveScaled(1,1,62,32)
@@ -67,16 +68,16 @@
       ToolTip = ("OS Origin of ADIF file")
       Text = ("ADIF Origin")
       { chkLinux RadioButton
-        MoveScaled(2,2.2857,11,3)
+        MoveScaled(2,2.1429,11,3)
         Text = ("Linux")
         Value = True
       }
       { chkMac RadioButton
-        MoveScaled(2,5.2857,11,3)
+        MoveScaled(2,5.1429,11,3)
         Text = ("Mac")
       }
       { chkWindows RadioButton
-        MoveScaled(2,8.2857,11,3)
+        MoveScaled(2,8.1429,11,3)
         Text = ("Windows")
       }
     }

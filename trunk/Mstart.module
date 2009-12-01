@@ -19,6 +19,7 @@
 PUBLIC SUB Main() 'Select language from command line args. You need to install selected locales to work
     'USAGE dfhLog.gambas -xx  (where xx is your selected language)
     DIM a AS String
+    DIM f AS Form
     IF Application.Args[1] THEN 'if no args, it shows in your default lang
         a = Application.Args[1]
         SELECT CASE a
@@ -36,7 +37,8 @@ PUBLIC SUB Main() 'Select language from command line args. You need to install s
                 "-pt (for Portuguesse)\n-en (for English)"))            
         END SELECT
     ENDIF
-    FMain.Show  
+    FMain.Show
+     
 END
 
 

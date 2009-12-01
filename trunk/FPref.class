@@ -46,10 +46,10 @@ PRIVATE SUB saveCombo()
     DIM S AS String
     DIM F AS File
 
-    IF NOT Exist(User.Home &/ "/.dfh_Log/") THEN  
-        MKDIR User.Home &/ "/.dfh_Log/"            
+    IF NOT Exist(User.Home &/ ".config/dfhlog/") THEN  
+        MKDIR User.Home &/ ".config/dfhlog/"
     ENDIF         
-    F = OPEN User.Home &/ "/.dfh_Log/servers.dat" FOR WRITE CREATE  
+    F = OPEN User.Home &/ ".config/dfhlog/servers.dat" FOR WRITE CREATE  
         
     FOR EACH S IN cboServer.List        
         PRINT #F, S
@@ -83,8 +83,8 @@ PUBLIC SUB Form_Open()
         cboPrefModo.Add(modo)
     NEXT
     
-    IF Exist(User.Home &/ "/.dfh_Log/servers.dat") THEN    
-        F = OPEN User.Home &/ "/.dfh_Log/servers.dat" FOR INPUT          
+    IF Exist(User.Home &/ ".config/dfhlog/servers.dat") THEN    
+        F = OPEN User.Home &/ ".config/dfhlog/servers.dat" FOR INPUT          
         WHILE NOT Eof(F)          
             LINE INPUT #F, L
             cboServer.Add(L)
@@ -187,9 +187,9 @@ PUBLIC SUB txtLocator_Change()
   
   txtLocator.Text = Upper(txtLocator.Text)   
   IF global.chkLoc(txtLocator.Text) THEN             
-            picLoc.Picture = Picture["accept.png"]
+            picLoc.Picture = Picture["icons/accept.png"]
         ELSE             
-            picLoc.Picture = Picture["cancel.png"]  
+            picLoc.Picture = Picture["icons/cancel.png"]  
   ENDIF
   
 END

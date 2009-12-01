@@ -22,10 +22,16 @@ Geometry=[0,25,301,301]
 [DebugWindow/FLoc.Window]
 Geometry=[0,25,301,301]
 
+[DebugWindow/FMain]
+Geometry=[0,0,301,301]
+
 [DebugWindow/FMain.Controls]
 Geometry=[0,0,301,301]
 
 [DebugWindow/FMain.Controls[hCtl.Name]]
+Geometry=[0,0,301,301]
+
+[DebugWindow/FMain.ini]
 Geometry=[0,0,301,301]
 
 [DebugWindow/Fields]
@@ -190,7 +196,7 @@ Geometry=[0,25,301,301]
 Geometry=[0,0,301,301]
 
 [FFind]
-SearchIn="Project"
+SearchIn="Module"
 CaseSensitive=False
 SearchWord=False
 SearchComment=True
@@ -198,21 +204,18 @@ SearchString=True
 
 [OpenFile]
 File[1]="FMain.form"
-File[2]="global.module:47.3"
-File[3]="FMain.class:1749.100"
-File[4]="FeADIF.form"
-File[5]="FeADIF.class:89.13"
-File[6]="FCal.class:40.0"
-Active=6
-File[7]="FLoc.class:405.108"
-File[8]="FiADIF.class:509.0"
-File[9]="FiADIF.form"
-File[10]="FmtoBD.form"
-File[11]="FmtoBD.class:31.0"
-File[12]="dbLog.module:43.3"
-File[13]="dbTablas.module:0.0"
-File[14]="Mstart.module:24.22"
-Count=14
+Active=1
+File[2]="FMain.class:25.19"
+File[3]="FCustom.form"
+File[4]="cPage.class:68.9"
+File[5]="FCustom.class:99.16"
+File[6]="FSetup.class:139.16"
+File[7]="FPreview.class:19.2"
+File[8]="FPreview.form"
+File[9]="FQueue.form"
+File[10]="FQueue.class:235.4"
+File[11]="FSetup.form"
+Count=11
 
 [Watches]
 Count=0

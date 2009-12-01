@@ -48,7 +48,7 @@ PRIVATE SUB loadTpea()
     cView.Columns[0].Text = ("EA Reference")
     cView.Columns[1].Text = ("Province")
     
-    IF dbTablas.connDB(User.Home &/ "/.dfh_Log/tablas.db") THEN RETURN 
+    IF dbTablas.connDB(User.Home &/ ".config/dfhlog/tablas.db") THEN RETURN
     
     hResul = dbTablas.cnTablas.Exec("SELECT * FROM tpea ORDER by Matricula ASC")
     
@@ -75,7 +75,7 @@ PRIVATE SUB loadIota()
     cView.Columns[0].Text = "Ref."
     cView.Columns[1].Text = ("Name")
     
-    IF dbTablas.connDB(User.Home &/ "/.dfh_Log/tablas.db") THEN RETURN 
+    IF dbTablas.connDB(User.Home &/ ".config/dfhlog/tablas.db") THEN RETURN
     
     hResul = dbTablas.cnTablas.Exec("SELECT * FROM iota ORDER by Ref ASC")
     
@@ -102,7 +102,7 @@ PRIVATE SUB loadWas()
     cView.Columns[0].Text = "Ref."
     cView.Columns[1].Text = ("State")
     
-    IF dbTablas.connDB(User.Home &/ "/.dfh_Log/tablas.db") THEN RETURN 
+    IF dbTablas.connDB(User.Home &/ ".config/dfhlog/tablas.db") THEN RETURN
     
     hResul = dbTablas.cnTablas.Exec("SELECT * FROM was ORDER by Ref ASC")
     
@@ -129,7 +129,7 @@ PRIVATE SUB loadUsac()
     cView.Columns[0].Text = ("County Ref.")
     cView.Columns[1].Text = ("State")
     
-    IF dbTablas.connDB(User.Home &/ "/.dfh_Log/tablas.db") THEN RETURN 
+    IF dbTablas.connDB(User.Home &/ ".config/dfhlog/tablas.db") THEN RETURN
     
     hResul = dbTablas.cnTablas.Exec("SELECT * FROM usac ORDER by Ref ASC")
     
@@ -184,7 +184,7 @@ PUBLIC SUB txtBuscar_Change()
     DIM hResul AS Result
     DIM clave AS String
     
-    IF dbTablas.connDB(User.Home &/ "/.dfh_Log/tablas.db") THEN RETURN 
+    IF dbTablas.connDB(User.Home &/ ".config/dfhlog/tablas.db") THEN RETURN
     cView.Clear()
     
     SELECT CASE modo

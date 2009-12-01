@@ -361,18 +361,18 @@ PRIVATE SUB menuFind()
     
     hMenu = NEW Menu(hMenus) AS "mnufindQSOs"
     hMenu.Text = ("Find QSOs with ") & $locator
-    hMenu.Picture = Picture["find.png"]
+    hMenu.Picture = Picture["icons/find.png"]
     
     hMenu = NEW Menu(hMenus)
     hMenu.Text = ""
       
     hMenu = NEW Menu(hMenus) AS "mnuGrabWholeImage"
     hMenu.Text = ("Save Whole Map as...")
-    hMenu.Picture = Picture["Blob.png"]
+    hMenu.Picture = Picture["icons/Blob.png"]
     
     hMenu = NEW Menu(hMenus) AS "mnuGrabImage"
     hMenu.Text = ("Save Visible Map as...")
-    hMenu.Picture = Picture["View.png"]
+    hMenu.Picture = Picture["icons/View.png"]
     
     ' pop up 
     IF hMenus THEN hMenus.Popup()  

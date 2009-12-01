@@ -7,12 +7,12 @@
   Icon = Picture["dfhlog.png"]
   Border = Window.Fixed
   { TabStrip1 TabStrip
-    MoveScaled(1,19,63,30)
+    MoveScaled(1,19,63,29)
     Count = 2
     Index = 0
     Text = ("About")
     { svwAuthor ScrollView
-      MoveScaled(0,1,62,23)
+      MoveScaled(0,1,62,21)
       Border = False
       ScrollBar = Scroll.None
       { txtAuthor TextEdit
@@ -21,9 +21,9 @@
         Border = False
       }
       { Image1 PictureBox
-        MoveScaled(28,33,6.8571,6.8571)
+        MoveScaled(28,33,6.7143,6.7143)
         Background = &HFFFFFF&
-        Picture = Picture["dfhlog.png"]
+        Picture = Picture["icons/dfhlog.png"]
         Stretch = True
         Alignment = Align.Center
       }
@@ -59,7 +59,7 @@
       MoveScaled(2,13,56,8)
       Font = Font["Bold,+1"]
       Text = ("Make a gift!")
-      Picture = Picture["btn_donateCC_LG.gif"]
+      Picture = Picture["icons/btn_donateCC_LG.gif"]
     }
     { panGift Panel
       MoveScaled(2,22,59,4)
@@ -124,7 +124,7 @@
     { imgGambas PictureBox
       MoveScaled(48,2,13,13)
       Background = Color.SelectedBackground
-      Picture = Picture["dfhlog.png"]
+      Picture = Picture["icons/dfhlog.png"]
       Stretch = True
       Alignment = Align.TopRight
     }

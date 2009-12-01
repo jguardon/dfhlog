@@ -217,18 +217,6 @@ PUBLIC SUB Form_Close()
 
 END
 
-PUBLIC SUB btnPrint_Click()
-    DIM sKugar AS String
-    SHELL "which kugar" TO sKugar
-    IF sKugar THEN 
-        FMain.printQSLs()
-        cv.Refresh()    
-    ELSE 
-        Message.Info(("Currently Kugar is not installed.\nIn order to print QSLs, you might\ninstall Kugar from repositories."))
-    ENDIF 
-
-END
-
 PUBLIC SUB btnClear_Click()
     IF cv.Rows.Count > 0 THEN 
         IF Message.Warning(("Print queue will be deleted\nDo you want to continue?"), ("Delete"), ("Cancel")) = 2 THEN RETURN
@@ -237,5 +225,14 @@ PUBLIC SUB btnClear_Click()
         'dbLog.CloseDB()
         fillData() 
     ENDIF  
+
+END
+
+PUBLIC SUB btnPrintQSL_Click()
+    ' TODO
+END
+
+PUBLIC SUB btnPrintLabel_Click()
+    FPreview.Show 
 
 END

@@ -1,44 +1,49 @@
 # Gambas Form File 2.0
 
 { Form Form
-  MoveScaled(0,0,86,46)
-  Text = ("")
-  Icon = Picture["gtk-print.png"]
+  MoveScaled(0,0,92,51)
+  Text = ("Printing queue")
+  Icon = Picture["icon:/16/print"]
   Border = Window.Fixed
   Arrangement = Arrange.Vertical
+  Padding = 3
   { HBox1 HBox
-    MoveScaled(0,0,85,41)
+    MoveScaled(0,0,91,45)
     Expand = True
     { cv GridView
-      MoveScaled(1,1,84,31)
+      MoveScaled(1,1,89,43)
       Expand = True
       Mode = Select.Multiple
       Header = GridView.Horizontal
     }
   }
   { HBox2 HBox
-    MoveScaled(0,41,85,4)
+    MoveScaled(0,46,91,4)
     Spacing = 5
     Padding = 3
     { lblNumRec Label
-      MoveScaled(1,1,24,3)
+      MoveScaled(1,1,17,3)
       Text = ("Records:")
     }
     { Label2 Label
-      MoveScaled(27,1,4,3)
+      MoveScaled(19,1,6,3)
       Expand = True
       Text = ("")
     }
     { btnClear Button
-      MoveScaled(32,1,16,3)
+      MoveScaled(30,1,14,3)
       Text = ("Clear Queue")
     }
-    { btnPrint Button
-      MoveScaled(49,1,16,3)
-      Text = ("Print")
+    { btnPrintQSL Button
+      MoveScaled(46,1,14,3)
+      Text = ("Print QSLs")
+    }
+    { btnPrintLabel Button
+      MoveScaled(61,1,14,3)
+      Text = ("Print Labels")
     }
     { btnClose Button
-      MoveScaled(67,1,16,3)
+      MoveScaled(76,1,14,3)
       Text = ("&Close")
     }
   }

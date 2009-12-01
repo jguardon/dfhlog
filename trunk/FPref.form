@@ -37,7 +37,6 @@
       }
       { picLoc PictureBox
         MoveScaled(48,14,3,3)
-        Picture = Picture["cancel.png"]
         Stretch = True
       }
       { txtNombre TextBox

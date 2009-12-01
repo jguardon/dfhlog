@@ -1,0 +1,147 @@
+# Gambas Form File 2.0
+
+{ Form Form
+  MoveScaled(0,0,52,67)
+  Text = ("Custom Label")
+  Icon = Picture["icon:/16/options"]
+  ToolBox = True
+  { FrameCustom Frame
+    MoveScaled(2,1,48,29)
+    Text = ("Create Custom Label")
+    { txtDescription TextBox
+      MoveScaled(14,8,31,3)
+      Tag = "custom"
+      Text = ("Enter a description")
+      MaxLength = 40
+    }
+    { vbWidth ValueBox
+      MoveScaled(14,13,8,3)
+      Tag = "custom"
+      MaxLength = 3
+    }
+    { vbHeight ValueBox
+      MoveScaled(37,13,8,3)
+      Tag = "custom"
+      MaxLength = 3
+    }
+    { vbCols ValueBox
+      MoveScaled(14,18,8,3)
+      Tag = "custom"
+      MaxLength = 3
+    }
+    { vbRows ValueBox
+      MoveScaled(37,18,8,3)
+      Tag = "custom"
+      MaxLength = 3
+    }
+    { vbTMargin ValueBox
+      MoveScaled(14,23,8,3)
+      Tag = "custom"
+      MaxLength = 3
+    }
+    { vbLMargin ValueBox
+      MoveScaled(37,23,8,3)
+      Tag = "custom"
+      MaxLength = 3
+    }
+    { Label1 Label
+      MoveScaled(2,8,11,3)
+      Text = ("Description:")
+    }
+    { Label2 Label
+      MoveScaled(2,13,11,3)
+      Text = ("Width:")
+    }
+    { Label3 Label
+      MoveScaled(25,13,12,3)
+      Text = ("Height:")
+    }
+    { Label4 Label
+      MoveScaled(2,18,11,3)
+      Text = ("Cols:")
+    }
+    { Label5 Label
+      MoveScaled(25,18,12,3)
+      Text = ("Rows:")
+    }
+    { Label6 Label
+      MoveScaled(2,23,11,3)
+      Text = ("Top Margin:")
+    }
+    { Label7 Label
+      MoveScaled(25,23,12,3)
+      Text = ("Left Margin:")
+    }
+    { Label10 Label
+      MoveScaled(2,3,43,3)
+      Foreground = &H000040&
+      Text = ("(All measures in millimeters)")
+    }
+  }
+  { Frame2 Frame
+    MoveScaled(2,40,48,19)
+    Text = ("Configure Fonts and Colors")
+    { Label8 Label
+      MoveScaled(2,4,11,3)
+      Text = ("Call Color:")
+    }
+    { cbtCall ColorButton
+      MoveScaled(14,3,8,4)
+    }
+    { Label9 Label
+      MoveScaled(25,4,11,3)
+      Text = ("Data Color:")
+    }
+    { cbtData ColorButton
+      MoveScaled(37,3,8,4)
+    }
+    { Label11 Label
+      MoveScaled(2,9,11,3)
+      Text = ("Call Font:")
+    }
+    { Label12 Label
+      MoveScaled(2,14,11,3)
+      Text = ("Data Font:")
+    }
+    { btnCallFont Button
+      MoveScaled(14,8,31,4)
+      Text = ("Call Font")
+    }
+    { btnDataFont Button
+      MoveScaled(14,13,31,4)
+      Text = ("Data Font")
+    }
+  }
+  { Panel1 Panel
+    MoveScaled(2,60,48,6)
+    { btnOK Button
+      MoveScaled(26,1,16,4)
+      Text = ("&Save")
+      Picture = Picture["icons/accept.png"]
+      Default = True
+    }
+    { btnCancel Button
+      MoveScaled(6,1.1429,16,3.7143)
+      Text = ("&Cancel")
+      Picture = Picture["icons/cancel.png"]
+    }
+  }
+  { Frame1 Frame
+    MoveScaled(2,31,48,8)
+    Text = ("Additional Offset (mm/10)")
+    { spOffsX SpinBox
+      MoveScaled(14,3,8,3)
+    }
+    { spOffsY SpinBox
+      MoveScaled(37,3,8,3)
+    }
+    { Label13 Label
+      MoveScaled(2,3,12,3)
+      Text = ("Offset X:")
+    }
+    { Label14 Label
+      MoveScaled(25,3,8,3)
+      Text = ("Offset Y:")
+    }
+  }
+}

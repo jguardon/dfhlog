@@ -3,7 +3,7 @@
 { Form Form
   MoveScaled(0,0,109,82)
   Text = ("")
-  Icon = Picture["dfhlog.png"]
+  Icon = Picture["icons/dfhlog24.png"]
   Arrangement = Arrange.Horizontal
   { SidePanel1 SidePanel
     MoveScaled(1,1,30,79)
@@ -231,21 +231,21 @@
           MoveScaled(5,0,3,3)
           ToolTip = ("Show Grid")
           Text = ("")
-          Picture = Picture["sq.png"]
+          Picture = Picture["icons/sq.png"]
           Toggle = True
         }
         { chkDX ToolButton
           MoveScaled(9,0,3,3)
           ToolTip = ("Show DX Lines")
           Text = ("")
-          Picture = Picture["dxLine.png"]
+          Picture = Picture["icons/dxLine.png"]
           Toggle = True
         }
         { btnClear ToolButton
           MoveScaled(14,0,3,3)
           ToolTip = ("Clean Map")
           Text = ("")
-          Picture = Picture["gtk-delete.png"]
+          Picture = Picture["icons/gtk-delete.png"]
         }
         { Separator1 Separator
           MoveScaled(18,0,1,3)

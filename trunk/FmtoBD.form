@@ -3,7 +3,7 @@
 { Form Form
   MoveScaled(0,0,62,24)
   Text = ("Compact Database")
-  Icon = Picture["dfhlog.png"]
+  Icon = Picture["icon:/16/package"]
   Border = Window.Fixed
   SkipTaskbar = True
   { Label1 Label
