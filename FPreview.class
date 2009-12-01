@@ -1,0 +1,35 @@
+' Gambas class file
+
+
+PUBLIC SUB _new()
+  ' Din-A4
+  daLabel.Width = cUnits.mmToUnit(210, "px")
+  daLabel.Height = cUnits.mmToUnit(297, "px")
+  
+  
+END
+
+
+PUBLIC SUB Form_Open()
+    DIM lbl AS NEW cPage(daLabel, "px")
+END
+
+
+PUBLIC SUB Button1_Click()
+
+  DIM lbl AS NEW cPage(Printer, "pt")
+
+END
+ 
+' PUBLIC SUB SpinBox1_Change()
+' 
+'  TODO: paginate results 
+' 
+' END
+
+PUBLIC SUB setSpinPageMax(Value AS Integer)
+  
+  SpinBox1.MaxValue = Value
+  
+END
+

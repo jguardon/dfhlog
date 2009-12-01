@@ -1,0 +1,73 @@
+' Gambas class file
+
+PRIVATE hres AS Result
+PRIVATE $record AS String[]
+
+
+PUBLIC SUB _new(device AS Object, unit AS String)
+    
+    DIM hField AS ResultField
+    DIM $col AS NEW Collection
+    DIM ii AS Integer = 0
+    DIM lbl AS cLabel
+    DIM numPages AS Integer
+    DIM current AS String = Fmain.lblini["Default/Model", "APPLI 1274"]
+    DIM la AS Integer = Fmain.lblini[current & "/Cols", 2]
+    DIM ld AS Integer = Fmain.lblini[current & "/Rows", 8]
+    DIM np AS Integer = la * ld    
+    DIM x, y AS Float
+    DIM lmargin AS Integer = Fmain.lblini[current & "/LMargin", 0]
+    DIM tmargin AS Integer = Fmain.lblini[current & "/TMargin", 0]
+    DIM lwidth AS Integer = Fmain.lblini[current & "/Width"]
+    DIM lheight AS Integer = Fmain.lblini[current & "/Height"]
+    
+    IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN
+    hres = dbLog.cnLog.Exec("SELECT id FROM qQSL")
+    IF hres.Count < 1 THEN 
+        Message.Info(("QSL queue is empty!"))
+        RETURN
+    ENDIF 
+    hres = dbLog.cnLog.Exec("select * from qQSL ORDER BY call ASC")
+    
+    IF hres.Count MOD np > 0 THEN         
+        numPages = (hres.Count \ np) + 1
+    ELSE 
+        numPages = hres.Count \ np
+    ENDIF 
+    
+    FPreview.setSpinPageMax(numPages)
+    Draw.Begin(device)
+    
+    WHILE hres.Available
+    
+        $record = NEW String[]
+        
+        FOR EACH hField IN hres.Fields    
+            $record.Add(hres[hField.Name])
+        NEXT
+         
+        $col.Add($record, ii)        
+        lbl = NEW cLabel(FALSE, $record)
+        lbl.Width = cUnits.mmToUnit(lwidth, unit)
+        lbl.Height = cUnits.mmToUnit(lheight, unit)
+        x = ((ii + la) MOD la) * lwidth + lmargin
+        y = (((ii + la * ld) MOD (la * ld)) \ la) * lheight + tmargin     
+        
+        IF device.Name <> "daLabel" AND (ii + np) MOD (np) = 0 AND ii <> 0 THEN 
+            Printer.NewPage()            
+        ELSE IF device.Name = "daLabel" AND (ii + np) MOD (np) = 0 AND ii <> 0 THEN 
+            'TODO: paginate preview
+            BREAK
+        ENDIF 
+        
+        lbl.drawLabel(x, y, unit)
+        
+        INC ii
+        IF device.Name <> "daLabel" THEN dbLog.cnLog.Exec("UPDATE log SET qsl_sent='Y' WHERE id=&1;", hres!id)        
+        hres.MoveNext
+        lbl = NULL 'freeing resources
+    WEND 
+    dbLog.CloseDB
+    Draw.End
+
+END

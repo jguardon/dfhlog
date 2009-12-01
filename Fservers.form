@@ -3,7 +3,7 @@
 { Form Form
   MoveScaled(0,0,53,22)
   Text = ("Add telnet server")
-  Icon = Picture["T.png"]
+  Icon = Picture["icon:/16/connect"]
   Border = Window.Fixed
   ToolBox = True
   SkipTaskbar = True

@@ -2,7 +2,7 @@
 # Compiled with Gambas 2.16.0
 Title=dfhlog
 Startup=Mstart
-Icon=dfhlog.png
+Icon=icons/dfhlog.png
 Version=0.0.40
 Library=gb.qt
 Library=gb.form

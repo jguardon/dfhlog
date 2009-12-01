@@ -189,13 +189,13 @@ PRIVATE SUB menuLog()
   
   hMenue = NEW Menu(hMenus) AS "mnuEditarQSO"
   hMenue.Text = ("Edit QSO")
-  hMenue.Picture = Picture["gtk-edit.png"]
+  hMenue.Picture = Picture["icons/gtk-edit.png"]
   hMenue.Shortcut = "Ctrl+M"
   IF global.$iQSOn.Count > 1 THEN hMenue.enabled = FALSE
   
   hMenu = NEW Menu(hMenus) AS "mnuBorrarQSO"
   hMenu.Text = ("Delete QSO")
-  hMenu.Picture = Picture["gtk-delete.png"]
+  hMenu.Picture = Picture["icons/gtk-delete.png"]
   hMenu.Shortcut = "Ctrl+D"
   
   hMenu = NEW Menu(hMenus)
@@ -211,12 +211,12 @@ PRIVATE SUB menuLog()
   
   hMenu = NEW Menu(hMenus) AS "mnuQSLrec"
   hMenu.Text = ("Check QSL as recvd.")
-  hMenu.Picture = Picture["gtk-redo-rtl.png"]
+  hMenu.Picture = Picture["icons/gtk-redo-rtl.png"]
   hMenu.Shortcut = "F5"
   
   hMenu = NEW Menu(hMenus) AS "mnuQSLenv"
   hMenu.Text = ("Check QSL as sent.")
-  hMenu.Picture = Picture["gtk-undo-rtl.png"]
+  hMenu.Picture = Picture["icons/gtk-undo-rtl.png"]
   hMenu.Shortcut = "F6"
   
   hMenu = NEW Menu(hMenus)
@@ -224,12 +224,12 @@ PRIVATE SUB menuLog()
   
   hMenu = NEW Menu(hMenus) AS "mnuQSLnotrec"
   hMenu.Text = ("Uncheck QSL as recvd.")
-  hMenu.Picture = Picture["gtk-redo-not.png"]
+  hMenu.Picture = Picture["icons/gtk-redo-not.png"]
   hMenu.Shortcut = "F7"
   
   hMenu = NEW Menu(hMenus) AS "mnuQSLnotenv"
   hMenu.Text = ("Uncheck QSL as sent.")
-  hMenu.Picture = Picture["gtk-undo-not.png"]
+  hMenu.Picture = Picture["icons/gtk-undo-not.png"]
   hMenu.Shortcut = "F8"
   
   hMenu = NEW Menu(hMenus)
@@ -237,7 +237,7 @@ PRIVATE SUB menuLog()
   
   hMenu = NEW Menu(hMenus) AS "mnuPrintQSL"
   hMenu.Text = ("Print QSL")
-  hMenu.Picture = Picture["gtk-print.png"]
+  hMenu.Picture = Picture["icons/gtk-print.png"]
   hMenu.Shortcut = "Ctrl+P"
 
   ' pop up 

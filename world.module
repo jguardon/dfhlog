@@ -55,14 +55,14 @@ PUBLIC SUB init()
     number = 1
   
   'create local dir
-    IF NOT Exist(User.Home &/ "/.dfh_Log/cty.dat") THEN
+    IF NOT Exist(User.Home &/ ".config/dfhlog/cty.dat") THEN
   
-        TRY MKDIR User.Home &/ "/.dfh_Log/"
-        TRY COPY "cty.dat" TO User.Home &/ "/.dfh_Log/cty.dat"
+        TRY MKDIR User.Home &/ ".config/dfhlog/"
+        TRY COPY "data/cty.dat" TO User.Home &/ ".config/dfhlog/cty.dat"
         
     ENDIF 
   
-    file = OPEN User.Home &/ "/.dfh_Log/cty.dat" FOR INPUT  
+    file = OPEN User.Home &/ ".config/dfhlog/cty.dat" FOR INPUT  
   
     READ #file, data, Lof(file)
   
