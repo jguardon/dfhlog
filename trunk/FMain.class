@@ -53,6 +53,7 @@ PUBLIC SUB _new()
     IF Exist(User.Home &/ ".dfh_Log") THEN SHELL "rm -r " & User.Home &/ ".dfh_Log"
     ini = NEW Settings(User.Home &/ ".config/dfhlog/dfhlog.conf", "dfhLog Settings")
     lblini = NEW Settings(User.Home &/ ".config/dfhlog/labels.conf", "Labels Settings")
+    IF NOT Exist(User.Home &/ ".config/dfhlog/dfhlog.png") THEN COPY "icons/dfhlog.png" TO User.Home &/ ".config/dfhlog/dfhlog.png"
     IF NOT Exist(User.Home &/ ".xplanet/config/dfh") THEN        
         TRY MKDIR User.Home &/ ".xplanet/"
         TRY MKDIR User.Home &/ ".xplanet/config/"
@@ -988,9 +989,7 @@ PUBLIC SUB addLines(linea AS String, OPTIONAL tipo AS Integer = 0)   'añade lin
             markers_spot(linea)
             'notify DX on trayicon
                 IF ME.Minimized = TRUE THEN 
-                    FNotify.setDX(linea, global.clusterColor(DX, band))
-                ELSE 
-                    FNotify.Visible = FALSE
+                    EXEC ["notify-send", "--urgency=normal", "--icon=" & User.Home &/ ".config/dfhlog/dfhlog.png", "DX", linea]                    
                 ENDIF 
         CASE 2, 3, 4
             tblCluster[I, 0].RichText = "<i><font color=\"#C0C0C0\">" & linea & "</font></i>"
