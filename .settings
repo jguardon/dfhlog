@@ -204,18 +204,9 @@ SearchString=True
 
 [OpenFile]
 File[1]="FMain.form"
-Active=1
-File[2]="FMain.class:25.19"
-File[3]="FCustom.form"
-File[4]="cPage.class:68.9"
-File[5]="FCustom.class:99.16"
-File[6]="FSetup.class:139.16"
-File[7]="FPreview.class:19.2"
-File[8]="FPreview.form"
-File[9]="FQueue.form"
-File[10]="FQueue.class:235.4"
-File[11]="FSetup.form"
-Count=11
+File[2]="FMain.class:999.51"
+Active=2
+Count=2
 
 [Watches]
 Count=0

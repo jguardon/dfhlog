@@ -1010,6 +1010,6 @@
     #Y = 560
     Visible = True
     Tooltip = "dfhLog DX"
-    Picture = Picture["dfhlog24.png"]
+    Picture = Picture["icons/dfhlog24.png"]
   }
 }
