@@ -15,7 +15,7 @@ PUBLIC SUB Form_Open()
 END
 
 
-PUBLIC SUB Button1_Click()
+PUBLIC SUB btnPrint_Click()
 
   DIM lbl AS NEW cPage(Printer, "pt")
 

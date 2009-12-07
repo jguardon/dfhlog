@@ -69,5 +69,8 @@ PUBLIC SUB _new(device AS Object, unit AS String)
     WEND 
     dbLog.CloseDB
     Draw.End
+    
+    CATCH 
+        Message.Error(Error.Text & "\n" & Error.Where)
 
 END

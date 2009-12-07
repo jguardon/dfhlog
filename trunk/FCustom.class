@@ -37,13 +37,13 @@ PUBLIC SUB btnOK_Click()
         RETURN 
     ELSE 
         IF FrameCustom.Enabled THEN 
-            Fmain.lblini["Custom/Description"] = txtDescription.Text
-            Fmain.lblini["Custom/Width"] = vbWidth.Value
-            Fmain.lblini["Custom/Height"] = vbHeight.Value
-            Fmain.lblini["Custom/Cols"] = vbCols.Value
-            Fmain.lblini["Custom/Rows"] = vbRows.Value
-            Fmain.lblini["Custom/TMargin"] = vbTMargin.Value
-            Fmain.lblini["Custom/LMargin"] = vbLMargin.Value
+            Fmain.lblini[current & "/Description"] = txtDescription.Text
+            Fmain.lblini[current & "/Width"] = vbWidth.Value
+            Fmain.lblini[current & "/Height"] = vbHeight.Value
+            Fmain.lblini[current & "/Cols"] = vbCols.Value
+            Fmain.lblini[current & "/Rows"] = vbRows.Value
+            Fmain.lblini[current & "/TMargin"] = vbTMargin.Value
+            Fmain.lblini[current & "/LMargin"] = vbLMargin.Value
             
         ENDIF
         

@@ -1,0 +1,20 @@
+' Gambas class file
+
+
+PUBLIC SUB btnCancel_Click()
+    ME.Close
+END
+
+PUBLIC SUB Form_Open()
+    spWidth.Value = FMain.qslini["QSLsize/Width", 140]
+    spHeight.Value = FMain.qslini["QSLsize/Height", 90]
+
+END
+
+PUBLIC SUB btnSave_Click()
+    FMain.qslini["QSLsize/Width"] = spWidth.Value
+    FMain.qslini["QSLsize/Height"] = spHeight.Value 
+    FDesign.setCanvasSize
+    ME.Close
+
+END

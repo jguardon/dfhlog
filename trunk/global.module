@@ -28,6 +28,7 @@ PUBLIC dwnld AS NEW HttpClient AS "_getVer"
 PRIVATE ver AS String
 PUBLIC $alertedMUF AS Boolean = FALSE
 PUBLIC $alertedES AS Boolean = FALSE
+PUBLIC $aLabels AS NEW Collection
 
 PUBLIC FUNCTION UTCNow() AS Date
     
