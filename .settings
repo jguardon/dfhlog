@@ -37,6 +37,9 @@ Geometry=[0,0,301,301]
 [DebugWindow/Fields]
 Geometry=[0,25,301,301]
 
+[DebugWindow/Fmain.lblini]
+Geometry=[0,0,301,301]
+
 [DebugWindow/HSplit1]
 ShowHidden=True
 Geometry=[0,25,301,301]
@@ -204,9 +207,13 @@ SearchString=True
 
 [OpenFile]
 File[1]="FMain.form"
-File[2]="FMain.class:999.51"
-Active=2
-Count=2
+File[2]="FMain.class:25.26"
+File[3]="FCustom.form"
+File[4]="FQueue.form"
+File[5]="FSetup.class:90.14"
+Active=5
+File[6]="FCustom.class:47.13"
+Count=6
 
 [Watches]
 Count=0

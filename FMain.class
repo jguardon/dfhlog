@@ -20,6 +20,7 @@ PUBLIC c AS cty
 PRIVATE qrz AS String
 PUBLIC ini AS Settings
 PUBLIC lblini AS Settings
+PUBLIC qslini AS Settings
 STATIC en AS Boolean
 PUBLIC p AS Process
 PUBLIC p_hamlib AS Process
@@ -53,6 +54,7 @@ PUBLIC SUB _new()
     IF Exist(User.Home &/ ".dfh_Log") THEN SHELL "rm -r " & User.Home &/ ".dfh_Log"
     ini = NEW Settings(User.Home &/ ".config/dfhlog/dfhlog.conf", "dfhLog Settings")
     lblini = NEW Settings(User.Home &/ ".config/dfhlog/labels.conf", "Labels Settings")
+    qslini = NEW Settings(User.Home &/ ".config/dfhlog/printQSL.conf", "printQSL")
     IF NOT Exist(User.Home &/ ".config/dfhlog/dfhlog.png") THEN COPY "icons/dfhlog.png" TO User.Home &/ ".config/dfhlog/dfhlog.png"
     IF NOT Exist(User.Home &/ ".xplanet/config/dfh") THEN        
         TRY MKDIR User.Home &/ ".xplanet/"
@@ -1862,7 +1864,7 @@ PUBLIC SUB mnuGStats_Click()
 END
 
 PUBLIC SUB mnuQSLDesign_Click()  
-    ' TODO
+    FDesign.ShowModal
 END
 
 PUBLIC SUB mnuLblDesign_Click()
@@ -1870,9 +1872,7 @@ PUBLIC SUB mnuLblDesign_Click()
 END
 
 PUBLIC SUB mnuGoPrintQSLs_Click()
-
-  
-
+    FDesign.printQSLs
 END
 
 PUBLIC SUB mnuGoPrintLbls_Click()

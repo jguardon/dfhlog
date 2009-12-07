@@ -32,7 +32,7 @@ PUBLIC SUB Form_Open()
         
     prepararCV()
     IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN
-    sql = "SELECT id, date, time, call, band, mode, prop_mode, rst_sent, gridsquare, my_gridsquare, qsl_via, qsl_rcvd, qsl_sent, my_call FROM qQSL;"   
+    sql = "SELECT id, date, time, call, band, mode, prop_mode, rst_sent, gridsquare, my_gridsquare, qsl_via, qsl_rcvd, qsl_sent, my_call FROM qQSL ORDER BY call ASC;"   
     resul = dbLog.cnLog.Exec(sql)
     
     FOR EACH $rf IN resul.Fields   
@@ -60,6 +60,7 @@ PRIVATE SUB prepararCV()
   cv.Columns[11].Text = "QSL(R)"  
   cv.Columns[12].Text = ("QSL(S)")
   cv.Columns[13].Text = ("My Call")
+  
   
     
 END
@@ -229,7 +230,7 @@ PUBLIC SUB btnClear_Click()
 END
 
 PUBLIC SUB btnPrintQSL_Click()
-    ' TODO
+    FDesign.printQSLs 
 END
 
 PUBLIC SUB btnPrintLabel_Click()
