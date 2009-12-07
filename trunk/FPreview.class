@@ -33,3 +33,6 @@ PUBLIC SUB setSpinPageMax(Value AS Integer)
   
 END
 
+PUBLIC SUB btnCancel_Click()
+    ME.Close
+END
