@@ -38,9 +38,14 @@
       MaxValue = 1000
     }
     { Label2 Label
-      MoveScaled(38,0,24,3)
+      MoveScaled(24,0,24,3)
       Expand = True
       Text = ("")
+    }
+    { btnCancel Button
+      MoveScaled(58,0,12,4)
+      Text = ("&Cancel")
+      Picture = Picture["icon:/16/cancel"]
     }
     { btnPrint Button
       MoveScaled(73,0,12,4)
