@@ -1,0 +1,39 @@
+# Gambas Form File 2.0
+
+{ Form Form
+  MoveScaled(0,0,42,49)
+  Text = ("An Error occurred!")
+  Icon = Picture["dfhlog.png"]
+  Border = Window.Fixed
+  Stacking = Window.Above
+  { txtError TextArea
+    MoveScaled(1,19,40,21)
+    Text = ("")
+    ReadOnly = True
+  }
+  { PictureBox1 PictureBox
+    MoveScaled(2,2,6.8571,6.8571)
+    Picture = Picture["icon:/48/error"]
+    Stretch = True
+    Alignment = Align.Center
+  }
+  { Label1 Label
+    MoveScaled(11,3,20,5)
+    Font = Font["Bold,+9"]
+    Text = ("Error")
+    Alignment = Align.Center
+  }
+  { chkReport CheckBox
+    MoveScaled(3,43,19,3)
+    Text = ("Report Error")
+  }
+  { lblError TextLabel
+    MoveScaled(2,11,37,7)
+    Text = ("This is the error data. You may send this info to the author in order to be fixed as soon as possible.")
+    Alignment = Align.Justify
+  }
+  { btnOk Button
+    MoveScaled(25,42,16,5)
+    Text = ("&OK")
+  }
+}
