@@ -224,7 +224,7 @@ PUBLIC SUB drawLabel(x AS Float, y AS Float, OPTIONAL unit AS String = "px")
                 Draw.Foreground = Color.Black
                 Draw.Text("2x:", .mmToUnit(36 + x, unit), .mmToUnit(11.5 + y, unit))                
                 Draw.Font = Font[Fmain.lblini["Fonts/Data"]]
-                Draw.Foreground = Fmain.lblini["Colors/Data"]
+                Draw.Foreground = Fmain.lblini["Colors/Data", 0]
                 Draw.Text($mode, .mmToUnit(41 + x, unit), .mmToUnit(11.5 + y, unit))
                 Draw.Foreground = Fmain.lblini["Colors/Data", 0]
                 Draw.Font = Font[Fmain.lblini["Fonts/Data"]]

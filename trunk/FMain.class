@@ -38,7 +38,6 @@ PRIVATE $i AS Integer
 PRIVATE $cEntities AS NEW Collection
 PRIVATE pRigctl AS Process
 PRIVATE $homecall AS String
-PUBLIC $diff AS Integer
 PUBLIC modificando AS Boolean = FALSE
 PUBLIC sTPEA AS String
 PUBLIC sIOTA AS String
@@ -46,10 +45,10 @@ PUBLIC sWAS AS String
 PUBLIC sUSAC AS String
 PUBLIC $qrzCom AS Integer
 PUBLIC hProcess AS Process
+PUBLIC $utcdiff AS Integer
 
 
-PUBLIC SUB _new()    
-    getDiff()
+PUBLIC SUB _new()
     TRY world.init()
     IF Exist(User.Home &/ ".dfh_Log") THEN SHELL "rm -r " & User.Home &/ ".dfh_Log"
     ini = NEW Settings(User.Home &/ ".config/dfhlog/dfhlog.conf", "dfhLog Settings")
@@ -65,19 +64,11 @@ PUBLIC SUB _new()
         TRY COPY "data/do" TO User.Home &/ ".xplanet/origin/do"                
     ENDIF    
     IF NOT Exist(User.Home &/ ".config/dfhlog/tablas.db") THEN TRY COPY "data/tablas.db" TO User.Home &/ ".config/dfhlog/tablas.db"
+    $utcdiff = ini["UTC/offset", -1]
+    
     
     CATCH
         Message.Error(("Error in Fmain_new\n") & Error.Text & "\n" & Error.Where)
-END
-PUBLIC FUNCTION getDiff()
-    DIM ddiff AS Date
-    DIM dStr AS String
-    SHELL "date -u +%m/%d/%Y-%H:%M:%S" TO dStr
-     dStr = Replace(dStr, "-", " ")
-     dStr = Replace(dStr, "\n", "")
-     ddiff = CDate(dStr) 
-     $diff = DateDiff(Now, ddiff, gb.Hour)
-   'PRINT $diff, ddiff, Now
 END
 
 PUBLIC SUB Form_Close()
@@ -108,7 +99,7 @@ END
 PUBLIC SUB Form_Open()
     DIM hResul AS Result
     DIM i AS Integer = 1
-    DIM propa, banda, modo, entidad, sKugar AS String    
+    DIM propa, banda, modo, entidad AS String    
      
     ME.Title = "dfhLog - v " & Application.Version & " - " & ini["Estacion/QRZ"]
     PanelSmeter.Visible = FALSE
@@ -117,7 +108,7 @@ PUBLIC SUB Form_Open()
         c = NEW cty
         cdx = NEW cty   
         mylat = global.locator2latlon(ini["Estacion/Locator"]).lat
-        mylon = global.locator2latlon(ini["Estacion/Locator"]).lon
+        mylon = global.locator2latlon(ini["Estacion/Locator"]).lon        
     ELSE 
         Message("Problema al cargar cty.dat")
         ME.Close()
@@ -127,8 +118,9 @@ PUBLIC SUB Form_Open()
     ME.Top = ini["Window/Top", ME.Top]  
     ME.Height = ini["Window/Height", ME.Height]
     ME.Width = ini["Window/Width", ME.Width]  
-    VSplit1.Settings = ini["SplitterV/pos"]  
-    checkSettings()   
+    VSplit1.Settings = ini["SplitterV/pos"]    
+    checkSettings()
+    
     FOR EACH propa IN global.getPropa()
         cboPropa.Add(propa)
     NEXT    
@@ -141,7 +133,8 @@ PUBLIC SUB Form_Open()
     cboEntidad.Add("")    
     FOR i = 1 TO world.listDxcc.Count - 1
         cboEntidad.Add(world.listDxcc[i])
-    NEXT     
+    NEXT 
+    
     IF ini["Hamlib/Activado"] = TRUE THEN 
         btnCAT.Enabled = TRUE
     ELSE 
@@ -264,11 +257,11 @@ END
 
 PRIVATE SUB checkSettings()
     'check settings
-    DIM fp AS Form   
-    fp = NEW FPref
-    IF NOT ini["Estacion/QRZ"] THEN 
-        fp.ShowModal()
-    ENDIF 
+    ' DIM fp AS Form   
+    ' fp = NEW FPref
+    IF ini["Estacion/QRZ"] = NULL THEN FPref.ShowModal
+    '     fp.ShowModal()
+    ' ENDIF 
 END
 
 PUBLIC SUB Salir_Click() 

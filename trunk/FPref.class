@@ -34,7 +34,8 @@ PUBLIC SUB btnOK_Click()
         IF cboServer.Text THEN FMain.ini["Telnet/Server"] = cboServer.Text
         FMain.ini["Hamlib/Device"] = txtDevHamlib.Text
         FMain.ini["Estacion/UserQRZ"] = txtUserQRZ.Text
-        FMain.ini["Estacion/PassQRZ"] = txtPassQRZ.Text        
+        FMain.ini["Estacion/PassQRZ"] = txtPassQRZ.Text
+        FMain.ini["UTC/offset"] = SpinBox1.Value        
         saveCombo()
         FMain.ini.Save()
         
@@ -104,6 +105,7 @@ PUBLIC SUB Form_Open()
     txtQRZ.Text = FMain.ini["Estacion/QRZ"]
     txtNombre.Text = FMain.ini["Estacion/Nombre"]
     txtLocator.Text = FMain.ini["Estacion/Locator"]
+    SpinBox1.Value = FMain.ini["UTC/offset", 0] 
     chkTimeOnOff.Value = FMain.ini["Estacion/TimeOnOff", FALSE]
     cboPrefBanda.Text = FMain.ini["Estacion/PrefBanda"]
     cboPrefModo.Text = FMain.ini["Estacion/PrefModo"]
@@ -111,7 +113,7 @@ PUBLIC SUB Form_Open()
     chkAutoLogin.Value = FMain.ini["Telnet/Autologin", FALSE]
     chkHamlib.Value = FMain.ini["Hamlib/Activado", FALSE]
     chkHamlibRPC.Value = FMain.ini["Hamlib/RPC", FALSE]
-    chkGrig.Value = FMain.ini["Hamlib/Grig", FALSE]
+    chkGrig.Value = FMain.ini["Hamlib/Grig", FALSE]    
     chkXplanet.Value = FMain.ini["Xplanet/Activado", FALSE]
     getRbQRZ()
     cbtnWorked.Color = FMain.ini["Colores/Trabajado", Color.Orange]
@@ -133,6 +135,8 @@ PUBLIC SUB Form_Open()
     txtPassQRZ.Text = FMain.ini["Estacion/PassQRZ"]
     chkDebug.Value = FMain.ini["CAT/Debug", FALSE]
     chkLogRemarks.Value = FMain.ini["Estacion/SetComment", FALSE]
+    CATCH 
+        Message.Error(Error.Text & "\n" & Error.Where)
 
 END
 
@@ -366,6 +370,12 @@ PUBLIC SUB chkLogRemarks_Click()
 
 END
 
+PUBLIC SUB SpinBox1_Change()
+    FMain.ini["UTC/offset"] = SpinBox1.Value
+    FMain.$utcdiff = SpinBox1.Value
+
+END
+
 PUBLIC SUB chkGrig_Click()
 
     DIM $test AS String
@@ -391,5 +401,3 @@ PUBLIC SUB chkHamlibRPC_Click()
     IF chkHamlibRPC.Value = FALSE THEN chkGrig.Value = FALSE
 
 END
-
-

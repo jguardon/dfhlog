@@ -392,9 +392,11 @@ PUBLIC SUB mnuGrabWholeImage_Click()
         drwMapa($currentPic)        
         IF $squaresDrawed = TRUE THEN drawSquares()       
         IF chkDX.Value = TRUE THEN drawDX        
-        $capture.Save(Dialog.Path)
+        TRY $capture.Save(Dialog.Path)
     ENDIF   
     $device = canvas
+    CATCH 
+        DEBUG Error.Text, Error.Where
 END
 
 PUBLIC SUB mnuGrabImage_Click()
@@ -407,9 +409,11 @@ PUBLIC SUB mnuGrabImage_Click()
     Dialog.Title = ("Save Map as ")
     Dialog.Filter = ["*.jpg, *.png", ("Image Files")]
     IF Dialog.SaveFile() = FALSE THEN
-        cropped.Save(Dialog.Path, 100)
+        TRY cropped.Save(Dialog.Path, 100)
     ENDIF   
     $device = canvas
+    CATCH 
+        DEBUG Error.Text, Error.Where
 END
 
 PUBLIC SUB chkSquares_Click()

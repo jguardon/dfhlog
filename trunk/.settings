@@ -199,21 +199,20 @@ Geometry=[0,25,301,301]
 Geometry=[0,0,301,301]
 
 [FFind]
-SearchIn="Module"
+SearchIn="Project"
 CaseSensitive=False
 SearchWord=False
 SearchComment=True
 SearchString=True
 
 [OpenFile]
-File[1]="FMain.form"
-File[2]="FMain.class:25.26"
-File[3]="FCustom.form"
-File[4]="FQueue.form"
-File[5]="FSetup.class:90.14"
+File[1]="FMain.class:2138.19"
+File[2]="FPref.form"
+File[3]="FPref.class:382.9"
+File[4]="FStats.class:111.9"
+File[5]="global.module:454.12"
 Active=5
-File[6]="FCustom.class:47.13"
-Count=6
+Count=5
 
 [Watches]
 Count=0
