@@ -89,7 +89,7 @@
       Foreground = &HC00000&
       Text = ("UTC Offset")
       { Label20 Label
-        MoveScaled(3,3,24,3)
+        MoveScaled(3,3,31,3)
         Text = ("UTC Offset (in hours):")
       }
       { SpinBox1 SpinBox

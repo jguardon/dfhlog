@@ -1,3 +1,11 @@
+* Sat Dec 19 2009 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.39
+- Added printing support for QSL and labels
+- Some bugs fixed
+- Debian package structure redesigned
+- Added desktop notifications (debian based)
+- UTC time now can be adjusted manually
+- Possibility of choosing the plattform origin in ADIF files (newline character may differ from Mac and Window$ to Linux)
+
 * Tue Sep 29 2009 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.38
 -  QRZ.com search fixed (again)
 
