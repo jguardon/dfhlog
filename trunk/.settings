@@ -206,12 +206,12 @@ SearchComment=True
 SearchString=True
 
 [OpenFile]
-File[1]="FMain.class:2138.19"
+File[1]="FMain.class:1747.4"
+Active=1
 File[2]="FPref.form"
 File[3]="FPref.class:382.9"
 File[4]="FStats.class:111.9"
-File[5]="global.module:454.12"
-Active=5
+File[5]="global.module:436.21"
 Count=5
 
 [Watches]
