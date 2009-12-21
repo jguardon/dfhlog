@@ -410,17 +410,17 @@ PUBLIC SUB cboBanda_Click()
     IF c <> NULL THEN getWkdCfd(c.entity, cboBanda.Text)
 END
 
-PUBLIC SUB txtCall_KeyPress()
-    SELECT CASE Key.Code
-        CASE 47 TO 57
-        CASE 65 TO 90
-        CASE Key.BackSpace
-        CASE Key.Delete
-        CASE Key.Tab
-        CASE ELSE 
-          STOP EVENT 
-    END SELECT
-END
+' PUBLIC SUB txtCall_KeyPress()
+'     SELECT CASE Key.Code
+'         CASE 47 TO 57
+'         CASE 65 TO 90
+'         CASE Key.BackSpace
+'         CASE Key.Delete
+'         CASE Key.Tab
+'         CASE ELSE 
+'           STOP EVENT 
+'     END SELECT
+' END
 
 PUBLIC SUB Timer1_Timer()
     DIM sAux AS String     
@@ -711,14 +711,14 @@ END
 '*****************************HAMLIB************************************
 
 PUBLIC SUB btnCAT_Click()
-    'need to install portmap to get it to work
+    'need to install portmap to get it to work    
     IF ini["Hamlib/Activado"] = TRUE THEN
         IF btnCAT.Value = TRUE THEN 
             INC Application.Busy
             IF FMain.ini["CAT/Debug"] = TRUE THEN FCatDebug.Show
             timerCAT.Delay = CInt(ini["Hamlib/Polling", 300])
             IF FMain.ini["Hamlib/RPC"] = TRUE THEN 
-                IF global.pidOf("rpc.rigd") = FALSE THEN
+                IF global.pidOf("rpc.rigd") = NULL THEN
                     SHELL "rpc.rigd -m " & ini["Hamlib/Rig", 1] & " -r " & ini["Hamlib/Device", "/dev/ttyS0"] & " -s " & ini["Hamlib/Speed", 9600] & " &"
                     WAIT 0.5
                 ENDIF
@@ -730,6 +730,7 @@ PUBLIC SUB btnCAT_Click()
             'PanelSmeter.Visible = TRUE
             lcdQRG.Visible = TRUE
             WAIT 0.5
+            
             connectHamlib()
             DEC Application.Busy
         ELSE
@@ -739,7 +740,7 @@ PUBLIC SUB btnCAT_Click()
             'pbSmeter.Value = 0
             'PanelSmeter.Visible = FALSE
             lcdQRG.Visible = FALSE
-            SHELL "killall grig rigctld"
+            SHELL "killall grig rigctld rpc.rigd"
         ENDIF
     ENDIF
     
@@ -2004,7 +2005,7 @@ PUBLIC SUB fldigiXMLRPC()
     RpcF = NEW RpcFunction("log.get_frequency", [3], 3) 
     client = NEW RpcClient(RpcF)
     client.URL = "http://localhost:7362/RPC2"                                           'freq
-    IF global.pidOf("rigctld") = FALSE THEN txtFreq.Text = Left(client.Call(hVar), Len(client.Call(hVar)) - 2)   
+    IF global.pidOf("rigctld") = NULL THEN txtFreq.Text = Left(client.Call(hVar), Len(client.Call(hVar)) - 2)   
     RpcF = NEW RpcFunction("log.get_rst_in", [3], 3)                     
     client = NEW RpcClient(RpcF)
     client.URL = "http://localhost:7362/RPC2"      

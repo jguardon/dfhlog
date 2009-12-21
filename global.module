@@ -36,15 +36,11 @@ PUBLIC FUNCTION UTCNow() AS Date
     RETURN DateAdd(Now, gb.Hour, FMain.$utcdiff)
 END
 
-PUBLIC FUNCTION pidOf(program AS String) AS Boolean 'checks if a program is running
+PUBLIC FUNCTION pidOf(program AS String) AS String 'checks if a program is running and returns its PID
     DIM gotpid AS String = ""
     TRY SHELL "pidof " & program TO gotpid
-    IF gotpid THEN
-        RETURN TRUE
-    ELSE 
-        RETURN FALSE
-    ENDIF 
     
+    RETURN gotpid
 END
 
 PUBLIC FUNCTION chkLoc(loc AS String) AS Boolean

@@ -206,13 +206,14 @@ SearchComment=True
 SearchString=True
 
 [OpenFile]
-File[1]="FMain.class:1747.4"
-Active=1
+File[1]="FMain.class:2007.19"
 File[2]="FPref.form"
-File[3]="FPref.class:382.9"
-File[4]="FStats.class:111.9"
-File[5]="global.module:436.21"
-Count=5
+File[3]="FPref.class:0.0"
+File[4]="FMain.form"
+File[5]="dbLog.module:32.3"
+File[6]="global.module:43.3"
+Active=6
+Count=6
 
 [Watches]
 Count=0
