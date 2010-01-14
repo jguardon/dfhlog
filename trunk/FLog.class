@@ -100,7 +100,7 @@ PUBLIC SUB cv_Data(Row AS Integer, Column AS Integer)
     
     IF row MOD 2 = 0 THEN cv.Data.Background = Color.LightBackground
     CATCH 
-        DEBUG Error.Text     
+       fillData
 END
 
 PRIVATE SUB getQSOs(OPTIONAL p AS Integer = 0)

@@ -192,8 +192,9 @@ PUBLIC SUB cv_Data(Row AS Integer, Column AS Integer)
     ENDIF 
     
     IF row MOD 2 = 0 THEN cv.Data.Background = Color.LightBackground
+    
     CATCH 
-        DEBUG Error.Text & "\n" & Error.Where 
+        fillData 'DEBUG Error.Text & "\n" & Error.Where 
 
 END
 
@@ -277,10 +278,12 @@ PUBLIC SUB getSelectedQSO()
 END
 
 PUBLIC SUB mnuEditarQSO_Click()
+    
     IF global.$iQSOn.Count = 1 THEN 
         FMain.modifyQSO(CInt(cv[cv.Row, 0].Text))
-        FMain.Visible = TRUE
-    ENDIF   
+        FMain.Visible = TRUE 
+    ENDIF
+      
 END
 
 PUBLIC SUB fillData()
@@ -332,9 +335,9 @@ END
 
 PUBLIC SUB cv_Menu()
      
-  TRY menuLog()
-  cv.Rows.Unselect()
-  
+    TRY menuLog()
+    cv.Rows.Unselect()
+      
 END
 
 PUBLIC SUB btnClose_Click()
@@ -415,3 +418,9 @@ END
 
 
 
+
+PUBLIC SUB cv_Click()
+
+  
+
+END

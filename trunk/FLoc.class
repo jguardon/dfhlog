@@ -172,11 +172,13 @@ PUBLIC SUB drwGrid()
         
         FOR i = -180 TO 180 STEP 2              
             .Line(i, -90, i, 90)
+            FOR j = -90 TO 90 STEP 1    
+                .Line(-180, j, 180, j)
+                'WAIT 0.01
+            NEXT
         NEXT 
         
-        FOR j = -90 TO 90 STEP 1    
-            .Line(-180, j, 180, j)
-        NEXT
+        
         
         .End()        
         .Begin($pWorldGrid)    
@@ -235,24 +237,24 @@ PRIVATE SUB drawSquares()
     IF rbConf.Value = TRUE THEN 
         wkdcfd = "Y"
         sql = "select gridsquare from log where qso_date between &1 and &2 and band like &3 and mode like &4 and " &
-        "prop_mode like &5 and gridsquare <>'' and qsl_rcvd like &6  and distance >= &7 " &
-        "group by substr(gridsquare,0,4) order by gridsquare;"
-            
+        "prop_mode like &5 and gridsquare <> '' and qsl_rcvd like &6  and distance >= &7 " &
+        "group by substr(gridsquare,1,4) order by gridsquare;"
+        
     ELSE IF rbWorked.Value = TRUE
         wkdcfd = "%"
         sql = "select gridsquare from log where qso_date between &1 and &2 and band like &3 and mode like &4 and " &
         "prop_mode like &5 and gridsquare <>'' and qsl_rcvd like &6  and distance >= &7 " &
-        "group by substr(gridsquare,0,4) order by gridsquare;"
+        "group by substr(gridsquare,1,4) order by gridsquare;"
     
     ELSE IF rbNotConf.Value = TRUE
         wkdcfd = "Y"
-        sql = "select gridsquare from log where substr(gridsquare,0,4) not in (select substr(gridsquare,0,4) from log where " & 
+        sql = "select gridsquare from log where substr(gridsquare,1,4) not in (select substr(gridsquare,1,4) from log where " & 
         "qsl_rcvd = &6) and qso_date between &1 and &2 and band like &3 and mode like &4 and prop_mode like &5 and qsl_rcvd <> &6 " &
-        "and distance >= &7 group by substr(gridsquare,0,4);"
+        "and distance >= &7 group by substr(gridsquare,1,4);"
         
     ENDIF
     IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN 
-    hres = dbLog.cnLog.Exec(sql, dateIni.Value, dateFin.Value, parseCbo(cboBand), parseCbo(cboModo), parseCbo(cboPropa), wkdcfd, dist)
+    hres = dbLog.cnLog.Exec(sql, CDate(dateIni.Value), CDate(dateFin.Value), parseCbo(cboBand), parseCbo(cboModo), parseCbo(cboPropa), wkdcfd, dist)
     
     IF hres.Count < 1 THEN
         $squaresDrawed = FALSE 
@@ -271,9 +273,9 @@ PRIVATE SUB drawSquares()
             Draw.Rect(glon, glat, 2, 1)            
             Draw.Font = Font["Monospace,8"]
             Draw.Text(Left(sq, 4), glon, glat) ', 1, 1, 1)
-            hres.MoveNext()        
+            hres.MoveNext()            
          WEND  
-         Draw.End()         
+         Draw.End()
     ENDIF    
     
     CATCH 

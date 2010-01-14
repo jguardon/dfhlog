@@ -82,7 +82,7 @@ PRIVATE SUB getMainSq(banda AS String, modo AS String, prop AS String, wcd AS St
     f = OPEN path FOR OUTPUT APPEND     
     
     IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN 
-    sql = "select call, qso_date, band, mode, prop_mode, qsl_rcvd, qsl_sent, country ,gridsquare, count(call) as num from log where band like &1 and mode like &2 and prop_mode like &3 and qsl_rcvd like &4 and gridsquare <>'' group by substr(gridsquare,0,2) order by gridsquare"
+    sql = "select call, qso_date, band, mode, prop_mode, qsl_rcvd, qsl_sent, country ,gridsquare, count(call) as num from log where band like &1 and mode like &2 and prop_mode like &3 and qsl_rcvd like &4 and gridsquare <>'' group by substr(gridsquare,1,2) order by gridsquare"
     ' select call, qso_date, gridsquare , count(call)  from log where band='2M' and gridsquare <>'' and qsl_rcvd='Y'  group by substr(gridsquare,0,4) order by gridsquare, id 
     hres = dbLog.cnLog.Exec(sql, parseCbo(cboBand), parseCbo(cboMode), parseCbo(cboProp), wcd)
     PRINT #f, html.header("Main Squares Summary")
@@ -121,7 +121,7 @@ PRIVATE SUB getSqs(banda AS String, modo AS String, prop AS String, wcd AS Strin
     f = OPEN path FOR OUTPUT APPEND     
     
     IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN 
-    sql = "select call, qso_date, band, mode, prop_mode, qsl_rcvd, qsl_sent, country ,gridsquare, count(call) as num from log where band like &1 and mode like &2 and prop_mode like &3 and qsl_rcvd like &4 and gridsquare <>'' group by substr(gridsquare,0,4) order by gridsquare"
+    sql = "select call, qso_date, band, mode, prop_mode, qsl_rcvd, qsl_sent, country ,gridsquare, count(call) as num from log where band like &1 and mode like &2 and prop_mode like &3 and qsl_rcvd like &4 and gridsquare <>'' group by substr(gridsquare,1,4) order by gridsquare"
     ' select call, qso_date, gridsquare , count(call)  from log where band='2M' and gridsquare <>'' and qsl_rcvd='Y'  group by substr(gridsquare,0,4) order by gridsquare, id 
     hres = dbLog.cnLog.Exec(sql, parseCbo(cboBand), parseCbo(cboMode), parseCbo(cboProp), wcd)
     PRINT #f, html.header("Gridquares Summary")
@@ -160,7 +160,7 @@ PRIVATE SUB getEME(banda AS String, modo AS String, prop AS String, wcd AS Strin
     f = OPEN path FOR OUTPUT APPEND     
     
     IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN 
-    sql = "select call, qso_date, band, mode, prop_mode, qsl_rcvd, qsl_sent, country ,gridsquare, count(call) as num from log where band like &1 and mode like &2 and prop_mode = 'EME' and qsl_rcvd like &3 and gridsquare <>'' group by substr(gridsquare,0,4) order by gridsquare"
+    sql = "select call, qso_date, band, mode, prop_mode, qsl_rcvd, qsl_sent, country ,gridsquare, count(call) as num from log where band like &1 and mode like &2 and prop_mode = 'EME' and qsl_rcvd like &3 and gridsquare <>'' group by substr(gridsquare,1,4) order by gridsquare"
     ' select call, qso_date, gridsquare , count(call)  from log where band='2M' and gridsquare <>'' and qsl_rcvd='Y'  group by substr(gridsquare,0,4) order by gridsquare, id 
     hres = dbLog.cnLog.Exec(sql, parseCbo(cboBand), parseCbo(cboMode), wcd)
     PRINT #f, html.header("EME Initials Summary")
