@@ -1689,7 +1689,7 @@ PUBLIC SUB modifyQSO(idQSO AS Integer)
         IF hres!freq THEN txtFreq.Text = Replace(CStr(CFloat(hres!freq) * 1000), ",", ".")
         IF hres!freq_rx THEN txtFreq2.Text = Replace(CStr(CFloat(hres!freq_rx) * 1000), ",", ".")
         cboBanda.Text = hres!band
-        cboModo.Text = hres!mode
+        cboModo.Text = hres!mode        
         cboPropa.Text = hres!prop_mode
         txtRSTr.Text = hres!rst_rcvd
         txtRSTe.Text = hres!rst_sent
@@ -1716,9 +1716,9 @@ PUBLIC SUB modifyQSO(idQSO AS Integer)
         Message.Error(("QSO Nr ") & idQSO & (" doesn't exist!"))
         btnClear_Click()
     ENDIF 
-    'DEBUG idQSO    
-    CATCH 
-        Message.Error(("Error in modifyQSO\n") & Error.Text & "\n" & Error.Where)  
+    
+    ' CATCH 
+    '     Message.Error(("Error in modifyQSO\n") & Error.Text & "\n" & Error.Where)  
 END
 
 PRIVATE FUNCTION parseQSL(s AS String) AS Integer
