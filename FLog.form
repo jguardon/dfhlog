@@ -4,6 +4,7 @@
   MoveScaled(0,0,94,69)
   Text = ("")
   Icon = Picture["icons/dfhlog.png"]
+  Maximized = True
   Arrangement = Arrange.Vertical
   Spacing = 3
   Padding = 3

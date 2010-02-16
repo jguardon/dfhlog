@@ -1,5 +1,5 @@
 # Gambas Project File 2.0
-# Compiled with Gambas 2.18.0
+# Compiled with Gambas 2.19.0
 Title=dfhlog
 Startup=Mstart
 Icon=icons/dfhlog.png

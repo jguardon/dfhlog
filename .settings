@@ -84,10 +84,16 @@ Geometry=[0,0,301,301]
 [DebugWindow/cv.Current]
 Geometry=[0,0,301,301]
 
+[DebugWindow/cv.Data]
+Geometry=[0,25,301,301]
+
 [DebugWindow/d]
 Geometry=[0,25,301,301]
 
 [DebugWindow/db]
+Geometry=[0,25,301,301]
+
+[DebugWindow/dbLog]
 Geometry=[0,25,301,301]
 
 [DebugWindow/ent]
@@ -115,7 +121,22 @@ Geometry=[0,0,301,301]
 Geometry=[0,25,301,301]
 
 [DebugWindow/hres]
-Geometry=[0,0,301,301]
+Geometry=[595,331,301,301]
+
+[DebugWindow/hres.Connection]
+Geometry=[856,343,301,301]
+
+[DebugWindow/hres.Connection.Databases]
+Geometry=[463,596,301,301]
+
+[DebugWindow/hres.Connection.Tables]
+Geometry=[788,223,301,301]
+
+[DebugWindow/hres.Connection.Users]
+Geometry=[826,338,301,301]
+
+[DebugWindow/hres.Fields]
+Geometry=[777,203,301,301]
 
 [DebugWindow/iQSOn]
 Geometry=[0,0,301,301]
@@ -199,19 +220,20 @@ Geometry=[0,25,301,301]
 Geometry=[0,0,301,301]
 
 [FFind]
-SearchIn="Project"
+SearchIn="Module"
 CaseSensitive=False
 SearchWord=False
 SearchComment=True
 SearchString=True
 
 [OpenFile]
-File[1]="FMain.class:1665.0"
+File[1]="FMain.class:1620.15"
 File[2]="FMain.form"
 File[3]="FLoc.form"
-File[4]="FLoc.class:508.4"
-Active=4
-Count=4
+File[4]="FAwards.class:165.0"
+File[5]="FAwards.form"
+Active=5
+Count=5
 
 [Watches]
 Count=0
