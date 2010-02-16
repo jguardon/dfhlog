@@ -125,7 +125,7 @@ PUBLIC SUB Form_Open()
         cboPropa.Add(propa)
     NEXT    
     FOR EACH banda IN global.getBandas()  
-        cboBanda.Add(banda)
+        cboFreq.Add(banda)
     NEXT    
     FOR EACH modo IN global.getModos()    
         cboModo.Add(modo)
@@ -145,7 +145,7 @@ PUBLIC SUB Form_Open()
     ELSE 
         btnMap.Enabled = FALSE
     ENDIF   
-    cboBanda.Text = ini["Estacion/PrefBanda"]
+    cboFreq.Text = ini["Estacion/PrefBanda"]
     cboModo.Text = ini["Estacion/PrefModo"]
     cboPropa.Text = ini["Main/Propa"]     
     lblPath.Text = "Log: " & ini["Log/File"]
@@ -363,7 +363,7 @@ PUBLIC SUB getWkdCfd(country AS String, band AS String)
                 hResul.MoveNext()
             LOOP 
         ENDIF 
-        FMain.descDB()
+        'FMain.descDB()
     ENDIF 
     
     CATCH 
@@ -399,15 +399,16 @@ PUBLIC SUB getSqWkdCfd(sq AS String, band AS String)
                 hResul.MoveNext()
             LOOP 
         ENDIF 
-        FMain.descDB()
+        'FMain.descDB()
     ENDIF 
     
     CATCH 
         DEBUG Error.Text, Error.Where
 END
 
-PUBLIC SUB cboBanda_Click()
-    IF c <> NULL THEN getWkdCfd(c.entity, cboBanda.Text)
+PUBLIC SUB cboFreq_Click()
+    IF c <> NULL THEN getWkdCfd(c.entity, cboFreq.Text)
+    
 END
 
 ' PUBLIC SUB txtCall_KeyPress()
@@ -507,7 +508,7 @@ PUBLIC SUB txtCall_LostFocus()
         ENDIF 
     ENDIF 
     $homecall = homecall
-    IF c <> NULL AND Len(call) > 2 THEN getWkdCfd(c.entity, cboBanda.Text)
+    IF c <> NULL AND Len(call) > 2 THEN getWkdCfd(c.entity, cboFreq.Text)
     IF sktHamlib.Status = Net.Connected THEN txtFreq.Text = Left(lcdQRG.Text, Len(lcdQRG.Text) - 1)
     
     wkdB4(call) 'worked before?
@@ -540,7 +541,7 @@ PRIVATE SUB wkdB4(call AS String)
             hres.MoveNext
             INC r
         LOOP 
-        descDB()
+        'descDB()
     ENDIF 
     CATCH    
         Message.Error(("Error in wkdB4\n") & Error.Text & "\n" & Error.Where)     
@@ -618,7 +619,7 @@ END
 PRIVATE SUB spotQSO()
     'envia spot formateado al cluster según si es HF o V-UHF
     DIM strSpot AS String = ""    
-    SELECT CASE cboBanda.Text  
+    SELECT CASE cboFreq.Text  
         CASE "6M", "4M", "2M", "70CM", "23CM", "13CM", "6CM", "3CM", "1.25CM", "6MM"
             strSpot = "DX " & txtFreq.Text & " " & txtCall.Text & " " & txtLocQSO.Text & Chr(060) & cboPropa.Text & Chr(062) & ini["Estacion/Locator"] & " " & txtComment.Text
         CASE ELSE 
@@ -788,7 +789,7 @@ PUBLIC SUB sktHamlib_Read()
             IF Len(S) > 6 THEN 
                   qrg = Val(S) / 1000
                   TRY lcdQRG.text = Replace(Format$(qrg, "#.00"), ",", ".")                  
-                  IF modificando = FALSE THEN TRY cboBanda.Text = global.getBand(qrg)
+                  IF modificando = FALSE THEN TRY cboFreq.Text = global.getBand(qrg)
                   'DEBUG "qrg=" & qrg
             ELSE IF Len(S) <= 4 THEN 
                 IF S = "USB" OR S = "LSB" OR S = "AM" OR S = "FM" OR S = "CW" OR S = "CW" OR S = "FMN" OR S = "FSK" OR S = "AMN" OR S = "RTTY"
@@ -827,7 +828,7 @@ PUBLIC SUB setModeBand(sfreq AS Float)
         S = "F " & CStr(sfreq) & "\r\n"
         TRY WRITE #sktHamlib, S, Len(S)
     ENDIF 
-    cboBanda.Text = global.getBand(sfreq / 1000)    
+    cboFreq.Text = global.getBand(sfreq / 1000)    
     
     CATCH    
         Message.Error(("Error in setModeBand\n") & Error.Text & "\n" & Error.Where)  
@@ -1069,7 +1070,7 @@ PUBLIC SUB tblCluster_Click()
     CATCH 
         Message.Error(("Error in tblCluster_Click()\n") & Error.Text & "\n" & Error.Where) 
 END
-PUBLIC SUB tblCluster_DblClick()
+PUBLIC SUB tblCluster_Activate()
     DIM dxCall AS String
     DIM dxFreq AS Float
     DIM dxline, dxcomment, pa, pb, homecall AS String 
@@ -1102,7 +1103,7 @@ PUBLIC SUB tblCluster_DblClick()
     btnOK.SetFocus()
         
     CATCH 
-        DEBUG ("Error in tblCluster_doubleClick\n"), Error.Text, Error.Where
+        DEBUG ("Error in tblCluster_Activate\n"), Error.Text, Error.Where
     
 END
 
@@ -1176,12 +1177,12 @@ PUBLIC SUB txtLocQSO_Change()
           txtLocQSO.ForeColor = Color.Black
           lblDist.Caption = Round(global.distLoc(txtLocQSO.Text, ini["Estacion/Locator"]), -1) & " Km"
           lblRumbo.Caption = Round(global.bearingLoc(ini["Estacion/Locator"], txtLocQSO.Text), -1) & " Deg"
-          IF modificando = FALSE THEN getSqWkdCfd(txtLocQSO.Text, cboBanda.Text)
+          IF modificando = FALSE THEN getSqWkdCfd(txtLocQSO.Text, cboFreq.Text)
         ELSE 
           txtLocQSO.ForeColor = Color.Red
           lblSqWorked.Text = ""
           'buscar()
-          IF modificando = FALSE THEN getWkdCfd(c.entity, cboBanda.Text)
+          IF modificando = FALSE THEN getWkdCfd(c.entity, cboFreq.Text)
         ENDIF 
     ELSE 
       txtLocQSO.ForeColor = Color.Black
@@ -1277,7 +1278,7 @@ PUBLIC SUB txtFreq_LostFocus()
             txtFreq.Text = Replace(txtFreq.Text, ",", ".")            
             IF global.getBand(CFloat(txtFreq.Text)) THEN 
                 Fq = CFloat(txtFreq.Text) * 1000
-                cboBanda.Text = global.getBand(CFloat(txtFreq.Text))  
+                cboFreq.Text = global.getBand(CFloat(txtFreq.Text))  
                 txtFreq.Text = format_txt(txtFreq.Text)
                 txtFreq2.Text = txtFreq.Text 
                 txtFreq2.Select(0, Len(txtFreq2.Text))
@@ -1430,7 +1431,7 @@ PUBLIC SUB fillData()
     LOOP 
         
     lblNoQSO.Text = hResulMax.Count + 1
-    'descDB()
+    
     grdQSO.Refresh()
     
     CATCH     
@@ -1478,7 +1479,7 @@ PRIVATE SUB logQSO()
               "&19,&20,&21,&22,&23,&24,&25,&26,&27,&28,&29,&30,&31,&32,&33,&34,&35,&36,&37,&38);"
     
     dbLog.cnLog.Exec(sql, "", vFecha.Value, vHora.Text, vHora2.Text, txtCall.Text, parseFreq(txtFreq.Text),
-                    parseFreq(txtFreq2.Text), cboBanda.Text, modo, cboPropa.Text, txtRSTr.Text, txtRSTe.Text, txtNameQSO.Text,
+                    parseFreq(txtFreq2.Text), cboFreq.Text, modo, cboPropa.Text, txtRSTr.Text, txtRSTe.Text, txtNameQSO.Text,
                     txtLocQSO.Text, txtQTHqso.Text, txtComment.Text, QSLsent(), QSLrec(), dteQSLe.Value, dteQSLr.Value,
                     txtMgrQSO.Text, c.pfx, c.continent, c.cqz, c.ituz, txtState.Text, txtCounty.Text, txtIOTA.Text,
                     ini["Estacion/QRZ"], txtPwr.Text, ini["Estacion/Locator"], txtSatName.Text, txtSatMode.Text,
@@ -1559,7 +1560,7 @@ END
 
 PUBLIC SUB mnuBorrarQSO_Click()
     DIM qso AS String
-    qso = grdQSO.Current.Text
+    qso = grdQSO.Current.Text   
     IF Message.Warning(("Selected QSO will be deleted\nDo you want to continue?"), ("Delete QSO"), ("Cancel")) = 2 THEN RETURN
     IF connDB() THEN RETURN 
     dbLog.cnLog.Exec("DELETE FROM log WHERE id=" & qso & ";")
@@ -1664,8 +1665,10 @@ PUBLIC SUB mnuSearch_Click()
 END
 
 PUBLIC SUB modifyQSO(idQSO AS Integer)
-    DIM hres AS Result
-    DIM sql AS String    
+    
+    DIM sql AS String
+    DIM hresult AS Result
+    DIM banda AS String    
     modificando = TRUE
     clearFields()
     btnOK.Text = ("Modify")
@@ -1679,46 +1682,46 @@ PUBLIC SUB modifyQSO(idQSO AS Integer)
     lblNoQSO.Text = idQSO    
     sql = "SELECT * FROM log WHERE id = &1;"
     IF connDB() THEN RETURN 
-    hres = dbLog.cnLog.Exec(sql, idQSO)
-    IF hres.Available THEN     
-        txtCall.Text = hres!call
-        'buscar() '******************************************************************************************************************************
-        vFecha.Value = hres!qso_date
-        vHora.Value = hres!time_on
-        IF hres!time_off THEN vHora2.Value = hres!time_off
-        IF hres!freq THEN txtFreq.Text = Replace(CStr(CFloat(hres!freq) * 1000), ",", ".")
-        IF hres!freq_rx THEN txtFreq2.Text = Replace(CStr(CFloat(hres!freq_rx) * 1000), ",", ".")
-        cboBanda.Text = hres!band
-        cboModo.Text = hres!mode        
-        cboPropa.Text = hres!prop_mode
-        txtRSTr.Text = hres!rst_rcvd
-        txtRSTe.Text = hres!rst_sent
-        txtNameQSO.Text = hres!name
-        txtLocQSO.Text = hres!gridsquare       
-        txtQTHqso.Text = hres!qth
-        txtComment.Text = hres!comment
-        chkQSLe.Value = parseQSL(hres!qsl_sent)
-        chkQSLr.Value = parseQSL(hres!qsl_rcvd)
-        dteQSLe.Value = hres!qslsdate
-        dteQSLr.Value = hres!qslrdate
-        txtMgrQSO.Text = hres!qsl_via
-        txtState.Text = hres!state
-        txtCounty.Text = hres!cnty
-        txtIOTA.Text = hres!iota
-        txtPwr.Text = hres!tx_pwr
-        txtSatName.Text = hres!sat_name
-        txtSatMode.Text = hres!sat_mode
-        lblEmail.Text = hres!email
-        txtTPEA.Text = hres!TPEA        
-        cboEntidad.Text = hres!country
-        cboEntidad_Click()        
+    hresult = dbLog.cnLog.Exec(sql, idQSO)
+    IF hresult.Available THEN 
+        txtCall.Text = hresult!call
+        vFecha.Value = hresult!qso_date
+        vHora.Value = hresult!time_on
+        IF hresult!time_off THEN vHora2.Value = hresult!time_off
+        IF hresult!freq THEN txtFreq.Text = Replace(CStr(CFloat(hresult!freq) * 1000), ",", ".")
+        IF hresult!freq_rx THEN txtFreq2.Text = Replace(CStr(CFloat(hresult!freq_rx) * 1000), ",", ".")
+        cboModo.Text = hresult!mode
+        cboFreq.Text = hresult!band
+        cboPropa.Text = hresult!prop_mode
+        txtRSTr.Text = hresult!rst_rcvd
+        txtRSTe.Text = hresult!rst_sent
+        txtNameQSO.Text = hresult!name
+        txtLocQSO.Text = hresult!gridsquare       
+        txtQTHqso.Text = hresult!qth
+        txtComment.Text = hresult!comment
+        chkQSLe.Value = parseQSL(hresult!qsl_sent)
+        chkQSLr.Value = parseQSL(hresult!qsl_rcvd)
+        dteQSLe.Value = hresult!qslsdate
+        dteQSLr.Value = hresult!qslrdate
+        txtMgrQSO.Text = hresult!qsl_via
+        txtState.Text = hresult!state
+        txtCounty.Text = hresult!cnty
+        txtIOTA.Text = hresult!iota
+        txtPwr.Text = hresult!tx_pwr
+        txtSatName.Text = hresult!sat_name
+        txtSatMode.Text = hresult!sat_mode
+        lblEmail.Text = hresult!email
+        txtTPEA.Text = hresult!TPEA        
+        cboEntidad.Text = hresult!country
+        txtCall_LostFocus
+    
     ELSE     
         Message.Error(("QSO Nr ") & idQSO & (" doesn't exist!"))
         btnClear_Click()
     ENDIF 
     
-    ' CATCH 
-    '     Message.Error(("Error in modifyQSO\n") & Error.Text & "\n" & Error.Where)  
+    CATCH 
+        Message.Error(("Error in modifyQSO\n") & Error.Text & "\n" & Error.Where)  
 END
 
 PRIVATE FUNCTION parseQSL(s AS String) AS Integer
@@ -1742,7 +1745,7 @@ PRIVATE SUB logModifiedQSO(id AS Integer)
      "pfx=&21, cont=&22, cqz=&23, ituz=&24, state=&25, cnty=&26, iota=&27, operator=&28, tx_pwr=&29, my_gridsquare=&30," &
      "sat_name=&31, sat_mode=&32, email=&33, country=&34, dxcc=&35, TPEA=&36 WHERE id = " & id & ";"
     dbLog.cnLog.Exec(sql, vFecha.Value, vHora.Text, vHora2.Text, txtCall.Text, parseFreq(txtFreq.Text), parseFreq(txtFreq2.Text), 
-    cboBanda.Text, modo, cboPropa.Text, txtRSTr.Text, txtRSTe.Text, txtNameQSO.Text, txtLocQSO.Text, txtQTHqso.Text, txtComment.Text, 
+    cboFreq.Text, modo, cboPropa.Text, txtRSTr.Text, txtRSTe.Text, txtNameQSO.Text, txtLocQSO.Text, txtQTHqso.Text, txtComment.Text, 
     QSLsent(), QSLrec(), dteQSLe.Value, dteQSLr.Value, txtMgrQSO.Text, lblPfx.Text, lblCont.Text, lblCQ.Text, lblITU.Text, txtState.Text, 
     txtCounty.Text, txtIOTA.Text, ini["Estacion/QRZ"], txtPwr.Text, ini["Estacion/Locator"], txtSatName.Text, txtSatMode.Text, 
     lblEmail.Text, cboEntidad.Text, cboEntidad.Index, txtTPEA.Text)
@@ -1767,7 +1770,7 @@ PUBLIC SUB setQSLrcvd(id AS Integer[], OPTIONAL unset AS Boolean = FALSE)
         ENDIF
         dbLog.cnLog.Exec(sql)
     NEXT 
-    'dbLog.CloseDB()
+    
     fillData()
     IF FLog.Visible = TRUE THEN FLog.fillData()
     IF FSearch.Visible = TRUE THEN FSearch.fillData()
@@ -1789,7 +1792,7 @@ PUBLIC SUB setQSLsent(id AS Integer[], OPTIONAL unset AS Boolean = FALSE)
         ENDIF
         dbLog.cnLog.Exec(sql)
     NEXT 
-    'dbLog.CloseDB()
+    
     fillData()
     IF FLog.Visible = TRUE THEN FLog.fillData()
     IF FSearch.Visible = TRUE THEN FSearch.fillData()
@@ -2097,5 +2100,3 @@ PUBLIC SUB tabLC_Click()
         ENDIF 
     ENDIF 
 END
-
-

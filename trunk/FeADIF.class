@@ -176,6 +176,6 @@ PUBLIC SUB btnOK_Click()
         btnCancel.Text = ("&Close")
         
         CATCH
-        Message.Error(("Error exporting Record\n") & hField!call & " " & hField!qso_date & "\n" & Error.Text)
+            Message.Error(("Error exporting Record\n") & hField!call & " " & hField!qso_date & "\n" & Error.Text)
 
 END

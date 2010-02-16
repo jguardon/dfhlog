@@ -288,7 +288,7 @@ PUBLIC FUNCTION clusterColor(call AS String, band AS String) AS Integer
                     hResul.MoveNext()
               LOOP 
           ENDIF 
-          'FMain.descDB()
+          
     ENDIF 
     RETURN colorDX
   
@@ -370,7 +370,7 @@ PUBLIC SUB saveADIF(myFile AS String)
               
     FINALLY         
         CLOSE #hFile
-        'dbLog.CloseDB()                
+        
     CATCH
         Message.Error(("Error exporting Record\n") & hField!call & " " & hField!qso_date & "\n" & Error.Text)
 END

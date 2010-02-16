@@ -39,7 +39,7 @@
     { mnuAdifExport Menu
       Text = ("ADIF Export")
       Picture = Picture["icon:/16/up"]
-      Shortcut = "Ctrl+E"
+      Shortcut = "Ctrl+P"
     }
     { sep2 Menu
       Text = ("")
@@ -353,7 +353,7 @@
           Text = ("")
           MaxLength = 20
         }
-        { cboBanda ComboBox
+        { cboFreq ComboBox
           MoveScaled(31,11,12,3)
           Tag = "exclude"
           ToolTip = ("Band Selection")

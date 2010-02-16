@@ -25,6 +25,7 @@ PUBLIC SUB _new(device AS Object, unit AS String)
     hres = dbLog.cnLog.Exec("SELECT id FROM qQSL")
     IF hres.Count < 1 THEN 
         Message.Info(("QSL queue is empty!"))
+        FPreview.Close
         RETURN
     ENDIF 
     hres = dbLog.cnLog.Exec("select * from qQSL ORDER BY call ASC")

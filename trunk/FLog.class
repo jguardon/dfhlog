@@ -23,6 +23,18 @@ PRIVATE records AS Integer
 PRIVATE start AS Integer
 PRIVATE $rf AS ResultField
 PRIVATE $aMyFields AS NEW String[]
+' menus
+PRIVATE $hmenu AS NEW Menu(ME)
+PRIVATE $hmenuInfo AS Menu
+PRIVATE $hmenuSep AS Menu
+PRIVATE $hmenuEdit AS Menu
+PRIVATE $hmenuDel AS Menu
+PRIVATE $hmenuExpADIF AS Menu
+PRIVATE $hmenuQSLr AS Menu
+PRIVATE $hmenuQSLs AS Menu
+PRIVATE $hmenuNQSLr AS Menu
+PRIVATE $hmenuNQSLs AS Menu
+PRIVATE $hmenuPrint AS Menu
 
 PUBLIC SUB Form_Open()
     ME.Move(FMain.ScreenX + (FMain.Width - ME.Width) / 2, FMain.ScreenY + (FMain.Height - ME.Height) / 2)
@@ -30,6 +42,7 @@ PUBLIC SUB Form_Open()
     prepararCV()
     disp = 100
     start = 0
+    createMenu()
     IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN     
     hres = dbLog.cnLog.Exec("SELECT * FROM log")
     records = hres.Count
@@ -99,8 +112,7 @@ PUBLIC SUB cv_Data(Row AS Integer, Column AS Integer)
     END SELECT
     
     IF row MOD 2 = 0 THEN cv.Data.Background = Color.LightBackground
-    CATCH 
-       fillData
+    
 END
 
 PRIVATE SUB getQSOs(OPTIONAL p AS Integer = 0)
@@ -169,87 +181,164 @@ PUBLIC SUB btnLast_Click()
   getQSOs(start)
 END
 
-PRIVATE SUB menuLog()
+PRIVATE SUB createMenu()
   
-  DIM hMenus AS Menu
-  DIM hMenu, hMenue AS Menu
+    $hmenuInfo = NEW Menu($hmenu)
+       
+    $hmenuSep = NEW Menu($hmenu)
+    $hmenuSep.Text = ""
+    
+    $hmenuEdit = NEW Menu($hmenu) AS "mnuEditarQSO"
+    $hmenuEdit.Text = ("Edit QSO")
+    $hmenuEdit.Picture = Picture["icons/gtk-edit.png"]
+    $hmenuEdit.Shortcut = "Ctrl+E"
+    
+    $hmenuDel = NEW Menu($hmenu) AS "mnuBorrarQSO"
+    $hmenuDel.Text = ("Delete QSO")
+    $hmenuDel.Picture = Picture["icons/gtk-delete.png"]
+    $hmenuDel.Shortcut = "Ctrl+D"
+    
+    $hmenuSep = NEW Menu($hmenu)
+    $hmenuSep.Text = ""
+    
+    $hmenuExpADIF = NEW Menu($hMenu) AS "mnuExpADIF"
+    $hmenuExpADIF.Text = ("Export to ADIF")
+    $hmenuExpADIF.Picture = Picture["icon:/16/up"]
+    $hmenuExpADIF.Shortcut = "Ctrl+Alt+A"
   
-  hMenus = NEW Menu(ME)
+    $hmenuSep = NEW Menu($hmenu)
+    $hmenuSep.Text = ""
+    
+    $hmenuQSLr = NEW Menu($hmenu) AS "mnuQSLrec"
+    $hmenuQSLr.Text = ("Check QSL as recvd.")
+    $hmenuQSLr.Picture = Picture["icons/gtk-redo-rtl.png"]
+    $hmenuQSLr.Shortcut = "F5"
+    
+    $hmenuQSLs = NEW Menu($hmenu) AS "mnuQSLenv"
+    $hmenuQSLs.Text = ("Check QSL as sent.")
+    $hmenuQSLs.Picture = Picture["icons/gtk-undo-rtl.png"]
+    $hmenuQSLs.Shortcut = "F6"
+    
+    $hmenuSep = NEW Menu($hmenu)
+    $hmenuSep.Text = ""
+    
+    $hmenuNQSLr = NEW Menu($hmenu) AS "mnuQSLnotrec"
+    $hmenuNQSLr.Text = ("Uncheck QSL as recvd.")
+    $hmenuNQSLr.Picture = Picture["icons/gtk-redo-not.png"]
+    $hmenuNQSLr.Shortcut = "F7"
+    
+    $hmenuNQSLs = NEW Menu($hmenu) AS "mnuQSLnotenv"
+    $hmenuNQSLs.Text = ("Uncheck QSL as sent.")
+    $hmenuNQSLs.Picture = Picture["icons/gtk-undo-not.png"]
+    $hmenuNQSLs.Shortcut = "F8"
+    
+    $hmenuSep = NEW Menu($hmenu)
+    $hmenuSep.Text = ""
+    
+    $hmenuPrint = NEW Menu($hmenu) AS "mnuPrintQSL"
+    $hmenuPrint.Text = ("Print QSL")
+    $hmenuPrint.Picture = Picture["icons/gtk-print.png"]
+    $hmenuPrint.Shortcut = "Ctrl+P" 
   
-  hMenu = NEW Menu(hMenus)
-  getSelectedQSO()
-  IF global.$iQSOn.Count > 1 THEN 
-        hMenu.Text = ("For selected QSOs: ") & global.$iQSOn.Count
-  ELSE 
-        hMenu.Text = (("For QSO with: ") & cv[cv.Row, 4].Text)
-  ENDIF 
-  
-  hMenu = NEW Menu(hMenus)
-  hMenu.Text = ""
-  
-  hMenue = NEW Menu(hMenus) AS "mnuEditarQSO"
-  hMenue.Text = ("Edit QSO")
-  hMenue.Picture = Picture["icons/gtk-edit.png"]
-  hMenue.Shortcut = "Ctrl+M"
-  IF global.$iQSOn.Count > 1 THEN hMenue.enabled = FALSE
-  
-  hMenu = NEW Menu(hMenus) AS "mnuBorrarQSO"
-  hMenu.Text = ("Delete QSO")
-  hMenu.Picture = Picture["icons/gtk-delete.png"]
-  hMenu.Shortcut = "Ctrl+D"
-  
-  hMenu = NEW Menu(hMenus)
-  hMenu.Text = ""
-  
-  hMenu = NEW Menu(hMenus) AS "mnuExpADIF"
-  hMenu.Text = ("Export to ADIF")
-  hMenu.Picture = Picture["icon:/16/up"]
-  hMenu.Shortcut = "Ctrl+Alt+A"
-  
-  hMenu = NEW Menu(hMenus)
-  hMenu.Text = ""
-  
-  hMenu = NEW Menu(hMenus) AS "mnuQSLrec"
-  hMenu.Text = ("Check QSL as recvd.")
-  hMenu.Picture = Picture["icons/gtk-redo-rtl.png"]
-  hMenu.Shortcut = "F5"
-  
-  hMenu = NEW Menu(hMenus) AS "mnuQSLenv"
-  hMenu.Text = ("Check QSL as sent.")
-  hMenu.Picture = Picture["icons/gtk-undo-rtl.png"]
-  hMenu.Shortcut = "F6"
-  
-  hMenu = NEW Menu(hMenus)
-  hMenu.Text = ""
-  
-  hMenu = NEW Menu(hMenus) AS "mnuQSLnotrec"
-  hMenu.Text = ("Uncheck QSL as recvd.")
-  hMenu.Picture = Picture["icons/gtk-redo-not.png"]
-  hMenu.Shortcut = "F7"
-  
-  hMenu = NEW Menu(hMenus) AS "mnuQSLnotenv"
-  hMenu.Text = ("Uncheck QSL as sent.")
-  hMenu.Picture = Picture["icons/gtk-undo-not.png"]
-  hMenu.Shortcut = "F8"
-  
-  hMenu = NEW Menu(hMenus)
-  hMenu.Text = ""
-  
-  hMenu = NEW Menu(hMenus) AS "mnuPrintQSL"
-  hMenu.Text = ("Print QSL")
-  hMenu.Picture = Picture["icons/gtk-print.png"]
-  hMenu.Shortcut = "Ctrl+P"
+END
 
-  ' pop up 
-  IF hMenus THEN hMenus.Popup()
+PRIVATE SUB menuLog()
+
+    getSelectedQSO()
+    IF global.$iQSOn.Count > 1 THEN 
+          $hmenuInfo.Text = ("For selected QSOs: ") & global.$iQSOn.Count
+    ELSE 
+          $hmenuInfo.Text = (("For QSO with: ") & cv[cv.Row, 4].Text)
+    ENDIF 
+    
+    IF global.$iQSOn.Count > 1 THEN $hmenuEdit.enabled = FALSE
+    
+    ' pop up
+     
+    $hMenu.Popup()
+  
+  ' DIM hMenus AS Menu
+  ' DIM hMenu, hMenue AS Menu
+  ' 
+  ' hMenus = NEW Menu(ME)
+  ' 
+  ' hMenu = NEW Menu(hMenus)
+  ' getSelectedQSO()
+  ' IF global.$iQSOn.Count > 1 THEN 
+  '       hMenu.Text = ("For selected QSOs: ") & global.$iQSOn.Count
+  ' ELSE 
+  '       hMenu.Text = (("For QSO with: ") & cv[cv.Row, 4].Text)
+  ' ENDIF 
+  ' 
+  ' hMenu = NEW Menu(hMenus)
+  ' hMenu.Text = ""
+  ' 
+  ' hMenue = NEW Menu(hMenus) AS "mnuEditarQSO"
+  ' hMenue.Text = ("Edit QSO")
+  ' hMenue.Picture = Picture["icons/gtk-edit.png"]
+  ' hMenue.Shortcut = "Ctrl+E"
+  ' IF global.$iQSOn.Count > 1 THEN hMenue.enabled = FALSE
+  ' 
+  ' hMenu = NEW Menu(hMenus) AS "mnuBorrarQSO"
+  ' hMenu.Text = ("Delete QSO")
+  ' hMenu.Picture = Picture["icons/gtk-delete.png"]
+  ' hMenu.Shortcut = "Ctrl+D"
+  ' 
+  ' hMenu = NEW Menu(hMenus)
+  ' hMenu.Text = ""
+  ' 
+  ' hMenu = NEW Menu(hMenus) AS "mnuExpADIF"
+  ' hMenu.Text = ("Export to ADIF")
+  ' hMenu.Picture = Picture["icon:/16/up"]
+  ' hMenu.Shortcut = "Ctrl+Alt+A"
+  ' 
+  ' hMenu = NEW Menu(hMenus)
+  ' hMenu.Text = ""
+  ' 
+  ' hMenu = NEW Menu(hMenus) AS "mnuQSLrec"
+  ' hMenu.Text = ("Check QSL as recvd.")
+  ' hMenu.Picture = Picture["icons/gtk-redo-rtl.png"]
+  ' hMenu.Shortcut = "F5"
+  ' 
+  ' hMenu = NEW Menu(hMenus) AS "mnuQSLenv"
+  ' hMenu.Text = ("Check QSL as sent.")
+  ' hMenu.Picture = Picture["icons/gtk-undo-rtl.png"]
+  ' hMenu.Shortcut = "F6"
+  ' 
+  ' hMenu = NEW Menu(hMenus)
+  ' hMenu.Text = ""
+  ' 
+  ' hMenu = NEW Menu(hMenus) AS "mnuQSLnotrec"
+  ' hMenu.Text = ("Uncheck QSL as recvd.")
+  ' hMenu.Picture = Picture["icons/gtk-redo-not.png"]
+  ' hMenu.Shortcut = "F7"
+  ' 
+  ' hMenu = NEW Menu(hMenus) AS "mnuQSLnotenv"
+  ' hMenu.Text = ("Uncheck QSL as sent.")
+  ' hMenu.Picture = Picture["icons/gtk-undo-not.png"]
+  ' hMenu.Shortcut = "F8"
+  ' 
+  ' hMenu = NEW Menu(hMenus)
+  ' hMenu.Text = ""
+  ' 
+  ' hMenu = NEW Menu(hMenus) AS "mnuPrintQSL"
+  ' hMenu.Text = ("Print QSL")
+  ' hMenu.Picture = Picture["icons/gtk-print.png"]
+  ' hMenu.Shortcut = "Ctrl+P"
+  ' 
+  ' ' pop up 
+  ' IF hMenus THEN hMenus.Popup()
   TRY cv.Rows.Unselect
   
 END
 
 PUBLIC SUB mnuEditarQSO_Click()
+    getSelectedQSO()
     IF global.$iQSOn.Count = 1 THEN 
-        TRY FMain.modifyQSO(CInt(cv[cv.Row, 0].Text))        
-        FMain.Visible = TRUE       
+        TRY FMain.modifyQSO(CInt(cv[cv.Row, 0].Text))
+        FMain.Visible = TRUE 
+    ELSE 
+        Message.Warning(("Only one QSO could be edited at a time!")) 
     ENDIF   
 END
 
@@ -315,6 +404,12 @@ END
 
 PUBLIC SUB cv_Menu()     
   TRY menuLog() 
+END
+
+PUBLIC SUB cv_Click()
+    IF cv.Rows.Count > 0 THEN 
+        getSelectedQSO
+    ENDIF
 END
 
 PUBLIC SUB getSelectedQSO()
