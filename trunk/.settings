@@ -229,11 +229,9 @@ SearchString=True
 [OpenFile]
 File[1]="FMain.class:1620.15"
 File[2]="FMain.form"
-File[3]="FLoc.form"
-File[4]="FAwards.class:165.0"
-File[5]="FAwards.form"
-Active=5
-Count=5
+File[3]="FSearch.form"
+Active=3
+Count=3
 
 [Watches]
 Count=0
