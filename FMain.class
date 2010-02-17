@@ -46,6 +46,17 @@ PUBLIC sUSAC AS String
 PUBLIC $qrzCom AS Integer
 PUBLIC hProcess AS Process
 PUBLIC $utcdiff AS Integer
+' menus
+PRIVATE $hmenu AS NEW Menu(ME)
+PRIVATE $hmenuInfo AS Menu
+PRIVATE $hmenuSep AS Menu
+PRIVATE $hmenuEdit AS Menu
+PRIVATE $hmenuDel AS Menu
+PRIVATE $hmenuQSLr AS Menu
+PRIVATE $hmenuQSLs AS Menu
+PRIVATE $hmenuNQSLr AS Menu
+PRIVATE $hmenuNQSLs AS Menu
+PRIVATE $hmenuPrint AS Menu
 
 
 PUBLIC SUB _new()
@@ -70,6 +81,61 @@ PUBLIC SUB _new()
     CATCH
         Message.Error(("Error in Fmain_new\n") & Error.Text & "\n" & Error.Where)
 END
+
+PRIVATE SUB createMenu()
+
+    $hmenuInfo = NEW Menu($hmenu)
+       
+    $hmenuSep = NEW Menu($hmenu)
+    $hmenuSep.Text = ""
+    
+    $hmenuEdit = NEW Menu($hmenu) AS "mnuEditarQSO"
+    $hmenuEdit.Text = ("Edit QSO")
+    $hmenuEdit.Picture = Picture["icons/gtk-edit.png"]
+    $hmenuEdit.Shortcut = "Ctrl+E"
+    
+    $hmenuDel = NEW Menu($hmenu) AS "mnuBorrarQSO"
+    $hmenuDel.Text = ("Delete QSO")
+    $hmenuDel.Picture = Picture["icons/gtk-delete.png"]
+    $hmenuDel.Shortcut = "Ctrl+D"
+  
+    $hmenuSep = NEW Menu($hmenu)
+    $hmenuSep.Text = ""
+    
+    $hmenuQSLr = NEW Menu($hmenu) AS "mnuQSLrec"
+    $hmenuQSLr.Text = ("Check QSL as recvd.")
+    $hmenuQSLr.Picture = Picture["icons/gtk-redo-rtl.png"]
+    $hmenuQSLr.Shortcut = "F5"
+    
+    $hmenuQSLs = NEW Menu($hmenu) AS "mnuQSLenv"
+    $hmenuQSLs.Text = ("Check QSL as sent.")
+    $hmenuQSLs.Picture = Picture["icons/gtk-undo-rtl.png"]
+    $hmenuQSLs.Shortcut = "F6"
+    
+    $hmenuSep = NEW Menu($hmenu)
+    $hmenuSep.Text = ""
+    
+    $hmenuNQSLr = NEW Menu($hmenu) AS "mnuQSLnotrec"
+    $hmenuNQSLr.Text = ("Uncheck QSL as recvd.")
+    $hmenuNQSLr.Picture = Picture["icons/gtk-redo-not.png"]
+    $hmenuNQSLr.Shortcut = "F7"
+    
+    $hmenuNQSLs = NEW Menu($hmenu) AS "mnuQSLnotenv"
+    $hmenuNQSLs.Text = ("Uncheck QSL as sent.")
+    $hmenuNQSLs.Picture = Picture["icons/gtk-undo-not.png"]
+    $hmenuNQSLs.Shortcut = "F8"
+    
+    $hmenuSep = NEW Menu($hmenu)
+    $hmenuSep.Text = ""
+    
+    $hmenuPrint = NEW Menu($hmenu) AS "mnuPrintQSL"
+    $hmenuPrint.Text = ("Print QSL")
+    $hmenuPrint.Picture = Picture["icons/gtk-print.png"]
+    $hmenuPrint.Shortcut = "Ctrl+P"  
+    
+
+END
+
 
 PUBLIC SUB Form_Close()
     ini["Window/Top"] = ME.ScreenY
@@ -161,6 +227,7 @@ PUBLIC SUB Form_Open()
     tblCluster.Columns.Count = 1   
     tblCluster.Rows.Height = 10
     prepararGrid()
+    createMenu()
     prepareWkdB4()
     
     IF ini["Log/File"] = NULL OR NOT Exist(ini["Log/File"]) THEN 
@@ -408,20 +475,9 @@ END
 
 PUBLIC SUB cboFreq_Click()
     IF c <> NULL THEN getWkdCfd(c.entity, cboFreq.Text)
+    getSqWkdCfd(txtLocQSO.Text, cboFreq.Text)
     
 END
-
-' PUBLIC SUB txtCall_KeyPress()
-'     SELECT CASE Key.Code
-'         CASE 47 TO 57
-'         CASE 65 TO 90
-'         CASE Key.BackSpace
-'         CASE Key.Delete
-'         CASE Key.Tab
-'         CASE ELSE 
-'           STOP EVENT 
-'     END SELECT
-' END
 
 PUBLIC SUB Timer1_Timer()
     DIM sAux AS String     
@@ -611,7 +667,8 @@ PUBLIC SUB btnOK_Click()
         Message.Info(("You must fill at least: Callsign, RST_r, RST_s and Frequency"))
         RETURN
     END IF    
-    txtCall.SetFocus       
+    txtCall.SetFocus
+    global.$iQSOn.Clear       
     CATCH    
         Message.Error(("Error in btnOK_Click\n") & Error.Text & "\n" & Error.Where)    
 END
@@ -644,8 +701,10 @@ PUBLIC SUB btnClear_Click()
         chkRT.Visible = TRUE
     ENDIF    
     modificando = FALSE
+    global.$iQSOn.Clear
     clearFields()
     txtCall.Clear()
+    
     TRY fldigiClearfiedls()
     fillData()        
     txtCall.SetFocus
@@ -1177,7 +1236,8 @@ PUBLIC SUB txtLocQSO_Change()
           txtLocQSO.ForeColor = Color.Black
           lblDist.Caption = Round(global.distLoc(txtLocQSO.Text, ini["Estacion/Locator"]), -1) & " Km"
           lblRumbo.Caption = Round(global.bearingLoc(ini["Estacion/Locator"], txtLocQSO.Text), -1) & " Deg"
-          IF modificando = FALSE THEN getSqWkdCfd(txtLocQSO.Text, cboFreq.Text)
+          'IF modificando = FALSE THEN 
+          getSqWkdCfd(txtLocQSO.Text, cboFreq.Text)
         ELSE 
           txtLocQSO.ForeColor = Color.Red
           lblSqWorked.Text = ""
@@ -1490,72 +1550,23 @@ PRIVATE SUB logQSO()
         Message.Error(("Error loging QSO\n") & Error.Text & "\n" & Error.Where)    
 END
 
-PRIVATE SUB menuLog()  
-    DIM hMenus AS Menu
-    DIM hMenu, hMenue AS Menu
-    
-    hMenus = NEW Menu(ME)
-    
-    hMenu = NEW Menu(hMenus)
+PRIVATE SUB menuLog()
     global.$iQSOn.Clear
-    global.$iQSOn.Add(CInt(grdQSO.Current.Text))
-    
-    hMenu.Text = (("For QSO with: ") & grdQSO[grdQSO.Current.Text][3])  
-    
-    hMenu = NEW Menu(hMenus)
-    hMenu.Text = ""
-    
-    hMenue = NEW Menu(hMenus) AS "mnuEditarQSO"
-    hMenue.Text = ("Edit QSO")
-    hMenue.Picture = Picture["icons/gtk-edit.png"]
-    hMenue.Shortcut = "Ctrl+M"
-    'IF global.$iQSOn.Count > 1 THEN hMenue.enabled = FALSE
-    
-    hMenu = NEW Menu(hMenus) AS "mnuBorrarQSO"
-    hMenu.Text = ("Delete QSO")
-    hMenu.Picture = Picture["icons/gtk-delete.png"]
-    hMenu.Shortcut = "Ctrl+D"
-    
-    hMenu = NEW Menu(hMenus)
-    hMenu.Text = ""
-    
-    hMenu = NEW Menu(hMenus) AS "mnuQSLrec"
-    hMenu.Text = ("Check QSL as recvd.")
-    hMenu.Picture = Picture["icons/gtk-redo-rtl.png"]
-    hMenu.Shortcut = "F5"
-    
-    hMenu = NEW Menu(hMenus) AS "mnuQSLenv"
-    hMenu.Text = ("Check QSL as sent.")
-    hMenu.Picture = Picture["icons/gtk-undo-rtl.png"]
-    hMenu.Shortcut = "F6"
-    
-    hMenu = NEW Menu(hMenus)
-    hMenu.Text = ""
-    
-    hMenu = NEW Menu(hMenus) AS "mnuQSLnotrec"
-    hMenu.Text = ("Uncheck QSL as recvd.")
-    hMenu.Picture = Picture["icons/gtk-redo-not.png"]
-    hMenu.Shortcut = "F7"
-    
-    hMenu = NEW Menu(hMenus) AS "mnuQSLnotenv"
-    hMenu.Text = ("Uncheck QSL as sent.")
-    hMenu.Picture = Picture["icons/gtk-undo-not.png"]
-    hMenu.Shortcut = "F8"
-    
-    hMenu = NEW Menu(hMenus)
-    hMenu.Text = ""
-    
-    hMenu = NEW Menu(hMenus) AS "mnuPrintQSL"
-    hMenu.Text = ("Print QSL")
-    hMenu.Picture = Picture["icons/gtk-print.png"]
-    hMenu.Shortcut = "Ctrl+P"
-    ' pop up 
-    IF hMenus THEN hMenus.Popup()  
+    global.$iQSOn.Add(CInt(grdQSO[grdQSO.Current.Text][0]))
+    $hmenuInfo.Text = (("For QSO with: ") & grdQSO[grdQSO.Current.Text][3])
+     
+    ' pop up     
+    $hMenu.Popup()
+END
+
+PUBLIC SUB grdQSO_Click()
+    global.$iQSOn.Clear
+    global.$iQSOn.Add(CInt(grdQSO[grdQSO.Current.Text][0]))
 END
 
 PUBLIC SUB mnuEditarQSO_Click()
-  modifyQSO(grdQSO[grdQSO.Current.Text][0])
-  'DEBUG grdQSO[grdQSO.Current.Text][0]
+    IF global.$iQSOn.Count = 1 THEN modifyQSO(grdQSO[grdQSO.Current.Text][0])
+    'DEBUG grdQSO[grdQSO.Current.Text][0]
 END
 
 PUBLIC SUB mnuBorrarQSO_Click()
