@@ -227,11 +227,10 @@ SearchComment=True
 SearchString=True
 
 [OpenFile]
-File[1]="FMain.class:1620.15"
+File[1]="FMain.class:804.9"
 File[2]="FMain.form"
-File[3]="FSearch.form"
-Active=3
-Count=3
+Active=2
+Count=2
 
 [Watches]
 Count=0

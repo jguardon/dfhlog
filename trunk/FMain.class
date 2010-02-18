@@ -787,7 +787,7 @@ PUBLIC SUB btnCAT_Click()
             ELSE 
                 SHELL "rigctld -m " & ini["Hamlib/Rig", 1] & " -r " & ini["Hamlib/Device", "/dev/ttyS0"] & " -s " & ini["Hamlib/Speed", 9600] & " &"                             
             ENDIF 
-            'PanelSmeter.Visible = TRUE
+            ' PanelSmeter.Visible = TRUE
             lcdQRG.Visible = TRUE
             WAIT 0.5
             
@@ -797,8 +797,8 @@ PUBLIC SUB btnCAT_Click()
             timerCAT.Enabled = FALSE
             sktHamlib.Close()
             lcdQRG.Text = 0
-            'pbSmeter.Value = 0
-            'PanelSmeter.Visible = FALSE
+            ' pbSmeter.Value = 0
+            ' PanelSmeter.Visible = FALSE
             lcdQRG.Visible = FALSE
             SHELL "killall grig rigctld rpc.rigd"
         ENDIF
@@ -859,7 +859,7 @@ PUBLIC SUB sktHamlib_Read()
                 '     smeter = 54 + Val(S)
                 '     'DEBUG "smeter=" & smeter
                 '     TRY pbSmeter.Value = smeter / 114
-                ' ENDIF
+'                 ENDIF
             ENDIF
          'ENDIF
         
