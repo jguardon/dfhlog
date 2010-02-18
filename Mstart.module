@@ -37,6 +37,7 @@ PUBLIC SUB Main() 'Select language from command line args. You need to install s
                 "-pt (for Portuguesse)\n-en (for English)"))            
         END SELECT
     ENDIF
+    IF NOT Exist(User.Home &/ ".fonts/Crysta.ttf") THEN COPY "data/Crysta.ttf" TO User.Home &/ ".fonts/Crysta.ttf"
     FMain.Show
      
 END

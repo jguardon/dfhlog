@@ -3,7 +3,7 @@
 Title=dfhlog
 Startup=Mstart
 Icon=icons/dfhlog.png
-Version=0.0.40
+Version=0.0.41
 Library=gb.qt
 Library=gb.form
 Library=gb.db
