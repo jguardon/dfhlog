@@ -1,0 +1,262 @@
+' Gambas class file
+
+PRIVATE $upLimit AS Float = 14.35
+PRIVATE $dwnLimit AS Float = 14.0
+PRIVATE $Freq AS Float = 14.100
+PRIVATE $zoom AS Float
+PRIVATE $End AS Float
+PRIVATE $Start AS Float
+PRIVATE $Ffin AS Float
+PRIVATE $F2 AS Float
+PRIVATE $vfo0 AS Float
+PRIVATE $Ba AS Boolean
+PRIVATE $DH AS Float
+PRIVATE $FullSpan AS Boolean = FALSE
+PRIVATE $Band AS String = "20M"
+PRIVATE $OldBand AS String = "20M"
+PUBLIC $cSpot AS NEW Collection
+
+PUBLIC SUB Form_Open()
+
+    $zoom = 100
+END
+
+PUBLIC SUB daBandMap_Draw()
+    DIM F, P, R, rndN AS Integer
+    DIM i, iStep, iEnd, iIni, p0 AS Float
+    DIM sFreq, sAux AS String
+    
+    ' Draw ticked scale placeholder
+    Draw.FillStyle = Fill.Solid
+    Draw.Foreground = Color.Red
+    Draw.FillColor = Color.LightBackground
+    Draw.Rect(0, 0, 70, daBandMap.Height)
+    Draw.Foreground = Color.Black
+    Draw.Font.Size = 7
+    
+    $Band = FMain.cBand
+    ' 'getBandLimits($Band)
+    ' DEBUG $Band
+    ' IF $Band <> $OldBand AND $FullSpan THEN 
+    '     DEBUG $Band, "cambio banda"
+    '     $zoom = ($upLimit - $dwnLimit) * 1000
+    '     $End = $dwnLimit
+    '     $Freq = ($upLimit + $dwnLimit) / 2
+    '     $OldBand = $Band
+    ' ENDIF 
+    $DH = Draw.H
+    iIni = $dwnLimit * 1000
+    iEnd = $upLimit * 1000
+    F = Int($Freq * 1000 - $zoom / 2)
+    $End = F
+    iStep = (Draw.H / $zoom) 
+    
+    
+    
+    FOR i = 0 TO Draw.H STEP iStep
+        IF F > iEnd OR F < iIni THEN 
+            Draw.ForeColor = Color.Red
+        ELSE 
+            Draw.ForeColor = Color.Black
+        END IF
+        
+        IF F MOD 5 = 0 THEN
+            Draw.Line(68 - 10, i, 68, i)
+            sFreq = Replace$(Format$(F / 1000, "##0.000"), ",", ".")
+            Draw.Text(sFreq, 55 - Draw.Font.Width(sFreq), i - Draw.Font.Height(sFreq) / 2,,, Align.Right)
+            'DEBUG F, $zoom
+        ELSE 
+            Draw.Line(68 - 5, i, 68, i)
+            
+        END IF
+        INC F
+        
+    NEXT 
+    
+    $Ffin = F - 1
+    
+    Draw.Picture(Picture["icons/dial.png"], 62, (daBandMap.Height / 2) - 4)
+    
+    FOR EACH sAux IN $cSpot
+    'DEBUG CFloat($cSpot[$cSpot.Key]), $End, $Ffin
+        IF CFloat($cSpot[$cSpot.Key]) >= $End AND CFloat($cSpot[$cSpot.Key]) <= $Ffin THEN 
+            RANDOMIZE 
+            rndN = Rnd(-10, 10)
+            P = Int(CFloat($cSpot[$cSpot.Key]) - $End) / ($Ffin - $End) * Draw.H
+            Draw.ForeColor = Color.Black
+            Draw.Font.Size = 9
+            Draw.Line(70, P, 70 + 20, P)
+            Draw.ForeColor = global.clusterColor($cSpot.Key, $Band)
+            Draw.Text($cSpot.Key, 73 + 20, P - Draw.Font.Height($cSpot.Key) / 2,,, Align.Left)
+            'PRINT $cSpot.Key, $cSpot[$cSpot.Key], $cSpot.Count, P
+        ENDIF 
+            
+        
+    NEXT 
+      
+
+END
+
+PUBLIC SUB Control(VFO AS Float)
+    $Freq = VFO / 1000
+    
+    daBandMap.Refresh
+    
+END
+
+PUBLIC SUB daRefresh()
+    daBandMap.Refresh
+END
+
+PUBLIC SUB getBandLimits(band AS String)
+ 
+    SELECT CASE band
+        CASE "2190M"
+            $upLimit AS Float = 0.1378
+            $dwnLimit AS Float = 0.1357
+            $Freq AS Float = 0.1360
+        CASE "160M"
+            $upLimit AS Float = 2.0
+            $dwnLimit AS Float = 1.8
+            $Freq AS Float = 1.9
+        CASE "80M"
+            $upLimit AS Float = 3.9
+            $dwnLimit AS Float = 3.5
+            $Freq AS Float = 3.6
+        CASE "40M"
+            $upLimit AS Float = 7.2
+            $dwnLimit AS Float = 7.0
+            $Freq AS Float = 7.100
+        CASE "30M"
+            $upLimit AS Float = 10.15
+            $dwnLimit AS Float = 10.1
+            $Freq AS Float = 10.12
+        CASE "20M"
+            $upLimit AS Float = 14.35
+            $dwnLimit AS Float = 14.0
+            $Freq AS Float = 14.100
+        CASE "17M"
+            $upLimit AS Float = 18.168
+            $dwnLimit AS Float = 18.068
+            $Freq AS Float = 18.100
+        CASE "15M"
+            $upLimit AS Float = 21.45
+            $dwnLimit AS Float = 21.0
+            $Freq AS Float = 21.200
+        CASE "12M"
+            $upLimit AS Float = 24.99
+            $dwnLimit AS Float = 24.89
+            $Freq AS Float = 24.95
+        CASE "10M"
+            $upLimit AS Float = 29.7
+            $dwnLimit AS Float = 28
+            $Freq AS Float = 28.5
+        CASE "6M"
+            $upLimit AS Float = 52.0
+            $dwnLimit AS Float = 50.0
+            $Freq AS Float = 50.2
+        CASE "4M"
+            $upLimit AS Float = 70.5
+            $dwnLimit AS Float = 70.0
+            $Freq AS Float = 70.2
+        CASE "2M"
+            $upLimit AS Float = 146.0
+            $dwnLimit AS Float = 144.0
+            $Freq AS Float = 144.300
+        CASE "70CM"
+            $upLimit AS Float = 440.0
+            $dwnLimit AS Float = 430.0
+            $Freq AS Float = 433.2
+        CASE "23CM"
+            $upLimit AS Float = 1300.0
+            $dwnLimit AS Float = 1240.0
+            $Freq AS Float = 1296.0
+        CASE "13CM"
+            $upLimit AS Float = 2450.0
+            $dwnLimit AS Float = 2300.0
+            $Freq AS Float = 2350.0
+        CASE "6CM"
+            $upLimit AS Float = 5850.0
+            $dwnLimit AS Float = 5650.0
+            $Freq AS Float = 5700.0
+        CASE "3CM"
+            $upLimit AS Float = 10500.0
+            $dwnLimit AS Float = 10000.0
+            $Freq AS Float = 10200.0
+        CASE "1.25CM"
+            $upLimit AS Float = 24250.0
+            $dwnLimit AS Float = 24000.0
+            $Freq AS Float = 24100.0
+        CASE "6MM"
+            $upLimit AS Float = 47200.0
+            $dwnLimit AS Float = 47000.0
+            $Freq AS Float = 47100.0
+    END SELECT
+    daBandMap.Refresh
+END
+
+PUBLIC SUB Form_Resize()
+    
+    daBandMap.Refresh  
+
+END
+
+PUBLIC SUB btnZoomIn_Click()
+    
+    $zoom -= 10
+    daBandMap.Refresh 
+
+END
+
+PUBLIC SUB btnZoomOut_Click()
+    
+    $zoom += 10
+    daBandMap.Refresh
+
+END
+
+PUBLIC SUB btnZoomFit_Click()
+    
+    $zoom = ($upLimit - $dwnLimit) * 1000
+    daBandMap.Refresh
+
+END
+
+PUBLIC SUB Form_Close()
+
+    FMain.bandmapToggle
+
+END
+
+PUBLIC SUB btnReset_Click()
+    $zoom = 100
+    daBandMap.Refresh
+
+END
+
+PUBLIC SUB btnClear_Click()
+
+    $cSpot.Clear
+    daBandMap.Refresh
+
+END
+
+PUBLIC SUB daBandMap_MouseDown()
+    DIM Fm AS Float
+    IF Mouse.Left THEN 
+        Fm = ($End + ($Ffin - $End) * Mouse.Y / $DH) 
+        IF FMain.$hamlibconnected THEN 
+            FMain.setFreq(Fm)
+        ELSE
+            Control(Fm)
+        ENDIF
+    ENDIF
+END
+
+PUBLIC SUB daBandMap_MouseWheel()
+
+    IF Mouse.Delta > 0 THEN $Freq += 0.01
+    IF Mouse.Delta < 0 THEN $Freq -= 0.01
+    IF FMain.$hamlibconnected THEN FMain.setFreq($Freq * 1000) 
+    daBandMap.Refresh
+END
