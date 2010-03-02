@@ -50,10 +50,3 @@ PUBLIC SUB CloseDB()
   cnLog = NULL
   
 END
-' select distinct country from log where dxcc in(select distinct dxcc from log) and qsl_rcvd='Y' 
-' select * from log where band='6M' and gridsquare <>'' group by substr(gridsquare,0,4) 
-' select call, qso_date, gridsquare , count(call)  from log where band='2M' and gridsquare <>'' and qsl_rcvd='Y'  group by substr(gridsquare,0,4) order by gridsquare, id 
-' select call, qso_date, country ,dxcc, count(call) as num from log group by dxcc order by dxcc, id
-
-
-

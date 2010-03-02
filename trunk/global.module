@@ -362,15 +362,15 @@ PUBLIC SUB saveADIF(myFile AS String)
                          ENDIF 
                      END WITH 
                  NEXT 
-                 PRINT #hFile, " <EOR>"                 
-                 WAIT 0.01                 
-                 hres.MoveNext()                 
+                 PRINT #hFile, " <EOR>"
+                 WAIT 0.01
+                 hres.MoveNext()
             LOOP  
        NEXT 
-              
-    FINALLY         
+
+    FINALLY
         CLOSE #hFile
-        
+
     CATCH
         Message.Error(("Error exporting Record\n") & hField!call & " " & hField!qso_date & "\n" & Error.Text)
 END

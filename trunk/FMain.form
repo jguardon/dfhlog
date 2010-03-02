@@ -257,33 +257,40 @@
         Picture = Picture["icon:/16/connect"]
         Toggle = True
       }
+      { btnBandMap ToolButton
+        MoveScaled(27,0,3,3)
+        ToolTip = ("BandMap")
+        Text = ("")
+        Picture = Picture["icons/bmap.png"]
+        Toggle = True
+      }
       { btnCAT ToolButton
-        MoveScaled(28,0,3,3)
+        MoveScaled(30,0,3,3)
         ToolTip = ("CAT")
         Text = ("")
         Picture = Picture["icons/ic910.png"]
         Toggle = True
       }
       { Separator2 Separator
-        MoveScaled(31,0,1,3)
+        MoveScaled(34,0,1,3)
       }
       { btnSqrMap ToolButton
-        MoveScaled(32,0,3,3)
+        MoveScaled(35,0,3,3)
         ToolTip = ("GridSquares Map")
         Text = ("")
         Picture = Picture["icons/sq.png"]
       }
       { btnMap ToolButton
-        MoveScaled(35,0,3,3)
+        MoveScaled(38,0,3,3)
         ToolTip = ("DX Map")
         Text = ("")
         Picture = Picture["icon:/16/earth"]
       }
       { Separator5 Separator
-        MoveScaled(38,0,1,3)
+        MoveScaled(42,0,1,3)
       }
       { btnQuick ToolButton
-        MoveScaled(40,0,3,3)
+        MoveScaled(44,0,3,3)
         ToolTip = ("Activate quick entry method, i.e. for Sporadics E in VHF")
         Text = ("")
         Picture = Picture["icons/quick.png"]
@@ -314,8 +321,8 @@
       }
     }
     { lcdQRG TextBox
-      MoveScaled(89,0,24,4)
-      Font = Font["Bitstream Vera Sans,Bold,+3"]
+      MoveScaled(88,-1,24,4)
+      Font = Font["7 Segment,Bold,+5"]
       Background = &H707070&
       Foreground = &H00FF00&
       Text = ("0.00")

@@ -1,4 +1,5 @@
 ' Gambas class file
+' Export ADIF
 ' dfhLog- Hamradio LogBook
 '     Copyright (C) 2009  Jesús Guardón, EA7DFH <ea7dfh@gmail.com>
 ' 
@@ -14,6 +15,9 @@
 ' 
 '     You should have received a copy of the GNU General Public License
 '     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+'
+' Class from Pino Zollo's project (ZP4KFX) at http://www.qsl.net/zp4kfx/Linux/dblog.html
+' Modified by Jesus Guardon, EA7DFH
 
 PRIVATE filePath AS String
 PRIVATE hres AS Result
@@ -53,13 +57,11 @@ END
 PUBLIC SUB btnSaveAs_Click()
     btnCancel.Text = ("&Cancel")
     Dialog.Title = ("Save ADIF file")
-    Dialog.Filter = ["*.adi", ("ADIF file")]
-    
+    Dialog.Filter = ["*.adi", ("ADIF file")]    
     IF Dialog.SaveFile() THEN RETURN
-        
-        filePath = Dialog.Path & ".adi"
-        txtPath.Text = filePath
-        IF txtPath.Text THEN btnOK.Enabled = TRUE
+    filePath = Dialog.Path & ".adi"
+    txtPath.Text = filePath
+    IF txtPath.Text THEN btnOK.Enabled = TRUE
 
 END
 
@@ -93,9 +95,8 @@ PUBLIC FUNCTION checkDates() AS Boolean
     ENDIF
  
     RETURN valid
-      
-END
 
+END
 
 PUBLIC SUB btnOK_Click()
 
@@ -106,76 +107,71 @@ PUBLIC SUB btnOK_Click()
     DIM L AS Integer
     DIM hField AS ResultField
     DIM nr AS Integer
-    
+
     crlf = Chr$(13) & Chr$(10)
     btnOK.Enabled = FALSE
     btnSaveAs.Enabled = FALSE
-           
+
     OPEN filePath FOR WRITE CREATE AS #hFile
-      PRINT #hFile, "ADIF file created by dfhLog v." & application.Version & " (c) EA7DFH," &  
-       crlf & "distributed under the GPL GNU Licence " & crlf & "<EOH>" & crlf & crlf
-       
-       IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN 
-       
-       IF rbWhole.Value = TRUE THEN 
-            sql = "SELECT * FROM log ORDER BY id;"
-            hres = dbLog.cnLog.Exec(sql)
-       ELSE 
-            sql = "SELECT * FROM log WHERE qso_date BETWEEN &1 and &2 ORDER BY id;"
-            'hres = dbLog.cnLog.Exec(sql, global.parseFecha(vStart.Text), global.parseFecha(vEnd.Text))
-            hres = dbLog.cnLog.Exec(sql, vStart.Value, vEnd.Value)
-            IF checkDates() = FALSE THEN 
-                Message.Warning(("Incorrect dates. Start date cannot be greater than End date."))
-                RETURN 
-            ENDIF 
-        
-       ENDIF
-       nr = hres.Count
-       
-       DO WHILE hres.Available
-       
-            FOR EACH hField IN hres.Fields
-                WITH hField
-                    L = Len(Trim(Str(hres[.Name])))
-                    IF L > 0 AND .Name <> "id" AND .Name <> "dxcc" THEN 
+    PRINT #hFile, "ADIF file created by dfhLog v." & application.Version & " (c) EA7DFH," &  
+    crlf & "distributed under the GPL GNU Licence " & crlf & "<EOH>" & crlf & crlf
+    
+    IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN 
+    
+    IF rbWhole.Value = TRUE THEN 
+         sql = "SELECT * FROM log ORDER BY id;"
+         hres = dbLog.cnLog.Exec(sql)
+    ELSE 
+        sql = "SELECT * FROM log WHERE qso_date BETWEEN &1 and &2 ORDER BY id;"
+        'hres = dbLog.cnLog.Exec(sql, global.parseFecha(vStart.Text), global.parseFecha(vEnd.Text))
+        hres = dbLog.cnLog.Exec(sql, vStart.Value, vEnd.Value)
+        IF checkDates() = FALSE THEN 
+            Message.Warning(("Incorrect dates. Start date cannot be greater than End date."))
+            RETURN 
+        ENDIF
+    ENDIF
+    nr = hres.Count
+
+    DO WHILE hres.Available
+        FOR EACH hField IN hres.Fields
+            WITH hField
+                L = Len(Trim(Str(hres[.Name])))
+                IF L > 0 AND .Name <> "id" AND .Name <> "dxcc" THEN 
                     sField = Trim(Str(hres[.Name]))
-                        SELECT CASE .Name
-                            CASE "qso_date", "qslrdate", "qslsdate"
-                                sField = Year(hres!qso_date) & Format(Month(hres!qso_date), "0#") & Format(Day(hres!qso_date), "0#")
-                                L = Len(sField)
-                            CASE "time_on", "time_off"
-                                sField = Left(Replace(hres[.Name], ":", ""), 4)
-                                L = Len(sField)
-                            CASE "mode"
-                                IF sField = "USB" OR sField = "LSB" THEN sField = "SSB"
-                                                                    
-                            CASE ELSE 
-                                sField = Trim(Str(hres[.Name]))
-                        END SELECT
-                                
-                                
-                        PRINT #hFile, "<" & Upper(.Name) & ":" & Str(L) & ">" & sField;
-                    ENDIF 
-                END WITH 
-            NEXT 
-            PRINT #hFile, " <EOR>"
-            lblCurrent.Text = hres!qso_date & " " & hres!call
-            lblQSOs.Text = Str(i)
-            WAIT 0.01
-            pb.Value = i / nr 
-            hres.MoveNext()
-            INC i
-       LOOP  
-       pb.Value = 1
-       
-       FINALLY 
+                    SELECT CASE .Name
+                        CASE "qso_date", "qslrdate", "qslsdate"
+                            sField = Year(hres!qso_date) & Format(Month(hres!qso_date), "0#") & Format(Day(hres!qso_date), "0#")
+                            L = Len(sField)
+                        CASE "time_on", "time_off"
+                            sField = Left(Replace(hres[.Name], ":", ""), 4)
+                            L = Len(sField)
+                        CASE "mode"
+                            IF sField = "USB" OR sField = "LSB" THEN sField = "SSB"
+                        CASE ELSE 
+                            sField = Trim(Str(hres[.Name]))
+                    END SELECT
+                    PRINT #hFile, "<" & Upper(.Name) & ":" & Str(L) & ">" & sField;
+                ENDIF 
+            END WITH 
+        NEXT 
+        PRINT #hFile, " <EOR>"
+        lblCurrent.Text = hres!qso_date & " " & hres!call
+        lblQSOs.Text = Str(i)
+        WAIT 0.01
+        pb.Value = i / nr 
+        hres.MoveNext()
+        INC i
+    LOOP  
+    pb.Value = 1
+    
+    FINALLY 
         FLUSH #hFile
         CLOSE #hFile
         dbLog.CloseDB()
         btnSaveAs.Enabled = TRUE
         btnCancel.Text = ("&Close")
-        
-        CATCH
-            Message.Error(("Error exporting Record\n") & hField!call & " " & hField!qso_date & "\n" & Error.Text)
+
+     CATCH
+        Message.Error(("Error exporting Record\n") & hField!call & " " & hField!qso_date & "\n" & Error.Text)
 
 END
