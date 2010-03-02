@@ -197,13 +197,11 @@ PUBLIC SUB importQSOs()
              'PRINT Record  
             IF NOT final THEN 
                 Process_Record() ' avoid process rubbish at end of file
-            ENDIF 
-            
+            ENDIF
             Record = ""
             Linea = ""
         END IF 
-        
-      WEND  
+    WEND  
     pb.Value = 1 
     CLOSE #hFileADIF
     CLOSE #hFileError
@@ -254,10 +252,10 @@ PUBLIC SUB Process_Record()
             PRINT #hFileError, ("Missing field/s in ADIF record. Not logged!: "); call, qso_date, time_on, band, mode, rst_rcvd, rst_sent            
         ENDIF  
         lblCurrent.Text = call & " " & qso_date & " " & time_on & " " & entidad 
-        'UpdateStats()    
+        
     END IF
     
-    'CATCH
+    ' CATCH
     '    Message.Error(("Error in Process Record\n") & call & " " & qso_date & "\n" & Error.Text)
 END
 
@@ -433,8 +431,6 @@ PUBLIC SUB Log_qso()
     WAIT 0.001
     lblQSOs.Text = Lqso
     pb.Value = n_char / file_l
-    
-    
     CATCH
         PRINT #hFileError, "Error logging " & Error.Text & " \n"; call, qso_date, time_on, band, freq, mode, rst_sent, rst_rcvd, name, qth, gridsquare
         INC Errors
