@@ -30,7 +30,6 @@ PRIVATE $DH AS Float
 PRIVATE $FullSpan AS Boolean = FALSE
 PRIVATE $Band AS String = "20M"
 PRIVATE $OldBand AS String = "20M"
-PUBLIC $cSpot AS NEW Object[]
 PRIVATE $cbm AS cDXBM
 
 PUBLIC SUB Form_Open()
@@ -39,6 +38,7 @@ PUBLIC SUB Form_Open()
     ME.Height = FMain.ini["WbandMap/Height", ME.Height]
     ME.Width = FMain.ini["WbandMap/Width", ME.Width]
     $zoom = FMain.ini["WbandMap/Zoom", 100]
+    getBandLimits(FMain.cBand)
 END
 
 PUBLIC SUB daBandMap_Draw()
@@ -84,8 +84,8 @@ PUBLIC SUB daBandMap_Draw()
 
     Draw.Picture(Picture["icons/dial.png"], 62, (daBandMap.Height / 2) - 4)
 
-    FOR j = 0 TO $cSpot.Count - 1
-        $cbm = $cSpot[j]
+    FOR j = 0 TO global.$cSpot.Count - 1
+        $cbm = global.$cSpot[j]
         IF $cbm.dxFreq >= $End AND $cbm.dxFreq <= $Ffin THEN 
             P = Int($cbm.dxFreq - $End) / ($Ffin - $End) * Draw.H
             Draw.ForeColor = Color.Black
@@ -230,7 +230,7 @@ PUBLIC SUB Form_Close()
     FMain.ini["WbandMap/Width"] = ME.Width
     FMain.ini["WbandMap/Zoom"] = $zoom
     FMain.bandmapToggle
-
+    FMain.ini.Save
 END
 
 PUBLIC SUB btnReset_Click()
@@ -241,7 +241,7 @@ END
 
 PUBLIC SUB btnClear_Click()
 
-    $cSpot.Clear
+    global.$cSpot.Clear
     daBandMap.Refresh
 
 END

@@ -30,6 +30,7 @@ PUBLIC $alertedMUF AS Boolean = FALSE
 PUBLIC $alertedES AS Boolean = FALSE
 PUBLIC $aLabels AS NEW Collection
 PRIVATE $utc AS String
+PUBLIC $cSpot AS NEW Object[]
 
 PUBLIC FUNCTION UTCNow() AS Date
     
