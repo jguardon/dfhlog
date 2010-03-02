@@ -38,6 +38,7 @@ PRIVATE $i AS Integer
 PRIVATE $cEntities AS NEW Collection
 PRIVATE pRigctl AS Process
 PRIVATE $homecall AS String
+PRIVATE $cbm AS cDXBM
 PUBLIC modificando AS Boolean = FALSE
 PUBLIC sTPEA AS String
 PUBLIC sIOTA AS String
@@ -1042,9 +1043,16 @@ PUBLIC SUB addLines(linea AS String, OPTIONAL tipo AS Integer = 0)   'añade lin
             DX = Trim(Mid(linea, 27, 10))
             freq = CFloat(Trim(Mid(linea, 15, 10)))
             band = global.getBand(freq)
-            FBandMap.$cSpot.Add(freq, DX) ' add to bandmap
+            '-------------------------------
+            $cbm = NEW cDXBM
+            $cbm.dxCall = DX
+            $cbm.dxFreq = freq
+            $cbm.dxColor = global.clusterColor(DX, ME.cBand)
+            
+            FBandMap.$cSpot.Add($cbm) ' add to bandmap
+            IF FBandMap.$cSpot.Count > 100 THEN TRY FBandMap.$cSpot.Remove(0)
             FBandMap.daRefresh
-            'DEBUG DX;; freq;; band
+            '-------------------------------
             IF Right(linea, 1) = Chr(7) THEN 
                 linea = Replace(linea, Chr(7), "*")
                 TRY SHELL "beep" 
