@@ -38,7 +38,7 @@ PRIVATE $i AS Integer
 PRIVATE $cEntities AS NEW Collection
 PRIVATE pRigctl AS Process
 PRIVATE $homecall AS String
-PRIVATE $cbm AS cDXBM
+PRIVATE $cbm AS Object
 PUBLIC modificando AS Boolean = FALSE
 PUBLIC sTPEA AS String
 PUBLIC sIOTA AS String
@@ -161,8 +161,7 @@ PUBLIC SUB Form_Close()
     ENDIF
     dbLog.CloseDB()
     SHELL "killall rigctld grig"
-    
-    
+
     CATCH     
         Message.Error(("Error in Form Close\n") & Error.Text & "\n" & Error.Where)    
 END
@@ -1043,21 +1042,20 @@ PUBLIC SUB addLines(linea AS String, OPTIONAL tipo AS Integer = 0)   'añade lin
             DX = Trim(Mid(linea, 27, 10))
             freq = CFloat(Trim(Mid(linea, 15, 10)))
             band = global.getBand(freq)
-            '-------------------------------
+            '-------------------------------bandmap
             $cbm = NEW cDXBM
             $cbm.dxCall = DX
             $cbm.dxFreq = freq
-            $cbm.dxColor = global.clusterColor(DX, ME.cBand)
-            
-            FBandMap.$cSpot.Add($cbm) ' add to bandmap
-            IF FBandMap.$cSpot.Count > 100 THEN TRY FBandMap.$cSpot.Remove(0)
+            $cbm.dxColor = global.clusterColor(DX, band)
+            global.$cSpot.Add($cbm) 
+            IF global.$cSpot.Count > 1000 THEN TRY global.$cSpot.Remove(0)
             FBandMap.daRefresh
-            '-------------------------------
+            '-------------------------------bandmap
             IF Right(linea, 1) = Chr(7) THEN 
                 linea = Replace(linea, Chr(7), "*")
                 TRY SHELL "beep" 
             ENDIF 
-            tblCluster[I, 0].ForeColor = global.clusterColor(DX, band) 
+            tblCluster[I, 0].ForeColor = $cbm.dxColor 'global.clusterColor(DX, band) 
             tblCluster[I, 0].Text = linea
             markers_spot(linea)
             'notify DX on trayicon
