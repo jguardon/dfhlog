@@ -18,71 +18,31 @@
 PROPERTY dxCall AS String
 PROPERTY dxFreq AS Float
 PROPERTY dxColor AS Integer
-PROPERTY rndY AS Integer
-PROPERTY rndX AS Integer
 
 PRIVATE $dxCall AS String
 PRIVATE $dxFreq AS Float
 PRIVATE $dxColor AS Integer
-PRIVATE $rndY AS Integer
-PRIVATE $rndX AS Integer
 
 PRIVATE FUNCTION dxCall_Read() AS String
-
-  
-
+    RETURN $dxCall
 END
 
 PRIVATE SUB dxCall_Write(Value AS String)
-
-  
-
+    $dxCall = Value
 END
 
 PRIVATE FUNCTION dxFreq_Read() AS Float
-
-  
-
+    RETURN $dxFreq
 END
 
 PRIVATE SUB dxFreq_Write(Value AS Float)
-
-  
-
+    $dxFreq = Value
 END
 
 PRIVATE FUNCTION dxColor_Read() AS Integer
-
-  
-
+    RETURN $dxColor
 END
 
 PRIVATE SUB dxColor_Write(Value AS Integer)
-
-  
-
-END
-
-PRIVATE FUNCTION rndY_Read() AS Integer
-
-  
-
-END
-
-PRIVATE SUB rndY_Write(Value AS Integer)
-
-  
-
-END
-
-PRIVATE FUNCTION rndX_Read() AS Integer
-
-  
-
-END
-
-PRIVATE SUB rndX_Write(Value AS Integer)
-
-  
-
+    $dxColor = Value
 END

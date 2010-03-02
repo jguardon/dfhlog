@@ -30,18 +30,22 @@ PRIVATE $DH AS Float
 PRIVATE $FullSpan AS Boolean = FALSE
 PRIVATE $Band AS String = "20M"
 PRIVATE $OldBand AS String = "20M"
-PUBLIC $cSpot AS NEW Collection
+PUBLIC $cSpot AS NEW Object[]
+PRIVATE $cbm AS cDXBM
 
 PUBLIC SUB Form_Open()
-
-    $zoom = 100
+    ME.Left = FMain.ini["WbandMap/Left", ME.Left]
+    ME.Top = FMain.ini["WbandMap/Top", ME.Top]  
+    ME.Height = FMain.ini["WbandMap/Height", ME.Height]
+    ME.Width = FMain.ini["WbandMap/Width", ME.Width]
+    $zoom = FMain.ini["WbandMap/Zoom", 100]
 END
 
 PUBLIC SUB daBandMap_Draw()
     DIM F, P, R, rndN AS Integer
-    DIM i, iStep, iEnd, iIni, p0 AS Float
+    DIM i, j, iStep, iEnd, iIni, p0 AS Float
     DIM sFreq, sAux AS String
-    
+
     ' Draw ticked scale placeholder
     Draw.FillStyle = Fill.Solid
     Draw.Foreground = Color.Red
@@ -51,31 +55,20 @@ PUBLIC SUB daBandMap_Draw()
     Draw.Font.Size = 7
     
     $Band = FMain.cBand
-    ' 'getBandLimits($Band)
-    ' DEBUG $Band
-    ' IF $Band <> $OldBand AND $FullSpan THEN 
-    '     DEBUG $Band, "cambio banda"
-    '     $zoom = ($upLimit - $dwnLimit) * 1000
-    '     $End = $dwnLimit
-    '     $Freq = ($upLimit + $dwnLimit) / 2
-    '     $OldBand = $Band
-    ' ENDIF 
     $DH = Draw.H
     iIni = $dwnLimit * 1000
     iEnd = $upLimit * 1000
     F = Int($Freq * 1000 - $zoom / 2)
     $End = F
     iStep = (Draw.H / $zoom) 
-    
-    
-    
+
     FOR i = 0 TO Draw.H STEP iStep
         IF F > iEnd OR F < iIni THEN 
             Draw.ForeColor = Color.Red
         ELSE 
             Draw.ForeColor = Color.Black
         END IF
-        
+
         IF F MOD 5 = 0 THEN
             Draw.Line(68 - 10, i, 68, i)
             sFreq = Replace$(Format$(F / 1000, "##0.000"), ",", ".")
@@ -83,41 +76,33 @@ PUBLIC SUB daBandMap_Draw()
             'DEBUG F, $zoom
         ELSE 
             Draw.Line(68 - 5, i, 68, i)
-            
         END IF
         INC F
-        
     NEXT 
-    
-    $Ffin = F - 1
-    
-    Draw.Picture(Picture["icons/dial.png"], 62, (daBandMap.Height / 2) - 4)
-    
-    FOR EACH sAux IN $cSpot
-    'DEBUG CFloat($cSpot[$cSpot.Key]), $End, $Ffin
-        IF CFloat($cSpot[$cSpot.Key]) >= $End AND CFloat($cSpot[$cSpot.Key]) <= $Ffin THEN 
-            RANDOMIZE 
-            rndN = Rnd(-10, 10)
-            P = Int(CFloat($cSpot[$cSpot.Key]) - $End) / ($Ffin - $End) * Draw.H
-            Draw.ForeColor = Color.Black
-            Draw.Font.Size = 9
-            Draw.Line(70, P, 70 + 20, P)
-            Draw.ForeColor = global.clusterColor($cSpot.Key, $Band)
-            Draw.Text($cSpot.Key, 73 + 20, P - Draw.Font.Height($cSpot.Key) / 2,,, Align.Left)
-            'PRINT $cSpot.Key, $cSpot[$cSpot.Key], $cSpot.Count, P
-        ENDIF 
-            
-        
-    NEXT 
-      
 
+    $Ffin = F - 1
+
+    Draw.Picture(Picture["icons/dial.png"], 62, (daBandMap.Height / 2) - 4)
+
+    FOR j = 0 TO $cSpot.Count - 1
+        $cbm = $cSpot[j]
+        IF $cbm.dxFreq >= $End AND $cbm.dxFreq <= $Ffin THEN 
+            P = Int($cbm.dxFreq - $End) / ($Ffin - $End) * Draw.H
+            Draw.ForeColor = Color.Black
+            Draw.Font.Size = 8
+            Draw.Line(70, P, 90, P)
+            Draw.FillColor = Color.RGB(240, 240, 240)
+            Draw.ForeColor = Color.White
+            Draw.Rect(90, P - Draw.Font.Height($cbm.dxCall) / 2, Draw.W - 100, Draw.Font.Height($cbm.dxCall)) 
+            Draw.ForeColor = $cbm.dxColor
+            Draw.Text($cbm.dxCall, 93, P - Draw.Font.Height($cbm.dxCall) / 2,,, Align.Left)
+        ENDIF 
+    NEXT
 END
 
 PUBLIC SUB Control(VFO AS Float)
     $Freq = VFO / 1000
-    
     daBandMap.Refresh
-    
 END
 
 PUBLIC SUB daRefresh()
@@ -239,7 +224,11 @@ PUBLIC SUB btnZoomFit_Click()
 END
 
 PUBLIC SUB Form_Close()
-
+    FMain.ini["WbandMap/Top"] = ME.ScreenY
+    FMain.ini["WbandMap/Left"] = ME.ScreenX
+    FMain.ini["WbandMap/Height"] = ME.Height
+    FMain.ini["WbandMap/Width"] = ME.Width
+    FMain.ini["WbandMap/Zoom"] = $zoom
     FMain.bandmapToggle
 
 END
