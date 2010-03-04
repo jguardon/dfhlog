@@ -65,7 +65,11 @@ PUBLIC SUB btnCancel_Click()
 END
 
 PUBLIC SUB Form_Close()
-
+    DIM s AS String = cboRigHamlib.Text
+    
+    FMain.ini["Hamlib/Rig"] = Right(s, Len(s) - InStr(s, "#"))
+    FMain.ini["Hamlib/Modelo"] = s
+    
     IF NOT FMain.ini["Estacion/QRZ"] OR NOT FMain.ini["Estacion/Nombre"] OR NOT FMain.ini["Estacion/Locator"] OR global.chkLoc(txtLocator.Text) = FALSE THEN 
         Message.Warning(("You need to fill the mandatory fields\nor GridSquare is incorrect"))
         STOP EVENT 
@@ -260,11 +264,7 @@ PUBLIC SUB chkXplanet_Click()
 END
 
 PUBLIC SUB cboRigHamlib_Click()
-    DIM s AS String = cboRigHamlib.Current.Text
     
-    FMain.ini["Hamlib/Rig"] = Right(s, Len(s) - InStr(s, "#"))
-    FMain.ini["Hamlib/Modelo"] = s
-    cboRigHamlib.ToolTip = s 
 
 END
 

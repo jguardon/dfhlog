@@ -227,12 +227,15 @@ SearchComment=False
 SearchString=False
 
 [OpenFile]
-File[1]="FMain.class:1.0"
+File[1]="FMain.class:74.42"
 File[2]="FMain.form"
-File[3]="FBandMap.form"
-File[4]="FBandMap.class:2.0"
-Active=4
-Count=4
+File[3]="FLog.form"
+File[4]="FLog.class:1.0"
+File[5]="global.module:1.0"
+File[6]="FSearch.class:1.0"
+File[7]="Mstart.module:39.39"
+Active=7
+Count=7
 
 [Watches]
 Count=0
