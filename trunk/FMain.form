@@ -321,8 +321,8 @@
       }
     }
     { lcdQRG TextBox
-      MoveScaled(88,-1,24,4)
-      Font = Font["7 Segment,Bold,+5"]
+      MoveScaled(88,0,24,3)
+      Font = Font["SF Digital Readout,Bold,+7"]
       Background = &H707070&
       Foreground = &H00FF00&
       Text = ("0.00")

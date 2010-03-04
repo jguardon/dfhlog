@@ -149,6 +149,7 @@ PUBLIC SUB Form_Close()
     ini["Window/Width"] = ME.Width
     ini["SplitterV/pos"] = VSplit1.Settings
     ini["GrdQSO/Settings"] = grdQSO.Settings 
+    ini["Estacion/Propa"] = cboPropa.Text
     ini.Save()    
       
     IF sktCluster.Status = Net.Connected THEN 
@@ -190,21 +191,13 @@ PUBLIC SUB Form_Open()
     ME.Width = ini["Window/Width", ME.Width]  
     VSplit1.Settings = ini["SplitterV/pos"]    
     checkSettings()
-    
-    FOR EACH propa IN global.getPropa()
-        cboPropa.Add(propa)
-    NEXT    
-    FOR EACH banda IN global.getBandas()  
-        cboFreq.Add(banda)
-    NEXT    
-    FOR EACH modo IN global.getModos()    
-        cboModo.Add(modo)
-    NEXT    
-    cboEntidad.Add("")    
+    cboPropa.List = global.getPropa()
+    cboFreq.List = global.getBandas()
+    cboModo.List = global.getModos()
+    cboEntidad.Add("")
     FOR i = 1 TO world.listDxcc.Count - 1
         cboEntidad.Add(world.listDxcc[i])
     NEXT 
-    
     IF ini["Hamlib/Activado"] = TRUE THEN 
         btnCAT.Enabled = TRUE
     ELSE 
@@ -214,10 +207,10 @@ PUBLIC SUB Form_Open()
         btnMap.Enabled = TRUE
     ELSE 
         btnMap.Enabled = FALSE
-    ENDIF   
+    ENDIF 
     cboFreq.Text = ini["Estacion/PrefBanda"]
     cboModo.Text = ini["Estacion/PrefModo"]
-    cboPropa.Text = ini["Main/Propa"]     
+    cboPropa.Text = ini["Estacion/Propa"]
     lblPath.Text = "Log: " & ini["Log/File"]
     chkRT.Value = ini["Main/RT", FALSE]
     $qrzCom = ini["qrzCom/Value", 0]    
@@ -289,35 +282,6 @@ PUBLIC SUB cboModo_Click()
     ENDIF 
 END
 
-' PUBLIC SUB cboModo_MouseUp()
-'     DIM S AS String
-'     IF sktHamlib.Status = Net.Connected THEN
-'         SELECT CASE cboModo.Current.Text
-'             CASE "SSB", "USB"
-'                 S = "M USB 0\r\n"     
-'                 TRY WRITE #sktHamlib, S, Len(S)
-'             CASE "LSB"
-'                 S = "M LSB 0\r\n"     
-'                 TRY WRITE #sktHamlib, S, Len(S)
-'             CASE "AM"
-'                 S = "M AM 0\r\n"     
-'                 TRY WRITE #sktHamlib, S, Len(S)
-'             CASE "FM"
-'                 S = "M FM 0\r\n"     
-'                 TRY WRITE #sktHamlib, S, Len(S)
-'             CASE "RTTY", "FSK"
-'                 S = "M RTTY 0\r\n"     
-'                 TRY WRITE #sktHamlib, S, Len(S)
-'             CASE "CW"
-'                 S = "M CW 0\r\n"     
-'                 TRY WRITE #sktHamlib, S, Len(S)
-'             CASE ELSE
-'                 S = "M USB 0\r\n"     
-'                 TRY WRITE #sktHamlib, S, Len(S)
-'         END SELECT
-'     ENDIF
-' END
-
 PUBLIC FUNCTION connDB() AS Boolean
     RETURN dbLog.connDB(ini["Log/File"])
 END
@@ -327,12 +291,7 @@ PUBLIC SUB descDB()
 END
 
 PRIVATE SUB checkSettings()
-    'check settings
-    ' DIM fp AS Form   
-    ' fp = NEW FPref
     IF ini["Estacion/QRZ"] = NULL THEN FPref.ShowModal
-    '     fp.ShowModal()
-    ' ENDIF 
 END
 
 PUBLIC SUB Salir_Click() 
@@ -481,7 +440,6 @@ PUBLIC SUB cboFreq_Click()
     IF c <> NULL THEN getWkdCfd(c.entity, cboFreq.Text)
     getSqWkdCfd(txtLocQSO.Text, cboFreq.Text)
     FBandMap.getBandLimits(cboFreq.Text)
-    
 END
 
 PUBLIC SUB Timer1_Timer()
@@ -1022,11 +980,11 @@ PUBLIC SUB filterLine(dxline AS String)
             IF WCY = TRUE THEN addLines(dxline, 4)
         CASE ELSE 
             IF IsDigit(Trim(Left(dxline, 6))) = TRUE AND InStr(dxline, ".") > 6 AND InStr(dxline, ".") < 15 THEN 
-                addLines(dxline, 5)    
+                addLines(dxline, 5)
             ELSE 
-                addLines(dxline, 0)                     
-            ENDIF           
-     END SELECT    
+                addLines(dxline, 0)
+            ENDIF
+     END SELECT
 END
 
 PUBLIC SUB addLines(linea AS String, OPTIONAL tipo AS Integer = 0)   'añade linea según tipo: 0=default, 1=DX, 2=ANN, 3=WWV, 4=WCY, 5=sh/dx
@@ -1257,7 +1215,6 @@ PUBLIC SUB txtLocQSO_Change()
         ELSE 
           txtLocQSO.ForeColor = Color.Red
           lblSqWorked.Text = ""
-          'buscar()
           IF modificando = FALSE THEN getWkdCfd(c.entity, cboFreq.Text)
         ENDIF 
     ELSE 
@@ -1302,7 +1259,9 @@ PUBLIC SUB lblEmail_Enter()
 END
 
 PUBLIC SUB cboPropa_Click()
-  ini["Main/Propa"] = cboPropa.Text
+' DEBUG ini["Estacion/Propa"]
+'   ini["Estacion/Propa"] = cboPropa.Text
+'   ini.Save
 END
 
 PUBLIC SUB chkAutoSpot_Click()

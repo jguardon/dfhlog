@@ -1,7 +1,7 @@
 # Gambas Form File 2.0
 
 { Form Form
-  MoveScaled(0,0,33,64)
+  MoveScaled(0,0,25,64)
   Text = ("dfhlog - BandMap")
   Icon = Picture["icons/bmap.png"]
   Stacking = Window.Above
@@ -12,12 +12,14 @@
     MoveScaled(0,1,36,3)
     { btnZoomIn ToolButton
       MoveScaled(0,0,3,3)
+      ToolTip = ("Zoom In")
       Text = ("")
       Picture = Picture["icon:/small/zoom-in"]
       Border = True
     }
     { btnZoomOut ToolButton
       MoveScaled(4,0,3,3)
+      ToolTip = ("Zoom Out")
       Text = ("")
       Picture = Picture["icon:/small/zoom-out"]
       Border = True
@@ -27,12 +29,14 @@
     }
     { btnZoomFit ToolButton
       MoveScaled(8,0,3,3)
+      ToolTip = ("Zoom Fit")
       Text = ("")
       Picture = Picture["icon:/small/zoom-fit"]
       Border = True
     }
     { btnReset ToolButton
       MoveScaled(12,0,3,3)
+      ToolTip = ("Zoom Reset")
       Text = ("")
       Picture = Picture["icon:/small/zoom-normal"]
       Border = True
@@ -42,6 +46,7 @@
     }
     { btnClear ToolButton
       MoveScaled(17,0,3,3)
+      ToolTip = ("Clear Stations")
       Text = ("")
       Picture = Picture["icon:/small/clear"]
       Border = True

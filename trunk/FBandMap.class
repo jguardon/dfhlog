@@ -33,7 +33,7 @@ PRIVATE $OldBand AS String = "20M"
 PRIVATE $cbm AS cDXBM
 
 PUBLIC SUB Form_Open()
-    ME.Left = FMain.ini["WbandMap/Left", ME.Left]
+    ME.Left = FMain.ini["WbandMap/Left", ME.Left] - 1
     ME.Top = FMain.ini["WbandMap/Top", ME.Top]  
     ME.Height = FMain.ini["WbandMap/Height", ME.Height]
     ME.Width = FMain.ini["WbandMap/Width", ME.Width]
@@ -62,7 +62,7 @@ PUBLIC SUB daBandMap_Draw()
     $End = F
     iStep = (Draw.H / $zoom) 
 
-    FOR i = 0 TO Draw.H STEP iStep
+    FOR i = 0 TO Draw.H + 1 STEP iStep
         IF F > iEnd OR F < iIni THEN 
             Draw.ForeColor = Color.Red
         ELSE 

@@ -46,9 +46,9 @@ PUBLIC SUB Form_Open()
     IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN     
     hres = dbLog.cnLog.Exec("SELECT * FROM log")
     records = hres.Count
-    FOR EACH $rf IN hres.Fields   
-        $aMyFields.Add($rf.Name)           
-    NEXT     
+    FOR EACH $rf IN hres.Fields
+        $aMyFields.Add($rf.Name)
+    NEXT
     IF records > disp THEN 
         pages = Round(records / disp) + 1
     ELSE 
@@ -243,92 +243,18 @@ PRIVATE SUB createMenu()
 END
 
 PRIVATE SUB menuLog()
-
+    $hmenuEdit.enabled = TRUE
     getSelectedQSO()
     IF global.$iQSOn.Count > 1 THEN 
           $hmenuInfo.Text = ("For selected QSOs: ") & global.$iQSOn.Count
+          $hmenuEdit.enabled = FALSE
     ELSE 
           $hmenuInfo.Text = (("For QSO with: ") & cv[cv.Row, 4].Text)
     ENDIF 
-    
-    IF global.$iQSOn.Count > 1 THEN $hmenuEdit.enabled = FALSE
-    
+
     ' pop up
-     
     $hMenu.Popup()
-  
-  ' DIM hMenus AS Menu
-  ' DIM hMenu, hMenue AS Menu
-  ' 
-  ' hMenus = NEW Menu(ME)
-  ' 
-  ' hMenu = NEW Menu(hMenus)
-  ' getSelectedQSO()
-  ' IF global.$iQSOn.Count > 1 THEN 
-  '       hMenu.Text = ("For selected QSOs: ") & global.$iQSOn.Count
-  ' ELSE 
-  '       hMenu.Text = (("For QSO with: ") & cv[cv.Row, 4].Text)
-  ' ENDIF 
-  ' 
-  ' hMenu = NEW Menu(hMenus)
-  ' hMenu.Text = ""
-  ' 
-  ' hMenue = NEW Menu(hMenus) AS "mnuEditarQSO"
-  ' hMenue.Text = ("Edit QSO")
-  ' hMenue.Picture = Picture["icons/gtk-edit.png"]
-  ' hMenue.Shortcut = "Ctrl+E"
-  ' IF global.$iQSOn.Count > 1 THEN hMenue.enabled = FALSE
-  ' 
-  ' hMenu = NEW Menu(hMenus) AS "mnuBorrarQSO"
-  ' hMenu.Text = ("Delete QSO")
-  ' hMenu.Picture = Picture["icons/gtk-delete.png"]
-  ' hMenu.Shortcut = "Ctrl+D"
-  ' 
-  ' hMenu = NEW Menu(hMenus)
-  ' hMenu.Text = ""
-  ' 
-  ' hMenu = NEW Menu(hMenus) AS "mnuExpADIF"
-  ' hMenu.Text = ("Export to ADIF")
-  ' hMenu.Picture = Picture["icon:/16/up"]
-  ' hMenu.Shortcut = "Ctrl+Alt+A"
-  ' 
-  ' hMenu = NEW Menu(hMenus)
-  ' hMenu.Text = ""
-  ' 
-  ' hMenu = NEW Menu(hMenus) AS "mnuQSLrec"
-  ' hMenu.Text = ("Check QSL as recvd.")
-  ' hMenu.Picture = Picture["icons/gtk-redo-rtl.png"]
-  ' hMenu.Shortcut = "F5"
-  ' 
-  ' hMenu = NEW Menu(hMenus) AS "mnuQSLenv"
-  ' hMenu.Text = ("Check QSL as sent.")
-  ' hMenu.Picture = Picture["icons/gtk-undo-rtl.png"]
-  ' hMenu.Shortcut = "F6"
-  ' 
-  ' hMenu = NEW Menu(hMenus)
-  ' hMenu.Text = ""
-  ' 
-  ' hMenu = NEW Menu(hMenus) AS "mnuQSLnotrec"
-  ' hMenu.Text = ("Uncheck QSL as recvd.")
-  ' hMenu.Picture = Picture["icons/gtk-redo-not.png"]
-  ' hMenu.Shortcut = "F7"
-  ' 
-  ' hMenu = NEW Menu(hMenus) AS "mnuQSLnotenv"
-  ' hMenu.Text = ("Uncheck QSL as sent.")
-  ' hMenu.Picture = Picture["icons/gtk-undo-not.png"]
-  ' hMenu.Shortcut = "F8"
-  ' 
-  ' hMenu = NEW Menu(hMenus)
-  ' hMenu.Text = ""
-  ' 
-  ' hMenu = NEW Menu(hMenus) AS "mnuPrintQSL"
-  ' hMenu.Text = ("Print QSL")
-  ' hMenu.Picture = Picture["icons/gtk-print.png"]
-  ' hMenu.Shortcut = "Ctrl+P"
-  ' 
-  ' ' pop up 
-  ' IF hMenus THEN hMenus.Popup()
-  TRY cv.Rows.Unselect
+    TRY cv.Rows.Unselect
   
 END
 
@@ -410,6 +336,21 @@ PUBLIC SUB cv_Click()
     IF cv.Rows.Count > 0 THEN 
         getSelectedQSO
     ENDIF
+    
+    ' SELECT CASE cv.Column 
+    ' CASE 7 
+    '     cv.Edit(global.getBandas(), TRUE)
+    ' CASE 8
+    '     cv.Edit(global.getModos(), FALSE)
+    ' CASE 9
+    '     cv.Edit(global.getPropa(), FALSE)
+    ' CASE ELSE 
+    '     cv.Edit()
+    ' END SELECT
+    ' 
+    ' CATCH 
+    '     DEBUG Error.Text
+
 END
 
 PUBLIC SUB getSelectedQSO()
@@ -424,4 +365,23 @@ END
 
 PUBLIC SUB btnClose_Click()
   ME.Close()
+END
+
+' PUBLIC SUB cv_Activate()
+'     SELECT CASE cv.Column 
+'     CASE 7 
+'         cv.Edit(global.getBandas(), TRUE)
+'     CASE 8
+'         cv.Edit(global.getModos(), TRUE)
+'     CASE 9
+'         cv.Edit(global.getPropa(), TRUE)
+'     CASE ELSE 
+'         cv.Edit()
+'     END SELECT
+' END
+
+PUBLIC SUB cv_Save(Row AS Integer, Column AS Integer, Value AS String)
+
+  DEBUG Row, Column, Value
+
 END
