@@ -242,43 +242,45 @@ PUBLIC SUB Form_Open()
 END
 
 PUBLIC SUB cboModo_Click()
-    DIM S AS String    
-    SELECT CASE cboModo.Text    
-        CASE "SSB", "USB", "LSB", "AM", "FM"
-            txtRSTe.Text = 59
-            txtRSTr.Text = 59
-        CASE "JT65A", "JT65B", "JT65C"
-            txtRSTe.Text = "OOO"
-            txtRSTr.Text = "OOO"
-        CASE ELSE 
-            txtRSTe.Text = 599
-            txtRSTr.Text = 599
-    END SELECT
-    
-    IF sktHamlib.Status = Net.Connected THEN    
-        SELECT CASE cboModo.Text        
-            CASE "SSB", "USB"
-                S = "M USB 0\r\n"     
-                TRY WRITE #sktHamlib, S, Len(S)
-            CASE "LSB"
-                S = "M LSB 0\r\n"     
-                TRY WRITE #sktHamlib, S, Len(S)
-            CASE "AM"
-                S = "M AM 0\r\n"     
-                TRY WRITE #sktHamlib, S, Len(S)
-            CASE "FM"
-                S = "M FM 0\r\n"     
-                TRY WRITE #sktHamlib, S, Len(S)
-            CASE "RTTY", "FSK"
-                S = "M RTTY 0\r\n"     
-                TRY WRITE #sktHamlib, S, Len(S)
-            CASE "CW"
-                S = "M CW 0\r\n"     
-                TRY WRITE #sktHamlib, S, Len(S)
-            CASE ELSE
-                S = "M USB 0\r\n"     
-                TRY WRITE #sktHamlib, S, Len(S)
+    DIM S AS String
+    IF modificando = FALSE THEN     
+        SELECT CASE cboModo.Text    
+            CASE "SSB", "USB", "LSB", "AM", "FM"
+                txtRSTe.Text = 59
+                txtRSTr.Text = 59
+            CASE "JT65A", "JT65B", "JT65C"
+                txtRSTe.Text = "OOO"
+                txtRSTr.Text = "OOO"
+            CASE ELSE 
+                txtRSTe.Text = 599
+                txtRSTr.Text = 599
         END SELECT
+        
+        IF sktHamlib.Status = Net.Connected THEN    
+            SELECT CASE cboModo.Text        
+                CASE "SSB", "USB"
+                    S = "M USB 0\r\n"     
+                    TRY WRITE #sktHamlib, S, Len(S)
+                CASE "LSB"
+                    S = "M LSB 0\r\n"     
+                    TRY WRITE #sktHamlib, S, Len(S)
+                CASE "AM"
+                    S = "M AM 0\r\n"     
+                    TRY WRITE #sktHamlib, S, Len(S)
+                CASE "FM"
+                    S = "M FM 0\r\n"     
+                    TRY WRITE #sktHamlib, S, Len(S)
+                CASE "RTTY", "FSK"
+                    S = "M RTTY 0\r\n"     
+                    TRY WRITE #sktHamlib, S, Len(S)
+                CASE "CW"
+                    S = "M CW 0\r\n"     
+                    TRY WRITE #sktHamlib, S, Len(S)
+                CASE ELSE
+                    S = "M USB 0\r\n"     
+                    TRY WRITE #sktHamlib, S, Len(S)
+            END SELECT
+        ENDIF 
     ENDIF 
 END
 
@@ -528,7 +530,7 @@ PUBLIC SUB txtCall_LostFocus()
     ENDIF 
     $homecall = homecall
     IF c <> NULL AND Len(call) > 2 THEN getWkdCfd(c.entity, cboFreq.Text)
-    IF sktHamlib.Status = Net.Connected THEN txtFreq.Text = Left(lcdQRG.Text, Len(lcdQRG.Text) - 1)
+    IF sktHamlib.Status = Net.Connected AND modificando = FALSE THEN txtFreq.Text = Left(lcdQRG.Text, Len(lcdQRG.Text) - 1)
     
     wkdB4(call) 'worked before?
     btnOK.Default = TRUE
@@ -665,9 +667,8 @@ PUBLIC SUB btnClear_Click()
     ENDIF    
     modificando = FALSE
     global.$iQSOn.Clear
-    clearFields()
     txtCall.Clear()
-    
+    clearFields()
     TRY fldigiClearfiedls()
     fillData()        
     txtCall.SetFocus
@@ -676,6 +677,7 @@ END
 PUBLIC SUB clearFields()
     txtLocQSO.Clear()
     txtNameQSO.Clear()
+    IF modificando THEN txtFreq.Clear()
     txtQTHqso.Clear()
     txtRSTe.Clear()
     txtRSTr.Clear()
