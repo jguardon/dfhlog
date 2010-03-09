@@ -59,10 +59,9 @@ PRIVATE $hmenuQSLs AS Menu
 PRIVATE $hmenuNQSLr AS Menu
 PRIVATE $hmenuNQSLs AS Menu
 PRIVATE $hmenuPrint AS Menu
+PRIVATE $currentBand AS String = ""
 
 PROPERTY READ cBand AS String
-
-
 
 PUBLIC SUB _new()
     TRY world.init()
@@ -81,8 +80,7 @@ PUBLIC SUB _new()
     ENDIF    
     IF NOT Exist(User.Home &/ ".config/dfhlog/tablas.db") THEN TRY COPY "data/tablas.db" TO User.Home &/ ".config/dfhlog/tablas.db"
     $utcdiff = ini["UTC/offset", -1]
-    
-    
+
     CATCH
         Message.Error(("Error in Fmain_new\n") & Error.Text & "\n" & Error.Where)
 END
@@ -136,11 +134,9 @@ PRIVATE SUB createMenu()
     $hmenuPrint = NEW Menu($hmenu) AS "mnuPrintQSL"
     $hmenuPrint.Text = ("Print QSL")
     $hmenuPrint.Picture = Picture["icons/gtk-print.png"]
-    $hmenuPrint.Shortcut = "Ctrl+P"  
-    
+    $hmenuPrint.Shortcut = "Ctrl+P"
 
 END
-
 
 PUBLIC SUB Form_Close()
     ini["Window/Top"] = ME.ScreenY
@@ -162,6 +158,10 @@ PUBLIC SUB Form_Close()
     ENDIF
     dbLog.CloseDB()
     SHELL "killall rigctld grig"
+    Timer1.Stop
+    timerCAT.Stop
+    TimerQSO.Stop
+    WAIT 0.01
 
     CATCH     
         Message.Error(("Error in Form Close\n") & Error.Text & "\n" & Error.Where)    
@@ -179,7 +179,7 @@ PUBLIC SUB Form_Open()
         c = NEW cty
         cdx = NEW cty   
         mylat = global.locator2latlon(ini["Estacion/Locator"]).lat
-        mylon = global.locator2latlon(ini["Estacion/Locator"]).lon        
+        mylon = global.locator2latlon(ini["Estacion/Locator"]).lon
     ELSE 
         Message("Problema al cargar cty.dat")
         ME.Close()
@@ -328,26 +328,23 @@ PUBLIC SUB txtCall_Change()
 END
 
 PUBLIC SUB cboEntidad_Click()
-    IF cboEntidad.Index <> 0 THEN     
+    IF cboEntidad.Index > 0 THEN
         c = world.getEntByNumb(cboEntidad.Index)
-        IF c <> NULL THEN  
-            cboEntidad.Text = c.entity
+        IF c <> NULL THEN
             lblCont.Caption = c.continent
             lblPfx.Caption = c.pfx
             lblCQ.Caption = c.cqz
             lblITU.Caption = c.ituz
             lblDist.Caption = Round(global.distance(c.lat, c.lon, mylat, mylon), -1) & " Km"
             lblRumbo.Caption = Round(global.bearing(mylat, mylon, c.lat, c.lon), -1) & " Deg"
-        ENDIF 
-    ELSE    
-        clearFields()
-    ENDIF 
-    
+        ENDIF
+    ENDIF
+
     CATCH    
         Message.Error(("Error in cboEntidad QSO\n") & Error.Text & "\n" & Error.Where)
 END
 
-SUB buscar() 
+PRIVATE SUB buscar() 
     qrz = txtCall.Text
     IF qrz THEN 
         c = world.findEntity(qrz)
@@ -360,6 +357,8 @@ SUB buscar()
             lblDist.Caption = Round(global.distance(c.lat, c.lon, mylat, mylon), -1) & " Km"
             lblRumbo.Caption = Round(global.bearing(mylat, mylon, c.lat, c.lon), -1) & " Deg"
             update_stats
+        ELSE 
+            clearFields
         ENDIF 
     ENDIF 
 
@@ -379,7 +378,7 @@ PUBLIC SUB getWkdCfd(country AS String, band AS String)
             lblWorked.Text = ("New DXCC on ") & band
             lblWorked.ForeColor = colorDX
         ELSE
-            DO WHILE hResul.Available            
+            DO WHILE hResul.Available
                 IF hResul!qsl_rcvd = "Y" THEN 
                     'DEBUG call, band, hResul!QSL_r
                     colorDX = FMain.ini["Colores/Confirmado", Color.Green]
@@ -404,9 +403,9 @@ END
 
 PUBLIC SUB getSqWkdCfd(sq AS String, band AS String) 
     DIM colorDX AS Integer
-    DIM hresul AS Result    
-    sq = Left(sq, 4)    
-    IF sq <> NULL THEN           
+    DIM hresul AS Result
+    sq = Left(sq, 4)
+    IF sq <> NULL THEN
         IF connDB() THEN RETURN 
         hResul = dbLog.cnLog.Exec("SELECT qsl_rcvd, band FROM log WHERE gridsquare LIKE '" & sq & "%' AND band='" & band & "';")
         IF NOT hResul.Available THEN 
@@ -415,7 +414,7 @@ PUBLIC SUB getSqWkdCfd(sq AS String, band AS String)
             lblSqWorked.Text = sq & (" New square on ") & band
             lblSqWorked.ForeColor = colorDX
         ELSE
-            DO WHILE hResul.Available              
+            DO WHILE hResul.Available
                 IF hResul!qsl_rcvd = "Y" THEN 
                     'DEBUG sq, band, hResul!QSL_r
                     colorDX = FMain.ini["Colores/Confirmado", Color.Green]
@@ -426,8 +425,8 @@ PUBLIC SUB getSqWkdCfd(sq AS String, band AS String)
                     'DEBUG sq, band, hResul!QSL_r
                     colorDX = FMain.ini["Colores/Trabajado", Color.Red]
                     lblSqWorked.Text = sq & (" Square Wkd on ") & band
-                    lblSqWorked.ForeColor = colorDX                
-                ENDIF                 
+                    lblSqWorked.ForeColor = colorDX
+                ENDIF
                 hResul.MoveNext()
             LOOP 
         ENDIF 
@@ -438,7 +437,12 @@ PUBLIC SUB getSqWkdCfd(sq AS String, band AS String)
         DEBUG Error.Text, Error.Where
 END
 
-PUBLIC SUB cboFreq_Click()
+PUBLIC SUB cboFreq_Click() ' changed due to new behavior of click event of combobox
+    IF $currentBand <> cboFreq.Text THEN bandChanged
+    $currentBand = cboFreq.Text
+END
+
+PUBLIC SUB bandChanged() ' changed due to new behavior of click event of combobox
     IF c <> NULL THEN getWkdCfd(c.entity, cboFreq.Text)
     getSqWkdCfd(txtLocQSO.Text, cboFreq.Text)
     FBandMap.getBandLimits(cboFreq.Text)
@@ -518,14 +522,14 @@ PUBLIC SUB txtCall_LostFocus()
                 pb = Right(call, Len(call) - InStr(call, "/"))
                 'homecall QRZ search
                 IF Len(pa) > Len(pb) THEN 
-                    homecall = pa                
+                    homecall = pa
                 ELSE 
                     homecall = pb
                 ENDIF
             ELSE 
                 homecall = call
             ENDIF 
-            IF modificando = FALSE THEN qrzcom.getQRZcom(homecall) 'search in qrz.com
+            qrzcom.getQRZcom(homecall) 'search in qrz.com
         ENDIF 
     ENDIF 
     $homecall = homecall
@@ -548,7 +552,7 @@ PRIVATE SUB wkdB4(call AS String)
         IF connDB() THEN RETURN        
         sql = "SELECT id, call, band, qso_date, time_on, qsl_rcvd, qsl_sent FROM log WHERE call LIKE &1 ORDER BY id DESC;"        
         hres = dbLog.cnLog.Exec(sql, call)
-        IF hres.Count > 0 THEN tabLC[2].Visible = TRUE        
+        IF hres.Count > 0 THEN tabLC[2].Visible = TRUE
         grdWkdB4.Rows.Count = hres.Count
         tabLC[2].Text = ("&Wkd Before") & " (" & hres.Count & ")"
         DO WHILE hres.Available            
@@ -558,7 +562,7 @@ PRIVATE SUB wkdB4(call AS String)
             grdWkdB4[r, 3].Text = Day(hres!qso_date) & "/" & Month(hres!qso_date) & "/" & Year(hres!qso_date) 
             grdWkdB4[r, 4].Text = hres!time_on
             grdWkdB4[r, 5].Text = hres!qsl_rcvd
-            grdWkdB4[r, 6].Text = hres!qsl_sent            
+            grdWkdB4[r, 6].Text = hres!qsl_sent
             hres.MoveNext
             INC r
         LOOP 
@@ -588,15 +592,25 @@ PUBLIC SUB txtClx_LostFocus()
 END
 
 PUBLIC SUB updateFields()
-    lblErrorqrz.Text = qrzcom.qerror
-    txtNameQSO.Text = Left(qrzcom.fname, InStr(qrzcom.fname, Chr(32)))
-    IF global.chkLoc(qrzcom.grid) = TRUE THEN txtLocQSO.Text = qrzcom.grid
-        IF Len(qrzcom.qslmgr) < 10 THEN 
-            txtMgrQSO.Text = qrzcom.qslmgr
-        ENDIF 
-    lblEmail.Text = qrzcom.email
-    txtDataQRZ.Text = qrzcom.qcall & "\n" & qrzcom.fname & " " & qrzcom.name & "\n" &
-    qrzcom.addr1 & "\n" & qrzcom.addr2 & "\n" & qrzcom.country
+    IF modificando THEN 
+        txtDataQRZ.Foreground = Color.DarkRed
+        txtDataQRZ.Background = Color.LightBackground
+        txtDataQRZ.Text = qrzcom.qcall & "\n" & qrzcom.fname & " " & qrzcom.name & "\n" &
+        "" & qrzcom.addr1 & "\n" & qrzcom.addr2 & "\n" & qrzcom.country & "\nMgr: " & qrzcom.qslmgr &
+        "" & "\nLoc: " & qrzcom.grid 
+    ELSE 
+        txtDataQRZ.Foreground = Color.Black
+        txtDataQRZ.Background = Color.White
+        lblErrorqrz.Text = qrzcom.qerror
+        txtNameQSO.Text = Left(qrzcom.fname, InStr(qrzcom.fname, Chr(32)))
+        IF global.chkLoc(qrzcom.grid) = TRUE THEN txtLocQSO.Text = qrzcom.grid
+            IF Len(qrzcom.qslmgr) < 10 THEN 
+                txtMgrQSO.Text = qrzcom.qslmgr
+            ENDIF 
+        lblEmail.Text = qrzcom.email
+        txtDataQRZ.Text = qrzcom.qcall & "\n" & qrzcom.fname & " " & qrzcom.name & "\n" &
+        qrzcom.addr1 & "\n" & qrzcom.addr2 & "\n" & qrzcom.country
+    ENDIF 
 END
 
 PUBLIC SUB btnOK_Click()
@@ -605,7 +619,7 @@ PUBLIC SUB btnOK_Click()
             Message.Warning(("Incorrect Locator!"))
             RETURN 
         ENDIF 
-        
+
         IF modificando = TRUE THEN 
             logModifiedQSO(CInt(lblNoQSO.Text))
             btnOK.ForeColor = Color.Black
@@ -613,14 +627,14 @@ PUBLIC SUB btnOK_Click()
             frameQSO.Text = "QSO"
             chkAutoSpot.Visible = TRUE
             chkRT.Value = TRUE
-            chkRT.Visible = TRUE                    
+            chkRT.Visible = TRUE 
         ELSE 
             logQSO()
             IF chkAutoSpot.Value = TRUE AND sktCluster.Status = Net.Connected THEN 
                 spotQSO()
             ELSE IF chkAutoSpot.Value <> TRUE AND chkAutoSpot.Value <> FALSE AND sktCluster.Status = Net.Connected
                 IF Message.Question(("Do you want to spot\n") & txtCall.Text & ("\n to the Cluster Net?"), "No", ("Yes")) = 2 THEN spotQSO()
-            ENDIF            
+            ENDIF
         ENDIF 
         
         clearFields()
@@ -633,7 +647,9 @@ PUBLIC SUB btnOK_Click()
         RETURN
     END IF    
     txtCall.SetFocus
-    global.$iQSOn.Clear       
+    global.$iQSOn.Clear
+    txtDataQRZ.Foreground = Color.Black
+    txtDataQRZ.Background = Color.White
     CATCH    
         Message.Error(("Error in btnOK_Click\n") & Error.Text & "\n" & Error.Where)    
 END
@@ -672,6 +688,8 @@ PUBLIC SUB btnClear_Click()
     TRY fldigiClearfiedls()
     fillData()        
     txtCall.SetFocus
+    txtDataQRZ.Foreground = Color.Black
+    txtDataQRZ.Background = Color.White
 END
 
 PUBLIC SUB clearFields()
@@ -686,7 +704,7 @@ PUBLIC SUB clearFields()
     txtDataQRZ.Clear()
     lblErrorqrz.Text = NULL
     lblEmail.Clear()
-    lblEmail.ToolTip = NULL     
+    lblEmail.ToolTip = NULL 
     cboEntidad.Text = ""
     lblCont.Caption = ""
     lblPfx.Caption = ""
@@ -850,8 +868,8 @@ END
 PUBLIC SUB setModeBand(sfreq AS Float)  
     DIM S AS String    
     sfreq *= 1000    
-    'getMode(ifreq)
-    IF sktHamlib.Status = Net.Connected THEN      
+    'getMode(sfreq)
+    IF sktHamlib.Status = Net.Connected THEN
         S = "F " & CStr(sfreq) & "\r\n"
         TRY WRITE #sktHamlib, S, Len(S)
     ENDIF 
@@ -897,9 +915,9 @@ PUBLIC SUB btnConn_Click()
                 WAIT 0.1
                 TRY sktCluster.Connect()
             ENDIF
-        ELSE        
+        ELSE 
             IF sktCluster.Status = Net.Connected THEN 
-                sktCluster.Close()              
+                sktCluster.Close()
             ENDIF 
         ENDIF 
     ELSE 
@@ -1020,7 +1038,7 @@ PUBLIC SUB addLines(linea AS String, OPTIONAL tipo AS Integer = 0)   'añade lin
             markers_spot(linea)
             'notify DX on trayicon
                 IF ME.Minimized = TRUE THEN 
-                    EXEC ["notify-send", "--urgency=normal", "--icon=" & User.Home &/ ".config/dfhlog/dfhlog.png", "DX", linea]                    
+                    EXEC ["notify-send", "--urgency=normal", "--icon=" & User.Home &/ ".config/dfhlog/dfhlog.png", "DX", linea]
                 ENDIF 
         CASE 2, 3, 4
             tblCluster[I, 0].RichText = "<i><font color=\"#C0C0C0\">" & linea & "</font></i>"
@@ -1258,12 +1276,6 @@ PUBLIC SUB lblEmail_Enter()
     IF lblEmail.Text THEN        
         lblEmail.ToolTip = lblEmail.Text
     ENDIF
-END
-
-PUBLIC SUB cboPropa_Click()
-' DEBUG ini["Estacion/Propa"]
-'   ini["Estacion/Propa"] = cboPropa.Text
-'   ini.Save
 END
 
 PUBLIC SUB chkAutoSpot_Click()
@@ -1613,8 +1625,8 @@ PUBLIC SUB btnOpnWAS_Click()
 END
 
 PUBLIC SUB mnuAdifImp_Click()
-  FiADIF.ShowModal()
-  fillData()
+    FiADIF.ShowModal()
+    fillData()
 END
 
 PUBLIC SUB txtPwr_KeyPress()
@@ -1808,7 +1820,7 @@ END
 PUBLIC SUB txtModeChange_Change()
     IF modificando = FALSE THEN 
         IF $mode = "AM" OR $mode = "FM" OR $mode = "CW" OR $mode = "SSB" OR $mode = "USB" OR $mode = "LSB" OR $mode = "RTTY" THEN 
-            TRY cboModo.Text = txtModeChange.Text                      
+            TRY cboModo.Text = txtModeChange.Text
         ENDIF 
     ENDIF 
 END
@@ -2018,7 +2030,7 @@ PUBLIC SUB fldigiXMLRPC()
     client.URL = "http://localhost:7362/RPC2"      
     txtQTHqso.Text = client.Call(hVar)                                                  'qth
     CATCH 
-        PRINT Error.Text, Error.Where                                                  
+        DEBUG Error.Text, Error.Where
     
 
 END
@@ -2042,17 +2054,15 @@ PUBLIC SUB fldigiClearfiedls()
         'PRINT Error.Text, Error.Where
 END 
 
-
-
 PUBLIC SUB btnQuick_Click()     'toggle button
 
-    DIM hCtl AS Control        
-     
+    DIM hCtl AS Control
+
     FOR EACH hCtl IN FMain.Controls
         IF hCtl IS TextBox OR hCtl IS ComboBox OR hCtl IS CheckBox OR hCtl IS ValueBox OR hCtl IS Button THEN 
             IF hCtl.Tag = "exclude" THEN 
                 IF btnQuick.Value = TRUE THEN
-                    hCtl.Enabled = FALSE                    
+                    hCtl.Enabled = FALSE
                     txtRSTe.ForeColor = Color.DarkGray
                     txtRSTr.ForeColor = Color.DarkGray
                 ELSE
@@ -2061,19 +2071,19 @@ PUBLIC SUB btnQuick_Click()     'toggle button
                     txtRSTr.Text = ""
                     txtRSTe.ForeColor = Color.Black
                     txtRSTr.ForeColor = Color.Black
-                ENDIF                   
+                ENDIF
             ENDIF 
         ENDIF 
     NEXT 
-    
+
 END
 
-PUBLIC SUB frQRZ_Enter()
+PUBLIC SUB txtDataQRZ_Enter()
     btnShowQRZpage.Text = ("Show ") & $homecall & (" QRZ Webpage")
     IF Len(txtDataQRZ.Text) > 13 THEN btnShowQRZpage.Visible = TRUE
 END
 
-PUBLIC SUB frQRZ_Leave()
+PUBLIC SUB txtDataQRZ_Leave()
     IF Len(txtDataQRZ.Text) > 13 THEN btnShowQRZpage.Visible = FALSE
 END
 
@@ -2081,16 +2091,16 @@ PUBLIC SUB btnShowQRZpage_Click()
     Desktop.Open("http://www.qrz.com/db/" & $homecall)
 END
 
-PUBLIC SUB tabLC_Click()
-    IF modificando = TRUE THEN 
-        IF tabLC.Index <> 0 THEN 
-            tabLC.Index = 0
-        ENDIF 
-    ENDIF 
-END
+' PUBLIC SUB tabLC_Click()
+'     IF modificando = TRUE THEN 
+'         IF tabLC.Index <> 0 THEN 
+'             tabLC.Index = 0
+'         ENDIF 
+'     ENDIF 
+' END
 
 PRIVATE FUNCTION cBand_Read() AS String
-
+    
     RETURN cboFreq.Text 
 
 END
@@ -2118,4 +2128,14 @@ PUBLIC SUB setFreq(qrg AS Float)
         TRY WRITE #sktHamlib, S, Len(S)
     ENDIF
   
+END
+
+PUBLIC SUB Form_KeyPress()
+
+  IF Key.Control AND (Key.Code = Asc("L") OR Key.Code = Asc("l")) THEN txtLocQSO.SetFocus
+  IF Key.Control AND (Key.Code = Asc("N") OR Key.Code = Asc("n")) THEN txtNameQSO.SetFocus
+  IF Key.Control AND (Key.Code = Asc("M") OR Key.Code = Asc("m")) THEN txtComment.SetFocus
+  IF Key.Control AND (Key.Code = Asc("Q") OR Key.Code = Asc("q")) THEN txtQTHqso.SetFocus
+  IF Key.Control AND (Key.Code = Asc("Z") OR Key.Code = Asc("z")) THEN txtCall.SetFocus
+
 END

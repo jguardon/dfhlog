@@ -220,22 +220,21 @@ Geometry=[0,25,301,301]
 Geometry=[0,0,301,301]
 
 [FFind]
-SearchIn="Module"
+SearchIn="Project"
 CaseSensitive=False
-SearchWord=True
+SearchWord=False
 SearchComment=False
 SearchString=False
 
 [OpenFile]
-File[1]="FMain.class:74.42"
-File[2]="FMain.form"
-File[3]="FLog.form"
-File[4]="FLog.class:1.0"
-File[5]="global.module:1.0"
-File[6]="FSearch.class:1.0"
-File[7]="Mstart.module:39.39"
-Active=7
-Count=7
+File[1]="FMain.form"
+File[2]="FMain.class:448.3"
+File[3]="FBandMap.class:79.13"
+Active=3
+File[4]="FBandMap.form"
+File[5]="FSearch.form"
+File[6]="FSearch.class:71.20"
+Count=6
 
 [Watches]
 Count=0

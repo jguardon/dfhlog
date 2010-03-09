@@ -101,8 +101,10 @@ PUBLIC SUB daBandMap_Draw()
 END
 
 PUBLIC SUB Control(VFO AS Float)
+    
     $Freq = VFO / 1000
     daBandMap.Refresh
+    
 END
 
 PUBLIC SUB daRefresh()
@@ -262,6 +264,6 @@ PUBLIC SUB daBandMap_MouseWheel()
 
     IF Mouse.Delta > 0 THEN $Freq += 0.01
     IF Mouse.Delta < 0 THEN $Freq -= 0.01
-    'IF FMain.$hamlibconnected THEN FMain.setFreq($Freq * 1000) 
+    FMain.setFreq($Freq * 1000) 
     daBandMap.Refresh
 END
