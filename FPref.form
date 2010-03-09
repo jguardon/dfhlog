@@ -11,7 +11,7 @@
   { TabStrip1 TabStrip
     MoveScaled(0,0,68,53)
     Padding = 10
-    Count = 5
+    Count = 6
     Index = 0
     Text = ("My &Station")
     { Frame1 Frame
@@ -276,6 +276,18 @@
       }
     }
     Index = 4
+    Text = ("&Band Plans")
+    { Panel1 Panel
+      MoveScaled(0,0,67,48)
+      Arrangement = Arrange.Fill
+      Padding = 3
+      { GridView1 GridView
+        MoveScaled(5,4,53,34)
+        Expand = True
+        Scrollbar = Scroll.Vertical
+      }
+    }
+    Index = 5
     Text = ("Ot&hers")
     { Frame7 Frame
       MoveScaled(1,29,65,10)

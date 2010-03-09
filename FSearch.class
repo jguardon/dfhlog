@@ -15,7 +15,7 @@
 '     You should have received a copy of the GNU General Public License
 '     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-STATIC PRIVATE $hres AS Result
+PRIVATE $hres AS Result
 PRIVATE $rf AS ResultField
 PRIVATE $aMyFields AS NEW String[]
 PUBLIC active AS Boolean = FALSE
@@ -69,11 +69,16 @@ PUBLIC SUB Form_Open()
     
     dtIni.Value = Date(1900, 1, 1)
     dtFin.Value = Now()
+    txtCall.SetFocus
  
 END
 
 PRIVATE SUB prepararCV()
+  DIM i AS Integer
+  DIM w_default AS String = "60|60|60|60|60|60|60|60|60|60|60|60|60|60|60|60|60|60|60|60|60|60|60|60|60|60"
+  DIM widths AS NEW String[]
   
+  widths = Split(FMain.ini["FSearch/Widths", w_default], "|")
   cv.Columns.Count = 26
   
   cv.Columns[0].Title = ("Nr")
@@ -103,20 +108,23 @@ PRIVATE SUB prepararCV()
   cv.Columns[24].Text = ("Distance (Km)")
   cv.Columns[25].Text = ("Remarks")
   
-  
+  FOR i = 0 TO cv.Columns.Count - 1
+    cv.Columns[i].Width = CInt(widths[i])
+  NEXT 
+
 END
 
 PRIVATE SUB searchQSO()
-    DIM hres AS Result
-    DIM sql AS String    
+    DIM sql AS String
     DIM dist AS Integer 
+
     INC Application.Busy
     IF vDist.Value = NULL THEN 
         dist = 0
     ELSE 
         dist = vDist.Value
     ENDIF 
-        
+
     sql = "SELECT id, qso_date, time_on, call, band, mode, prop_mode, rst_rcvd, rst_sent, name, gridsquare, qth, qsl_sent, qsl_rcvd, " &
     "qsl_via, pfx, country, cont, cqz, ituz, operator, tx_pwr, my_gridsquare, sat_name, distance, comment " &
     "FROM log WHERE qso_date BETWEEN &1 AND &2 AND call LIKE &3 AND band LIKE &4 and mode LIKE &5 " &
@@ -124,14 +132,14 @@ PRIVATE SUB searchQSO()
     "AND qth LIKE &11 AND comment LIKE &12 ORDER BY " & parseOrderby() & " " & parseASC() & ";"
     
     IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN    
-    hres = dbLog.cnLog.Exec(sql, dtIni.Value, dtFin.Value, txtCall.Text & "%", parseCbo(cboBand), parseCbo(cboMode), parseCbo(cboProp), 
+    $hres = dbLog.cnLog.Exec(sql, dtIni.Value, dtFin.Value, txtCall.Text & "%", parseCbo(cboBand), parseCbo(cboMode), parseCbo(cboProp), 
     parseQSL(), txtLoc.Text & "%", dist, txtMgr.Text & "%", "%" & txtQTH.Text & "%", "%" & txtRemarks.Text & "%")
-    $hres = hres
-    cv.Rows.Count = hres.Count
+
+    cv.Rows.Count = $hres.Count
      
-    lblNumRec.Text = Subst$(("Records: &1 (Ordered by &2 - &3)"), hres.Count, cboOrder.Text, IIf(rbASC.Value = TRUE, ("Ascending"), ("Descending")))
+    lblNumRec.Text = Subst$(("Records: &1 (Ordered by &2 - &3)"), $hres.Count, cboOrder.Text, IIf(rbASC.Value = TRUE, ("Ascending"), ("Descending")))
     cv.Refresh
-    IF chkTXT.Value THEN toText(hres)
+    IF chkTXT.Value THEN toText()
     
     DEC Application.Busy
     
@@ -140,23 +148,42 @@ PRIVATE SUB searchQSO()
     
 END
 
-PRIVATE SUB toText(hres AS Result)
-    DIM ii AS Integer = 69
+PRIVATE SUB toText()
+    DIM hres AS Result
+    DIM ii AS Integer = 0 
     DIM i AS Integer
     DIM F AS File
     DIM filename AS String = Temp$
+    DIM sql AS String
+    DIM dist AS Integer
+    
+    IF vDist.Value = NULL THEN 
+        dist = 0
+    ELSE 
+        dist = vDist.Value
+    ENDIF
+
+    sql = "SELECT id, qso_date, time_on, call, band, mode, prop_mode, rst_rcvd, rst_sent, name, gridsquare, qth, qsl_sent, qsl_rcvd, " &
+    "qsl_via, pfx, country, cont, cqz, ituz, operator, tx_pwr, my_gridsquare, sat_name, distance, comment " &
+    "FROM log WHERE qso_date BETWEEN &1 AND &2 AND call LIKE &3 AND band LIKE &4 and mode LIKE &5 " &
+    "AND prop_mode LIKE &6 AND qsl_rcvd LIKE &7 AND gridsquare LIKE &8 AND distance >= &9 AND qsl_via LIKE &10 " &
+    "AND qth LIKE &11 AND comment LIKE &12 ORDER BY " & parseOrderby() & " " & parseASC() & ";"
 
     F = OPEN filename FOR OUTPUT CREATE
-   
+    IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN    
+    hres = dbLog.cnLog.Exec(sql, dtIni.Value, dtFin.Value, txtCall.Text & "%", parseCbo(cboBand), parseCbo(cboMode), parseCbo(cboProp), 
+    parseQSL(), txtLoc.Text & "%", dist, txtMgr.Text & "%", "%" & txtQTH.Text & "%", "%" & txtRemarks.Text & "%")
+
     DO WHILE hres.Available
         IF (ii MOD 69 = 0) THEN 
             PRINT #F, "\n" & fitText("Date", 11) & fitText("UTC", 6) & fitText("Callsign", 13) & fitText("Band", 7, TRUE) & fitText("Mode", 7) & fitText("Locator", 8) & fitText("Cfmd", 5) & fitText("MGR", 8) & "Remarks"
             PRINT #F, String(100, "-")
         ENDIF
+        PRINT hres!id
         PRINT #F, fitText(global.parseFecha(hres!qso_date), 11) & fitText(Left(hres!time_on, 5), 6) & fitText(hres!call, 13) & fitText(hres!band, 7, TRUE) & fitText(hres!mode, 7) & fitText(hres!gridsquare, 8) & fitText(hres!qsl_rcvd, 5) & fitText(hres!qsl_via, 8) & Left(hres!comment, 35)
- 
-        INC ii
         hres.MoveNext
+        INC ii
+
     LOOP
      
     PRINT #F, "\n"
@@ -181,16 +208,13 @@ PUBLIC FUNCTION fitText(subject AS String, lenght AS Integer, OPTIONAL alignRigh
 END
 
 PUBLIC SUB cv_Data(Row AS Integer, Column AS Integer)
-   
     $hres.MoveTo(Row)  
     IF Column = 1 THEN 
         cv.Data.Text = Format$($hres[$aMyFields[Column]], "dd/mm/yyyy")
     ELSE
         cv.Data.Text = $hres[$aMyFields[Column]]
     ENDIF 
-    
     IF row MOD 2 = 0 THEN cv.Data.Background = Color.LightBackground
- 
 END
 
 PRIVATE SUB createMenu()
@@ -250,27 +274,20 @@ PRIVATE SUB createMenu()
     $hmenuPrint = NEW Menu($hmenu) AS "mnuPrintQSL"
     $hmenuPrint.Text = ("Print QSL")
     $hmenuPrint.Picture = Picture["icons/gtk-print.png"]
-    $hmenuPrint.Shortcut = "Ctrl+P"  
-    
+    $hmenuPrint.Shortcut = "Ctrl+P"
 
 END
 
-
 PRIVATE SUB menuLog()
-
     getSelectedQSO()
     IF global.$iQSOn.Count > 1 THEN 
           $hmenuInfo.Text = ("For selected QSOs: ") & global.$iQSOn.Count
     ELSE 
           $hmenuInfo.Text = (("For QSO with: ") & cv[cv.Row, 3].Text)
-    ENDIF 
-    
+    ENDIF
     IF global.$iQSOn.Count > 1 THEN $hmenuEdit.enabled = FALSE
-    
     ' pop up
-     
     $hMenu.Popup()
-
 END
 
 PUBLIC SUB getSelectedQSO()
@@ -287,7 +304,7 @@ PUBLIC SUB mnuEditarQSO_Click()
     getSelectedQSO
     IF global.$iQSOn.Count = 1 THEN 
         FMain.modifyQSO(CInt(global.$iQSOn[0]))
-        'FMain.Visible = TRUE
+        FMain.Visible = TRUE
     ELSE 
         Message.Warning(("Only one QSO could be edited at a time!")) 
     ENDIF
@@ -376,7 +393,7 @@ PUBLIC SUB btnOK_Click()
         vDist.Value = NULL
         chkTXT.Value = FALSE
     ENDIF 
-    
+    txtCall.SetFocus
 END
 
 PRIVATE FUNCTION parseCbo(cbo AS ComboBox) AS String
@@ -476,8 +493,14 @@ PUBLIC SUB txtCall_KeyRelease()
 END
 
 PUBLIC SUB Form_Close()
-
-  active = FALSE
+    DIM i AS Integer
+    DIM widths AS String
+    FOR i = 0 TO cv.Columns.Count - 1
+        widths &= cv.Columns[i].Width & "|"
+    NEXT 
+    FMain.ini["FSearch/Widths"] = Left$(widths, Len(widths) - 1)
+    FMain.ini.Save
+    active = FALSE
 
 END
 
