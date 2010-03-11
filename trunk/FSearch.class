@@ -153,7 +153,7 @@ PRIVATE SUB toText()
     DIM ii AS Integer = 0 
     DIM i AS Integer
     DIM F AS File
-    DIM filename AS String = Temp$
+    DIM filename AS String = Temp$ & ".txt"
     DIM sql AS String
     DIM dist AS Integer
     
@@ -179,7 +179,6 @@ PRIVATE SUB toText()
             PRINT #F, "\n" & fitText("Date", 11) & fitText("UTC", 6) & fitText("Callsign", 13) & fitText("Band", 7, TRUE) & fitText("Mode", 7) & fitText("Locator", 8) & fitText("Cfmd", 5) & fitText("MGR", 8) & "Remarks"
             PRINT #F, String(100, "-")
         ENDIF
-        PRINT hres!id
         PRINT #F, fitText(global.parseFecha(hres!qso_date), 11) & fitText(Left(hres!time_on, 5), 6) & fitText(hres!call, 13) & fitText(hres!band, 7, TRUE) & fitText(hres!mode, 7) & fitText(hres!gridsquare, 8) & fitText(hres!qsl_rcvd, 5) & fitText(hres!qsl_via, 8) & Left(hres!comment, 35)
         hres.MoveNext
         INC ii

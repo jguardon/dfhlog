@@ -1,3 +1,13 @@
+* Wed Mar 10 2010 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.40
+- GUI improved: Introduced BandMap for use with cluster and CAT. Idea from (EA7EJG).
+- GUI improved: Search form now is bigger and performs better.
+- GUI improved: New arrangement of widgets in main form.
+- Feature added: qrz.com search now works in edit mode.
+- BUG fixed: weird behavior when editing qso from search form, lines turned blank. Thanks to (EA6AZ)
+- BUG fixed: popup menus did not show from shortcuts. Thanks to (EA1EYE).
+- BUG fixed: not all worked gridsquares was shown in grid map.
+- Several other bugs fixed.
+
 * Sun Mar 07 2010 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.41
 
 * Sat Dec 19 2009 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.39

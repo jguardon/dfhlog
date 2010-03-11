@@ -32,4 +32,4 @@ CreateEachDirectory=1
 Systems=debian,fedora,mandriva,suse,ubuntu,autotools
 Menus=Applications/Amateur Radio,Network/Ham Radio,More Applications/Communications,Network/Ham Radio,Applications/Amateur Radio,
 Categories=HamRadio,HamRadio;Network,HamRadio,HamRadio;Network,HamRadio,
-Groups=hamradio,Applications/Communications,Communications,Productivity/Hamradio/Logging,Communications,
+Groups=hamradio,Applications/Communications,Communications,Productivity/Hamradio/Logging,hamradio,

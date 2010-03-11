@@ -284,6 +284,7 @@
       { GridView1 GridView
         MoveScaled(5,4,53,34)
         Expand = True
+        Header = GridView.Horizontal
         Scrollbar = Scroll.Vertical
       }
     }
