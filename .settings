@@ -229,12 +229,11 @@ SearchString=False
 [OpenFile]
 File[1]="FMain.form"
 File[2]="FMain.class:448.3"
-File[3]="FBandMap.class:79.13"
-Active=3
-File[4]="FBandMap.form"
-File[5]="FSearch.form"
-File[6]="FSearch.class:71.20"
-Count=6
+File[3]="FPref.form"
+File[4]="global.module:0.0"
+File[5]="FSearch.class:185.8"
+Active=5
+Count=5
 
 [Watches]
 Count=0
