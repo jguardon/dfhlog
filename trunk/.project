@@ -1,5 +1,5 @@
 # Gambas Project File 2.0
-# Compiled with Gambas 2.20.1
+# Compiled with Gambas 2.20.2
 Title=dfhlog
 Startup=Mstart
 Icon=icons/dfhlog.png
@@ -8,6 +8,7 @@ Library=gb.qt
 Library=gb.form
 Library=gb.db
 Library=gb.db.form
+Library=gb.db.sqlite3
 Library=gb.desktop
 Library=gb.form.dialog
 Library=gb.form.mdi
@@ -29,7 +30,7 @@ Address=ea7dfh@ea7dfh.com
 License=General Public Licence
 UseRelease=1
 CreateEachDirectory=1
-Systems=debian,fedora,mandriva,suse,ubuntu,autotools
-Menus=Applications/Amateur Radio,Network/Ham Radio,More Applications/Communications,Network/Ham Radio,Applications/Amateur Radio,
-Categories=HamRadio,HamRadio;Network,HamRadio,HamRadio;Network,HamRadio,
-Groups=hamradio,Applications/Communications,Communications,Productivity/Hamradio/Logging,hamradio,
+Systems=fedora,mandriva,suse,ubuntu,autotools
+Menus=Network/Ham Radio,More Applications/Communications,Network/Ham Radio,Applications/Amateur Radio,
+Categories=HamRadio;Network,,HamRadio;Network,HamRadio,
+Groups=Applications/Communications,Communications,Productivity/Hamradio/Logging,hamradio,

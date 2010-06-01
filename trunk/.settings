@@ -228,12 +228,11 @@ SearchString=False
 
 [OpenFile]
 File[1]="FMain.form"
-File[2]="FMain.class:448.3"
-File[3]="FPref.form"
-File[4]="global.module:0.0"
-File[5]="FSearch.class:185.8"
-Active=5
-Count=5
+File[2]="FMain.class:68.84"
+File[3]="FDesign.form"
+File[4]="FDesign.class:197.55"
+Active=4
+Count=4
 
 [Watches]
 Count=0

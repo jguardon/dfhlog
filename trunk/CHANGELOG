@@ -1,3 +1,7 @@
+* Tue Jun 01 2010 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.41
+- BUG fixed: Solved error in newer versions of hamlib (Ubuntu Lucid)
+- Request: In QSL design, no more print the 'X' for QSL rcvd/sent status.
+
 * Wed Mar 10 2010 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.40
 - GUI improved: Introduced BandMap for use with cluster and CAT. Idea from (EA7EJG).
 - GUI improved: Search form now is bigger and performs better.
