@@ -89,15 +89,15 @@ PUBLIC SUB Form_Open()
     NEXT
     
     IF Exist(User.Home &/ ".config/dfhlog/servers.dat") THEN    
-        F = OPEN User.Home &/ ".config/dfhlog/servers.dat" FOR INPUT          
-        WHILE NOT Eof(F)          
+        F = OPEN User.Home &/ ".config/dfhlog/servers.dat" FOR INPUT
+        WHILE NOT Eof(F)
             LINE INPUT #F, L
             cboServer.Add(L)
         WEND 
-        CLOSE #F              
+        CLOSE #F
     ENDIF
     
-    SHELL "rigctl -V | grep version" TO $test
+    SHELL "rigctl -V" TO $test
     
     IF Left($test, 6) = "rigctl" THEN 
         isHamlib = TRUE

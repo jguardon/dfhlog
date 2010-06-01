@@ -21,7 +21,7 @@ PUBLIC FUNCTION connDB(path AS String) AS Boolean
 DIM myHost, myDBName AS String
 
     myHost = Left(path, RInStr(path, "/"))
-    myDBName = Mid(path, Len(myHost) + 1, RInStr(path, "/"))
+    myDBName = Right(path, Len(path) - RInStr(path, "/"))
     'DEBUG myHost;; myDBName
     IF cnTablas <> NULL THEN RETURN FALSE
     

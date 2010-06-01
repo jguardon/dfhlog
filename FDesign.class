@@ -193,9 +193,9 @@ PUBLIC SUB printQSLs()
         global.$aLabels["MYLOC"].sText = hres!my_gridsquare
         global.$aLabels["MANAGER"].sText = hres!qsl_via
         IF hres!qsl_rcvd = "Y" THEN 
-            global.$aLabels["X (TNX QSL)"].sText = "X"
+            global.$aLabels["TNX QSL"].sText = "TNX QSL"
         ELSE 
-            global.$aLabels["X (PSE QSL)"].sText = "X"
+            global.$aLabels["PSE QSL"].sText = "PSE QSL"
         ENDIF 
         
         FOR EACH hField IN global.$aLabels

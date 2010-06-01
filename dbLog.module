@@ -19,10 +19,10 @@ PUBLIC cnLog AS Connection
 
 PUBLIC FUNCTION connDB(path AS String) AS Boolean
 DIM myHost, myDBName AS String
-
-    myHost = Left(path, RInStr(path, "/"))
-    myDBName = Mid(path, Len(myHost) + 1, RInStr(path, "/"))
-    'DEBUG myHost;; myDBName
+DIM cnx AS Database
+    myHost = Left(path, RInStr(path, "/"))    
+    myDBName = Right(path, Len(path) - RInStr(path, "/"))
+'     DEBUG myHost;; myDBName
     IF cnLog <> NULL THEN RETURN FALSE
     
     cnLog = NEW Connection
@@ -30,12 +30,11 @@ DIM myHost, myDBName AS String
     cnLog.Host = myHost
     cnLog.Name = myDBName
     cnLog.Type = "sqlite3"
-    
     TRY cnLog.Open()
     
     IF ERROR THEN 
         cnLog = NULL
-        Message.Error(("Error connecting to database: ") & myDBName)
+        Message.Error(("Error connecting to database: ") & myDBName & "\n" & Error.Text)
         RETURN TRUE
     ENDIF 
     

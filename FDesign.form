@@ -32,7 +32,7 @@
         ToolTip = ("Select field to modify")
         Text = ("")
         ReadOnly = True
-        List = [("MYCALL"), ("HISCALL"), ("DATE"), ("UTC"), ("RST"), ("BAND"), ("MODE"), ("PROP"), ("MYLOC"), ("HISLOC"), ("X (PSE QSL)"), ("X (TNX QSL)"), ("MANAGER")]
+        List = [("MYCALL"), ("HISCALL"), ("DATE"), ("UTC"), ("RST"), ("BAND"), ("MODE"), ("PROP"), ("MYLOC"), ("HISLOC"), ("PSE QSL"), ("TNX QSL"), ("MANAGER")]
       }
       { Frame3 Frame
         MoveScaled(1,5,16,10)

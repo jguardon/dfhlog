@@ -822,7 +822,7 @@ PUBLIC SUB sktHamlib_Read()
     DIM smeter AS Integer
     DIM qrg AS Float
     
-    IF sktHamlib.Status = Net.Connected THEN
+    'IF sktHamlib.Status = Net.Connected THEN
         LINE INPUT #sktHamlib, S
         'DEBUG S
         FCatDebug.setText(S)
@@ -848,7 +848,7 @@ PUBLIC SUB sktHamlib_Read()
             ENDIF
          'ENDIF
         
-    ENDIF 
+    'ENDIF 
     
     CATCH 
         DEBUG Error.Text, Error.Where
@@ -1643,7 +1643,7 @@ END
 
 PUBLIC SUB mnuBackup_Click()
     DIM s AS String
-    s = User.Home &/ "log" & Year(Now) & Month(Now) & Day(Now) & Hour(Now) & Minute(Now) & Second(Now) & ".db"
+    s = User.Home &/ "log" & Year(Now) & Format$(Month(Now), "0#") & Format$(Day(Now), "0#") & Format$(Hour(Now), "0#") & Format$(Minute(Now), "0#") & Format$(Second(Now), "0#") & ".db"
     TRY COPY ini["Log/File"] TO s
     Message.Info(("Copy saved as:\n") & s)    
     
@@ -2137,5 +2137,25 @@ PUBLIC SUB Form_KeyPress()
   IF Key.Control AND (Key.Code = Asc("M") OR Key.Code = Asc("m")) THEN txtComment.SetFocus
   IF Key.Control AND (Key.Code = Asc("Q") OR Key.Code = Asc("q")) THEN txtQTHqso.SetFocus
   IF Key.Control AND (Key.Code = Asc("Z") OR Key.Code = Asc("z")) THEN txtCall.SetFocus
+
+END
+
+PUBLIC SUB Form_Drop()
+    DIM ddata AS String
+    ddata = Trim$(Drag.Data)
+    IF Right$(ddata, 2) = "db" THEN 
+        ddata = Right$(ddata, - 7)
+        ini["Log/File"] = ddata
+        ini.Save()
+        dbLog.CloseDB()
+        dbLog.connDB(ddata)
+        lblPath.Text = "Log: " & ddata
+        fillData() 'cargar datos log
+    ELSE 
+        STOP EVENT 
+    ENDIF 
+    
+    CATCH 
+        Message.Error(("Error drag/drop Log\n") & Error.Text & "\n" & Error.Where)
 
 END
