@@ -1,9 +1,9 @@
 # Gambas Project File 2.0
-# Compiled with Gambas 2.20.2
+# Compiled with Gambas 2.22.0
 Title=dfhlog
 Startup=Mstart
 Icon=icons/dfhlog.png
-Version=0.0.41
+Version=0.0.43
 Library=gb.qt
 Library=gb.form
 Library=gb.db
@@ -19,18 +19,20 @@ Library=gb.qt.ext
 Library=gb.settings
 Library=gb.xml
 Library=gb.xml.rpc
-Description=Amateur Radio Logging program\n\nImport/Export ADIF files, cluster connection, Hamlib based CAT control, \nQRZ.com support, XPlanet Maps and Custom GridSquare Maps, \nsimple awards support (WAS, DXCC, IOTA, USACA, TPEA).\n\nCurrent available languages:\n\nEnglish, Spanish, Galego, Portugues
-Authors=Jesús Guardón, EA7DFH\nea7dfh@ea7dfh.com
+Description=Amateur Radio Logging program\n\nImport/Export ADIF files, cluster connection, Hamlib based CAT control, \nQRZ.com support, XPlanet Maps and Custom GridSquare Maps, \nsimple awards support (WAS, DXCC, IOTA, USACA, TPEA).\n\nCurrent available languages:\n\nEnglish, Spanish, Galego, Portugues, Ukrainian
+Authors=Jesús Guardón, EA7DFH\nea7dfh@gmail.com
 TabSize=4
 Translate=1
 Language=en
-CreateShortcut=1
-Maintainer=Jesus Guardon
-Address=ea7dfh@ea7dfh.com
+ExecPath=/home/jesus/Gambas/dfhlog.gambas
+SourcePath=/home/jesus/Paquetes
+Maintainer=Jesus Guardon Cerezo
+Address=ea7dfh@gmail.com
+Url=http://code.google.com/p/dfhlog
 License=General Public Licence
 UseRelease=1
 CreateEachDirectory=1
-Systems=fedora,mandriva,suse,ubuntu,autotools
-Menus=Network/Ham Radio,More Applications/Communications,Network/Ham Radio,Applications/Amateur Radio,
-Categories=HamRadio;Network,,HamRadio;Network,HamRadio,
-Groups=Applications/Communications,Communications,Productivity/Hamradio/Logging,hamradio,
+Systems=fedora,mandriva,suse,ubuntu
+Menus=Network/Ham Radio,More Applications/Communications,Network/Ham Radio,Applications/Amateur Radio
+Categories=HamRadio;Network,,HamRadio;Network,Hamradio
+Groups=Applications/Databases,Databases,Productivity/Hamradio/Logging,hamradio

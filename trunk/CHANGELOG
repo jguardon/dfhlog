@@ -1,3 +1,6 @@
+* Sun Mar 06 2011 Jesus Guardon Cerezo <ea7dfh@gmail.com> 0.0.42
+- QRZ.com search fixed (again)
+
 * Tue Jun 01 2010 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.41
 - BUG fixed: Solved error in newer versions of hamlib (Ubuntu Lucid)
 - Request: In QSL design, no more print the 'X' for QSL rcvd/sent status.

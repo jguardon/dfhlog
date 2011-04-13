@@ -19,7 +19,7 @@ PUBLIC cnLog AS Connection
 
 PUBLIC FUNCTION connDB(path AS String) AS Boolean
 DIM myHost, myDBName AS String
-DIM cnx AS Database
+
     myHost = Left(path, RInStr(path, "/"))    
     myDBName = Right(path, Len(path) - RInStr(path, "/"))
 '     DEBUG myHost;; myDBName

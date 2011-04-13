@@ -210,7 +210,7 @@ PUBLIC SUB importQSOs()
     btnOK.Enabled = FALSE
     
     IF Errors > 0 THEN 
-        IF Message.Error(("Some errors found.\nCheck 'ImportErrors.txt' into User Folder?"), ("Yes"), "No") = 2 THEN RETURN 
+        IF Message.Error(("Some errors found.\nCheck 'ImportErrors.txt' into User Folder?"), ("Yes"), ("No")) = 2 THEN RETURN 
         Desktop.Open(User.Home &/ "ImportErrors.txt")
     ENDIF 
   

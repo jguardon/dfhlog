@@ -31,10 +31,12 @@ PUBLIC SUB Main() 'Select language from command line args. You need to install s
                 System.Language = "pt_PT.UTF-8"
             CASE "-en"
                 System.Language = "en_US.UTF-8"
+            CASE "-uk"
+                System.Language = "uk_UK.UTF-8"
             'TODO add more languages
             CASE ELSE 
                 Message.Info(("Possible values for arguments are:\n-es (for Spanish)\n-gl (for Galego)\n" &
-                "-pt (for Portuguesse)\n-en (for English)"))            
+                "-pt (for Portuguesse)\n-en (for English)\n-uk (for Ukrainian)"))            
         END SELECT
     ENDIF
     IF NOT Exist(User.Home &/ ".fonts") THEN TRY MKDIR User.Home &/ ".fonts/"

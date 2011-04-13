@@ -354,8 +354,8 @@ PRIVATE SUB buscar()
             lblPfx.Caption = c.pfx
             lblCQ.Caption = c.cqz
             lblITU.Caption = c.ituz
-            lblDist.Caption = Round(global.distance(c.lat, c.lon, mylat, mylon), -1) & " Km"
-            lblRumbo.Caption = Round(global.bearing(mylat, mylon, c.lat, c.lon), -1) & " Deg"
+            lblDist.Caption = Round(global.distance(c.lat, c.lon, mylat, mylon), -1) & (" Km")
+            lblRumbo.Caption = Round(global.bearing(mylat, mylon, c.lat, c.lon), -1) & (" Deg")
             update_stats
         ELSE 
             clearFields
@@ -456,7 +456,7 @@ PUBLIC SUB Timer1_Timer()
 END
 
 PUBLIC SUB options_Click()
-  FPref.ShowModal() 
+    FPref.ShowModal() 
 END
 
 PUBLIC SUB TimerQSO_Timer()
@@ -623,8 +623,8 @@ PUBLIC SUB btnOK_Click()
         IF modificando = TRUE THEN 
             logModifiedQSO(CInt(lblNoQSO.Text))
             btnOK.ForeColor = Color.Black
-            btnOK.Text = "OK [Enter]"
-            frameQSO.Text = "QSO"
+            btnOK.Text = ("OK [Enter]")
+            frameQSO.Text = ("QSO")
             chkAutoSpot.Visible = TRUE
             chkRT.Value = TRUE
             chkRT.Visible = TRUE 
@@ -633,7 +633,7 @@ PUBLIC SUB btnOK_Click()
             IF chkAutoSpot.Value = TRUE AND sktCluster.Status = Net.Connected THEN 
                 spotQSO()
             ELSE IF chkAutoSpot.Value <> TRUE AND chkAutoSpot.Value <> FALSE AND sktCluster.Status = Net.Connected
-                IF Message.Question(("Do you want to spot\n") & txtCall.Text & ("\n to the Cluster Net?"), "No", ("Yes")) = 2 THEN spotQSO()
+                IF Message.Question(("Do you want to spot\n") & txtCall.Text & ("\n to the Cluster Net?"), ("No"), ("Yes")) = 2 THEN spotQSO()
             ENDIF
         ENDIF 
         
@@ -675,8 +675,8 @@ END
 PUBLIC SUB btnClear_Click()    
     IF modificando THEN 
         btnOK.ForeColor = Color.Black
-        btnOK.Text = "OK [Enter]"
-        frameQSO.Text = "QSO"
+        btnOK.Text = ("OK [Enter]")
+        frameQSO.Text = ("QSO")
         chkAutoSpot.Visible = TRUE
         chkRT.Value = TRUE
         chkRT.Visible = TRUE
@@ -1106,7 +1106,7 @@ END
 PUBLIC SUB tblCluster_Click() 
     DIM dxline AS String    
     IF tblCluster.Rows.Count > 1 THEN 
-        dxline = tblCluster.Current.Text        
+        dxline = tblCluster[tblCluster.Row, 0].Text
         IF Left$(dxline, 5) = "DX de" OR (IsDigit(Trim(Left(dxline, 6))) = TRUE AND InStr(dxline, ".") > 6 AND InStr(dxline, ".") < 15) THEN
             IF $markedSpot = FALSE
                 tblCluster.Current.Background = Color.Yellow
@@ -1130,7 +1130,8 @@ PUBLIC SUB tblCluster_Activate()
     
     stopped = FALSE
     IF tblCluster.Rows.Count > 0 THEN 
-        dxline = tblCluster.Current.Text    
+        'dxline = tblCluster.Current.Text
+        dxline = tblCluster[tblCluster.Row, 0].Text
         IF Left$(dxline, 5) = "DX de" THEN 
                 dxFreq = CFloat(Trim(Mid(dxline, 15, 10)))
                 dxCall = Trim(Mid(dxline, 27, 10))
@@ -1228,8 +1229,8 @@ PUBLIC SUB txtLocQSO_Change()
     IF txtLocQSO.Text THEN    
         IF global.chkLoc(txtLocQSO.Text) THEN 
           txtLocQSO.ForeColor = Color.Black
-          lblDist.Caption = Round(global.distLoc(txtLocQSO.Text, ini["Estacion/Locator"]), -1) & " Km"
-          lblRumbo.Caption = Round(global.bearingLoc(ini["Estacion/Locator"], txtLocQSO.Text), -1) & " Deg"
+          lblDist.Caption = Round(global.distLoc(txtLocQSO.Text, ini["Estacion/Locator"]), -1) & (" Km")
+          lblRumbo.Caption = Round(global.bearingLoc(ini["Estacion/Locator"], txtLocQSO.Text), -1) & (" Deg")
           'IF modificando = FALSE THEN 
           getSqWkdCfd(txtLocQSO.Text, cboFreq.Text)
         ELSE 
@@ -1422,19 +1423,19 @@ PRIVATE SUB prepararGrid()
     grdQSO.Columns[3].Text = ("Callsign")
     grdQSO.Columns[4].Text = ("Band")
     grdQSO.Columns[5].Text = ("Mode")
-    grdQSO.Columns[6].Text = "Propa."
-    grdQSO.Columns[7].Text = "RST(R)"
+    grdQSO.Columns[6].Text = ("Propa.")
+    grdQSO.Columns[7].Text = ("RST(R)")
     grdQSO.Columns[8].Text = ("RST(S)")
     grdQSO.Columns[9].Text = ("Name")
-    grdQSO.Columns[10].Text = "Locator"
+    grdQSO.Columns[10].Text = ("Locator")
     grdQSO.Columns[11].Text = ("QSL(S)")
-    grdQSO.Columns[12].Text = "QSL(R)"
-    grdQSO.Columns[13].Text = "QSL Via"  
+    grdQSO.Columns[12].Text = ("QSL(R)")
+    grdQSO.Columns[13].Text = ("QSL Via") 
     grdQSO.Columns[14].Text = ("Prefix")
-    grdQSO.Columns[15].Text = "DXCC"
-    grdQSO.Columns[16].Text = "Cont."
-    grdQSO.Columns[17].Text = "CQz"
-    grdQSO.Columns[18].Text = "ITUz"
+    grdQSO.Columns[15].Text = ("DXCC")
+    grdQSO.Columns[16].Text = ("Cont.")
+    grdQSO.Columns[17].Text = ("CQz")
+    grdQSO.Columns[18].Text = ("ITUz")
     grdQSO.Columns[19].Text = ("Operator")
     grdQSO.Columns[20].Text = ("Power")
     grdQSO.Columns[21].Text = ("My Locator")
@@ -1597,11 +1598,11 @@ PUBLIC SUB grdQSO_Menu()
 END
 
 PUBLIC SUB btnOpnTPEA_Click()
-    IF c.pfx = "EA" OR c.pfx = "EA6" OR c.pfx = "EA8" OR c.pfx = "EA9" THEN
+    'IF c.pfx = "EA" OR c.pfx = "EA6" OR c.pfx = "EA8" OR c.pfx = "EA9" THEN
         FAwards.oTPEA()
         txtTPEA.Text = sTPEA
         sTPEA = NULL
-    ENDIF 
+    'ENDIF 
 END
 
 PUBLIC SUB btnOpnIOTA_Click()

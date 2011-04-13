@@ -10,6 +10,24 @@ Geometry=[0,25,301,301]
 [DebugWindow/$hres]
 Geometry=[0,41,301,301]
 
+[DebugWindow/$hres.Fields]
+Geometry=[0,0,301,301]
+
+[DebugWindow/$hres.Fields["id"]]
+Geometry=[0,0,301,301]
+
+[DebugWindow/$hres.Fields[Str(Column)]]
+Geometry=[0,0,301,301]
+
+[DebugWindow/$hres.Fields[Str(Column)].Result]
+Geometry=[14,14,301,301]
+
+[DebugWindow/$hres.Fields[Str(Column)].Result.Fields]
+Geometry=[28,28,301,301]
+
+[DebugWindow/$rf]
+Geometry=[0,0,301,301]
+
 [DebugWindow/Action]
 Geometry=[0,25,301,301]
 
@@ -222,17 +240,19 @@ Geometry=[0,0,301,301]
 [FFind]
 SearchIn="Project"
 CaseSensitive=False
-SearchWord=False
+SearchWord=True
 SearchComment=False
-SearchString=False
+SearchString=True
 
 [OpenFile]
 File[1]="FMain.form"
-File[2]="FMain.class:68.84"
-File[3]="FDesign.form"
-File[4]="FDesign.class:197.55"
-Active=4
-Count=4
+File[2]="FMain.class:1276.4"
+File[3]="data/authors.txt:10.0"
+File[4]="data/support.txt:7.25"
+File[5]="FAbout.form"
+File[6]="FAbout.class:259.31"
+Active=6
+Count=6
 
 [Watches]
 Count=0

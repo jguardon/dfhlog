@@ -114,7 +114,7 @@ PUBLIC SUB btnOK_Click()
 
     OPEN filePath FOR WRITE CREATE AS #hFile
     PRINT #hFile, "ADIF file created by dfhLog v." & application.Version & " (c) EA7DFH," &  
-    crlf & "distributed under the GPL GNU Licence " & crlf & "<EOH>" & crlf & crlf
+    crlf & "distributed under the GPL GNU License " & crlf & "<EOH>" & crlf & crlf
     
     IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN 
     

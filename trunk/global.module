@@ -414,7 +414,7 @@ PUBLIC SUB _getVer_Finished()
     IF ver THEN 
         verUpdate = CInt(ver)    
         IF verUpdate > myVersion THEN 
-            IF Message.Question(("There is a new version of dfhLog.\nDo you want to visit the download page?"), ("Yes"), "No") = 2 THEN RETURN 
+            IF Message.Question(("There is a new version of dfhLog.\nDo you want to visit the download page?"), ("Yes"), ("No")) = 2 THEN RETURN 
             Desktop.Open("http://code.google.com/p/dfhlog/downloads/list")       
         ENDIF 
     ENDIF 
