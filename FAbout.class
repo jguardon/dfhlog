@@ -50,7 +50,7 @@ PUBLIC SUB getCtyDat()
             ENDIF
         WEND
         CLOSE #F
-        lblCtyDat.Text = "Cty.dat version: " & ctyd        
+        lblCtyDat.Text = ("Cty.dat version: ") & ctyd        
     
     ENDIF 
   
@@ -226,7 +226,7 @@ END
 
 PUBLIC SUB btnGift_Click()
 
- Desktop.Open("http://ea7dfh.com/donate/")
+  Desktop.Open("http://ea7dfh.com/donate/")
 
 END
 
@@ -239,5 +239,24 @@ END
 PUBLIC SUB svwAuthor_Leave()
 
   timAuthor.Start
+
+END
+
+PUBLIC SUB Label1_MouseUp()
+
+  Desktop.Open(Label1.Text)
+
+END
+
+PUBLIC SUB Label1_Enter()
+
+   Label1.Mouse = Mouse.Pointing
+  
+
+END
+
+PUBLIC SUB Label1_Leave()
+
+   Label1.Mouse = Mouse.Default
 
 END

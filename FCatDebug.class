@@ -26,7 +26,7 @@ PUBLIC SUB Button2_Click()
     OPEN path FOR WRITE CREATE AS #f
     PRINT #f, TextArea1.Text
     f.Close
-    Message.Info("File saved in: \n" & path) 
+    Message.Info(("File saved in: \n") & path) 
     Desktop.Open(path)
     
 END
@@ -36,9 +36,9 @@ PUBLIC SUB btnStop_Click()
   run = NOT run 
   
   IF run THEN 
-    btnStop.Text = "Stop"
+    btnStop.Text = ("Stop")
   ELSE 
-    btnStop.Text = "Start"
+    btnStop.Text = ("Start")
   ENDIF 
 
 END

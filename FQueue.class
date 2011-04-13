@@ -53,11 +53,11 @@ PRIVATE SUB prepararCV()
   cv.Columns[4].Text = ("Band")
   cv.Columns[5].Text = ("Mode")
   cv.Columns[6].Text = ("Propa.")  
-  cv.Columns[7].Text = "RST(E)"  
-  cv.Columns[8].Text = "Locator"
+  cv.Columns[7].Text = ("RST(E)")  
+  cv.Columns[8].Text = ("Locator")
   cv.Columns[9].Text = ("My Locator")
-  cv.Columns[10].Text = "Manager"
-  cv.Columns[11].Text = "QSL(R)"  
+  cv.Columns[10].Text = ("Manager")
+  cv.Columns[11].Text = ("QSL(R)")  
   cv.Columns[12].Text = ("QSL(S)")
   cv.Columns[13].Text = ("My Call")
 

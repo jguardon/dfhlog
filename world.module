@@ -58,9 +58,9 @@ PUBLIC SUB init()
     IF NOT Exist(User.Home &/ ".config/dfhlog/cty.dat") THEN  
         TRY MKDIR User.Home &/ ".config/dfhlog/"
         TRY COPY "data/cty.dat" TO User.Home &/ ".config/dfhlog/cty.dat"
-    ELSE 
-        TRY KILL User.Home &/ ".config/dfhlog/cty.dat"
-        TRY COPY "data/cty.dat" TO User.Home &/ ".config/dfhlog/cty.dat"
+    ' ELSE 
+    '     TRY KILL User.Home &/ ".config/dfhlog/cty.dat"
+    '     TRY COPY "data/cty.dat" TO User.Home &/ ".config/dfhlog/cty.dat"
     ENDIF 
   
     file = OPEN User.Home &/ ".config/dfhlog/cty.dat" FOR INPUT  

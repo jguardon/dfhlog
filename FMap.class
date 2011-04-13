@@ -33,7 +33,7 @@ PUBLIC SUB Form_Open()
      ME.Width = FMain.ini["FxMap/Width", ME.Width]
      xplanet_opened = TRUE
   
-   sTitle = "DX Map"
+   sTitle = ("DX Map")
    ME.Title = sTitle
       WHILE aHandle.Count < 1
       

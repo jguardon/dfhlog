@@ -255,9 +255,11 @@ END
 PUBLIC SUB extractData(S AS String)
 
     DIM calldata, callsign, id AS String
-    DIM regex AS Regexp
+    DIM regex AS NEW Regexp
     DIM i, j AS Integer
     DIM sArr AS NEW String[]
+    
+    
 
     ' IF InStr(S, "#calldata") AND InStr(S, "* user style:") < 0 THEN 
     '     i = InStr(S, "id=\"calldata")
@@ -286,12 +288,12 @@ PUBLIC SUB extractData(S AS String)
     ' ELSE 
     IF InStr(S, "<!-- begin calldata") THEN    
     
-        i = InStr(S, ")\">")
+        i = InStr(S, "Label\">")
         j = InStr(S, "style=\"margin-top:1.5em;")
         IF j > i THEN calldata = Mid(S, i, (j - i))
         sArr = Split(calldata, "\n", "", TRUE)  
-        
-        callsign = Replace(sArr[0], ")\"", "p", 1) 'to match stripField() function
+    
+        callsign = Replace(sArr[0], "Label\"", "p", 1) 'to match stripField() function
         $qcall = stripField(callsign) 
         $fname = stripField(sArr[1])
         $addr1 = stripField(sArr[2])

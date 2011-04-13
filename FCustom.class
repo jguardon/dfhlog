@@ -49,7 +49,7 @@ END
 PUBLIC SUB btnOK_Click()
     ' comprobar medidas con A4
     IF (vbHeight.Value * vbRows.Value) + vbTMargin.Value > 297 OR (vbWidth.Value * vbCols.Value) + vbLMargin.Value > 210 THEN 
-        Message.Warning(("Either total height or total width values\nare greater than A4 dimensions!"))
+        Message.Warning(("Either, total height or total width values\nare greater than A4 dimensions!"))
         RETURN 
     ELSE 
         IF FrameCustom.Enabled THEN 

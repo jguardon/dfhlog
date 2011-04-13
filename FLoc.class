@@ -492,12 +492,12 @@ PUBLIC SUB Timer1_Timer()
     lblMUF.Font = Font["Bold"]
     IF global.$alertedES = TRUE THEN 
         lblMUF.Visible = TRUE
-        lblMUF.Text = "2M SPORADIC"
+        lblMUF.Text = ("2M SPORADIC")
         lblMUF.BackColor = Color.Red
         lblMUF.ForeColor = Color.Yellow
     ELSE IF global.$alertedMUF = TRUE THEN 
         lblMUF.Visible = TRUE
-        lblMUF.Text = "HIGH MUF"
+        lblMUF.Text = ("HIGH MUF")
         lblMUF.BackColor = Color.Yellow
         lblMUF.ForeColor = Color.Red
     ELSE 

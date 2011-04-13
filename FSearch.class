@@ -56,14 +56,14 @@ PUBLIC SUB Form_Open()
         cboMode.Add(modo)
     NEXT
     chkSWT.Value = FMain.ini["AutoSearch/Value", FALSE]
-    cboOrder.List = [("QSO Nr"), ("Callsign"), "Locator", ("Distance"), "Manager", "QTH", ("Comments"), ("Band"), ("Mode"), "Prop."]
+    cboOrder.List = [("QSO Nr"), ("Callsign"), ("Locator"), ("Distance"), ("Manager"), ("QTH"), ("Comments"), ("Band"), ("Mode"), ("Prop.")]
     IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN 
     sql = "SELECT id, qso_date, time_on, call, band, mode, prop_mode, rst_rcvd, rst_sent, name, gridsquare, qth, qsl_sent, qsl_rcvd, " &
     "qsl_via, pfx, country, cont, cqz, ituz, operator, tx_pwr, my_gridsquare, sat_name, distance, comment " &
     "FROM log;"   
     resul = dbLog.cnLog.Exec(sql)
     
-    FOR EACH $rf IN resul.Fields   
+    FOR EACH $rf IN resul.Fields 
       $aMyFields.Add($rf.Name)           
     NEXT 
     
@@ -88,19 +88,19 @@ PRIVATE SUB prepararCV()
   cv.Columns[4].Text = ("Band")
   cv.Columns[5].Text = ("Mode")
   cv.Columns[6].Text = ("Propa.")
-  cv.Columns[7].Text = "RST(R)"
-  cv.Columns[8].Text = "RST(E)"
+  cv.Columns[7].Text = ("RST(R)")
+  cv.Columns[8].Text = ("RST(E)")
   cv.Columns[9].Text = ("Name")
-  cv.Columns[10].Text = "Locator"
-  cv.Columns[11].Text = "QTH"
+  cv.Columns[10].Text = ("Locator")
+  cv.Columns[11].Text = ("QTH")
   cv.Columns[12].Text = ("QSL(S)")
-  cv.Columns[13].Text = "QSL(R)"
-  cv.Columns[14].Text = "QSL Via"  
+  cv.Columns[13].Text = ("QSL(R)")
+  cv.Columns[14].Text = ("QSL Via")  
   cv.Columns[15].Text = ("Prefix")
-  cv.Columns[16].Text = "DXCC"
-  cv.Columns[17].Text = "Cont."
-  cv.Columns[18].Text = "CQz"
-  cv.Columns[19].Text = "ITUz"
+  cv.Columns[16].Text = ("DXCC")
+  cv.Columns[17].Text = ("Cont.")
+  cv.Columns[18].Text = ("CQz")
+  cv.Columns[19].Text = ("ITUz")
   cv.Columns[20].Text = ("Operator")
   cv.Columns[21].Text = ("Power")
   cv.Columns[22].Text = ("My Locator")
@@ -176,7 +176,7 @@ PRIVATE SUB toText()
 
     DO WHILE hres.Available
         IF (ii MOD 69 = 0) THEN 
-            PRINT #F, "\n" & fitText("Date", 11) & fitText("UTC", 6) & fitText("Callsign", 13) & fitText("Band", 7, TRUE) & fitText("Mode", 7) & fitText("Locator", 8) & fitText("Cfmd", 5) & fitText("MGR", 8) & "Remarks"
+            PRINT #F, "\n" & fitText(("Date"), 11) & fitText(("UTC"), 6) & fitText(("Callsign"), 13) & fitText(("Band"), 7, TRUE) & fitText(("Mode"), 7) & fitText(("Locator"), 8) & fitText(("Cfmd"), 5) & fitText(("MGR"), 8) & ("Remarks")
             PRINT #F, String(100, "-")
         ENDIF
         PRINT #F, fitText(global.parseFecha(hres!qso_date), 11) & fitText(Left(hres!time_on, 5), 6) & fitText(hres!call, 13) & fitText(hres!band, 7, TRUE) & fitText(hres!mode, 7) & fitText(hres!gridsquare, 8) & fitText(hres!qsl_rcvd, 5) & fitText(hres!qsl_via, 8) & Left(hres!comment, 35)

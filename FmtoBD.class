@@ -236,3 +236,9 @@ PUBLIC SUB btnOK_Click()
     CreateTableTemp()
 
 END
+
+PUBLIC SUB Form_Open()
+
+  
+
+END

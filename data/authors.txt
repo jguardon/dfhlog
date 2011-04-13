@@ -7,6 +7,12 @@ English translation
 Spanish translation
 
 ------------------------------------------
+Volodymyr Karpenko
+ur3qjw@ukr.net
+Ukraine
+Ukrainian translation
+
+------------------------------------------
 Cayetano Donato
 cdonatog@gmail.com
 Spain
@@ -24,7 +30,6 @@ Fuco Mera
 fuco.mera@gmail.com
 Spain
 Galician translation
-Catalan translation
 Beta tester
 ------------------------------------------
 Gerardo Glez, EA1AST
