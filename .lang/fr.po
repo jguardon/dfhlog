@@ -25,22 +25,26 @@ msgid ""
 "\n"
 "Current available languages:\n"
 "\n"
-"English, Spanish, Galego, Portugues"
+"English, Spanish, Galego, Portugues, Ukrainian"
+msgstr ""
+
+#: FAbout.class:53
+msgid "Cty.dat version: "
 msgstr ""
 
 #: FAbout.class:216
 msgid "Thanks to"
 msgstr ""
 
-#: FAbout.class:277
+#: FAbout.class:296
 msgid "About dfhLog..."
 msgstr ""
 
-#: FAbout.class:285
+#: FAbout.class:304
 msgid "About"
 msgstr ""
 
-#: FAbout.class:308
+#: FAbout.class:327
 msgid ""
 "<h2 align=center>Licence</h2>\n"
 "\n"
@@ -55,19 +59,19 @@ msgid ""
 "Public License for more details.</p>\n"
 msgstr ""
 
-#: FAbout.class:313
+#: FAbout.class:332
 msgid "<h2 align=center>Authors</h2>\n"
 msgstr ""
 
-#: FAbout.class:320
+#: FAbout.class:339
 msgid "dfhLog, the Hamradio Logbook"
 msgstr ""
 
-#: FAbout.class:330
+#: FAbout.class:349
 msgid "Support"
 msgstr ""
 
-#: FAbout.class:334
+#: FAbout.class:353
 msgid ""
 "You can support <b>dfhLog</b> by writing the help\n"
 "documents, translating to your language, etc.\n"
@@ -75,27 +79,27 @@ msgid ""
 "You can also make a gift to the project by using PayPal:"
 msgstr ""
 
-#: FAbout.class:340
+#: FAbout.class:359
 msgid "Make a gift!"
 msgstr ""
 
-#: FAbout.class:359 FLoc.class:826
+#: FAbout.class:378 FLoc.class:826
 msgid "OK"
 msgstr ""
 
-#: FAbout.class:376 FMain.class:2373
+#: FAbout.class:395 FMain.class:2373
 msgid "dfhLog"
 msgstr ""
 
-#: FAbout.class:393
+#: FAbout.class:412
 msgid "http://code.google.com/p/dfhlog"
 msgstr ""
 
-#: FAbout.class:400
+#: FAbout.class:419
 msgid "(c) 2000-2009 EA7DFH"
 msgstr ""
 
-#: FAbout.class:411
+#: FAbout.class:430
 msgid "Cty.dat version:"
 msgstr ""
 
@@ -178,12 +182,20 @@ msgstr ""
 msgid "QSL Size"
 msgstr ""
 
-#: FCatDebug.class:65
-msgid "CAT Debug"
+#: FCatDebug.class:29
+msgid "File saved in: \n"
 msgstr ""
 
-#: FCatDebug.class:77
+#: FCatDebug.class:39
 msgid "Stop"
+msgstr ""
+
+#: FCatDebug.class:41
+msgid "Start"
+msgstr ""
+
+#: FCatDebug.class:65
+msgid "CAT Debug"
 msgstr ""
 
 #: FCatDebug.class:82
@@ -320,7 +332,7 @@ msgstr ""
 msgid "DATE"
 msgstr ""
 
-#: FDesign.class:429
+#: FDesign.class:429 FSearch.class:179
 msgid "UTC"
 msgstr ""
 
@@ -498,8 +510,22 @@ msgstr ""
 msgid "Mode"
 msgstr ""
 
-#: FFindQSO.class:55 FLog.class:72 FQueue.class:55 FSearch.class:90
+#: FFindQSO.class:55 FLog.class:72 FMain.class:1426 FQueue.class:55
+#: FSearch.class:90
 msgid "Propa."
+msgstr ""
+
+#: FFindQSO.class:56 FLog.class:73 FMain.class:1427 FSearch.class:91
+msgid "RST(R)"
+msgstr ""
+
+#: FFindQSO.class:57 FQueue.class:56 FSearch.class:92
+msgid "RST(E)"
+msgstr ""
+
+#: FFindQSO.class:59 FLog.class:76 FMain.class:1430 FQueue.class:57
+#: FSearch.class:59
+msgid "Locator"
 msgstr ""
 
 #: FFindQSO.class:60 FLog.class:79 FMain.class:583 FQueue.class:61
@@ -507,8 +533,33 @@ msgstr ""
 msgid "QSL(S)"
 msgstr ""
 
+#: FFindQSO.class:61 FLog.class:80 FMain.class:582 FQueue.class:60
+#: FSearch.class:97
+msgid "QSL(R)"
+msgstr ""
+
+#: FFindQSO.class:62 FLog.class:83 FMain.class:1433 FSearch.class:98
+msgid "QSL Via"
+msgstr ""
+
 #: FFindQSO.class:63 FLog.class:84 FMain.class:1434 FSearch.class:99
 msgid "Prefix"
+msgstr ""
+
+#: FFindQSO.class:64 FLog.class:97 FMain.class:1435 FSearch.class:100
+msgid "DXCC"
+msgstr ""
+
+#: FFindQSO.class:65 FLog.class:85 FMain.class:1436 FSearch.class:101
+msgid "Cont."
+msgstr ""
+
+#: FFindQSO.class:66 FLog.class:86 FMain.class:1437 FSearch.class:102
+msgid "CQz"
+msgstr ""
+
+#: FFindQSO.class:67 FLog.class:87 FMain.class:1438 FSearch.class:103
+msgid "ITUz"
 msgstr ""
 
 #: FFindQSO.class:68 FLog.class:91 FMain.class:1439 FSearch.class:104
@@ -685,6 +736,14 @@ msgstr ""
 msgid "Image Files"
 msgstr ""
 
+#: FLoc.class:495
+msgid "2M SPORADIC"
+msgstr ""
+
+#: FLoc.class:500
+msgid "HIGH MUF"
+msgstr ""
+
 #: FLoc.class:638 FPref.class:681
 msgid "Colors"
 msgstr ""
@@ -835,10 +894,6 @@ msgstr ""
 msgid "Coords:"
 msgstr ""
 
-#: FLoc.class:937
-msgid "2M SPORADIC"
-msgstr ""
-
 #: FLog.class:41
 msgid "Log Review"
 msgstr ""
@@ -859,6 +914,10 @@ msgstr ""
 msgid "RST(S)"
 msgstr ""
 
+#: FLog.class:77 FSearch.class:59
+msgid "QTH"
+msgstr ""
+
 #: FLog.class:78 FMain.class:2927 FSearch.class:109
 msgid "Remarks"
 msgstr ""
@@ -875,12 +934,28 @@ msgstr ""
 msgid "County"
 msgstr ""
 
+#: FLog.class:90 FMain.class:2494
+msgid "IOTA"
+msgstr ""
+
 #: FLog.class:94 FMain.class:3273
 msgid "Sat Name"
 msgstr ""
 
 #: FLog.class:95
 msgid "Sat Mode"
+msgstr ""
+
+#: FLog.class:96
+msgid "Email"
+msgstr ""
+
+#: FLog.class:98
+msgid "Ref."
+msgstr ""
+
+#: FLog.class:99 FMain.class:2498
+msgid "TPEA"
 msgstr ""
 
 #: FLog.class:131
@@ -917,6 +992,14 @@ msgstr ""
 
 #: FMain.class:344
 msgid "Error in cboEntidad QSO\n"
+msgstr ""
+
+#: FMain.class:357
+msgid " Km"
+msgstr ""
+
+#: FMain.class:358
+msgid " Deg"
 msgstr ""
 
 #: FMain.class:366
@@ -963,12 +1046,16 @@ msgstr ""
 msgid "QSO Nr"
 msgstr ""
 
-#: FMain.class:582
-msgid "QSL(R)"
-msgstr ""
-
 #: FMain.class:619
 msgid "Incorrect Locator!"
+msgstr ""
+
+#: FMain.class:626
+msgid "OK [Enter]"
+msgstr ""
+
+#: FMain.class:627
+msgid "QSO"
 msgstr ""
 
 #: FMain.class:636
@@ -979,6 +1066,10 @@ msgstr ""
 msgid ""
 "\n"
 " to the Cluster Net?"
+msgstr ""
+
+#: FMain.class:636 FiADIF.class:213 global.module:417
+msgid "No"
 msgstr ""
 
 #: FMain.class:636 FiADIF.class:213 global.module:417
@@ -1019,6 +1110,10 @@ msgstr ""
 
 #: FMain.class:1124
 msgid "Error in tblCluster_Click()\n"
+msgstr ""
+
+#: FMain.class:1160
+msgid "Error in tblCluster_Activate\n"
 msgstr ""
 
 #: FMain.class:1324
@@ -1193,10 +1288,6 @@ msgstr ""
 msgid "Summar&y"
 msgstr ""
 
-#: FMain.class:2478
-msgid "DXCC"
-msgstr ""
-
 #: FMain.class:2482
 msgid "WAC"
 msgstr ""
@@ -1207,14 +1298,6 @@ msgstr ""
 
 #: FMain.class:2490
 msgid "USACA"
-msgstr ""
-
-#: FMain.class:2494
-msgid "IOTA"
-msgstr ""
-
-#: FMain.class:2498
-msgid "TPEA"
 msgstr ""
 
 #: FMain.class:2506
@@ -1333,7 +1416,7 @@ msgstr ""
 msgid "GridSquares Map"
 msgstr ""
 
-#: FMain.class:2718
+#: FMain.class:2718 FMap.class:36
 msgid "DX Map"
 msgstr ""
 
@@ -1348,10 +1431,6 @@ msgstr ""
 #: FMain.class:2768
 msgid "0.00"
 msgstr "-"
-
-#: FMain.class:2788
-msgid "QSO"
-msgstr ""
 
 #: FMain.class:2800 FSearch.class:840
 msgid "Callsign:"
@@ -1419,10 +1498,6 @@ msgstr ""
 
 #: FMain.class:2951
 msgid "Accepts & Log QSO"
-msgstr ""
-
-#: FMain.class:2953
-msgid "OK [Enter]"
 msgstr ""
 
 #: FMain.class:2960
@@ -1517,7 +1592,7 @@ msgstr ""
 msgid "Bureau"
 msgstr ""
 
-#: FMain.class:3111
+#: FMain.class:3111 FQueue.class:59 FSearch.class:59
 msgid "Manager"
 msgstr ""
 
@@ -2106,6 +2181,10 @@ msgstr ""
 msgid "Comments"
 msgstr ""
 
+#: FSearch.class:59
+msgid "Prop."
+msgstr ""
+
 #: FSearch.class:140
 msgid "Records: &1 (Ordered by &2 - &3)"
 msgstr ""
@@ -2116,6 +2195,14 @@ msgstr ""
 
 #: FSearch.class:140
 msgid "Descending"
+msgstr ""
+
+#: FSearch.class:179
+msgid "Cfmd"
+msgstr ""
+
+#: FSearch.class:179
+msgid "MGR"
 msgstr ""
 
 #: FSearch.class:682

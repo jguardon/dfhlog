@@ -251,8 +251,9 @@ File[3]="data/authors.txt:10.0"
 File[4]="data/support.txt:7.25"
 File[5]="FAbout.form"
 File[6]="FAbout.class:259.31"
-Active=6
-Count=6
+File[7]="Mstart.module:22.74"
+Active=7
+Count=7
 
 [Watches]
 Count=0
