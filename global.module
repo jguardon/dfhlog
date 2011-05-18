@@ -25,12 +25,14 @@ PRIVATE ent AS NEW cty
 PUBLIC $iQSOn AS NEW Integer[]
 PUBLIC $iAdded2Queue AS Integer 
 PUBLIC dwnld AS NEW HttpClient AS "_getVer"
-PRIVATE ver AS String
+PRIVATE $ver AS String
 PUBLIC $alertedMUF AS Boolean = FALSE
 PUBLIC $alertedES AS Boolean = FALSE
 PUBLIC $aLabels AS NEW Collection
 PRIVATE $utc AS String
 PUBLIC $cSpot AS NEW Object[]
+PRIVATE snd AS NEW Sound("data/Siren.wav")
+
 
 PUBLIC FUNCTION UTCNow() AS Date
     
@@ -381,7 +383,7 @@ PUBLIC SUB getVersion()
     SHELL "cat /etc/issue" TO distro
     distro = Replace(distro, "\\n \\l", "")
     distro = Replace(distro, " ", "_")
-    ver = ""
+    $ver = ""
     dwnld.Async = TRUE
     dwnld.Timeout = 5
     dwnld.URL = "http://www.ea7dfh.com/dfhlog/version.php?call=" & FMain.ini["Estacion/QRZ"] & "&loc=" & FMain.ini["Estacion/Locator"] & "&ver=" & Application.Version & "&dist=" & distro
@@ -392,7 +394,7 @@ END
 PUBLIC SUB _getVer_Read()
     DIM buffer AS String
     READ #LAST, buffer, Lof(LAST)
-    ver &= buffer
+    $ver &= buffer
     CATCH 
         DEBUG Error.Text, Error.Where  
 END
@@ -404,15 +406,14 @@ PUBLIC SUB _getVer_Error()
 END
 
 PUBLIC SUB _getVer_Finished()
-    DIM myVersion, verUpdate AS Integer
-    DIM sMyVer AS String = "1" & Replace(Application.Version, ".", "")  
+    DIM myVersion, verUpdate AS Float
+    DIM sMyVer AS String = "1." & Replace(Application.Version, ".", "")  
     
-    ver = "1" & Replace(ver, ".", "")
+    $ver = "1." & Replace($ver, ".", "")
+    myVersion = CFloat(sMyVer)
     
-    myVersion = CInt(sMyVer)
-    
-    IF ver THEN 
-        verUpdate = CInt(ver)    
+    IF $ver THEN 
+        verUpdate = CFloat($ver)
         IF verUpdate > myVersion THEN 
             IF Message.Question(("There is a new version of dfhLog.\nDo you want to visit the download page?"), ("Yes"), ("No")) = 2 THEN RETURN 
             Desktop.Open("http://code.google.com/p/dfhlog/downloads/list")       
@@ -435,6 +436,7 @@ PUBLIC SUB processMapSpots(dxLine AS String) 'insert data into spots table to pl
     DIM loc AS String[]
     DIM regx AS Regexp
     DIM sql AS String = "INSERT INTO spots VALUES(&1,&2,&3,&4,&5,&6,&7);"
+
     spotter = Mid(dxLine, 7, InStr(dxLine, ":") - 7) 'something weird happens when spotter contains "/" !?!?
     DX = Trim(Mid(dxLine, 27, 10))
     freq = CFloat(Trim(Mid(dxLine, 15, 10)))
@@ -457,7 +459,8 @@ END
 PUBLIC SUB alertMUF()    
     DIM hres AS Result
     DIM sql AS String
-    DIM spotMUF, spotES AS Integer    
+    DIM spotMUF, spotES AS Integer
+
     sql = "SELECT * from spots WHERE band='6M' AND prop='ES';"
     IF FMain.connDB() THEN RETURN 
     hres = dbLog.cnLog.Exec(sql)
@@ -467,14 +470,14 @@ PUBLIC SUB alertMUF()
     spotES = hres.Count
     
     IF spotES >= 3 AND $alertedES = FALSE THEN 
-        IF FMain.ini["FMapLoc/MUFAlert"] = TRUE THEN TRY SHELL "aplay -q /usr/share/dfhlog-images/Siren.wav"
+        IF FMain.ini["FMapLoc/MUFAlert"] = TRUE THEN snd.Play()
         $alertedES = TRUE
     ELSE IF spotES < 3 AND $alertedES = TRUE
         $alertedES = FALSE
     ENDIF
          
     IF spotMUF > 3 AND $alertedMUF = FALSE THEN         
-        IF FMain.ini["FMapLoc/MUFAlert"] = TRUE THEN TRY SHELL "aplay -q /usr/share/dfhlog-images/Siren.wav"
+        IF FMain.ini["FMapLoc/MUFAlert"] = TRUE THEN snd.Play()
         $alertedMUF = TRUE
     ELSE IF spotMUF < 3 AND $alertedMUF = TRUE
         $alertedMUF = FALSE

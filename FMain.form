@@ -303,24 +303,6 @@
       Expand = True
       Text = ("")
     }
-    { PanelSmeter Panel
-      MoveScaled(78,0,22.4286,3)
-      Padding = 1
-      Border = Border.Sunken
-      { Label4 Label
-        MoveScaled(1,1,21,1)
-        Font = Font["-2"]
-        Ignore = True
-        Text = ("S 0 1  3  5  7  9 +20 +40 +60")
-        Alignment = Align.Justify
-      }
-      { pbSmeter ProgressBar
-        MoveScaled(2,0,19,1)
-        Foreground = &H800000&
-        Ignore = True
-        Label = False
-      }
-    }
     { lcdQRG TextBox
       MoveScaled(102,0,24,3)
       Font = Font["SF Digital Readout,Bold,+7"]
@@ -367,24 +349,24 @@
           Tag = "exclude"
           ToolTip = ("Band Selection")
           Expand = True
-          Text = ("")
           ReadOnly = True
+          Text = ("")
         }
         { cboModo ComboBox
           MoveScaled(54,11,13,3)
           Tag = "exclude"
           ToolTip = ("Mode Selection")
           Expand = True
-          Text = ("")
           ReadOnly = True
+          Text = ("")
           Sorted = True
         }
         { cboPropa ComboBox
           MoveScaled(71,11,14,3)
           Tag = "exclude"
           ToolTip = ("Propagation Type")
-          Text = ("")
           ReadOnly = True
+          Text = ("")
         }
         { vFecha ValueBox
           MoveScaled(2,18,12,3)
@@ -505,22 +487,22 @@
           Text = ("Prop. Mode:")
         }
         { Label5 Label
-          MoveScaled(2,21,6,3)
+          MoveScaled(2,21,8,3)
           Foreground = &H0000C0&
           Text = ("RST(R):")
         }
         { Label6 Label
-          MoveScaled(10,21,7,3)
+          MoveScaled(10,21,9,3)
           Foreground = &H0000C0&
           Text = ("RST(S):")
         }
         { Label7 Label
-          MoveScaled(20,21,9,3)
+          MoveScaled(20,21,13,3)
           Foreground = &H0000C0&
           Text = ("Locator:")
         }
         { Label9 Label
-          MoveScaled(37,21,9,3)
+          MoveScaled(37,21,13,3)
           Foreground = &H0000C0&
           Text = ("Name:")
         }
@@ -550,7 +532,7 @@
           Text = ("Time off:")
         }
         { Label18 Label
-          MoveScaled(2,27,10,3)
+          MoveScaled(2,27,31,3)
           Foreground = &H0000C0&
           Text = ("Remarks:")
         }
@@ -576,7 +558,7 @@
           Text = ("Band:")
         }
         { Label29 Label
-          MoveScaled(52,27,9,3)
+          MoveScaled(52,27,15,3)
           Foreground = &H0000C0&
           Text = ("Power:")
         }
@@ -586,7 +568,7 @@
           Index = 0
           Text = ("&QSL")
           { Frame2 Frame
-            MoveScaled(1,1,38,18)
+            MoveScaled(1,1,36,18)
             Text = ("Card")
             { chkQSLr CheckBox
               MoveScaled(2,3,16,3)
@@ -617,15 +599,15 @@
               Type = ValueBox.Date
             }
             { cboVia ComboBox
-              MoveScaled(20,6,15,3)
+              MoveScaled(19,6,15,3)
               Tag = "exclude"
               ToolTip = ("QSL via...")
-              Text = ("")
               ReadOnly = True
               List = [("Bureau"), ("Manager"), ("Direct"), ("No QSL")]
+              Text = ("")
             }
             { txtMgrQSO TextBox
-              MoveScaled(20,13,15,3)
+              MoveScaled(19,13,15,3)
               Enabled = False
               Foreground = &H000000&
               Tag = "exclude"
@@ -633,18 +615,18 @@
               Text = ("")
             }
             { Label11 Label
-              MoveScaled(20,3,4,3)
+              MoveScaled(19,3,4,3)
               Foreground = &H0000C0&
               Text = ("Via:")
             }
             { Label12 Label
-              MoveScaled(20,10,9,3)
+              MoveScaled(19,10,9,3)
               Foreground = &H0000C0&
               Text = ("Manager:")
             }
           }
           { Frame3 Frame
-            MoveScaled(40,1,20,18)
+            MoveScaled(38,1,21,18)
             Enabled = False
             Text = ("LOTW")
             { chkQSLr2 CheckBox
@@ -655,7 +637,7 @@
               Text = ("QSL Recvd:")
             }
             { dteQSLr2 ValueBox
-              MoveScaled(3,6,14,3)
+              MoveScaled(3,6,15,3)
               Enabled = False
               Tag = "exclude"
               ToolTip = ("Date of QSL rcvd")
@@ -669,7 +651,7 @@
               Text = ("QSL Sent:")
             }
             { dteQSLe2 ValueBox
-              MoveScaled(3,13,14,3)
+              MoveScaled(3,13,15,3)
               Enabled = False
               Tag = "exclude"
               ToolTip = ("Date of QSL sent")
@@ -677,32 +659,32 @@
             }
           }
           { Frame4 Frame
-            MoveScaled(61,1,20,18)
+            MoveScaled(60,1,21,18)
             Enabled = False
             Text = ("E-QSL")
             { chkQSLr3 CheckBox
-              MoveScaled(3,3,13,3)
+              MoveScaled(3,3,16,3)
               Foreground = &H0000C0&
               Tag = "exclude"
               ToolTip = ("QSL rcvd")
               Text = ("QSL Recvd:")
             }
             { dteQSLr3 ValueBox
-              MoveScaled(3,6,14,3)
+              MoveScaled(3,6,15,3)
               Enabled = False
               Tag = "exclude"
               ToolTip = ("Date of QSL rcvd")
               Type = ValueBox.Date
             }
             { chkQSLe3 CheckBox
-              MoveScaled(3,10,13,3)
+              MoveScaled(3,10,15,3)
               Foreground = &H0000C0&
               Tag = "exclude"
               ToolTip = ("QSL sent")
               Text = ("QSL Sent:")
             }
             { dteQSLe3 ValueBox
-              MoveScaled(3,13,14,3)
+              MoveScaled(3,13,15,3)
               Enabled = False
               Tag = "exclude"
               ToolTip = ("Date of QSL sent")
@@ -898,8 +880,8 @@
           { cboEntidad ComboBox
             MoveScaled(1,9,36,3)
             ToolTip = ("Current DXCC")
-            Text = ("")
             ReadOnly = True
+            Text = ("")
           }
           { lblSqWorked Label
             MoveScaled(1,6,36,3)
@@ -909,22 +891,23 @@
             Border = Border.Sunken
           }
           { txtDataQRZ TextArea
-            MoveScaled(1,28,36,20)
+            MoveScaled(1,28,36,17)
             Font = Font["-1"]
             Text = ("")
             ReadOnly = True
             ScrollBar = Scroll.Horizontal
-          }
-          { btnShowQRZpage Button
-            MoveScaled(1,28,36,2)
-            Visible = False
-            Text = ("Show QRZ Webpage")
           }
           { Separator6 Separator
             MoveScaled(9,25,28,3)
           }
           { Label34 Label
             MoveScaled(1,24.5714,8,3)
+            Text = ("QRZ.com")
+          }
+          { btnShwqrz Button
+            MoveScaled(1,45,36,1)
+            Enabled = False
+            ToolTip = ("Show QRZ Webpage")
             Text = ("QRZ.com")
           }
         }

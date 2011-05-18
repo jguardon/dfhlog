@@ -20,7 +20,7 @@ PRIVATE currField AS String
 PRIVATE canvas AS Object
 PRIVATE imgBG AS Picture
 PRIVATE dragging AS Boolean
-
+PRIVATE $freetext AS String
 
 PUBLIC SUB Form_Open()
     
@@ -31,7 +31,7 @@ PUBLIC SUB Form_Open()
     setCanvasSize
     imgBG = Picture[Fmain.qslini["BGImage/Path"]]
     chkBG.Value = CBool(Fmain.qslini["Image/Display", "False"])
-    
+    $freetext = Fmain.qslini["FREE_TEXT/Text", NULL]
     drawPage
     labelX.Text = Round(global.$aLabels[cboFields.Text].iX, -1)
     labelY.Text = Round(global.$aLabels[cboFields.Text].iY, -1)
@@ -54,8 +54,8 @@ PRIVATE SUB initData()
             i += 5
             hField = NEW cField
             hField.sName = "{" & s & "}"                
-            hField.iX = Fmain.qslini[s & "/X", 20.0 + i]
-            hField.iY = Fmain.qslini[s & "/Y", 20.0 + i]        
+            hField.iX = Fmain.qslini[s & "/X", 10.0 + i]
+            hField.iY = Fmain.qslini[s & "/Y", 10.0 + i]        
             global.$aLabels.Add(hField, s)
             
         NEXT
@@ -192,6 +192,7 @@ PUBLIC SUB printQSLs()
         global.$aLabels["HISLOC"].sText = Subst("(In &1)", hres!gridsquare)
         global.$aLabels["MYLOC"].sText = hres!my_gridsquare
         global.$aLabels["MANAGER"].sText = hres!qsl_via
+        global.$aLabels["FREE_TEXT"].sText = $freetext
         IF hres!qsl_rcvd = "Y" THEN 
             global.$aLabels["TNX QSL"].sText = "TNX QSL"
         ELSE 
@@ -349,3 +350,10 @@ PUBLIC SUB btnPrint_Click()
     printQSLs()
 END
 
+
+PUBLIC SUB btnFreeText_Click()
+    $freetext = InputBox("Set a free text to show in QSL or leave blank otherwise.", "Set free text", $freetext)
+    Fmain.qslini["FREE_TEXT/Text"] = $freetext
+    FMain.qslini.Save
+
+END

@@ -238,22 +238,18 @@ Geometry=[0,25,301,301]
 Geometry=[0,0,301,301]
 
 [FFind]
-SearchIn="Project"
+SearchIn="Module"
 CaseSensitive=False
-SearchWord=True
+SearchWord=False
 SearchComment=False
-SearchString=True
+SearchString=False
 
 [OpenFile]
-File[1]="FMain.form"
-File[2]="FMain.class:1276.4"
-File[3]="data/authors.txt:10.0"
-File[4]="data/support.txt:7.25"
-File[5]="FAbout.form"
-File[6]="FAbout.class:259.31"
-File[7]="Mstart.module:22.74"
-Active=7
-Count=7
+File[1]="FMain.class:1060.30"
+Active=1
+File[2]="FMain.form"
+File[3]="QRZ.class:258.49"
+Count=3
 
 [Watches]
 Count=0

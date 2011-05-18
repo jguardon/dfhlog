@@ -15,24 +15,24 @@
   }
   { cboBand ComboBox
     MoveScaled(6,10,15,3)
-    Text = ("ComboBox1")
     ReadOnly = True
+    Text = ("ComboBox1")
   }
   { cboMode ComboBox
     MoveScaled(6,16,15,3)
-    Text = ("ComboBox2")
     ReadOnly = True
+    Text = ("ComboBox2")
   }
   { Frame1 Frame
     MoveScaled(25,8,20,11)
     Text = ("")
     { rbWkd RadioButton
-      MoveScaled(3,1,16,3)
+      MoveScaled(2,1,17,3)
       Text = ("Worked")
       Value = True
     }
     { rbCfd RadioButton
-      MoveScaled(3,6,16,3)
+      MoveScaled(2,6,17,3)
       Text = ("Confirmed")
     }
   }

@@ -60,6 +60,7 @@ PRIVATE $hmenuNQSLr AS Menu
 PRIVATE $hmenuNQSLs AS Menu
 PRIVATE $hmenuPrint AS Menu
 PRIVATE $currentBand AS String = ""
+PRIVATE snd AS NEW Sound("data/beep.wav")
 
 PROPERTY READ cBand AS String
 
@@ -173,7 +174,6 @@ PUBLIC SUB Form_Open()
     DIM propa, banda, modo, entidad AS String    
     
     ME.Title = "dfhLog - v " & Application.Version & " - " & ini["Estacion/QRZ"]
-    PanelSmeter.Visible = FALSE
     lcdQRG.Visible = FALSE    
     IF world.created THEN
         c = NEW cty
@@ -220,13 +220,13 @@ PUBLIC SUB Form_Open()
     tabLC[2].Visible = FALSE
     prepareStatsGrid  
     EXEC ["killall", "rigctld"]  
-    qrzcom = NEW QRZ  
+    qrzcom = NEW QRZ AS "qrzcom"
     tblCluster.Columns.Count = 1   
     tblCluster.Rows.Height = 10
     prepararGrid()
     createMenu()
     prepareWkdB4()
-    
+    IF ini["webbrowser/disabled", FALSE] THEN tabLC[4].Visible = FALSE
     IF ini["Log/File"] = NULL OR NOT Exist(ini["Log/File"]) THEN 
         btnNewLog_Click()
     ELSE
@@ -301,7 +301,7 @@ PUBLIC SUB Salir_Click()
 END
 
 PUBLIC SUB txtCall_Change()
-    qrzcom.clearQRZ()
+    
     txtCall.Text = Upper(txtCall.Text)
     IF Len(txtCall.Text) > 1 THEN   
         'IF modificando = FALSE THEN 
@@ -319,7 +319,8 @@ PUBLIC SUB txtCall_Change()
         END SELECT     
     ELSE 
         clearFields()
-        clearTblStats()    
+        clearTblStats()
+        btnShwqrz.Enabled = FALSE
         IF en THEN 
             stopped = FALSE
         ENDIF        
@@ -552,7 +553,7 @@ PRIVATE SUB wkdB4(call AS String)
         IF connDB() THEN RETURN        
         sql = "SELECT id, call, band, qso_date, time_on, qsl_rcvd, qsl_sent FROM log WHERE call LIKE &1 ORDER BY id DESC;"        
         hres = dbLog.cnLog.Exec(sql, call)
-        IF hres.Count > 0 THEN tabLC[2].Visible = TRUE
+        tabLC[2].Visible = If(hres.Count > 0, TRUE, FALSE)
         grdWkdB4.Rows.Count = hres.Count
         tabLC[2].Text = ("&Wkd Before") & " (" & hres.Count & ")"
         DO WHILE hres.Available            
@@ -591,27 +592,53 @@ PUBLIC SUB txtClx_LostFocus()
     btnOK.Default = TRUE  
 END
 
+PUBLIC SUB qrzcom_QRZOk()
+  updateFields
+  qrzcom.clearQRZ
+  btnShwqrz.Enabled = TRUE
+END
+
 PUBLIC SUB updateFields()
     IF modificando THEN 
         txtDataQRZ.Foreground = Color.DarkRed
         txtDataQRZ.Background = Color.LightBackground
         txtDataQRZ.Text = qrzcom.qcall & "\n" & qrzcom.fname & " " & qrzcom.name & "\n" &
-        "" & qrzcom.addr1 & "\n" & qrzcom.addr2 & "\n" & qrzcom.country & "\nMgr: " & qrzcom.qslmgr &
-        "" & "\nLoc: " & qrzcom.grid 
+        "" & qrzcom.addr1 & "\n" & qrzcom.addr2 & "\n" & qrzcom.country & "\nLoc: " & qrzcom.grid
     ELSE 
         txtDataQRZ.Foreground = Color.Black
         txtDataQRZ.Background = Color.White
         lblErrorqrz.Text = qrzcom.qerror
         txtNameQSO.Text = Left(qrzcom.fname, InStr(qrzcom.fname, Chr(32)))
-        IF global.chkLoc(qrzcom.grid) = TRUE THEN txtLocQSO.Text = qrzcom.grid
-            IF Len(qrzcom.qslmgr) < 10 THEN 
-                txtMgrQSO.Text = qrzcom.qslmgr
-            ENDIF 
+        ' check former Locator in DB
+        IF global.chkLoc(qrzcom.grid) = TRUE THEN 
+            txtLocQSO.Text = qrzcom.grid
+        ELSE 
+            txtLocQSO.Text = getPrevLoc(txtCall.Text)
+        ENDIF
+        IF Len(qrzcom.qslmgr) < 10 THEN 
+            txtMgrQSO.Text = qrzcom.qslmgr
+        ENDIF 
         lblEmail.Text = qrzcom.email
         txtDataQRZ.Text = qrzcom.qcall & "\n" & qrzcom.fname & " " & qrzcom.name & "\n" &
         qrzcom.addr1 & "\n" & qrzcom.addr2 & "\n" & qrzcom.country
     ENDIF 
 END
+
+PUBLIC FUNCTION getPrevLoc(call AS String) AS String
+    DIM hres AS Result
+    DIM sql AS String
+    DIM r AS Integer
+    
+    IF call THEN 
+        IF connDB() THEN RETURN        
+        sql = "SELECT gridsquare FROM log WHERE call = &1 LIMIT 1;"
+        hres = dbLog.cnLog.Exec(sql, call)
+        IF hres.Available THEN RETURN hres!gridsquare
+    ENDIF 
+    CATCH    
+        Message.Error(("Error in getPrevLoc\n") & Error.Text & "\n" & Error.Where)
+END
+
 
 PUBLIC SUB btnOK_Click()
     IF txtCall.Text AND txtRSTe.Text AND txtRSTr.Text AND txtFreq.Text THEN 
@@ -686,7 +713,7 @@ PUBLIC SUB btnClear_Click()
     txtCall.Clear()
     clearFields()
     TRY fldigiClearfiedls()
-    fillData()        
+    fillData()
     txtCall.SetFocus
     txtDataQRZ.Foreground = Color.Black
     txtDataQRZ.Background = Color.White
@@ -1031,7 +1058,7 @@ PUBLIC SUB addLines(linea AS String, OPTIONAL tipo AS Integer = 0)   'añade lin
             '-------------------------------bandmap
             IF Right(linea, 1) = Chr(7) THEN 
                 linea = Replace(linea, Chr(7), "*")
-                TRY SHELL "beep" 
+                TRY snd.Play()
             ENDIF 
             tblCluster[I, 0].ForeColor = $cbm.dxColor 'global.clusterColor(DX, band) 
             tblCluster[I, 0].Text = linea
@@ -2079,27 +2106,6 @@ PUBLIC SUB btnQuick_Click()     'toggle button
 
 END
 
-PUBLIC SUB txtDataQRZ_Enter()
-    btnShowQRZpage.Text = ("Show ") & $homecall & (" QRZ Webpage")
-    IF Len(txtDataQRZ.Text) > 13 THEN btnShowQRZpage.Visible = TRUE
-END
-
-PUBLIC SUB txtDataQRZ_Leave()
-    IF Len(txtDataQRZ.Text) > 13 THEN btnShowQRZpage.Visible = FALSE
-END
-
-PUBLIC SUB btnShowQRZpage_Click()
-    Desktop.Open("http://www.qrz.com/db/" & $homecall)
-END
-
-' PUBLIC SUB tabLC_Click()
-'     IF modificando = TRUE THEN 
-'         IF tabLC.Index <> 0 THEN 
-'             tabLC.Index = 0
-'         ENDIF 
-'     ENDIF 
-' END
-
 PRIVATE FUNCTION cBand_Read() AS String
     
     RETURN cboFreq.Text 
@@ -2159,4 +2165,8 @@ PUBLIC SUB Form_Drop()
     CATCH 
         Message.Error(("Error drag/drop Log\n") & Error.Text & "\n" & Error.Where)
 
+END
+
+PUBLIC SUB btnShwqrz_Click()
+    Desktop.Open("http://www.qrz.com/db/" & $homecall)
 END
