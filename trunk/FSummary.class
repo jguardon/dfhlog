@@ -22,11 +22,11 @@ PUBLIC SUB Form_Open()
 
     DIM banda, modo AS String
     
-    cboBand.Add(("All"), 0)
+    cboBand.Add(("All band"), 0)
     FOR EACH banda IN global.getBandas()  
         cboBand.Add(banda)
     NEXT
-    cboMode.Add(("All"), 0)
+    cboMode.Add(("All mode"), 0)
     FOR EACH modo IN global.getModos()    
         cboMode.Add(modo)
     NEXT 
@@ -85,7 +85,8 @@ PRIVATE SUB getDXCC(banda AS String, modo AS String, wcd AS String)
     
     hres = dbLog.cnLog.Exec(sql, parseCbo(cboBand), parseCbo(cboMode), wcd)
     PRINT #f, html.header("DXCC Summary")
-    PRINT #f, ("<h2>Entities " & $sWkdcfd & " by " & FMain.ini["Estacion/QRZ"] & (" in " & cboBand.Text & " band and " & cboMode.Text & " mode</h2><br>\n"))
+    PRINT #f, Subst$(("<h2>&1: &2 by &3 in &4 and &5</h2><br>\n"), "DXCC", $sWkdcfd, FMain.ini["Estacion/QRZ"], cboBand.Text, cboMode.Text)
+
     PRINT #f, ("<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>QSL_rcvd</td><td>QSL_sent</td><td>Country</td><td>QSOs</td></tr>")
     
     DO WHILE hres.Available    
@@ -124,7 +125,7 @@ PRIVATE SUB getWAC(banda AS String, modo AS String, wcd AS String)
     
     hres = dbLog.cnLog.Exec(sql, parseCbo(cboBand), parseCbo(cboMode), wcd)
     PRINT #f, html.header("WAC Summary")
-    PRINT #f, ("<h2>Continents " & $sWkdcfd & " by " & FMain.ini["Estacion/QRZ"] & (" in " & cboBand.Text & " band and " & cboMode.Text & " mode</h2><br>\n"))
+    PRINT #f, Subst$(("<h2>&1: &2 by &3 in &4 and &5</h2><br>\n"), "WAC", $sWkdcfd, FMain.ini["Estacion/QRZ"], cboBand.Text, cboMode.Text)
     PRINT #f, ("<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>QSL_rcvd</td><td>QSL_sent</td><td>Country</td><td>Continent</td><td>QSOs</td></tr>")
     
     DO WHILE hres.Available    
@@ -164,7 +165,7 @@ PRIVATE SUB getWAS(banda AS String, modo AS String, wcd AS String)
     
     hres = dbLog.cnLog.Exec(sql, parseCbo(cboBand), parseCbo(cboMode), wcd)
     PRINT #f, html.header("WAS Summary")
-    PRINT #f, ("<h2>US States " & $sWkdcfd & " by " & FMain.ini["Estacion/QRZ"] & (" in " & cboBand.Text & " band and " & cboMode.Text & " mode</h2><br>\n"))
+    PRINT #f, Subst$(("<h2>&1: &2 by &3 in &4 and &5</h2><br>\n"), "WAS", $sWkdcfd, FMain.ini["Estacion/QRZ"], cboBand.Text, cboMode.Text)
     PRINT #f, ("<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>QSL_rcvd</td><td>QSL_sent</td><td>Country</td><td>State</td><td>QSOs</td></tr>")
     
     DO WHILE hres.Available    
@@ -203,7 +204,7 @@ PRIVATE SUB getUSACA(banda AS String, modo AS String, wcd AS String)
     
     hres = dbLog.cnLog.Exec(sql, parseCbo(cboBand), parseCbo(cboMode), wcd)
     PRINT #f, html.header("USACA Summary")
-    PRINT #f, ("<h2>US Counties " & $sWkdcfd & " by " & FMain.ini["Estacion/QRZ"] & (" in " & cboBand.Text & " band and " & cboMode.Text & " mode</h2><br>\n"))
+    PRINT #f, Subst$(("<h2>&1: &2 by &3 in &4 and &5</h2><br>\n"), "USACA", $sWkdcfd, FMain.ini["Estacion/QRZ"], cboBand.Text, cboMode.Text)
     PRINT #f, ("<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>QSL_rcvd</td><td>QSL_sent</td><td>State</td><td>County</td><td>QSOs</td></tr>")
     
     DO WHILE hres.Available    
@@ -242,7 +243,7 @@ PRIVATE SUB getIOTA(banda AS String, modo AS String, wcd AS String)
     
     hres = dbLog.cnLog.Exec(sql, parseCbo(cboBand), parseCbo(cboMode), wcd)
     PRINT #f, html.header("IOTA Summary")
-    PRINT #f, ("<h2>IOTA " & $sWkdcfd & " by " & FMain.ini["Estacion/QRZ"] & (" in " & cboBand.Text & " band and " & cboMode.Text & " mode</h2><br>\n"))
+    PRINT #f, Subst$(("<h2>&1: &2 by &3 in &4 and &5</h2><br>\n"), "IOTA", $sWkdcfd, FMain.ini["Estacion/QRZ"], cboBand.Text, cboMode.Text)
     PRINT #f, ("<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>QSL_rcvd</td><td>QSL_sent</td><td>Country</td><td>IOTA</td><td>QSOs</td></tr>")
     
     DO WHILE hres.Available    
@@ -281,7 +282,7 @@ PRIVATE SUB getTPEA(banda AS String, modo AS String, wcd AS String)
     
     hres = dbLog.cnLog.Exec(sql, parseCbo(cboBand), parseCbo(cboMode), wcd)
     PRINT #f, html.header("TPEA Summary")
-    PRINT #f, ("<h2>TPEA " & $sWkdcfd & " by " & FMain.ini["Estacion/QRZ"] & (" in " & cboBand.Text & " band and " & cboMode.Text & " mode</h2><br>\n"))
+    PRINT #f, Subst$(("<h2>&1: &2 by &3 in &4 and &5</h2><br>\n"), "TPEA", $sWkdcfd, FMain.ini["Estacion/QRZ"], cboBand.Text, cboMode.Text)
     PRINT #f, ("<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>QSL_rcvd</td><td>QSL_sent</td><td>Country</td><td>TPEA</td><td>QSOs</td></tr>")
     
     DO WHILE hres.Available    
@@ -310,10 +311,10 @@ PUBLIC SUB btnOK_Click()
   DIM wkdcfd AS String
     IF rbCfd.Value = TRUE THEN 
         wkdcfd = "Y"
-        $sWkdcfd = ("confirmed")
+        $sWkdcfd = ("Confirmed references")
     ELSE 
         wkdcfd = "%"
-        $sWkdcfd = ("worked")
+        $sWkdcfd = ("Worked references")
     ENDIF
     
     SELECT CASE $type
@@ -339,3 +340,4 @@ PUBLIC SUB btnCancel_Click()
     ME.Close()
 
 END
+

@@ -38,8 +38,34 @@ END
 PUBLIC FUNCTION css() AS String
   
   DIM sCss AS String
-  sCss = "<style type=\"text/css\">\n\nbody {\n\tmargin-left: 10px;\n\tmargin-top: 10px;\n\tmargin-right: 10px;\n\tmargin-bottom: 10px;\n\tfont-family: Arial, Helvetica, sans-serif;\n\tfont-size: 14px;\n\tbackground: #ffffff url(\"/usr/share/dfhlog-images/bg.gif\") repeat 0 0; height: 100%;width: 100%;\n}\n#hdr {\n\tfont-weight:bold\n}\n</style>\n"
-  RETURN sCss
+  sCss = "<style type=\"text/css\" media=\"screen\">\n"
+    "html {\n"
+    "width: 100%;\n"
+    "height: 100%;\n" 
+    "}\n"
+    "body {\n"
+    "width: 100%;\n"
+    "height: 100%;\n" 
+    "margin: 10 px;\n"
+    "font-family: Arial, Helvetica, sans-serif;\n"
+    "font-size: 14 px;\n"
+    "background-image: -webkit-gradient(\n"
+    "linear,\n"
+    "left bottom,\n"
+    "left top,\n"
+    "color-stop(0.20, rgb(196,181,255)),\n"
+    "color-stop(1, rgb(255,255,255))\n"
+    ");\n"
+    "background-image: -moz-linear-gradient(\n"
+    "center bottom,\n"
+    "rgb(196,181,255) 20%,\n"
+    "rgb(255,255,255) 100%\n"
+    ");\n"
+    "}\n"
+    "#hdr {font-weight: bold}\n"
+    "h2 {text-align: center}\n"
+    "</style>\n"
+    RETURN sCss
 END
 
 

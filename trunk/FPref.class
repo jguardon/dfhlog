@@ -80,6 +80,7 @@ PUBLIC SUB Form_Open()
     DIM banda, modo, L AS String
     DIM $test AS String
     DIM F AS File
+
     'load combos
     FOR EACH banda IN global.getBandas()    
         cboPrefBanda.Add(banda)

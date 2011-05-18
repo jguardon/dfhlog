@@ -71,27 +71,27 @@
       }
       { cboBand ComboBox
         MoveScaled(64,6,18,3)
-        Text = ("")
         ReadOnly = True
+        Text = ("")
       }
       { cboMode ComboBox
         MoveScaled(64,12,18,3)
-        Text = ("")
         ReadOnly = True
+        Text = ("")
       }
       { cboProp ComboBox
         MoveScaled(64,18,18,3)
-        Text = ("")
         ReadOnly = True
+        Text = ("")
       }
       { Frame3 Frame
-        MoveScaled(85,3,20,14)
+        MoveScaled(84,3,20,14)
         Text = ("Order by:")
         { cboOrder ComboBox
           MoveScaled(1,3,17,3)
           ToolTip = ("Choose Order by")
-          Text = ("")
           ReadOnly = True
+          Text = ("")
         }
         { rbASC RadioButton
           MoveScaled(2,7,15,3)
@@ -104,15 +104,15 @@
         }
       }
       { Frame2 Frame
-        MoveScaled(107,4,18,10)
+        MoveScaled(105,4,20,10)
         Text = ("")
         { chkWkd RadioButton
-          MoveScaled(2,2,13,3)
+          MoveScaled(1,2,17,3)
           Text = ("Worked")
           Value = True
         }
         { chkCfd RadioButton
-          MoveScaled(2,6,13,3)
+          MoveScaled(1,6,17,3)
           Text = ("Confirmed")
         }
       }
@@ -123,7 +123,7 @@
         Text = ("Auto Search")
       }
       { btnOK Button
-        MoveScaled(107,15,18,6)
+        MoveScaled(105,15,20,6)
         ToolTip = ("Tick the checkbox to export TXT")
         Text = ("&Search")
         Picture = Picture["icon:/24/find"]
@@ -179,7 +179,7 @@
         Text = ("Comments:")
       }
       { chkTXT CheckBox
-        MoveScaled(112,17,2,2)
+        MoveScaled(110,17,2,2)
         Foreground = &HFF0000&
         ToolTip = ("Export in TXT format")
         Text = ("Export TXT")

@@ -1,13 +1,13 @@
 # Gambas Form File 2.0
 
 { Form Form
-  MoveScaled(0,0,51,37)
+  MoveScaled(0,0,52,37)
   Text = ("Squares Summary")
   Icon = Picture["icon:/16/bookmark"]
   Border = Window.Fixed
   Padding = 5
   { lblSummary Label
-    MoveScaled(0,0,51,6)
+    MoveScaled(0,0,52,6)
     Font = Font["Bold,+4"]
     Background = &HBFDFFF&
     Text = ("Squares Summary")
@@ -15,24 +15,24 @@
   }
   { cboBand ComboBox
     MoveScaled(6,10,15,3)
-    Text = ("ComboBox1")
     ReadOnly = True
+    Text = ("ComboBox1")
   }
   { cboMode ComboBox
     MoveScaled(6,16,15,3)
-    Text = ("ComboBox2")
     ReadOnly = True
+    Text = ("ComboBox2")
   }
   { Frame1 Frame
-    MoveScaled(25,10,20,11)
+    MoveScaled(25,10,21,11)
     Text = ("")
     { rbWkd RadioButton
-      MoveScaled(3,1,16,3)
+      MoveScaled(1,2,19,3)
       Text = ("Worked")
       Value = True
     }
     { rbCfd RadioButton
-      MoveScaled(3,6,16,3)
+      MoveScaled(1,6,19,3)
       Text = ("Confirmed")
     }
   }
@@ -45,7 +45,7 @@
     Text = ("Mode:")
   }
   { btnOK Button
-    MoveScaled(27,28,18,7)
+    MoveScaled(28,28,18,7)
     Text = ("&OK")
   }
   { btnCancel Button
@@ -58,7 +58,7 @@
   }
   { cboProp ComboBox
     MoveScaled(6,22,15,3)
-    Text = ("ComboBox2")
     ReadOnly = True
+    Text = ("ComboBox2")
   }
 }

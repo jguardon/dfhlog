@@ -28,18 +28,22 @@
       Spacing = 5
       Padding = 5
       { cboFields ComboBox
-        MoveScaled(1,2,16,3)
+        MoveScaled(1,1,16,3)
         ToolTip = ("Select field to modify")
-        Text = ("")
         ReadOnly = True
-        List = [("MYCALL"), ("HISCALL"), ("DATE"), ("UTC"), ("RST"), ("BAND"), ("MODE"), ("PROP"), ("MYLOC"), ("HISLOC"), ("PSE QSL"), ("TNX QSL"), ("MANAGER")]
+        List = [("MYCALL"), ("HISCALL"), ("DATE"), ("UTC"), ("RST"), ("BAND"), ("MODE"), ("PROP"), ("MYLOC"), ("HISLOC"), ("PSE QSL"), ("TNX QSL"), ("MANAGER"), ("FREE_TEXT")]
+        Text = ("")
       }
       { Frame3 Frame
-        MoveScaled(1,5,16,10)
+        MoveScaled(1,4,16,11)
         Text = ("Card")
         { btnSize Button
-          MoveScaled(1,4,14,3)
+          MoveScaled(1,2.2857,14,3)
           Text = ("Size")
+        }
+        { btnFreeText Button
+          MoveScaled(1,7,14,3)
+          Text = ("Free Text")
         }
       }
       { Frame2 Frame

@@ -50,6 +50,8 @@ PROPERTY READ county AS String
 PROPERTY READ qslmgr AS String
 PROPERTY READ email AS String
 
+EVENT QRZOk()
+
 '***************** QRZ.com XML method *****************
 PUBLIC SUB DownloadAsyncKey(URL AS String)
   downloadBufferKey = ""
@@ -166,8 +168,8 @@ PUBLIC SUB _DownloadData_Finished()
         Xml.Read()
         
     WEND 
-    FMain.updateFields()
-    'DEBUG downloadBufferData
+    RAISE QRZOk()
+    
     CATCH 
             Message.Error(("Error reading XML (Data QRZ.COM)\n Line: ") & Error.Where)
 END 
@@ -219,92 +221,71 @@ PRIVATE $finished AS Boolean = TRUE
 
 PUBLIC SUB getQRZcomWeb(URL AS String)
     downloadBuffer = ""  
-  IF $finished = TRUE THEN 
-   _download.Async = TRUE
-   _download.TimeOut = 5
-   _download.URL = URL
-   _download.Get()
-  ENDIF 
+    IF $finished = TRUE THEN 
+        _download.Async = TRUE
+        _download.TimeOut = 5
+        _download.URL = URL
+        _download.Get()
+    ENDIF 
 END
 
 PUBLIC SUB Download_Read()
-  DIM buffer AS String
-  $finished = FALSE
-  READ #LAST, buffer, Lof(LAST)
-  downloadBuffer &= buffer
+    DIM buffer AS String
+    $finished = FALSE
+    READ #LAST, buffer, Lof(LAST)
+    downloadBuffer &= buffer
 END
 
 PUBLIC SUB Download_Error()
     _download.Close
-  DEBUG "Error downloading " & _download.Status 
+    DEBUG "Error downloading " & _download.Status 
 END
 
 PUBLIC SUB Download_Finished()
     extractData(downloadBuffer)
     $finished = TRUE
-    FMain.updateFields()
-END
-PRIVATE FUNCTION stripField(s AS String) AS String  
-  IF s THEN 
-    s = Trim(s)
-    s = Mid(s, InStr(s, "p>") + 2, InStr(s, "</") - (InStr(s, "p>") + 2))
-  ENDIF 
-  RETURN s
+    RAISE QRZOk()
 END
 
-PUBLIC SUB extractData(S AS String)
-
-    DIM calldata, callsign, id AS String
-    DIM regex AS NEW Regexp
+PRIVATE SUB extractData(S AS String)
+    DIM calldata, sArr AS String[]
+    DIM data, callsign, saux AS String
+    DIM regex AS Regexp
     DIM i, j AS Integer
-    DIM sArr AS NEW String[]
-    
-    
-
-    ' IF InStr(S, "#calldata") AND InStr(S, "* user style:") < 0 THEN 
-    '     i = InStr(S, "id=\"calldata")
-    '     j = InStr(S, "style=\"margin-top:1.5em;")
-    '     IF j > i THEN calldata = Mid(S, i, (j - i))
-    '     'callsign
-    '     regex = NEW Regexp(calldata, "(?<=\\)\">).+(?=</b)")
-    '     sArr.Add(regex.Text)
-    '     'CSS class identifier
-    '     regex = NEW Regexp(calldata, "(?<=calldata\\s\\.).+(?=\\s\\{display:b)")
-    '     id = regex.Text
-    '     
-    '     REPEAT
-    '         regex = NEW Regexp(calldata, "(?<=" & id & "\">).+(?=<)")
-    '         TRY calldata = Mid(calldata, regex.Offset + Len(regex.Text), Len(calldata) - regex.Offset)
-    '         sArr.Add(regex.Text)
-    '     UNTIL regex.Text = NULL
-    '      
-    '     $qcall = sArr[0]
-    '     $fname = sArr[1]
-    '     $addr1 = sArr[2]
-    '     $addr2 = sArr[3]
-    '     $country = sArr[4]
-    '     sArr.Clear
-    '     
-    ' ELSE 
-    IF InStr(S, "<!-- begin calldata") THEN    
-    
-        i = InStr(S, "Label\">")
+    DIM lat, lon AS Float
+    S = Conv(S, "iso-8859-1", "UTF-8")
+    IF InStr(S, "<!-- begin calldata") THEN
+        i = InStr(S, "<b class=\"csign")
         j = InStr(S, "style=\"margin-top:1.5em;")
-        IF j > i THEN calldata = Mid(S, i, (j - i))
-        sArr = Split(calldata, "\n", "", TRUE)  
-    
-        callsign = Replace(sArr[0], "Label\"", "p", 1) 'to match stripField() function
-        $qcall = stripField(callsign) 
-        $fname = stripField(sArr[1])
-        $addr1 = stripField(sArr[2])
-        $addr2 = stripField(sArr[3])
-        $country = stripField(sArr[4])
-        sArr.Clear
+        IF j > i THEN data = Mid(S, i, (j - i))
+        calldata = Split(data, "\n")
+        calldata.Pop 'get rid of last useless element
+        sArr = NEW String[]
+        FOR EACH saux IN calldata          
+          regex = NEW Regexp(saux, "<([a-z][a-z0-9]*)[^>]*>(.*?)</\\1>")
+          sArr.Add(regex.SubMatches[2].Text)
+        NEXT
+        
+        $qcall = sArr[0]
+        $fname = sArr[1]
+        $addr1 = sArr[2]
+        $addr2 = sArr[3]
+        $country = sArr[4]
+        
+        calldata = NULL
+        sArr = NULL
+        
+        ' now try to guess gridsquare from javascript variables in html
+        regex = NEW Regexp(S, "cs_lat\\s\\=\\s\\\"(.*?)\\\";")
+        lat = CFloat(regex.SubMatches[1].Text)
+        regex = NEW Regexp(S, "cs_lon\\s\\=\\s\\\"(.*?)\\\";")
+        lon = CFloat(regex.SubMatches[1].Text)
+        $grid = global.latLong2locator(lat, lon)
+        
     ELSE
         $qcall = ("Not Found")
+        RETURN 
     ENDIF 
-    IF InStr(S, "Info:") THEN $qslmgr = stripField(Upper(Mid(S, InStr(S, "Info:") + 24)))
-    IF InStr(S, "Square:") THEN $grid = Upper(Mid(S, InStr(S, "Square:") + 27, 6))
     
     CATCH 
         Message.Error(Error.Text & "\n" & Error.Where)

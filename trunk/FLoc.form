@@ -1,7 +1,7 @@
 # Gambas Form File 2.0
 
 { Form Form
-  MoveScaled(0,0,109,82)
+  MoveScaled(0,0,109,81)
   Text = ("")
   Icon = Picture["icons/dfhlog24.png"]
   Arrangement = Arrange.Horizontal
@@ -13,7 +13,7 @@
     Resizable = False
     Border = True
     { ToolPanel1 ToolPanel
-      MoveScaled(1,1,27,75)
+      MoveScaled(1,2,27,75)
       Spacing = 2
       Count = 2
       TextFont = Font["Bold"]
@@ -94,10 +94,10 @@
         }
       }
       { Timer1 #Timer
-        #X = 0
-        #Y = 441
+        #X = 14
+        #Y = 570
         Enabled = True
-        Delay = 10000
+        Delay = 5000
       }
       { btnSave Button
         MoveScaled(6,65,16,3)
@@ -189,20 +189,20 @@
       { cboModo ComboBox
         MoveScaled(13,18,13,3)
         ToolTip = ("Mode selection")
-        Text = ("")
         ReadOnly = True
+        Text = ("")
       }
       { cboBand ComboBox
         MoveScaled(13,23,13,3)
         ToolTip = ("Band selection")
-        Text = ("")
         ReadOnly = True
+        Text = ("")
       }
       { cboPropa ComboBox
         MoveScaled(13,28,13,3)
         ToolTip = ("Prop. Mode Selection")
-        Text = ("")
         ReadOnly = True
+        Text = ("")
       }
       { vDist ValueBox
         MoveScaled(13,13,13,3)
@@ -225,6 +225,7 @@
           ToolTip = ("Show/Hide Panel")
           Text = ("")
           Picture = Picture["icon:/16/first"]
+          Border = True
           Toggle = True
         }
         { chkSquares ToolButton
@@ -232,6 +233,7 @@
           ToolTip = ("Show Grid")
           Text = ("")
           Picture = Picture["icons/sq.png"]
+          Border = True
           Toggle = True
         }
         { chkDX ToolButton
@@ -239,22 +241,33 @@
           ToolTip = ("Show DX Lines")
           Text = ("")
           Picture = Picture["icons/dxLine.png"]
+          Border = True
+          Toggle = True
+        }
+        { chkDXtxt ToolButton
+          MoveScaled(13,0,3,3)
+          ToolTip = ("Show DX Callsign")
+          Text = ("")
+          Picture = Picture["icons/btext.png"]
+          Border = True
           Toggle = True
         }
         { btnClear ToolButton
-          MoveScaled(14,0,3,3)
+          MoveScaled(18,0,3,3)
           ToolTip = ("Clean Map")
           Text = ("")
           Picture = Picture["icons/gtk-delete.png"]
+          Border = True
         }
         { Separator1 Separator
-          MoveScaled(18,0,1,3)
+          MoveScaled(21,0,1,3)
         }
         { ToolButton1 ToolButton
-          MoveScaled(19,0,3,3)
+          MoveScaled(22,0,3,3)
           ToolTip = ("Close")
           Text = ("")
           Picture = Picture["icon:/16/quit"]
+          Border = True
         }
       }
       { Label1 Label
@@ -280,7 +293,6 @@
         Expand = True
         { canvas DrawingArea
           MoveScaled(0,0,117,88)
-          Cached = True
           Tracking = True
           Merge = True
         }

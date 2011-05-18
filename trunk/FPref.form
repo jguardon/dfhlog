@@ -1,7 +1,7 @@
 # Gambas Form File 2.0
 
 { Form Form
-  MoveScaled(0,0,68,59)
+  MoveScaled(0,0,68,62)
   Text = ("Settings")
   Icon = Picture["icon:/32/tools"]
   Border = Window.Fixed
@@ -9,9 +9,9 @@
   SkipTaskbar = True
   Padding = 3
   { TabStrip1 TabStrip
-    MoveScaled(0,0,68,53)
+    MoveScaled(0,0,68,55)
     Padding = 10
-    Count = 6
+    Count = 5
     Index = 0
     Text = ("My &Station")
     { Frame1 Frame
@@ -70,8 +70,8 @@
       }
       { cboPrefBanda ComboBox
         MoveScaled(13,4,14,3)
-        Text = ("")
         ReadOnly = True
+        Text = ("")
       }
       { Label5 Label
         MoveScaled(36,4,7,3)
@@ -79,8 +79,8 @@
       }
       { cboPrefModo ComboBox
         MoveScaled(44,4,14,3)
-        Text = ("")
         ReadOnly = True
+        Text = ("")
         Sorted = True
       }
     }
@@ -101,194 +101,194 @@
     Index = 1
     Text = ("C&luster")
     { Frame3 Frame
-      MoveScaled(1,1,65,19)
+      MoveScaled(1,1,65,17)
       Text = ("Telnet Server")
       { cboServer ComboBox
-        MoveScaled(9,5,49,3)
+        MoveScaled(9,4,49,3)
         ToolTip = ("Telnet Server")
-        Text = ("")
         ReadOnly = True
+        Text = ("")
       }
       { btnDelServer Button
-        MoveScaled(39,12,9,3)
+        MoveScaled(39,11,9,3)
         Text = ("Delete")
       }
       { btnAddServer Button
-        MoveScaled(49,12,9,3)
+        MoveScaled(49,11,9,3)
         Text = ("Add")
       }
       { chkAutoLogin CheckBox
-        MoveScaled(9,12,24,3)
+        MoveScaled(9,11,24,3)
         ToolTip = ("Auto connect to server with\nyour current callsign ")
         Text = ("Auto-connect")
       }
     }
     { Frame4 Frame
-      MoveScaled(1,21,65,25)
+      MoveScaled(1,19,65,21)
       Text = ("Filters")
       { chkHF CheckBox
-        MoveScaled(9,5,24,3)
+        MoveScaled(9,3,24,3)
         Text = ("HF Spots")
         Value = CheckBox.True
       }
       { chkVHF CheckBox
-        MoveScaled(9,11,24,3)
+        MoveScaled(9,9,24,3)
         Text = ("V/UHF Spots")
         Value = CheckBox.True
       }
       { chkWARC CheckBox
-        MoveScaled(9,17,24,3)
+        MoveScaled(9,15,24,3)
         Text = ("WARC Spots")
         Value = CheckBox.True
       }
       { chkANN CheckBox
-        MoveScaled(39,5,24,3)
+        MoveScaled(39,3,24,3)
         Text = ("Ann Messages")
         Value = CheckBox.True
       }
       { chkWWV CheckBox
-        MoveScaled(39,11,24,3)
+        MoveScaled(39,9,24,3)
         Text = ("WWV Messages")
         Value = CheckBox.True
       }
       { chkWCY CheckBox
-        MoveScaled(39,17,24,3)
+        MoveScaled(39,15,24,3)
         Text = ("WCY Messages")
         Value = CheckBox.True
+      }
+    }
+    { Frame10 Frame
+      MoveScaled(1,41,65,8)
+      Text = ("Cluster")
+      { chkLogRemarks CheckBox
+        MoveScaled(9,3,49,3)
+        Text = ("Log Cluster Remarks")
       }
     }
     Index = 2
     Text = ("C&olors")
     { Frame5 Frame
-      MoveScaled(1,1,65,46)
+      MoveScaled(1,1,65,47)
       Text = ("Colors")
       { cbtnWorked ColorButton
-        MoveScaled(28,5,6,5)
+        MoveScaled(25,7,15,4)
         Value = &HFF0000&
       }
       { cbtnConfirmed ColorButton
-        MoveScaled(28,13,6,5)
+        MoveScaled(25,15,15,4)
         Value = &HC06000&
       }
       { cbtnNeeded ColorButton
-        MoveScaled(28,21,6,5)
+        MoveScaled(25,23,15,4)
         Value = &H008000&
       }
       { cbtnDefault ColorButton
-        MoveScaled(28,29,6,5)
+        MoveScaled(25,31,15,4)
         Value = &H505050&
       }
       { Label6 Label
-        MoveScaled(10,14,12,3)
+        MoveScaled(2,16,20,3)
         Text = ("Confirmed:")
+        Alignment = Align.Right
       }
       { Label7 Label
-        MoveScaled(10,6,12,3)
+        MoveScaled(2,8,20,3)
         Text = ("Worked:")
+        Alignment = Align.Right
       }
       { Label8 Label
-        MoveScaled(10,22,12,3)
+        MoveScaled(2,24,20,3)
         Text = ("Needed:")
+        Alignment = Align.Right
       }
       { Label9 Label
-        MoveScaled(10,30,12,3)
+        MoveScaled(2,32,20,3)
         Text = ("Default:")
+        Alignment = Align.Right
       }
     }
     Index = 3
     Text = ("&Hamlib")
     { Frame6 Frame
-      MoveScaled(1,1,65,45)
+      MoveScaled(0.8571,1.7143,65,47)
       Text = ("Hamlib (CAT) Parameters")
       { chkHamlib CheckBox
-        MoveScaled(6,8,14,3)
+        MoveScaled(5,10,14,3)
         Text = ("Activate")
       }
       { Label10 Label
-        MoveScaled(26,8,16,3)
+        MoveScaled(22,10,16,3)
         Text = ("Poll every:")
+        Alignment = Align.Right
       }
       { cboPolling ComboBox
-        MoveScaled(42,8,11,3)
-        Text = ("")
+        MoveScaled(41,10,11,3)
         ReadOnly = True
         List = [("100"), ("200"), ("300"), ("400"), ("500"), ("1000"), ("2000")]
+        Text = ("")
       }
       { Label11 Label
-        MoveScaled(54,8,8,3)
+        MoveScaled(53,10,8,3)
         Text = ("msec.")
       }
       { Label12 Label
-        MoveScaled(6,16,24,3)
+        MoveScaled(5,18,24,3)
         Text = ("Rig select:")
       }
       { cboRigHamlib ComboBox
-        MoveScaled(6,20,33,3)
-        Text = ("")
+        MoveScaled(5,22,33,3)
         ReadOnly = True
+        Text = ("")
       }
       { Label13 Label
-        MoveScaled(6,24,24,3)
+        MoveScaled(5,26,24,3)
         Text = ("Device:")
       }
       { txtDevHamlib TextBox
-        MoveScaled(6,28,53,3)
+        MoveScaled(5,30,53,3)
         Text = ("/dev/ttyS0")
       }
       { cboSpd ComboBox
-        MoveScaled(42,20,11,3)
-        Text = ("")
+        MoveScaled(41,22,11,3)
         ReadOnly = True
         List = [("1200"), ("2400"), ("4800"), ("9600"), ("19200"), ("38400"), ("57600"), ("115200")]
+        Text = ("")
       }
       { Label15 Label
-        MoveScaled(42,16,14,3)
+        MoveScaled(41,18,14,3)
         Text = ("Speed:")
       }
       { Label16 Label
-        MoveScaled(54,20,7,3)
+        MoveScaled(53,22,7,3)
         Text = ("bauds")
       }
       { lblHamlibInst Label
-        MoveScaled(6,13,53,3)
+        MoveScaled(5,15,53,3)
         Foreground = &H804000&
         Text = ("")
       }
       { chkDebug CheckBox
-        MoveScaled(38,36,23,3)
+        MoveScaled(37,38,23,3)
         ToolTip = ("Output debugger. Use it when you have problems")
         Text = ("Debug output")
       }
       { chkGrig CheckBox
-        MoveScaled(6,36,30,3)
+        MoveScaled(5,38,30,3)
         Text = ("Use Grig (if installed)")
       }
       { lblGrig Label
-        MoveScaled(6,32,53,3)
+        MoveScaled(5,34,53,3)
         Foreground = &H804000&
         Text = ("")
       }
       { chkHamlibRPC CheckBox
-        MoveScaled(6,4,14,3)
+        MoveScaled(5,6,14,3)
         Foreground = &H000080&
         ToolTip = ("If checked, I will try to use rpc rig service to\nallow multiple connections to a single rig.")
         Text = ("Use rpc.rigd")
       }
     }
     Index = 4
-    Text = ("&Band Plans")
-    { Panel1 Panel
-      MoveScaled(0,0,67,48)
-      Arrangement = Arrange.Fill
-      Padding = 3
-      { GridView1 GridView
-        MoveScaled(5,4,53,34)
-        Expand = True
-        Header = GridView.Horizontal
-        Scrollbar = Scroll.Vertical
-      }
-    }
-    Index = 5
     Text = ("Ot&hers")
     { Frame7 Frame
       MoveScaled(1,29,65,10)
@@ -333,7 +333,7 @@
         Text = ("Fill QSO data from QRZ.com (Web method)")
       }
       { rbNotQRZcom RadioButton
-        MoveScaled(9,22,54,3)
+        MoveScaled(9,21,54,3)
         Text = ("Don't fetch data from QRZ.com")
       }
       { rbQRZcom RadioButton
@@ -341,27 +341,19 @@
         Text = ("Fill QSO data from QRZ.com")
       }
     }
-    { Frame10 Frame
-      MoveScaled(1,40,65,6)
-      Text = ("Cluster")
-      { chkLogRemarks CheckBox
-        MoveScaled(9,2,49,3)
-        Text = ("Log Cluster Remarks")
-      }
-    }
     Index = 0
   }
   { Label14 Label
-    MoveScaled(3,54,24,3)
+    MoveScaled(3,57,24,3)
     Foreground = &H0000C0&
     Text = ("* (Mandatory Fields)")
   }
   { btnOK Button
-    MoveScaled(33,54,16,3)
+    MoveScaled(33,57,16,3)
     Text = ("&Accept")
   }
   { btnCancel Button
-    MoveScaled(50,54,16,3)
+    MoveScaled(50,57,16,3)
     Text = ("&Cancel")
   }
 }
