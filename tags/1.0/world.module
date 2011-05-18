@@ -1,0 +1,154 @@
+' Gambas module file
+' dfhLog- Hamradio LogBook
+'     Adapted from KLog's class "world" in C++ by Jaime Robles <http://jaime.robles.es/klog/>
+
+'     Copyright (C) 2009  Jesús Guardón, EA7DFH <ea7dfh@gmail.com>
+' 
+'     This program is free software: you can redistribute it and/or modify
+'     it under the terms of the GNU General Public License as published by
+'     the Free Software Foundation, either version 3 of the License, or
+'     (at your option) any later version.
+' 
+'     This program is distributed in the hope that it will be useful,
+'     but WITHOUT ANY WARRANTY; without even the implied warranty of
+'     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'     GNU General Public License for more details.
+' 
+'     You should have received a copy of the GNU General Public License
+'     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+' private
+
+PRIVATE ent AS cty
+PRIVATE file AS File
+PRIVATE prefix AS String
+PRIVATE qrz AS String
+PRIVATE prefixa AS String
+PRIVATE prefixab AS String 
+PRIVATE cqzone AS Integer
+PRIVATE ituzone AS Integer
+PRIVATE number AS Integer
+PRIVATE nmap AS Collection
+PRIVATE map AS Collection
+
+'public
+PUBLIC listDxcc AS NEW Collection
+PUBLIC $aListDxcc AS NEW String[] ' aux array OF entities
+PUBLIC created AS Boolean
+
+
+PUBLIC SUB init()
+    DIM data, linea AS String
+    DIM lines, fields AS String[]
+    DIM finalPrefix AS String
+    DIM prefixes AS String[]
+    lines = NEW String[]
+    fields = NEW String[]
+    prefixes = NEW String[]
+    nmap = NEW Collection 'Coleccion de clases nº/cty
+    map = NEW Collection  'Coleccion de prefijos/nº 
+    prefix = NULL
+    cqzone = 0
+    ituzone = 0
+    created = FALSE
+    number = 1
+  
+  'create local dir
+    IF NOT Exist(User.Home &/ ".config/dfhlog/cty.dat") THEN  
+        TRY MKDIR User.Home &/ ".config/dfhlog/"
+        TRY COPY "data/cty.dat" TO User.Home &/ ".config/dfhlog/cty.dat"
+    ' ELSE 
+    '     TRY KILL User.Home &/ ".config/dfhlog/cty.dat"
+    '     TRY COPY "data/cty.dat" TO User.Home &/ ".config/dfhlog/cty.dat"
+    ENDIF 
+  
+    file = OPEN User.Home &/ ".config/dfhlog/cty.dat" FOR INPUT  
+  
+    READ #file, data, Lof(file)
+  
+    lines = Split(data, ";", "\r\n", TRUE)
+   
+    FOR EACH linea IN lines  
+        ent = NEW cty
+        fields = Split(linea, ":")        
+        cqzone = CInt(fields[1])
+        ituzone = CInt(fields[2])
+        ent.number = number
+        ent.entity = Trim$(fields[0])
+        ent.pfx = Trim$(fields[7])
+        ent.cqz = cqzone
+        ent.lon = CFloat(fields[5]) * -1  'la longitud viene como W -> positivo
+        ent.lat = CFloat(fields[4])
+        ent.continent = Trim$(fields[3])
+        ent.ituz = ituzone
+        ent.tz = CFloat(fields[6])
+        ent.pfxs = Trim$(fields[8])
+        nmap.Add(ent, CStr(number)) 'coleccion de entidades
+        listDxcc.Add(ent.entity, CStr(number)) 'coleccion de nombre entidad, numero
+        $aListDxcc.Add(ent.entity) ' aux array OF entities
+        prefixes = Split(ent.pfxs, ",", "\r\n", TRUE)
+        
+        FOR EACH finalPrefix IN prefixes
+            finalPrefix = Trim$(Replace$(finalPrefix, "=", ""))
+            IF InStr(finalPrefix, "(") > 1 THEN finalPrefix = Left(finalPrefix, InStr(finalPrefix, "(") - 1)
+            IF InStr(finalPrefix, "[") > 1 THEN finalPrefix = Left(finalPrefix, InStr(finalPrefix, "[") - 1)            
+            map.Add(number, finalPrefix) 'coleccion de prefijos/nº ent
+            'TODO manejo de prefijos especiales con diferente zona(cq)[itu]
+        NEXT
+
+        INC number
+    NEXT   
+  
+    CLOSE file
+    created = TRUE 
+    CATCH 
+        DEBUG Error.Text, Error.Where 
+END
+    'devuelve una clase cty por cadena completa de indicativo
+PUBLIC FUNCTION findEntity(call AS String) AS cty
+    DIM y AS Integer
+    DIM cad AS String
+    call = Trim$(Upper(call))
+    
+    IF InStr(call, "/") > 0 THEN 
+    prefixa = Left(call, InStr(call, "/") - 1)        
+    prefixab = Right(call, Len(call) - InStr(call, "/"))        
+        IF Len(prefixa) < Len(prefixab) THEN 
+            call = prefixa
+        ELSE
+            IF prefixab <> "P" AND prefixab <> "MM" AND prefixab <> "B" AND prefixab <> "M" AND prefixab <> "QRP" AND prefixab <> "AM" AND prefixab <> "" &
+                "0" AND prefixab <> "1" AND prefixab <> "2" AND prefixab <> "3" AND prefixab <> "4" AND prefixab <> "5" AND prefixab <> "6" & 
+                "" AND prefixab <> "7" AND prefixab <> "8" AND prefixab <> "9" THEN 
+                call = prefixab
+            ENDIF
+        ENDIF 
+    ENDIF 
+    'magic statement
+    FOR y = Len(call) TO 1 STEP -1
+        FOR EACH cad IN map
+            IF Left(call, y) = map.Key THEN 
+                RETURN nmap[map[map.Key]]
+            BREAK 
+            ENDIF
+        NEXT
+    NEXT
+
+    CATCH 
+        DEBUG Error.Text, Error.Where
+  
+END
+
+    'devuelve el nº de entidad por prefijo dado
+PUBLIC FUNCTION giveEnt(tqrz AS String) AS Integer
+    qrz = tqrz
+    RETURN CInt(map[qrz])
+  
+END
+
+  'busca por numero en la colección map y devuelve la clase cty correspondiente
+PUBLIC FUNCTION getEntByNumb(numero AS Integer) AS cty
+    numero = CStr(numero)  
+    RETURN nmap[numero]    
+ 
+END 

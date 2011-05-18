@@ -1,0 +1,50 @@
+' Gambas class file
+
+
+PRIVATE run AS Boolean = TRUE
+'PRIVATE n AS Integer
+
+PUBLIC SUB setText(s AS String)
+    IF ME.Visible = TRUE THEN  
+        IF run THEN TextArea1.Text &= s & "\n"
+        TextArea1.Pos = Len(TextArea1.Text)
+        TextArea1.EnsureVisible        
+    ENDIF   
+END
+
+
+PUBLIC SUB Button3_Click()
+
+  ME.Close
+
+END
+
+PUBLIC SUB Button2_Click()
+    DIM path AS String
+    DIM f AS File
+    path = User.Home &/ "CATdebug.txt"
+    OPEN path FOR WRITE CREATE AS #f
+    PRINT #f, TextArea1.Text
+    f.Close
+    Message.Info(("File saved in: \n") & path) 
+    Desktop.Open(path)
+    
+END
+
+PUBLIC SUB btnStop_Click()
+
+  run = NOT run 
+  
+  IF run THEN 
+    btnStop.Text = ("Stop")
+  ELSE 
+    btnStop.Text = ("Start")
+  ENDIF 
+
+END
+
+PUBLIC SUB TextArea1_Change()
+
+  'TextArea1.Pos = n
+
+END

@@ -1,0 +1,96 @@
+# Gambas Form File 2.0
+
+{ Form Form
+  MoveScaled(0,0,64,40)
+  Text = ("ADIF Import")
+  Icon = Picture["icon:/16/down"]
+  Border = Window.Fixed
+  { Frame1 Frame
+    MoveScaled(1,1,62,32)
+    Text = ("")
+    { txtPath TextBox
+      MoveScaled(2,4,44,3)
+      Text = ("")
+      ReadOnly = True
+    }
+    { btnOpn Button
+      MoveScaled(49,4,11,3)
+      Text = ("&Browse")
+    }
+    { Label1 Label
+      MoveScaled(2,1,24,3)
+      Text = ("File:")
+    }
+    { Label2 Label
+      MoveScaled(2,10,10,3)
+      Text = ("QSOs:")
+    }
+    { Label3 Label
+      MoveScaled(2,16,10,3)
+      Text = ("Errors:")
+    }
+    { lblCurrent Label
+      MoveScaled(11,22,49,3)
+      Text = ("")
+    }
+    { lblQSOs Label
+      MoveScaled(13,10,8,3)
+      Foreground = &H0000C0&
+      Text = ("0")
+      Alignment = Align.Right
+    }
+    { lblErrors Label
+      MoveScaled(13,16,8,3)
+      Foreground = &HFF0000&
+      Text = ("0")
+      Alignment = Align.Right
+    }
+    { pb ProgressBar
+      MoveScaled(2,26,58,3)
+    }
+    { Label4 Label
+      MoveScaled(2,22,8,3)
+      Text = ("QSO:")
+    }
+    { Label5 Label
+      MoveScaled(2,13,10,3)
+      Text = ("Duplicated:")
+    }
+    { lblDupes Label
+      MoveScaled(13,13,8,3)
+      Foreground = &H008000&
+      Text = ("0")
+      Alignment = Align.Right
+    }
+    { Frame2 Frame
+      MoveScaled(44,8,16,12.4286)
+      Foreground = &H000040&
+      ToolTip = ("OS Origin of ADIF file")
+      Text = ("ADIF Origin")
+      { chkLinux RadioButton
+        MoveScaled(2,2.1429,11,3)
+        Text = ("Linux")
+        Value = True
+      }
+      { chkMac RadioButton
+        MoveScaled(2,5.1429,11,3)
+        Text = ("Mac")
+      }
+      { chkWindows RadioButton
+        MoveScaled(2,8.1429,11,3)
+        Text = ("Windows")
+      }
+    }
+    { Separator1 Separator
+      MoveScaled(2,20,40,1)
+    }
+  }
+  { btnCancel Button
+    MoveScaled(29,35,16,3)
+    Text = ("&Cancel")
+  }
+  { btnOK Button
+    MoveScaled(47,35,16,3)
+    Text = ("&Import")
+  }
+}

@@ -1,0 +1,23 @@
+# Gambas Form File 2.0
+
+{ Form Form
+  MoveScaled(0,0,41,29)
+  Text = ("")
+  Icon = Picture["icon:/16/view-detail"]
+  Border = Window.None
+  Stacking = Window.Above
+  SkipTaskbar = True
+  Padding = 3
+  { Frame1 Frame
+    MoveScaled(0,0,41,29)
+    Background = Color.LightBackground
+    Expand = True
+    Text = ("")
+    { DateChooser1 DateChooser
+      MoveScaled(1,1,39,27)
+      Font = Font["-1"]
+      ToolTip = ("Double Click to select")
+      Expand = True
+    }
+  }
+}

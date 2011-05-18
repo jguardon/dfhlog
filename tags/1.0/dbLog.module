@@ -1,0 +1,51 @@
+' Gambas module file
+' dfhLog- Hamradio LogBook
+'     Copyright (C) 2009  Jesús Guardón, EA7DFH <ea7dfh@gmail.com>
+' 
+'     This program is free software: you can redistribute it and/or modify
+'     it under the terms of the GNU General Public License as published by
+'     the Free Software Foundation, either version 3 of the License, or
+'     (at your option) any later version.
+' 
+'     This program is distributed in the hope that it will be useful,
+'     but WITHOUT ANY WARRANTY; without even the implied warranty of
+'     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'     GNU General Public License for more details.
+' 
+'     You should have received a copy of the GNU General Public License
+'     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+PUBLIC cnLog AS Connection
+
+PUBLIC FUNCTION connDB(path AS String) AS Boolean
+DIM myHost, myDBName AS String
+
+    myHost = Left(path, RInStr(path, "/"))    
+    myDBName = Right(path, Len(path) - RInStr(path, "/"))
+'     DEBUG myHost;; myDBName
+    IF cnLog <> NULL THEN RETURN FALSE
+    
+    cnLog = NEW Connection
+    
+    cnLog.Host = myHost
+    cnLog.Name = myDBName
+    cnLog.Type = "sqlite3"
+    TRY cnLog.Open()
+    
+    IF ERROR THEN 
+        cnLog = NULL
+        Message.Error(("Error connecting to database: ") & myDBName & "\n" & Error.Text)
+        RETURN TRUE
+    ENDIF 
+    
+    RETURN FALSE
+  
+END
+
+PUBLIC SUB CloseDB()
+  
+  IF cnLog = NULL THEN RETURN 
+  cnLog.Close()
+  cnLog = NULL
+  
+END

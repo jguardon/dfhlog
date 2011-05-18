@@ -1,0 +1,28 @@
+# Gambas Form File 2.0
+
+{ Form Form
+  MoveScaled(0,0,53,22)
+  Text = ("Add telnet server")
+  Icon = Picture["icon:/16/connect"]
+  Border = Window.Fixed
+  ToolBox = True
+  SkipTaskbar = True
+  { TextLabel1 TextLabel
+    MoveScaled(2,2,49,6)
+    Text = ("Write down server address followed by :port<br>\ni.e.:  <span style=\"color:#0000FF;\">eadx.net:23</span>")
+    Alignment = Align.Center
+  }
+  { txtServer TextBox
+    MoveScaled(2,11,49,3)
+    Text = ("")
+  }
+  { btnCancel Button
+    MoveScaled(17,17,16,3)
+    Text = ("&Cancel")
+  }
+  { btnOK Button
+    MoveScaled(35,17,16,3)
+    Text = ("&Accept")
+    Default = True
+  }
+}
