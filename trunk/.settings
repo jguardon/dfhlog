@@ -245,10 +245,12 @@ SearchComment=False
 SearchString=False
 
 [OpenFile]
-File[1]="FMain.class:1060.30"
+File[1]="FMain.class:1904.16"
 File[2]="FMain.form"
-Active=2
-Count=2
+File[3]="FDesign.class:182.20"
+Active=3
+File[4]="FDesign.form"
+Count=4
 
 [Watches]
 Count=0

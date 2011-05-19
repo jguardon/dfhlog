@@ -30,8 +30,7 @@ PUBLIC SUB Form_Open()
     
     setCanvasSize
     imgBG = Picture[Fmain.qslini["BGImage/Path"]]
-    chkBG.Value = CBool(Fmain.qslini["Image/Display", "False"])
-    $freetext = Fmain.qslini["FREE_TEXT/Text", NULL]
+    chkBG.Value = CBool(Fmain.qslini["Image/Display", "False"])    
     drawPage
     labelX.Text = Round(global.$aLabels[cboFields.Text].iX, -1)
     labelY.Text = Round(global.$aLabels[cboFields.Text].iY, -1)
@@ -166,9 +165,9 @@ END
 PUBLIC SUB printQSLs()
     DIM unit AS String = "pt"
     DIM hres AS Result
-    DIM err AS Boolean = FALSE
-    
+    DIM err AS Boolean = FALSE    
     initData
+    $freetext = Fmain.qslini["FREE_TEXT/Text", NULL]
     IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN 
     hres = dbLog.cnLog.Exec("SELECT id FROM qQSL")
     IF hres.Count < 1 THEN 
@@ -195,8 +194,10 @@ PUBLIC SUB printQSLs()
         global.$aLabels["FREE_TEXT"].sText = $freetext
         IF hres!qsl_rcvd = "Y" THEN 
             global.$aLabels["TNX QSL"].sText = "TNX QSL"
+            global.$aLabels["PSE QSL"].sText = ""
         ELSE 
             global.$aLabels["PSE QSL"].sText = "PSE QSL"
+            global.$aLabels["TNX QSL"].sText = ""
         ENDIF 
         
         FOR EACH hField IN global.$aLabels
