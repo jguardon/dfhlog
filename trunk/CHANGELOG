@@ -1,3 +1,12 @@
+* Thu May 19 2011 Jesus Guardon Cerezo <ea7dfh@gmail.com> 1.0
+- Change major version numbering to 1.x meaning stable version.
+- New feature: Ukrainian language added. Thanks to (Volodymyr, UR3QJW)
+- Fix: Optimized QRZ.com search. Locator works again without loggin in.
+- Request: If locator is not found in qrz then it tries to retrieve from previous contacts in database (EA7AH)
+- Fix: GridMap is now part of the package, no need of external one.
+- Request: New free text field in QSL design (EA7AH)
+- Fix: Optimized drawing routines in Grid Map.
+
 * Sun Mar 06 2011 Jesus Guardon Cerezo <ea7dfh@gmail.com> 0.0.42
 - QRZ.com search fixed (again)
 

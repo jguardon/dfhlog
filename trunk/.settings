@@ -246,10 +246,9 @@ SearchString=False
 
 [OpenFile]
 File[1]="FMain.class:1060.30"
-Active=1
 File[2]="FMain.form"
-File[3]="QRZ.class:258.49"
-Count=3
+Active=2
+Count=2
 
 [Watches]
 Count=0
