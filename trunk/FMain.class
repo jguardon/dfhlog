@@ -26,6 +26,7 @@ PUBLIC p AS Process
 PUBLIC p_hamlib AS Process
 PRIVATE L AS String
 PRIVATE qrzcom AS QRZ
+PRIVATE hamqth AS HQTH
 PRIVATE cdx AS cty
 PRIVATE freq AS String
 PRIVATE mylat AS Float 
@@ -221,6 +222,7 @@ PUBLIC SUB Form_Open()
     prepareStatsGrid  
     EXEC ["killall", "rigctld"]  
     qrzcom = NEW QRZ AS "qrzcom"
+    hamqth = NEW HQTH AS "hamqth"
     tblCluster.Columns.Count = 1   
     tblCluster.Rows.Height = 10
     prepararGrid()
@@ -516,7 +518,7 @@ PUBLIC SUB txtCall_LostFocus()
         IF en THEN lblQSOTimer.Visible = TRUE
     ENDIF 
   
-    IF ini["qrzCom/Value"] = 1 OR ini["qrzCom/Value"] = 2 THEN
+    IF ini["qrzCom/Value"] = 1 OR ini["qrzCom/Value"] = 2 OR ini["qrzCom/Value"] = 3 THEN
         IF Len(txtCall.Text) > 2 THEN
             IF InStr(call, "/") > 0 THEN 
                 pa = Left(call, InStr(call, "/") - 1)
@@ -529,8 +531,9 @@ PUBLIC SUB txtCall_LostFocus()
                 ENDIF
             ELSE 
                 homecall = call
-            ENDIF 
-            qrzcom.getQRZcom(homecall) 'search in qrz.com
+            ENDIF
+            ' search in selected callbook
+            searchCallbook(homecall)
         ENDIF 
     ENDIF 
     $homecall = homecall
@@ -542,6 +545,16 @@ PUBLIC SUB txtCall_LostFocus()
     
     CATCH    
         DEBUG "Error in txtCall_LostFocus\n" & Error.Text & "\n" & Error.Where     
+END
+
+PRIVATE SUB searchCallbook(call AS String)
+  
+  IF FMain.ini["qrzCom/Value"] = 3
+    hamqth.getHamqth(call) 'search in HamQTH
+  ELSE  
+    qrzcom.getQRZcom(call) 'search in qrz.com
+  ENDIF
+   
 END
 
 PRIVATE SUB wkdB4(call AS String)    
@@ -593,13 +606,8 @@ PUBLIC SUB txtClx_LostFocus()
 END
 
 PUBLIC SUB qrzcom_QRZOk()
-  updateFields
-  qrzcom.clearQRZ
-  btnShwqrz.Enabled = TRUE
-END
-
-PUBLIC SUB updateFields()
-    IF modificando THEN 
+  
+  IF modificando THEN 
         txtDataQRZ.Foreground = Color.DarkRed
         txtDataQRZ.Background = Color.LightBackground
         txtDataQRZ.Text = qrzcom.qcall & "\n" & qrzcom.fname & " " & qrzcom.name & "\n" &
@@ -622,7 +630,39 @@ PUBLIC SUB updateFields()
         txtDataQRZ.Text = qrzcom.qcall & "\n" & qrzcom.fname & " " & qrzcom.name & "\n" &
         qrzcom.addr1 & "\n" & qrzcom.addr2 & "\n" & qrzcom.country
     ENDIF 
+  qrzcom.clearQRZ
+  btnShwqrz.Enabled = TRUE
 END
+
+PUBLIC SUB hamqth_HQTHOk()
+  IF modificando THEN 
+        txtDataQRZ.Foreground = Color.DarkRed
+        txtDataQRZ.Background = Color.LightBackground
+        txtDataQRZ.Text = hamqth.qcall & "\n" & hamqth.fname & " " & hamqth.name & "\n" &
+        hamqth.addr1 & "\n" & hamqth.addr2 & "\n" & hamqth.country & IIf(hamqth.grid, "\nLoc: " & hamqth.grid, "")
+    ELSE 
+        txtDataQRZ.Foreground = Color.Black
+        txtDataQRZ.Background = Color.White
+        lblErrorqrz.Text = hamqth.qerror
+        txtNameQSO.Text = Left(hamqth.fname, InStr(hamqth.fname, Chr(32)))
+        ' check former Locator in DB
+        IF global.chkLoc(hamqth.grid) = TRUE THEN
+            txtLocQSO.Text = hamqth.grid
+        ELSE 
+            txtLocQSO.Text = getPrevLoc(txtCall.Text)
+        ENDIF
+        IF Len(hamqth.qslmgr) < 10 THEN 
+            txtMgrQSO.Text = hamqth.qslmgr
+        ENDIF 
+        lblEmail.Text = hamqth.email
+        txtDataQRZ.Text = hamqth.qcall & "\n" & hamqth.fname & " " & hamqth.name & "\n" &
+        hamqth.addr1 & "\n" & hamqth.addr2 & "\n" & hamqth.country & IIf(hamqth.grid, "\nLoc: " & hamqth.grid, "")
+    ENDIF 
+  hamqth.clear
+  btnShwqrz.Enabled = TRUE
+END
+
+
 
 PUBLIC FUNCTION getPrevLoc(call AS String) AS String
     DIM hres AS Result
@@ -631,7 +671,7 @@ PUBLIC FUNCTION getPrevLoc(call AS String) AS String
     
     IF call THEN 
         IF connDB() THEN RETURN        
-        sql = "SELECT gridsquare FROM log WHERE call = &1 LIMIT 1;"
+        sql = "SELECT gridsquare FROM log WHERE call = &1 ORDER BY Id DESC LIMIT 1;"
         hres = dbLog.cnLog.Exec(sql, call)
         IF hres.Available THEN RETURN hres!gridsquare
     ENDIF 
@@ -2168,5 +2208,9 @@ PUBLIC SUB Form_Drop()
 END
 
 PUBLIC SUB btnShwqrz_Click()
-    Desktop.Open("http://www.qrz.com/db/" & $homecall)
+    IF ini["qrzCom/Value"] = 3 THEN 
+        Desktop.Open("http://www.hamqth.com/search.php?callsign=" & $homecall)
+    ELSE 
+        Desktop.Open("http://www.qrz.com/db/" & $homecall)
+    ENDIF 
 END

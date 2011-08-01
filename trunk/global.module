@@ -33,6 +33,18 @@ PRIVATE $utc AS String
 PUBLIC $cSpot AS NEW Object[]
 PRIVATE snd AS NEW Sound("data/Siren.wav")
 
+PUBLIC FUNCTION base64(st AS String, OPTIONAL decode AS Boolean) AS String
+  DIM ret AS String
+  IF st THEN 
+    IF decode THEN 
+      SHELL Subst("echo \"&1\" | base64 -id", st) TO ret
+    ELSE 
+      SHELL Subst("echo \"&1\" | base64 -", st) TO ret
+    ENDIF 
+    RETURN Trim(ret)
+  ENDIF 
+  
+END
 
 PUBLIC FUNCTION UTCNow() AS Date
     

@@ -20,7 +20,7 @@ PRIVATE _downloadAsyncData AS NEW HttpClient AS "_DownloadData"
 PRIVATE downloadBufferKey AS String
 PRIVATE downloadBufferData AS String
 PRIVATE xml AS NEW XmlReader
-PRIVATE keyQRZ AS String
+PRIVATE keyHQTH AS String
 PRIVATE csgn AS String
 
 '****PROPERTIES******
@@ -50,9 +50,9 @@ PROPERTY READ county AS String
 PROPERTY READ qslmgr AS String
 PROPERTY READ email AS String
 
-EVENT QRZOk()
+EVENT HQTHOk()
 
-'***************** QRZ.com XML method *****************
+'***************** HAMQTH XML method *****************
 PUBLIC SUB DownloadAsyncKey(URL AS String)
   downloadBufferKey = ""
    _downloadAsyncKey.Async = TRUE
@@ -90,77 +90,70 @@ PUBLIC SUB _DownloadData_Error()
 END
 
 PUBLIC SUB _DownloadKey_Finished()
-    DIM sElement AS String    
-        
+    DIM sElement AS String
         xml.FromString(downloadBufferKey)
-        
           WHILE NOT Xml.Eof
             SELECT CASE Xml.Node.Type
                 CASE XmlReaderNodeType.Element
                     sElement = Xml.Node.Name
-                    IF sElement = "Key" THEN
+                    IF sElement = "session_id" THEN
                         xml.Read()
-                       keyQRZ = xml.Node.Value                        
+                       keyHQTH = xml.Node.Value
                     ENDIF
             END SELECT
-            Xml.Read()            
+            Xml.Read()
           WEND 
         
-        TRY DownloadAsyncData("http://online.qrz.com/bin/xml?s=" & keyQRZ & ";callsign=" & csgn)        
-        'DEBUG downloadBufferKey
+        TRY DownloadAsyncData("http://www.hamqth.com/xml.php?id=" & keyHQTH & "&callsign=" & csgn)
+        
         CATCH 
-            Message.Error("Error leyendo XML (Key QRZ.COM)\n Linea: " & Error.Where)
+            Message.Error("Error reading XML (Id HamQTH)\n Line: " & Error.Where)
 END
 
 PUBLIC SUB _DownloadData_Finished()
-    DIM sElement AS String    
-    
+    DIM sElement AS String
     xml.FromString(downloadBufferData)
-    
       WHILE NOT Xml.Eof
         SELECT CASE Xml.Node.Type
             CASE XmlReaderNodeType.Element
                 sElement = Xml.Node.Name
                 SELECT CASE sElement
-                    CASE "call"                
+                    CASE "callsign"                
                         xml.Read()                    
                         $qcall = xml.Node.Value
-                    CASE "fname"                
+                    CASE "nick"                
                         xml.Read()                    
-                        $fname = xml.Node.Value 
-                    CASE "name"
-                        xml.Read()                    
-                        $name = xml.Node.Value
-                    CASE "addr1"
+                        $fname = xml.Node.Value
+                    CASE "adr_street1"
                         xml.Read()                    
                         $addr1 = xml.Node.Value
-                    CASE "addr2"
+                    CASE "adr_city"
                         xml.Read()                    
                         $addr2 = xml.Node.Value
-                    CASE "country"                
+                    CASE "adr_zip"                
+                        xml.Read()                    
+                        $country &= "-" & xml.Node.Value
+                    CASE "qth"                
                         xml.Read()                    
                         $country = xml.Node.Value
-                    CASE "state"
+                    CASE "us_state"
                         xml.Read()                    
                         $state = xml.Node.Value
                     CASE "grid"
                         xml.Read()                    
                         $grid = xml.Node.Value 
-                    CASE "county"
+                    CASE "us_county"
                         xml.Read()                    
                         $county = xml.Node.Value
-                    CASE "qslmgr"
+                    CASE "qsl_via"
                         xml.Read()                    
                         $qslmgr = xml.Node.Value
                     CASE "email"
                         xml.Read()                    
                         $email = xml.Node.Value
-                    CASE "Error"
+                    CASE "error"
                         xml.Read()                    
                         $qerror = xml.Node.Value
-                    CASE "key"
-                        xml.Read()                    
-                        keyQRZ = xml.Node.Value
                     
                 END SELECT
                 
@@ -168,92 +161,47 @@ PUBLIC SUB _DownloadData_Finished()
         Xml.Read()
         
     WEND 
-    RAISE QRZOk()
+    RAISE HQTHOk()
     
     CATCH 
-            Message.Error(("Error reading XML (Data QRZ.COM)\n Line: ") & Error.Where)
+            Message.Error(("Error reading XML (Data HamQTH)\n Line: ") & Error.Where)
 END 
 
-PRIVATE SUB getKeyQRZcom()
+PRIVATE SUB getId()
 
-    DIM uqrz AS String = FMain.ini["Estacion/UserQRZ"]
-    DIM pqrz AS String = FMain.ini["Estacion/PassQRZ"]
+    DIM uqrz AS String = FMain.ini["Estacion/UserHQTH"]
+    DIM pqrz AS String = global.base64(FMain.ini["Estacion/PassHQTH"], TRUE)
 
-   TRY DownloadAsyncKey("http://online.qrz.com/bin/xml?username=" & uqrz & ";password=" & pqrz)
+   TRY DownloadAsyncKey("http://www.hamqth.com/xml.php?u=" & uqrz & "&p=" & pqrz)
    
 END
 
-PUBLIC SUB getQRZcom(callsign AS String)
+PUBLIC SUB getHamqth(callsign AS String)
   
-  csgn = callsign
-  IF FMain.ini["qrzCom/Value"] = 1 THEN 
-    IF NOT KeyQRZ OR $qerror = "Session Timeout" OR $qerror = "Username / password required" THEN 
-      getKeyQRZcom()
-    ELSE 
-       TRY DownloadAsyncData("http://online.qrz.com/bin/xml?s=" & keyQRZ & ";callsign=" & Trim(callsign))
-    ENDIF 
-  ELSE IF FMain.ini["qrzCom/Value"] = 2
-    getQRZcomWeb("http://www.qrz.com/db/" & Trim(callsign))  
-  ENDIF
-  
+    csgn = callsign
+    IF NOT keyHQTH OR IF $qerror = "Session does not exist or expired" OR IF $qerror = "Username or password missing" THEN 
+      getId()
+    ELSE
+       TRY DownloadAsyncData("http://www.hamqth.com/xml.php?id=" & keyHQTH & "&callsign=" & Trim(callsign))
+    ENDIF
 END
 
-PUBLIC SUB clearQRZ()
- $qerror = NULL
- $qcall = NULL
- $fname = NULL
- $name = NULL
- $addr1 = NULL
- $addr2 = NULL
- $country = NULL
- $state = NULL
- $grid = NULL
- $county = NULL
- $qslmgr = NULL
- $email = NULL
+PUBLIC SUB clear()
+    $qerror = NULL
+    $qcall = NULL
+    $fname = NULL
+    $name = NULL
+    $addr1 = NULL
+    $addr2 = NULL
+    $country = NULL
+    $state = NULL
+    $grid = NULL
+    $county = NULL
+    $qslmgr = NULL
+    $email = NULL
 
 END
-'*************** QRZ.com Web method ***************
-PRIVATE _download AS NEW HttpClient AS "Download"
-PRIVATE downloadBuffer AS String
-PRIVATE $finished AS Boolean = TRUE
 
-PUBLIC SUB getQRZcomWeb(URL AS String)
-    downloadBuffer = ""  
-    IF $finished = TRUE THEN 
-        _download.Async = TRUE
-        _download.TimeOut = 5
-        _download.URL = URL
-        _download.Get()
-    ENDIF 
-END
-
-PUBLIC SUB Download_Read()
-    DIM buffer AS String
-    $finished = FALSE
-    READ #LAST, buffer, Lof(LAST)
-    downloadBuffer &= buffer
-END
-
-PUBLIC SUB Download_Error()
-    _download.Close
-    DEBUG "Error downloading " & _download.Status 
-END
-
-PUBLIC SUB Download_Finished()
-    extractData(downloadBuffer)
-    $finished = TRUE
-    RAISE QRZOk()
-END
-
-PRIVATE SUB extractData(S AS String)
-    $qcall = "Login is required for\nadditional detail."
-    
-    ' Thinking about dropping QRZ.com web support :-(
-    
-    ' Looking FOR a way to manage sessions to log in into their pages AND fetch data
-    ' even if they have a 150 lookups limit per day. Very bad...
-END
 
 PRIVATE FUNCTION name_Read() AS String
     RETURN $name 

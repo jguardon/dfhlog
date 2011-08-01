@@ -1,3 +1,9 @@
+* Mon Aug 01 2011 Jesus Guardon Cerezo <ea7dfh@gmail.com> 1.1
+- Added HamQTH callbook lookup
+- Fix some translations
+- Updated cty.dat
+- Fix some minor bugs
+
 * Thu May 19 2011 Jesus Guardon Cerezo <ea7dfh@gmail.com> 1.0
 - Change major version numbering to 1.x meaning stable version.
 - New feature: Ukrainian language added. Thanks to (Volodymyr, UR3QJW)

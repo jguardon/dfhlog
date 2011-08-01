@@ -109,7 +109,7 @@
         MoveScaled(1,12,41,3)
         Font = Font["Bold,8"]
         AutoResize = True
-        Text = ("(c) 2000-2009 EA7DFH")
+        Text = ("")
       }
       { Panel1 Panel
         MoveScaled(3,15,6,1)

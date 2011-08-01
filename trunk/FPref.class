@@ -18,7 +18,8 @@
 
 PRIVATE bQRZ AS Boolean = FALSE
 PRIVATE isHamlib AS Boolean = FALSE
-
+PRIVATE hr AS NEW XmlReader
+PRIVATE hw AS NEW XmlWriter
 
 PUBLIC SUB btnOK_Click()
   'save prefs 
@@ -34,7 +35,9 @@ PUBLIC SUB btnOK_Click()
         IF cboServer.Text THEN FMain.ini["Telnet/Server"] = cboServer.Text
         FMain.ini["Hamlib/Device"] = txtDevHamlib.Text
         FMain.ini["Estacion/UserQRZ"] = txtUserQRZ.Text
-        FMain.ini["Estacion/PassQRZ"] = txtPassQRZ.Text
+        IF txtPassQRZ.Text THEN FMain.ini["Estacion/PassQRZ"] = global.base64(txtPassQRZ.Text)
+        FMain.ini["Estacion/UserHQTH"] = txtUserHamQTH.Text
+        IF txtPassHamQTH.Text THEN FMain.ini["Estacion/PassHQTH"] = global.base64(txtPassHamQTH.Text)
         FMain.ini["UTC/offset"] = SpinBox1.Value        
         saveCombo()
         FMain.ini.Save()
@@ -137,7 +140,9 @@ PUBLIC SUB Form_Open()
     chkWWV.Value = FMain.ini["Filtros/WWV", TRUE]
     chkWCY.Value = FMain.ini["Filtros/WCY", TRUE]
     txtUserQRZ.Text = FMain.ini["Estacion/UserQRZ"]
-    txtPassQRZ.Text = FMain.ini["Estacion/PassQRZ"]
+    txtPassQRZ.Text = global.base64(FMain.ini["Estacion/PassQRZ"], TRUE)
+    txtUserHamQTH.Text = FMain.ini["Estacion/UserHQTH"]
+    txtPassHamQTH.Text = global.base64(FMain.ini["Estacion/PassHQTH"], TRUE)
     chkDebug.Value = FMain.ini["CAT/Debug", FALSE]
     chkLogRemarks.Value = FMain.ini["Estacion/SetComment", FALSE]
     CATCH 
@@ -154,6 +159,8 @@ PRIVATE SUB getRbQRZ()
             rbQRZcom.Value = TRUE
         CASE 2
             rbQRZcomWeb.Value = TRUE
+        CASE 3
+            rbHamQTH.Value = TRUE
     END SELECT
   
 END
@@ -346,13 +353,16 @@ END
 PUBLIC SUB rbQRZcom_Click()
     FMain.ini["qrzCom/Value"] = 1
     FMain.$qrzCom = 1
-
 END
 
 PUBLIC SUB rbQRZcomWeb_Click()
     FMain.ini["qrzCom/Value"] = 2
-    FMain.$qrzCom = 2  
+    FMain.$qrzCom = 2
+END
 
+PUBLIC SUB rbHamQTH_Click()
+    FMain.ini["qrzCom/Value"] = 3
+    FMain.$qrzCom = 3
 END
 
 PUBLIC SUB rbNotQRZcom_Click()
@@ -402,3 +412,5 @@ PUBLIC SUB chkHamlibRPC_Click()
     IF chkHamlibRPC.Value = FALSE THEN chkGrig.Value = FALSE
 
 END
+
+

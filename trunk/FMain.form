@@ -898,17 +898,17 @@
             ScrollBar = Scroll.Horizontal
           }
           { Separator6 Separator
-            MoveScaled(9,25,28,3)
+            MoveScaled(19,25,18,3)
           }
           { Label34 Label
-            MoveScaled(1,24.5714,8,3)
-            Text = ("QRZ.com")
+            MoveScaled(1,24.5714,18,3)
+            Text = ("Online Callbook")
           }
           { btnShwqrz Button
             MoveScaled(1,45,36,1)
             Enabled = False
-            ToolTip = ("Show QRZ Webpage")
-            Text = ("QRZ.com")
+            ToolTip = ("Show Callbook Webpage")
+            Text = ("Web Callbook ")
           }
         }
         { lblQSOTimer Label

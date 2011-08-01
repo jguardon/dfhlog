@@ -190,6 +190,9 @@ Geometry=[0,25,301,301]
 [DebugWindow/prefixes]
 Geometry=[0,0,301,301]
 
+[DebugWindow/qrzcom]
+Geometry=[0,0,807,565]
+
 [DebugWindow/rData]
 Geometry=[0,0,301,301]
 
@@ -242,14 +245,14 @@ SearchIn="Module"
 CaseSensitive=False
 SearchWord=False
 SearchComment=False
-SearchString=False
+SearchString=True
 
 [OpenFile]
-File[1]="FMain.class:1904.16"
+File[1]="FMain.class:554.17"
 File[2]="FMain.form"
-File[3]="FDesign.class:182.20"
-Active=3
-File[4]="FDesign.form"
+File[3]="QRZ.class:257.38"
+File[4]="HQTH.class:185.24"
+Active=4
 Count=4
 
 [Watches]

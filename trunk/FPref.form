@@ -9,7 +9,7 @@
   SkipTaskbar = True
   Padding = 3
   { TabStrip1 TabStrip
-    MoveScaled(0,0,68,55)
+    MoveScaled(0,0,68,56)
     Padding = 10
     Count = 5
     Index = 0
@@ -291,7 +291,7 @@
     Index = 4
     Text = ("Ot&hers")
     { Frame7 Frame
-      MoveScaled(1,29,65,10)
+      MoveScaled(1,41,65,10)
       Text = ("XPlanet")
       { chkXplanet CheckBox
         MoveScaled(9,3,53,3)
@@ -304,28 +304,28 @@
       }
     }
     { Frame8 Frame
-      MoveScaled(1,1,65,27)
-      Text = ("QRZ.com")
+      MoveScaled(1,1,65,40)
+      Text = ("Callbook")
       { Label17 Label
-        MoveScaled(12,7,41,3)
+        MoveScaled(12,6,41,3)
         Foreground = &HFF0000&
         Text = ("(A subscription to QRZ.com(xml) is needed)")
       }
       { txtUserQRZ TextBox
-        MoveScaled(9,13,16,3)
+        MoveScaled(9,12,16,3)
         Text = ("")
       }
       { txtPassQRZ TextBox
-        MoveScaled(37,13,16,3)
+        MoveScaled(37,12,16,3)
         Text = ("")
         Password = True
       }
       { Label18 Label
-        MoveScaled(9,10,16,3)
+        MoveScaled(9,9,16,3)
         Text = ("User:")
       }
       { Label19 Label
-        MoveScaled(37,10,16,3)
+        MoveScaled(37,9,16,3)
         Text = ("Password:")
       }
       { rbQRZcomWeb RadioButton
@@ -333,12 +333,36 @@
         Text = ("Fill QSO data from QRZ.com (Web method)")
       }
       { rbNotQRZcom RadioButton
-        MoveScaled(9,21,54,3)
-        Text = ("Don't fetch data from QRZ.com")
+        MoveScaled(9,35,54,3)
+        Text = ("Don't fetch data from any callbook")
       }
       { rbQRZcom RadioButton
         MoveScaled(9,3,52,3)
         Text = ("Fill QSO data from QRZ.com")
+      }
+      { rbHamQTH RadioButton
+        MoveScaled(9,23,54,3)
+        Text = ("Fill QSO data from HamQTH")
+      }
+      { Separator1 Separator
+        MoveScaled(8,20,55,3)
+      }
+      { txtUserHamQTH TextBox
+        MoveScaled(9,29,16,3)
+        Text = ("")
+      }
+      { txtPassHamQTH TextBox
+        MoveScaled(37,29,16,3)
+        Text = ("")
+        Password = True
+      }
+      { Label21 Label
+        MoveScaled(9,26,16,3)
+        Text = ("User:")
+      }
+      { Label22 Label
+        MoveScaled(37,26,16,3)
+        Text = ("Password:")
       }
     }
     Index = 0
