@@ -33,7 +33,7 @@ PRIVATE $utc AS String
 PUBLIC $cSpot AS NEW Object[]
 PRIVATE snd AS NEW Sound("data/Siren.wav")
 
-PUBLIC FUNCTION base64(st AS String, OPTIONAL decode AS Boolean) AS String
+PUBLIC FUNCTION base64(st AS String, OPTIONAL decode AS Boolean = FALSE) AS String
   DIM ret AS String
   IF st THEN 
     IF decode THEN 

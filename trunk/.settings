@@ -241,19 +241,17 @@ Geometry=[0,25,301,301]
 Geometry=[0,0,301,301]
 
 [FFind]
-SearchIn="Module"
+SearchIn="Project"
 CaseSensitive=False
 SearchWord=False
 SearchComment=False
 SearchString=True
 
 [OpenFile]
-File[1]="FMain.class:554.17"
-File[2]="FMain.form"
-File[3]="QRZ.class:257.38"
-File[4]="HQTH.class:185.24"
-Active=4
-Count=4
+File[1]="cty.class:0.0"
+File[2]="global.module:51.3"
+Active=2
+Count=2
 
 [Watches]
 Count=0

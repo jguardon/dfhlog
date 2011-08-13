@@ -13,19 +13,19 @@ msgstr ""
 
 #: FAbout.class:53
 msgid "Cty.dat version: "
-msgstr "-"
+msgstr ""
 
 #: FAbout.class:216
 msgid "Thanks to"
-msgstr "Gracias a "
+msgstr "Подяки"
 
 #: FAbout.class:296
 msgid "About dfhLog..."
-msgstr "Acerca de dfhLog..."
+msgstr "Про dfhLog..."
 
 #: FAbout.class:304
 msgid "About"
-msgstr "Acerca de "
+msgstr "Про"
 
 #: FAbout.class:327
 msgid ""
@@ -41,29 +41,29 @@ msgid ""
 "MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. See the GNU General "
 "Public License for more details.</p>\n"
 msgstr ""
-"<h2 align=center>Licencia</h2>\n"
+"<h2 align=center>Ліцензія</h2>\n"
 "\n"
-"<p align=center>Este programa es software libre: usted puede redistribuirlo "
-"y/o modificarlo conforme a los términos de la Licencia Pública General de "
-"GNU publicada por la Fundación para el Software Libre, ya sea la versión 3 "
-"de esta Licencia o (a su elección) cualquier versión posterior.</p>\n"
+"<p align=center>Ця програма є ВІЛЬНИМ ПРОГРАМНИМ ЗАБЕЗПЕЧЕННЯМ; ви можете "
+"розповсюджувати ТА/АБО модифікувати його згідно з умовами GNU General Public "
+"License, опублікованої Free Software Foundation; версії 2, або (на Ваш "
+"розсуд) будь-якої наступної версії.</p>\n"
 "\n"
-"<p align=center>Este programa se distribuye con el deseo de que le resulte "
-"útil, pero SIN GARANTÍAS DE NINGÚN TIPO; ni siquiera con las garantías "
-"implícitas de COMERCIABILIDAD o APTITUD PARA UN PROPÓSITO DETERMINADO.  Para "
-"más información, consulte la Licencia Pública General de GNU.</p>\n"
+"<p align=center>Ця програма розповсюджується із сподіванням, що вона буде "
+"корисною, але БЕЗ БУДЬ-ЯКИХ ГАРАНТІЙ, навіть без гарантій КОМЕРЦІЙНОЇ "
+"ЦІННОСТІ ЧИ ПРИДАТНОСТІ. Дивіться GNU General Public License для більш "
+"докладної інформації.</p>\n"
 
 #: FAbout.class:332
 msgid "<h2 align=center>Authors</h2>\n"
-msgstr "<h2 align=center>Autores</h2>\n"
+msgstr "<h2 align=center>Автори</h2>\n"
 
 #: FAbout.class:339
 msgid "dfhLog, the Hamradio Logbook"
-msgstr "dfhLog, el Libro de Guardia"
+msgstr ""
 
 #: FAbout.class:349
 msgid "Support"
-msgstr "Soporte"
+msgstr "Підтримка"
 
 #: FAbout.class:353
 msgid ""
@@ -72,14 +72,14 @@ msgid ""
 "<p>\n"
 "You can also make a gift to the project by using PayPal:"
 msgstr ""
-"Puedes colaborar en <b>dfhLog</b> escribiendo la ayuda\n"
-", traduciendo a tu lengua, etc.\n"
+"Ви теж можете підтримати <b>dfhLog</b> написавши документи\n"
+"довідки, переклад на свою мову, тощо.\n"
 "<p>\n"
-"También puedes hacer tu donación vía PayPal:"
+"Ви також можете зробити дарунок проекту за допомогою PayPal:"
 
 #: FAbout.class:359
 msgid "Make a gift!"
-msgstr "Haz tu donación!"
+msgstr "Зробіть дарунок!"
 
 #: FAbout.class:378 FLoc.class:755
 msgid "OK"
@@ -99,220 +99,222 @@ msgstr "-"
 
 #: FAwards.class:48
 msgid "EA Reference"
-msgstr "Referencia EA"
+msgstr ""
 
 #: FAwards.class:49
 msgid "Province"
-msgstr "Provincia"
+msgstr ""
 
 #: FAwards.class:76 FFindQSO.class:58 FLog.class:75 FMain.class:1496
 #: FSearch.class:93
 msgid "Name"
-msgstr "Nombre"
+msgstr "Iм'я"
 
 #: FAwards.class:103 FLog.class:88
 msgid "State"
-msgstr "Estado"
+msgstr ""
 
 #: FAwards.class:129
 msgid "County Ref."
-msgstr "Ref. Condado"
+msgstr ""
 
 #: FAwards.class:311
 msgid "Search:"
-msgstr "Buscar:"
+msgstr "Пошук:"
 
 #: FBandMap.class:289
 msgid "dfhlog - BandMap"
-msgstr "dfhlog - Mapa de Bandas"
+msgstr "dfhlog - Мапа Бенду"
 
 #: FBandMap.class:301
 msgid "Zoom In"
-msgstr "Acercar Zoom"
+msgstr "Збільшити Масштаб"
 
 #: FBandMap.class:309
 msgid "Zoom Out"
-msgstr "Alejar Zoom"
+msgstr "Зменшити Масштаб"
 
 #: FBandMap.class:321
 msgid "Zoom Fit"
-msgstr "Ajustar Zoom"
+msgstr "Відрегулювати Масштаб"
 
 #: FBandMap.class:329
 msgid "Zoom Reset"
-msgstr "Reset Zoom"
+msgstr "Звичайний Масштаб"
 
 #: FBandMap.class:341
 msgid "Clear Stations"
-msgstr "Limpiar Estaciones"
+msgstr "Очистити Станції"
 
 #: FCal.class:77
 msgid "Double Click to select"
-msgstr "Doble Clic para seleccionar"
+msgstr "Подвійний Клік, щоб вибрати"
 
 #: FCardSize.class:60
 msgid "Size in mm."
-msgstr "Tamaño en mm"
+msgstr "Розмір в мм."
 
 #: FCardSize.class:78 FCustom.class:220
 msgid "Width:"
-msgstr "Anchura:"
+msgstr "Ширина:"
 
 #: FCardSize.class:84 FCustom.class:225
 msgid "Height:"
-msgstr "Altura:"
+msgstr "Висота:"
 
 #: FCardSize.class:91 FCustom.class:303
 msgid "&Save"
-msgstr "&Guardar"
+msgstr "З&берегти"
 
 #: FCardSize.class:97 FCustom.class:310 FMain.class:2992 FPref.class:963
 #: FPreview.class:111 FSetup.class:199 FSquares.class:301 FSummary.class:422
 #: FeADIF.class:58 FiADIF.class:668 FmtoBD.class:279 Fservers.class:80
 msgid "&Cancel"
-msgstr "&Cancelar"
+msgstr "&Скасувати"
 
 #: FCardSize.class:110
 msgid "QSL Size"
-msgstr "Tamaño QSL"
+msgstr "Розмір QSL"
 
 #: FCatDebug.class:29
 msgid "File saved in: \n"
-msgstr "Fichero guardado en:\n"
+msgstr "Файл буде збережено в: \n"
 
 #: FCatDebug.class:39
 msgid "Stop"
-msgstr "Parar"
+msgstr "Стоп"
 
 #: FCatDebug.class:41
 msgid "Start"
-msgstr "Inicio"
+msgstr "Старт"
 
 #: FCatDebug.class:65
 msgid "CAT Debug"
-msgstr "Depuración CAT"
+msgstr "CAT Відладка"
 
 #: FCatDebug.class:82
 msgid "Export Text"
-msgstr "Exportar Texto"
+msgstr "Експорт TXT"
 
 #: FCatDebug.class:87 FLoc.class:861
 msgid "Close"
-msgstr "Cerrar"
+msgstr "Закрити"
 
 #: FCustom.class:52
 msgid ""
 "Either, total height or total width values\n"
 "are greater than A4 dimensions!"
-msgstr "Altura total o anchura total son mayores que las dimensiones de A4!"
+msgstr ""
+"Загальне значення висоти або ширини\n"
+"більше, ніж розміри формату А4!"
 
 #: FCustom.class:161 FSetup.class:124
 msgid "Custom Label"
-msgstr "Etiqueta personalizada"
+msgstr "Персональні Етикетки"
 
 #: FCustom.class:168
 msgid "Create Custom Label"
-msgstr "Crear Etiqueta Personalizada"
+msgstr "Створення Персональних Етикеток"
 
 #: FCustom.class:173
 msgid "Enter a description"
-msgstr "Entrar descripción"
+msgstr "Введіть опис"
 
 #: FCustom.class:215
 msgid "Description:"
-msgstr "Descripción:"
+msgstr "Опис:"
 
 #: FCustom.class:230
 msgid "Cols:"
-msgstr "Columnas:"
+msgstr "Стовпчики:"
 
 #: FCustom.class:235
 msgid "Rows:"
-msgstr "Filas:"
+msgstr "Рядки:"
 
 #: FCustom.class:240
 msgid "Top Margin:"
-msgstr "Margen Superior:"
+msgstr "Верхнє Поле:"
 
 #: FCustom.class:245
 msgid "Left Margin:"
-msgstr "Margen Izqdo:"
+msgstr "Ліве Поле:"
 
 #: FCustom.class:251
 msgid "(All measures in millimeters)"
-msgstr "(Todas las medidas en milímetros)"
+msgstr "(Всі розміри в міліметрах)"
 
 #: FCustom.class:257
 msgid "Configure Fonts and Colors"
-msgstr "Configurar Fuentes y Colores"
+msgstr "Налаштування Шрифтів та Кольорів"
 
 #: FCustom.class:261
 msgid "Call Color:"
-msgstr "Color Indicativo:"
+msgstr "Колір Кличного:"
 
 #: FCustom.class:270
 msgid "Data Color:"
-msgstr "Color Datos:"
+msgstr "Колір Даних:"
 
 #: FCustom.class:279
 msgid "Call Font:"
-msgstr "Fuente Indicativo:"
+msgstr "Шрифт Кличного:"
 
 #: FCustom.class:284
 msgid "Data Font:"
-msgstr "Fuente Datos:"
+msgstr "Шрифт Даних:"
 
 #: FCustom.class:289
 msgid "Call Font"
-msgstr "Fuente Indicativo:"
+msgstr "Шрифт Кличного"
 
 #: FCustom.class:294
 msgid "Data Font"
-msgstr "Fuente Datos"
+msgstr "Шрифт Даних"
 
 #: FCustom.class:317
 msgid "Additional Offset (mm/10)"
-msgstr "Desplazamiento adicional (mm/10)"
+msgstr "Додатковий Зсув (мм/10)"
 
 #: FCustom.class:329
 msgid "Offset X:"
-msgstr "-"
+msgstr "Зсув X:"
 
 #: FCustom.class:334
 msgid "Offset Y:"
-msgstr "-"
+msgstr "Зсув Y:"
 
 #: FDesign.class:27
 msgid "No printers available,sorry"
-msgstr "No hay impresoras disponibles"
+msgstr "Немає доступних принтерів, вибачте"
 
 #: FDesign.class:68
 msgid "QSL Design"
-msgstr "Diseño QSL"
+msgstr "Дизайн QSL"
 
 #: FDesign.class:174 cPage.class:27
 msgid "QSL queue is empty!"
-msgstr "La cola de QSL está vacía!"
+msgstr "Черга QSL порожня!"
 
 #: FDesign.class:178
 msgid "Printing"
-msgstr "Impresión"
+msgstr "Друк"
 
 #: FDesign.class:178
 msgid "QSLs sent to printer, please wait..."
-msgstr "QSL enviados a la impresora, por favor espere ..."
+msgstr "QSLs відправлено на принтер, зачекайте..."
 
 #: FDesign.class:325
 msgid "Choose a background image"
-msgstr "Elije una imagen de fondo"
+msgstr "Виберіть фонове зображення"
 
 #: FDesign.class:326
 msgid "Picture files"
-msgstr "Ficheros de Imagen"
+msgstr "Файли зображень"
 
 #: FDesign.class:436
 msgid "Select field to modify"
-msgstr "Seleccionar campo a modificar"
+msgstr "Виберіть поле для зміни"
 
 #: FDesign.class:438
 msgid "MYCALL"
@@ -372,23 +374,23 @@ msgstr "-"
 
 #: FDesign.class:444 FMain.class:3101
 msgid "Card"
-msgstr "Tarjeta"
+msgstr "Картка"
 
 #: FDesign.class:448
 msgid "Size"
-msgstr "Tamaño"
+msgstr "Розмір"
 
 #: FDesign.class:453
 msgid "Free Text"
-msgstr "Texto libre"
+msgstr "Безкоштовні текст"
 
 #: FDesign.class:459
 msgid "Label"
-msgstr "Etiqueta"
+msgstr "Етикетка"
 
 #: FDesign.class:487
 msgid "Font"
-msgstr "Fuente"
+msgstr "Шрифт"
 
 #: FDesign.class:496
 msgid "X:"
@@ -408,48 +410,48 @@ msgstr "-"
 
 #: FDesign.class:518
 msgid "mm"
-msgstr "-"
+msgstr "мм"
 
 #: FDesign.class:529
 msgid "Background"
-msgstr "Fondo"
+msgstr "Фон"
 
 #: FDesign.class:533
 msgid "Image"
-msgstr "Imagen"
+msgstr "Зображення"
 
 #: FDesign.class:538
 msgid "Active"
-msgstr "Activa"
+msgstr "Активний"
 
 #: FDesign.class:544
 msgid "Setup"
-msgstr "Configuración"
+msgstr "Параметри"
 
 #: FDesign.class:549
 msgid "Print Test"
-msgstr "Prueba Impresión"
+msgstr "Тест Друку"
 
 #: FDesign.class:554
 msgid "Print"
-msgstr "Imprimir"
+msgstr "Друк"
 
 #: FDesign.class:559 FFindQSO.class:200 FLog.class:280 FMain.class:1632
 #: FQueue.class:171 FSearch.class:331
 msgid "Cancel"
-msgstr "Cancelar"
+msgstr "Скасувати"
 
 #: FDesign.class:573
 msgid "Path"
-msgstr "Ruta"
+msgstr "Шлях"
 
 #: FDesign.class:580
 msgid "Printer"
-msgstr "Impresora"
+msgstr "Принтер"
 
 #: FDesign.class:587
 msgid "Resolution"
-msgstr "Resolución"
+msgstr "Резолюція"
 
 #: FDesign.class:594
 msgid "X= ---- / Y= ---- "
@@ -457,7 +459,7 @@ msgstr "-"
 
 #: FErrors.class:56
 msgid "An Error occurred!"
-msgstr "Ha ocurrido un error!"
+msgstr "Відбулася помилка!"
 
 #: FErrors.class:77
 msgid "Error"
@@ -465,15 +467,15 @@ msgstr "-"
 
 #: FErrors.class:83
 msgid "Report Error"
-msgstr "Enviar Error"
+msgstr "Повідомити про Помилку"
 
 #: FErrors.class:88
 msgid ""
 "This is the error data. You may send this info to the author in order to be "
 "fixed as soon as possible."
 msgstr ""
-"Estos son los datos del error. Puedes enviar esta información al autor para "
-"arreglarlo lo antes posible."
+"Це помилка в даних. Ви можете відправити цю інформацію, щоб автор виправив "
+"її якомога швидше."
 
 #: FErrors.class:94 FSetup.class:205 FSquares.class:296 FSummary.class:417
 #: FmtoBD.class:284
@@ -482,7 +484,7 @@ msgstr "-"
 
 #: FFindQSO.class:29 FLoc.class:334
 msgid "QSOs with "
-msgstr "QSOs con "
+msgstr ""
 
 #: FFindQSO.class:49 FLog.class:63 FMain.class:1487 FQueue.class:49
 #: FSearch.class:84
@@ -492,63 +494,63 @@ msgstr "Nº"
 #: FFindQSO.class:50 FLog.class:64 FMain.class:594 FQueue.class:50
 #: FSearch.class:85
 msgid "Date"
-msgstr "Fecha"
+msgstr "Дата"
 
 #: FFindQSO.class:51 FLog.class:65 FMain.class:595 FQueue.class:51
 #: FSearch.class:86
 msgid "Time"
-msgstr "Hora Inicio"
+msgstr "Час"
 
 #: FFindQSO.class:52 FLog.class:67 FMain.class:592 FQueue.class:52
 #: FSearch.class:59
 msgid "Callsign"
-msgstr "Indicativo"
+msgstr "Кличний"
 
 #: FFindQSO.class:53 FLog.class:70 FMain.class:593 FQueue.class:53
 #: FSearch.class:59
 msgid "Band"
-msgstr "Banda"
+msgstr "Бенд"
 
 #: FFindQSO.class:54 FLog.class:71 FMain.class:1492 FQueue.class:54
 #: FSearch.class:59
 msgid "Mode"
-msgstr "Modo"
+msgstr "Мода"
 
 #: FFindQSO.class:55 FLog.class:72 FMain.class:1493 FQueue.class:55
 #: FSearch.class:90
 msgid "Propa."
-msgstr "-"
+msgstr "Пош."
 
 #: FFindQSO.class:56 FLog.class:73 FMain.class:1494 FSearch.class:91
 msgid "RST(R)"
-msgstr "-"
+msgstr "RST(О)"
 
 #: FFindQSO.class:57 FQueue.class:56 FSearch.class:92
 msgid "RST(E)"
-msgstr "-"
+msgstr "RST(Н)"
 
 #: FFindQSO.class:59 FLog.class:76 FMain.class:1497 FQueue.class:57
 #: FSearch.class:59
 msgid "Locator"
-msgstr "-"
+msgstr "Локатор"
 
 #: FFindQSO.class:60 FLog.class:79 FMain.class:597 FQueue.class:61
 #: FSearch.class:96
 msgid "QSL(S)"
-msgstr "QSL(E)"
+msgstr "QSL(В)"
 
 #: FFindQSO.class:61 FLog.class:80 FMain.class:596 FQueue.class:60
 #: FSearch.class:97
 msgid "QSL(R)"
-msgstr "-"
+msgstr "QSL(О)"
 
 #: FFindQSO.class:62 FLog.class:83 FMain.class:1500 FSearch.class:98
 msgid "QSL Via"
-msgstr "-"
+msgstr ""
 
 #: FFindQSO.class:63 FLog.class:84 FMain.class:1501 FSearch.class:99
 msgid "Prefix"
-msgstr "Prefijo"
+msgstr "Преф."
 
 #: FFindQSO.class:64 FLog.class:97 FMain.class:1502 FSearch.class:100
 msgid "DXCC"
@@ -556,7 +558,7 @@ msgstr "-"
 
 #: FFindQSO.class:65 FLog.class:85 FMain.class:1503 FSearch.class:101
 msgid "Cont."
-msgstr "-"
+msgstr "Конт."
 
 #: FFindQSO.class:66 FLog.class:86 FMain.class:1504 FSearch.class:102
 msgid "CQz"
@@ -568,67 +570,67 @@ msgstr "-"
 
 #: FFindQSO.class:68 FLog.class:91 FMain.class:1506 FSearch.class:104
 msgid "Operator"
-msgstr "Operador"
+msgstr "Оператор"
 
 #: FFindQSO.class:69 FLog.class:92 FMain.class:1507 FSearch.class:105
 msgid "Power"
-msgstr "Potencia"
+msgstr "Потужність"
 
 #: FFindQSO.class:70 FLog.class:93 FMain.class:1508 FQueue.class:58
 #: FSearch.class:106
 msgid "My Locator"
-msgstr "Mi Locator"
+msgstr "Мій Локатор"
 
 #: FFindQSO.class:71 FMain.class:1509 FSearch.class:107
 msgid "Satellite"
-msgstr "Satélite"
+msgstr "Сателіт"
 
 #: FFindQSO.class:72 FLog.class:100 FSearch.class:108
 msgid "Distance (Km)"
-msgstr "Distancia (Km)"
+msgstr "Відстань (Км)"
 
 #: FFindQSO.class:104 FQueue.class:77
 msgid "Records: "
-msgstr "Registros: "
+msgstr "Записи: "
 
 #: FFindQSO.class:110
 msgid "Error in searchQSO"
-msgstr "Error en searchQSO"
+msgstr "Помилка пошуку QSO"
 
 #: FFindQSO.class:124 FLog.class:249 FQueue.class:109 FSearch.class:283
 msgid "For selected QSOs: "
-msgstr "Para los QSOs seleccionados: "
+msgstr "Для вибраного QSOs: "
 
 #: FFindQSO.class:126 FLog.class:252 FMain.class:1613 FQueue.class:111
 #: FSearch.class:285
 msgid "For QSO with: "
-msgstr "Para el QSO con: "
+msgstr "Для QSO з: "
 
 #: FFindQSO.class:133 FLog.class:192 FMain.class:98 FQueue.class:118
 #: FSearch.class:227
 msgid "Edit QSO"
-msgstr "Editar QSO"
+msgstr "Правка QSO"
 
 #: FFindQSO.class:139 FLog.class:197 FMain.class:103 FQueue.class:124
 #: FSearch.class:232
 msgid "Delete QSO"
-msgstr "Borrar QSO"
+msgstr "Видалити QSO"
 
 #: FFindQSO.class:147 FLog.class:205 FQueue.class:132 FSearch.class:240
 msgid "Export to ADIF"
-msgstr "Exportar ADIF"
+msgstr "Експорт у ADIF"
 
 #: FFindQSO.class:155 FLog.class:213 FMain.class:111 FSearch.class:248
 msgid "Check QSL as recvd."
-msgstr "Marcar QSL recibida"
+msgstr "Позначити QSL як отриману"
 
 #: FFindQSO.class:160 FLog.class:218 FMain.class:116 FSearch.class:253
 msgid "Check QSL as sent."
-msgstr "Marcar QSL enviada"
+msgstr "Позначити QSL як відправлену"
 
 #: FFindQSO.class:165 FLog.class:239 FMain.class:137 FSearch.class:274
 msgid "Print QSL"
-msgstr "Imprimir QSL"
+msgstr "Друк QSL"
 
 #: FFindQSO.class:200 FLog.class:280 FMain.class:1632 FQueue.class:171
 #: FSearch.class:331
@@ -636,103 +638,103 @@ msgid ""
 "Selected QSO will be deleted\n"
 "Do you want to continue?"
 msgstr ""
-"El QSO seleccionado se borrará\n"
-"¿Deseas continuar?"
+"Вибрані QSO будуть видалені\n"
+"Ви бажаєте, продовжити?"
 
 #: FFindQSO.class:208 FLog.class:289 FMain.class:1637 FSearch.class:339
 msgid "Error deleting QSO\n"
-msgstr "Error al borrar QSO\n"
+msgstr "Помилка при видаленні QSO\n"
 
 #: FFindQSO.class:215 FLog.class:315 FQueue.class:187 FSearch.class:316
 #: FeADIF.class:59
 msgid "Save ADIF file"
-msgstr "Guardar fichero ADIF"
+msgstr "Зберегти ADIF файл"
 
 #: FFindQSO.class:216 FLog.class:316 FQueue.class:188 FSearch.class:317
 #: FeADIF.class:60
 msgid "ADIF file"
-msgstr "Fichero ADIF"
+msgstr "Файл ADIF"
 
 #: FFindQSO.class:239 FLog.class:327 FMain.class:1658 FSearch.class:367
 msgid "Added "
-msgstr "Añadido "
+msgstr "Додано "
 
 #: FFindQSO.class:239 FLog.class:327 FMain.class:1658 FSearch.class:367
 msgid " QSOs to the QSL print queue."
-msgstr " QSOs a la cola de impresión de QSL."
+msgstr ""
 
 #: FFindQSO.class:278
 msgid "QSOs with gridsquare: "
-msgstr "QSOs con locator:  "
+msgstr ""
 
 #: FFindQSO.class:304 FQueue.class:280 FSearch.class:912
 msgid "Records:"
-msgstr "Registros:"
+msgstr "Записи:"
 
 #: FFindQSO.class:315 FLog.class:481 FMap.class:239 FQueue.class:306
 #: FSearch.class:923 FStats.class:179 FeADIF.class:172 FiADIF.class:208
 msgid "&Close"
-msgstr "&Cerrar"
+msgstr "&Закрити"
 
 #: FLoc.class:70 FSearch.class:46 FSquares.class:25
 msgid "All"
-msgstr "Todo"
+msgstr "-"
 
 #: FLoc.class:119
 msgid "Latitude: "
-msgstr "Latitud: "
+msgstr "Широта: "
 
 #: FLoc.class:119
 msgid "  Longitude: "
-msgstr " Longitud: "
+msgstr "  Довгота: "
 
 #: FLoc.class:123
 msgid "At "
-msgstr "A "
+msgstr "За "
 
 #: FLoc.class:123
 msgid " Km from "
-msgstr " Km de "
+msgstr " Км від "
 
 #: FLoc.class:160
 msgid "Start Date couldn't be greater than End Date"
-msgstr "La fecha de inicio no puede ser mayor que la de fin"
+msgstr "Дата Початку не може бути більше, ніж Дата Завершення"
 
 #: FLoc.class:167
 msgid "Check dates, please"
-msgstr "Comprueba las fechas, por favor..."
+msgstr "Перевірте дати, будь ласка"
 
 #: FLoc.class:172
 msgid "Error in btnOK_Click"
-msgstr "Error en btnOK_Click"
+msgstr "-"
 
 #: FLoc.class:212
 msgid "Query has no results!"
-msgstr "La consulta no ha devuelto resultados."
+msgstr "Запит не має результатів!"
 
 #: FLoc.class:229
 msgid "Error in drawSquares"
-msgstr "Error en drawSquares"
+msgstr "-"
 
 #: FLoc.class:284
 msgid "Error in drawDX"
-msgstr "Error en drawDX"
+msgstr "-"
 
 #: FLoc.class:313
 msgid "Find QSOs with "
-msgstr "Buscar QSOs con "
+msgstr "Знайти QSOs з "
 
 #: FLoc.class:320
 msgid "Save Whole Map as..."
-msgstr "Guardar Mapa Completo como..."
+msgstr ""
 
 #: FLoc.class:324
 msgid "Save Visible Map as..."
-msgstr "Guardar Mapa Visible como..."
+msgstr ""
 
 #: FLoc.class:377
 msgid "2M SPORADIC"
-msgstr "-"
+msgstr "2М СПОРАДИК"
 
 #: FLoc.class:382
 msgid "HIGH MUF"
@@ -740,185 +742,185 @@ msgstr "-"
 
 #: FLoc.class:465
 msgid "Save Map as "
-msgstr "Guardar Mapa como..."
+msgstr "Зберегти Мапу як "
 
 #: FLoc.class:466
 msgid "Image Files"
-msgstr "Ficheros de Imagen "
+msgstr "Файли Зображень"
 
 #: FLoc.class:567 FPref.class:708
 msgid "Colors"
-msgstr "Colores"
+msgstr "Кольори"
 
 #: FLoc.class:572
 msgid "Grid"
-msgstr "Cuadrícula"
+msgstr "Сітка"
 
 #: FLoc.class:576
 msgid "Main Division:"
-msgstr "División Princ.:"
+msgstr "Основна:"
 
 #: FLoc.class:586
 msgid "Sub Division:"
-msgstr "División Sec.:"
+msgstr "Вторинна:"
 
 #: FLoc.class:596
 msgid "GridSquares:"
-msgstr "Cuadrículas:"
+msgstr "Сітка:"
 
 #: FLoc.class:607
 msgid "DX Lines"
-msgstr "Lineas DX"
+msgstr "Лінії DX"
 
 #: FLoc.class:611
 msgid "DX on 6M:"
-msgstr "DX en 6M:"
+msgstr "DX на 6M:"
 
 #: FLoc.class:621
 msgid "DX on 4M:"
-msgstr "DX en 4M:"
+msgstr "DX на 4M:"
 
 #: FLoc.class:631
 msgid "DX on 2M:"
-msgstr "DX en 2M:"
+msgstr "DX на 2M:"
 
 #: FLoc.class:641
 msgid "DX on 70CM:"
-msgstr "DX en 70CM:"
+msgstr "DX на 70CM:"
 
 #: FLoc.class:651
 msgid "DX on +23CM:"
-msgstr "DX en +23CM"
+msgstr "DX на +23CM:"
 
 #: FLoc.class:667
 msgid "&Save Settings"
-msgstr "&Guardar Config."
+msgstr "&Зберегти Налаш."
 
 #: FLoc.class:672
 msgid "Behavior"
-msgstr "Comportamiento"
+msgstr "Поведінка"
 
 #: FLoc.class:676
 msgid "Sound Alert on MUF/ES"
-msgstr "Alertar en MUF/ES"
+msgstr "Оповіщення MUF/ES"
 
 #: FLoc.class:681
 msgid "DX Minutes:"
-msgstr "Minutos DX:"
+msgstr "Хвилини DX:"
 
 #: FLoc.class:686
 msgid "Minutes to hold DX Lines on Map"
-msgstr "Min. a mantener líneas en Mapa"
+msgstr "Хвилин до проведення DX Ліній на Мапі"
 
 #: FLoc.class:693
 msgid "Filter"
-msgstr "Filtro"
+msgstr "Фільтр"
 
 #: FLoc.class:698
 msgid "Start Date"
-msgstr "Fecha inicio"
+msgstr "Початкова Дата"
 
 #: FLoc.class:704
 msgid "End Date"
-msgstr "Fecha fin"
+msgstr "Кінцева Дата"
 
 #: FLoc.class:711 FSearch.class:865
 msgid "Distance >:"
-msgstr "Distancia >:"
+msgstr "Відстань >:"
 
 #: FLoc.class:717 FMain.class:3078 FPref.class:595 FSearch.class:855
 #: FSquares.class:291 FSummary.class:412
 msgid "Mode:"
-msgstr "Modo:"
+msgstr "Мода:"
 
 #: FLoc.class:723 FMain.class:3084 FPref.class:584 FSearch.class:860
 #: FSquares.class:286 FSummary.class:407
 msgid "Band:"
-msgstr "Banda:"
+msgstr "Бенд:"
 
 #: FLoc.class:729 FMain.class:2999 FSquares.class:306
 msgid "Prop. Mode:"
-msgstr "Propagación:"
+msgstr "Поширення:"
 
 #: FLoc.class:738 FSearch.class:797 FSquares.class:274 FSummary.class:395
 msgid "Worked"
-msgstr "Trabajado "
+msgstr "Відпрацьовано"
 
 #: FLoc.class:744 FSearch.class:803 FSquares.class:280 FSummary.class:401
 msgid "Confirmed"
-msgstr "Confirmado"
+msgstr "Підтверджено"
 
 #: FLoc.class:749
 msgid "Not Confirmed"
-msgstr "No Confirmado"
+msgstr "Не Підтверджено"
 
 #: FLoc.class:761 FeADIF.class:280
 msgid "Start:"
-msgstr "Inicio:"
+msgstr "Початок:"
 
 #: FLoc.class:767 FeADIF.class:285
 msgid "End:"
-msgstr "Fin:"
+msgstr "Кінець:"
 
 #: FLoc.class:772
 msgid "Mode selection"
-msgstr "Selección de modo"
+msgstr "Вибір модуляції"
 
 #: FLoc.class:779
 msgid "Band selection"
-msgstr "Selección de Banda"
+msgstr "Вибір Бенду"
 
 #: FLoc.class:786
 msgid "Prop. Mode Selection"
-msgstr "Selección de modo de propagación"
+msgstr "Вибір Режиму Поширення"
 
 #: FLoc.class:793 FSearch.class:725
 msgid "Distance greater than..."
-msgstr "Distancia mayor que..."
+msgstr "Відстань більше, ніж..."
 
 #: FLoc.class:813
 msgid "Show/Hide Panel"
-msgstr "Mostrar/Esconder Panel"
+msgstr "Показати/Сховати Панель"
 
 #: FLoc.class:822
 msgid "Show Grid"
-msgstr "Mostrar cuadrículas"
+msgstr "Показати Сітку"
 
 #: FLoc.class:831
 msgid "Show DX Lines"
-msgstr "Mostrar líneas DX"
+msgstr "Показати DX Лінії"
 
 #: FLoc.class:840
 msgid "Show DX Callsign"
-msgstr "Mostrar Indicativo DX"
+msgstr ""
 
 #: FLoc.class:849
 msgid "Clean Map"
-msgstr "Limpiar Mapa"
+msgstr "Очистити Мапу"
 
 #: FLoc.class:871
 msgid "Coords:"
-msgstr "Coordenadas:"
+msgstr "Координати:"
 
 #: FLog.class:41
 msgid "Log Review"
-msgstr "Examinar Log"
+msgstr "Перегляд Логу"
 
 #: FLog.class:66
 msgid "Time Off"
-msgstr "Hora Fin"
+msgstr "Час Завер."
 
 #: FLog.class:68
 msgid "Freq"
-msgstr "Frecuencia"
+msgstr "Частота"
 
 #: FLog.class:69
 msgid "Freq RX"
-msgstr "Frecuencia RX"
+msgstr "Частота RX"
 
 #: FLog.class:74 FMain.class:1495
 msgid "RST(S)"
-msgstr "RST(E)"
+msgstr "RST(Н)"
 
 #: FLog.class:77 FSearch.class:59
 msgid "QTH"
@@ -926,19 +928,19 @@ msgstr "-"
 
 #: FLog.class:78 FMain.class:2957 FSearch.class:109
 msgid "Remarks"
-msgstr "Comentarios"
+msgstr "Зауваження"
 
 #: FLog.class:81
 msgid "QSL(S) Date"
-msgstr "Fecha QSL(E)"
+msgstr "Дата QSL(В)"
 
 #: FLog.class:82
 msgid "QSL(R) Date"
-msgstr "Fecha QSL(R)"
+msgstr "Дата QSL(О)"
 
 #: FLog.class:89
 msgid "County"
-msgstr "Condado"
+msgstr ""
 
 #: FLog.class:90 FMain.class:2545
 msgid "IOTA"
@@ -946,19 +948,19 @@ msgstr "-"
 
 #: FLog.class:94 FMain.class:3303
 msgid "Sat Name"
-msgstr "Nombre Sat."
+msgstr "Назва Сател."
 
 #: FLog.class:95
 msgid "Sat Mode"
-msgstr "Modo Sat."
+msgstr "Мода Сат."
 
 #: FLog.class:96
 msgid "Email"
-msgstr "-"
+msgstr ""
 
 #: FLog.class:98
 msgid "Ref."
-msgstr "-"
+msgstr ""
 
 #: FLog.class:99 FMain.class:2549
 msgid "TPEA"
@@ -966,91 +968,91 @@ msgstr "-"
 
 #: FLog.class:131
 msgid " of "
-msgstr " de "
+msgstr " з "
 
 #: FLog.class:226 FMain.class:124 FSearch.class:261
 msgid "Uncheck QSL as recvd."
-msgstr "Marcar QSL como NO recibida"
+msgstr "Позначити QSL як неотриману"
 
 #: FLog.class:231 FMain.class:129 FSearch.class:266
 msgid "Uncheck QSL as sent."
-msgstr "Marcar QSL como NO enviada"
+msgstr "Позначити QSL як невідправлену"
 
 #: FLog.class:267 FSearch.class:308
 msgid "Only one QSO could be edited at a time!"
-msgstr "¡Sólo se puede editar un QSO a la vez!"
+msgstr "Тільки одне QSO може бути відредаговане за той час!"
 
 #: FLog.class:463 FPreview.class:94
 msgid "Page:"
-msgstr "Página: "
+msgstr "Сторінка:"
 
 #: FMain.class:87
 msgid "Error in Fmain_new\n"
-msgstr "Error en Fmain_new\n"
+msgstr "-\n"
 
 #: FMain.class:169
 msgid "Error in Form Close\n"
-msgstr "Error en Form Close\n"
+msgstr "-\n"
 
 #: FMain.class:243
 msgid "Error in Form Load\n"
-msgstr "Error en Form Load\n"
+msgstr "-\n"
 
 #: FMain.class:347
 msgid "Error in cboEntidad QSO\n"
-msgstr "Error en cboEntidad QSO\n"
+msgstr "-\n"
 
 #: FMain.class:360
 msgid " Km"
-msgstr "-"
+msgstr " Км"
 
 #: FMain.class:361
 msgid " Deg"
-msgstr "-"
+msgstr " Гр"
 
 #: FMain.class:369
 msgid "Error in buscar\n"
-msgstr "Error en buscar\n"
+msgstr "-\n"
 
 #: FMain.class:381
 msgid "New DXCC on "
-msgstr "Nuevo DXCC en "
+msgstr "Новий DXCC на "
 
 #: FMain.class:388
 msgid "DXCC Confirmed on "
-msgstr "DXCC Confirmado en "
+msgstr "DXCC Підтверджено на "
 
 #: FMain.class:394
 msgid "DXCC Worked on "
-msgstr "DXCC Trabajado en "
+msgstr "DXCC Відпрацьовано на "
 
 #: FMain.class:417
 msgid " New square on "
-msgstr " Nuevo locator en "
+msgstr " Нова площа на "
 
 #: FMain.class:424
 msgid " Square Cfmd on "
-msgstr " Cuadrícula conf. en "
+msgstr ""
 
 #: FMain.class:430
 msgid " Square Wkd on "
-msgstr " Cuadrícula trab. en "
+msgstr ""
 
 #: FMain.class:473
 msgid "QSO duration: "
-msgstr "Duración QSO: "
+msgstr "Тривалість QSO: "
 
 #: FMain.class:571
 msgid "&Wkd Before"
-msgstr "QSOs A&nteriores"
+msgstr "Попередні QSO"
 
 #: FMain.class:586
 msgid "Error in wkdB4\n"
-msgstr "Error en wkdB4\n"
+msgstr "-\n"
 
 #: FMain.class:591 FSearch.class:59
 msgid "QSO Nr"
-msgstr "QSO Nº "
+msgstr "QSO Nº"
 
 #: FMain.class:679
 msgid "Error in getPrevLoc\n"
@@ -1058,7 +1060,7 @@ msgstr "-\n"
 
 #: FMain.class:686
 msgid "Incorrect Locator!"
-msgstr "Locator incorrecto!"
+msgstr "Неправильний Локатор!"
 
 #: FMain.class:693
 msgid "OK [Enter]"
@@ -1070,7 +1072,7 @@ msgstr "-"
 
 #: FMain.class:703
 msgid "Do you want to spot\n"
-msgstr "¿Quieres anunciar\n"
+msgstr "Ви хочете, заспотити\n"
 
 #: FMain.class:703
 msgid ""
@@ -1078,153 +1080,153 @@ msgid ""
 " to the Cluster Net?"
 msgstr ""
 "\n"
-" a la Red de Cluster?"
+" до Кластер Мережі?"
 
 #: FMain.class:703 FiADIF.class:213 global.module:430
 msgid "No"
-msgstr "-"
+msgstr "Ні"
 
 #: FMain.class:703 FiADIF.class:213 global.module:430
 msgid "Yes"
-msgstr "Sí"
+msgstr "Так"
 
 #: FMain.class:713
 msgid "You must fill at least: Callsign, RST_r, RST_s and Frequency"
-msgstr "Debes rellenar al menos: Indicativo, RST_r, RST_e y Frecuencia TX"
+msgstr "Ви маєте заповнити: Кличний, RST_о, RST_н та Частоту"
 
 #: FMain.class:721
 msgid "Error in btnOK_Click\n"
-msgstr "Error en btnOK_Click\n"
+msgstr "-\n"
 
 #: FMain.class:739
 msgid "Error in spotQSO\n"
-msgstr "Error en spotQSO\n"
+msgstr "-\n"
 
 #: FMain.class:859
 msgid "Error in btnCAT_Click\n"
-msgstr "Error en btnCAT_Click\n"
+msgstr "-\n"
 
 #: FMain.class:946
 msgid "Error in setModeBand\n"
-msgstr "Error en setModeBand\n"
+msgstr "-\n"
 
 #: FMain.class:993
 msgid "Not yet configured any Cluster server in your settings."
-msgstr "No hay configurado aún ningún Cluster en tus preferencias."
+msgstr "Не вказаний жоден Кластер сервер в налаштуваннях."
 
 #: FMain.class:997
 msgid "Error in btnConn_Click\n"
-msgstr "Error en btnConn_Click\n"
+msgstr "-\n"
 
 #: FMain.class:1148
 msgid "Error in markersSpot\n"
-msgstr "Error en markersSpot\n"
+msgstr "-\n"
 
 #: FMain.class:1191
 msgid "Error in tblCluster_Click()\n"
-msgstr "Error en tblCluster_Click()\n"
+msgstr "-\n"
 
 #: FMain.class:1227
+#, fuzzy
 msgid "Error in tblCluster_Activate\n"
 msgstr "-\n"
 
 #: FMain.class:1391
 msgid "Not more than 1 decimal point allowed!"
-msgstr "No puede haber más de un punto decimal!"
+msgstr "Не більше однієї коми!"
 
 #: FMain.class:1407
 msgid "Not valid TX Freq!"
-msgstr "Frecuencia TX no válida!"
+msgstr "Частота TX недійсна!"
 
 #: FMain.class:1428
 msgid "Not valid RX Freq!"
-msgstr "Frecuencia RX no válida!"
+msgstr "Частота RX недійсна!"
 
 #: FMain.class:1438
 msgid "Create new log"
-msgstr "Crear nuevo log"
+msgstr "Створити новий лог"
 
 #: FMain.class:1439
 msgid "dfhLog Database"
-msgstr "Base de datos dfhLog"
+msgstr "dfhLog База Даних"
 
 #: FMain.class:1442
 msgid "Path to database not found, please open or create a new one"
 msgstr ""
-"Ruta a la base de datos no encontrada, por favor\n"
-"abre o crea una nueva"
+"Шлях до бази даних не знайдено, будь ласка, відкрийте або створіть новий"
 
 #: FMain.class:1455
 msgid "Error creating new Log\n"
-msgstr "Error al crear nuevo log\n"
+msgstr "Помилка при створені нового Логу\n"
 
 #: FMain.class:1463
 msgid "Open log"
-msgstr "Abrir Log"
+msgstr "Відкрити Лог"
 
 #: FMain.class:1464 FiADIF.class:132
 msgid "All Files"
-msgstr "Todos los ficheros"
+msgstr "Всі Файли"
 
 #: FMain.class:1478
 msgid "Error opening Log\n"
-msgstr "Error abriendo Log\n"
+msgstr "Помилка відкриття Логу\n"
 
 #: FMain.class:1555
 msgid "Error in fillData\n"
-msgstr "Error en fillData\n"
+msgstr "-\n"
 
 #: FMain.class:1607
 msgid "Error loging QSO\n"
-msgstr "Error registrando QSO\n"
+msgstr "Помилка запису QSO\n"
 
 #: FMain.class:1716
 msgid "Copy saved as:\n"
-msgstr "Copia guardada como:\n"
+msgstr "Копія буде збережена в: \n"
 
 #: FMain.class:1719
 msgid "Error in BackupDB\n"
-msgstr "Error en backupDB\n"
+msgstr "-\n"
 
 #: FMain.class:1742
 msgid "Modify"
-msgstr "Modificar"
+msgstr "Змінити"
 
 #: FMain.class:1787
 msgid "QSO Nr "
-msgstr "QSO Nº "
+msgstr "QSO Nº"
 
 #: FMain.class:1787
 msgid " doesn't exist!"
-msgstr " no existe!"
+msgstr " не існує!"
 
 #: FMain.class:1792
 msgid "Error in modifyQSO\n"
-msgstr "Error en modifyQSO\n"
+msgstr "-\n"
 
 #: FMain.class:1825
 msgid "Error Modifying QSO\n"
-msgstr "Error Modificando QSO\n"
+msgstr "Помилка Зміни QSO\n"
 
 #: FMain.class:1847
 msgid "Error setting QSL Rcvd QSO\n"
-msgstr "Error marcando QSL recibida\n"
+msgstr "-\n"
 
 #: FMain.class:1868
 msgid "Error setting QSL Sent QSO\n"
-msgstr "Error marcando QSL enviada\n"
+msgstr "-\n"
 
 #: FMain.class:1998 FStats.class:68
 msgid "C"
-msgstr "-"
+msgstr "П"
 
 #: FMain.class:2004 FStats.class:74
 msgid "W"
-msgstr "T"
+msgstr "В"
 
 #: FMain.class:2023
 msgid "Phone:"
-msgstr "Fonía:"
+msgstr ""
 
 #: FMain.class:2024
 msgid "CW:"
@@ -1240,59 +1242,59 @@ msgstr "-\n"
 
 #: FMain.class:2430
 msgid "&File"
-msgstr "&Archivo"
+msgstr "&Файл"
 
 #: FMain.class:2434
 msgid "&New Log"
-msgstr "&Nuevo Log"
+msgstr "&Новий Лог"
 
 #: FMain.class:2441
 msgid "Open L&og"
-msgstr "Abrir L&og"
+msgstr "Відкрити Л&ог"
 
 #: FMain.class:2451
 msgid "Watch &Log"
-msgstr "Revisar &Log"
+msgstr "Перегляд &Логу"
 
 #: FMain.class:2461 FiADIF.class:131
 msgid "ADIF Import"
-msgstr "Importar ADIF"
+msgstr "Імпорт ADIF"
 
 #: FMain.class:2467 FeADIF.class:209
 msgid "ADIF Export"
-msgstr "Exportar ADIF"
+msgstr "Експорт ADIF"
 
 #: FMain.class:2477
 msgid "&Database"
-msgstr "Base de &Datos"
+msgstr "&База Даних"
 
 #: FMain.class:2481
 msgid "Compact DB"
-msgstr "Compactar BD"
+msgstr "Стискання БД"
 
 #: FMain.class:2487
 msgid "Backup DB"
-msgstr "Respaldar BD"
+msgstr "Резервування БД"
 
 #: FMain.class:2499
 msgid "Se&ttings"
-msgstr "Con&figuración"
+msgstr "&Налаштування"
 
 #: FMain.class:2509
 msgid "E&xit"
-msgstr "&Salir"
+msgstr "&Вийти"
 
 #: FMain.class:2516 FSearch.class:817
 msgid "&Search"
-msgstr "Bu&scar"
+msgstr "&Пошук"
 
 #: FMain.class:2519
 msgid "Searc&h QSOs"
-msgstr "&Buscar QSOs"
+msgstr "Пошу&к QSOs"
 
 #: FMain.class:2526
 msgid "Summar&y"
-msgstr "Resu&men"
+msgstr "&Резюме"
 
 #: FMain.class:2533
 msgid "WAC"
@@ -1308,111 +1310,111 @@ msgstr "-"
 
 #: FMain.class:2557
 msgid "Main GridSquares"
-msgstr "Cuadrículas principales"
+msgstr "Локатор: Основна Сітка"
 
 #: FMain.class:2562
 msgid "GridSquares"
-msgstr "Cuadrículas"
+msgstr "Локатор: Сітка"
 
 #: FMain.class:2567
 msgid "EME Initials"
-msgstr "Iniciales EME"
+msgstr ""
 
 #: FMain.class:2575 FStats.class:134
 msgid "Global Stats"
-msgstr "Estadísticas Globales"
+msgstr "Загальна Cтатистика"
 
 #: FMain.class:2582
 msgid "&Printing"
-msgstr "&Impresión"
+msgstr "&Друк"
 
 #: FMain.class:2585
 msgid "QSL queu&e"
-msgstr "Cola d&e QSL"
+msgstr "&Черга QSL"
 
 #: FMain.class:2594
 msgid "QSL &Design"
-msgstr "&Diseño QSL"
+msgstr "&Дизайн QSL"
 
 #: FMain.class:2599
 msgid "&Label Design"
-msgstr "Diseño &Etiquetas"
+msgstr "&Дизайн Етикеток"
 
 #: FMain.class:2608 FQueue.class:296
 msgid "Print QSLs"
-msgstr "Imprimir QSLs"
+msgstr "Друк QSLs"
 
 #: FMain.class:2614 FQueue.class:301
 msgid "Print Labels"
-msgstr "Imprimir Etiquetas"
+msgstr "Друк Етикеток"
 
 #: FMain.class:2621 FPref.class:623
 msgid "C&luster"
-msgstr "-"
+msgstr "&Кластер"
 
 #: FMain.class:2625
 msgid "&Connect"
-msgstr "&Conectar"
+msgstr "&Приєднатися"
 
 #: FMain.class:2631
 msgid "&Disconnect"
-msgstr "&Desconectar"
+msgstr "&Від'єднатися"
 
 #: FMain.class:2638
 msgid "&Maps"
-msgstr "Ma&pas"
+msgstr "&Мапи"
 
 #: FMain.class:2642
 msgid "DXMap"
-msgstr "Mapa DX"
+msgstr "Мапа DX"
 
 #: FMain.class:2648
 msgid "GridS&quares"
-msgstr "Cuad&rículas"
+msgstr "Мапа &Локатора"
 
 #: FMain.class:2655
 msgid "&?"
-msgstr "-"
+msgstr "&Довідка"
 
 #: FMain.class:2658
 msgid "Con&tent"
-msgstr "Con&tenido"
+msgstr "&Зміст"
 
 #: FMain.class:2664
 msgid "A&bout..."
-msgstr "Acerca de"
+msgstr "&Про..."
 
 #: FMain.class:2678
 msgid "New Log"
-msgstr "Nuevo Log"
+msgstr "Новий Лог"
 
 #: FMain.class:2686
 msgid "Open Log"
-msgstr "Abrir Log"
+msgstr "Відкрити Лог"
 
 #: FMain.class:2698 FMap.class:186 FPref.class:507
 msgid "Settings"
-msgstr "Configuración"
+msgstr "Налаштування"
 
 #: FMain.class:2709
 msgid "Watch Log"
-msgstr "Revisar Log"
+msgstr "Перегляд Логу"
 
 #: FMain.class:2716 FSearch.class:670
 msgid "Search QSOs"
-msgstr "Buscar QSOs"
+msgstr "Пошук QSOs"
 
 #: FMain.class:2723
 msgid "Edit Last QSO"
-msgstr "Editar último QSO"
+msgstr "Правка Останнього QSO"
 
 #: FMain.class:2734
 msgid "Conn/Dis. Cluster"
-msgstr "Conectar/Desconectar Cluster"
+msgstr "Приєднати/Від'єднати Кластер"
 
 #: FMain.class:2742
 msgid "BandMap"
-msgstr "Mapa de Bandas"
+msgstr "Мапа Бенду"
 
 #: FMain.class:2750
 msgid "CAT"
@@ -1420,15 +1422,15 @@ msgstr "-"
 
 #: FMain.class:2762
 msgid "GridSquares Map"
-msgstr "Mapa de Locator"
+msgstr "Мапа Локатора"
 
 #: FMain.class:2769 FMap.class:36
 msgid "DX Map"
-msgstr "Mapa DX"
+msgstr "Мапа DX"
 
 #: FMain.class:2780
 msgid "Activate quick entry method, i.e. for Sporadics E in VHF"
-msgstr "Activar entrada rápida, p.ej. para Esporádicas-E en VHF"
+msgstr "Активувати метод швидкого запису, наприклад для E-Спорадиків в VHF"
 
 #: FMain.class:2798
 msgid "0.00"
@@ -1436,91 +1438,91 @@ msgstr "-"
 
 #: FMain.class:2830 FSearch.class:840
 msgid "Callsign:"
-msgstr "Indicativo:"
+msgstr "Кличний:"
 
 #: FMain.class:2836
 msgid "DX Callsign"
-msgstr "Indicativo DX"
+msgstr "Кличний знак DX"
 
 #: FMain.class:2844
 msgid "Band Selection"
-msgstr "Seleccion de Banda"
+msgstr "Вибір Бенду"
 
 #: FMain.class:2853
 msgid "Mode Selection"
-msgstr "Selección de modo"
+msgstr "Вибір Модуляції"
 
 #: FMain.class:2863
 msgid "Propagation Type"
-msgstr "Tipo de propagación"
+msgstr "Тип Поширення"
 
 #: FMain.class:2871
 msgid "Date of QSO"
-msgstr "Fecha del QSO"
+msgstr "Дата QSO"
 
 #: FMain.class:2879
 msgid "Time on"
-msgstr "Hora inicio"
+msgstr "Час початку"
 
 #: FMain.class:2887
 msgid "Time off"
-msgstr "Hora fin"
+msgstr "Час завершення"
 
 #: FMain.class:2895
 msgid "Freq. in KHZ "
-msgstr "Frecuencia en KHz"
+msgstr "Частота в KHz "
 
 #: FMain.class:2915
 msgid "RST Received"
-msgstr "RST Recibido"
+msgstr "RST Отриманий"
 
 #: FMain.class:2924
 msgid "RST Sent"
-msgstr "RST Enviado"
+msgstr "RST Надісланий"
 
 #: FMain.class:2933
 msgid "DX GridSquare"
-msgstr "Locator del DX"
+msgstr "Локатор DX"
 
 #: FMain.class:2941
 msgid "DX Name"
-msgstr "Nombre del DX"
+msgstr "Iм'я DX"
 
 #: FMain.class:2949
 msgid "DX City"
-msgstr "Ciudad del DX"
+msgstr "Місто DX"
 
 #: FMain.class:2964
 msgid "TX Power"
-msgstr "Potencia TX"
+msgstr "Потужність TX"
 
 #: FMain.class:2975
 msgid "DX email"
-msgstr "Email del DX"
+msgstr "Email DX"
 
 #: FMain.class:2981
 msgid "Accepts & Log QSO"
-msgstr "Acepta y guarda el QSO"
+msgstr "Прийняти та Зберегти QSO"
 
 #: FMain.class:2990
 msgid "Whipes current entered data"
-msgstr "Borra los datos introducidos"
+msgstr "Видалення введених даних"
 
 #: FMain.class:3005
 msgid "RST(R):"
-msgstr "-"
+msgstr "RST(О):"
 
 #: FMain.class:3011
 msgid "RST(S):"
-msgstr "RST(E):"
+msgstr "RST(Н):"
 
 #: FMain.class:3017 FSearch.class:845
 msgid "Locator:"
-msgstr "-"
+msgstr "Локатор:"
 
 #: FMain.class:3023
 msgid "Name:"
-msgstr "Nombre:"
+msgstr "Iм'я:"
 
 #: FMain.class:3029 FSearch.class:875
 msgid "QTH:"
@@ -1532,19 +1534,19 @@ msgstr "-"
 
 #: FMain.class:3041
 msgid "Date:"
-msgstr "Fecha:"
+msgstr "Дата:"
 
 #: FMain.class:3047
 msgid "Time on:"
-msgstr "Hora inicio:"
+msgstr "Час почат.:"
 
 #: FMain.class:3053
 msgid "Time off:"
-msgstr "Hora fin:"
+msgstr "Час завер.:"
 
 #: FMain.class:3059
 msgid "Remarks:"
-msgstr "Comentarios:"
+msgstr "Зауваження:"
 
 #: FMain.class:3065
 msgid "Nr:"
@@ -1556,35 +1558,35 @@ msgstr "-"
 
 #: FMain.class:3090
 msgid "Power:"
-msgstr "Potencia:"
+msgstr "Потужність:"
 
 #: FMain.class:3097
 msgid "&QSL"
-msgstr "QS&L"
+msgstr "-"
 
 #: FMain.class:3107
 msgid "QSL rcvd"
-msgstr "-"
+msgstr "QSL Отримано"
 
 #: FMain.class:3108
 msgid "QSL Recvd:"
-msgstr "QSL Recibida:"
+msgstr "QSL Отрим:"
 
 #: FMain.class:3115
 msgid "Date of QSL rcvd"
-msgstr "Fecha de recepción de QSL"
+msgstr "Дата отримання QSL"
 
 #: FMain.class:3123
 msgid "QSL sent"
-msgstr "QSL Enviada"
+msgstr "QSL Відправлено"
 
 #: FMain.class:3124
 msgid "QSL Sent:"
-msgstr "QSL Enviada:"
+msgstr "QSL Відпр:"
 
 #: FMain.class:3131
 msgid "Date of QSL sent"
-msgstr "Fecha de envío de QSL"
+msgstr "Дата відправлення QSL"
 
 #: FMain.class:3138
 msgid "QSL via..."
@@ -1600,11 +1602,11 @@ msgstr "-"
 
 #: FMain.class:3140
 msgid "Direct"
-msgstr "Directa"
+msgstr ""
 
 #: FMain.class:3140
 msgid "No QSL"
-msgstr "-"
+msgstr "QSL Немає"
 
 #: FMain.class:3149
 msgid "QSL via Mgr"
@@ -1628,11 +1630,11 @@ msgstr "-"
 
 #: FMain.class:3242
 msgid "A&wards"
-msgstr "&Diplomas"
+msgstr "&Дипломи"
 
 #: FMain.class:3247
 msgid "TPEA award"
-msgstr "Diploma TPEA"
+msgstr "TPEA Диплом"
 
 #: FMain.class:3255
 msgid "..."
@@ -1640,23 +1642,23 @@ msgstr "-"
 
 #: FMain.class:3261
 msgid "IOTA award"
-msgstr "Diploma IOTA"
+msgstr "IOTA Диплом"
 
 #: FMain.class:3275
 msgid "WAS award"
-msgstr "Diploma WAS"
+msgstr "WAS Диплом"
 
 #: FMain.class:3289
 msgid "USACA award"
-msgstr "Diploma USACA"
+msgstr "USACA Диплом"
 
 #: FMain.class:3316
 msgid "Sat mode"
-msgstr "Modo Sat."
+msgstr "Мода Сателіту"
 
 #: FMain.class:3329
 msgid "County (USA):"
-msgstr "Condado(USA):"
+msgstr ""
 
 #: FMain.class:3335
 msgid "IOTA:"
@@ -1668,31 +1670,31 @@ msgstr "-"
 
 #: FMain.class:3347
 msgid "Satellite:"
-msgstr "Satélite:"
+msgstr "Сателіт:"
 
 #: FMain.class:3353
 msgid "Sat Mode:"
-msgstr "Modo Sat:"
+msgstr "Мода Сат.:"
 
 #: FMain.class:3359
 msgid "State (USA):"
-msgstr "Estado (USA)"
+msgstr ""
 
 #: FMain.class:3366
 msgid "Info"
-msgstr "-"
+msgstr "Інформація"
 
 #: FMain.class:3378
 msgid "Cont:"
-msgstr "Cont:"
+msgstr "Контин:"
 
 #: FMain.class:3392
 msgid "Distance:"
-msgstr "Distancia:"
+msgstr "Відстань:"
 
 #: FMain.class:3413
 msgid "Prefix:"
-msgstr "Prefijo:"
+msgstr "Префікс:"
 
 #: FMain.class:3420
 msgid "CQ:"
@@ -1700,7 +1702,7 @@ msgstr "-"
 
 #: FMain.class:3434
 msgid "Rhumb:"
-msgstr "Rumbo:"
+msgstr "Румб:"
 
 #: FMain.class:3455
 msgid "ITU:"
@@ -1708,19 +1710,19 @@ msgstr "-"
 
 #: FMain.class:3462
 msgid "Current DXCC"
-msgstr "DXCC Actual"
+msgstr "Даний DXCC"
 
 #: FMain.class:3489
 msgid "Online Callbook"
-msgstr "-"
+msgstr ""
 
 #: FMain.class:3495
 msgid "Show Callbook Webpage"
-msgstr "Mostrar en la Web"
+msgstr ""
 
 #: FMain.class:3496
 msgid "Web Callbook "
-msgstr "-"
+msgstr ""
 
 #: FMain.class:3504
 msgid "00:00:00"
@@ -1728,19 +1730,19 @@ msgstr "-"
 
 #: FMain.class:3511
 msgid "Freq.TX:"
-msgstr "-"
+msgstr "Част.TX:"
 
 #: FMain.class:3517
 msgid "Freq.RX:"
-msgstr "-"
+msgstr "Част.RX:"
 
 #: FMain.class:3523 FSearch.class:691 FeADIF.class:290
 msgid "DatePicker"
-msgstr "Selector de Fecha"
+msgstr "Вибір Дати"
 
 #: FMain.class:3538
 msgid "Real Time QSO"
-msgstr "QSO en T. Real"
+msgstr "Реал. Час QSO"
 
 #: FMain.class:3545
 msgid ""
@@ -1752,121 +1754,120 @@ msgid ""
 "For convenience, status is not saved\n"
 "between sessions."
 msgstr ""
-"Estado:\n"
-"Rojo=Enviar spot sin confirmación\n"
-"Naranja=Enviar spot tras confirmación\n"
-"No marcado=No enviar spots\n"
+"Статус:\n"
+"Червоний=Надсилати споти без підтвердження\n"
+"Помаранчевий=Надсилати споти після підтвердження\n"
+"Невиділений=Не надсилати споти\n"
 "\n"
-"Por conveniencia, el estado\n"
-"no se guarda entre sesiones."
+"Для зручності, статус не зберігається в період між сесіями."
 
 #: FMain.class:3546
 msgid "AutoSpot"
-msgstr "AutoSpot"
+msgstr "Авто-Спот"
 
 #: FMain.class:3558
 msgid "Lo&g"
-msgstr "-"
+msgstr "Ло&г"
 
 #: FMain.class:3572
 msgid "Cl&uster"
-msgstr "-"
+msgstr "К&ластер"
 
 #: FMain.class:3601 FPref.class:638 FQueue.class:218
 msgid "Delete"
-msgstr "Borrar"
+msgstr "Видалити"
 
 #: FMain.class:3606
 msgid "Send"
-msgstr "Enviar"
+msgstr "Надіслати"
 
 #: FMain.class:3625
 msgid "St&ats"
-msgstr "&Estadisticas"
+msgstr "Ст&атистика"
 
 #: FMain.class:3656
 msgid "Database:"
-msgstr "Base de datos:"
+msgstr "База Даних:"
 
 #: FMap.class:190
 msgid "Observer Latitude"
-msgstr "Latitud del Observador"
+msgstr "Спостерігач Широти"
 
 #: FMap.class:197
 msgid "Latitude:"
-msgstr "Latitud: "
+msgstr "Широта:"
 
 #: FMap.class:202
 msgid "Longitude:"
-msgstr "Longitud: "
+msgstr "Довгота:"
 
 #: FMap.class:207
 msgid "Observer Longitude"
-msgstr "Longitud del Observador"
+msgstr "Спостерігач Довготи"
 
 #: FMap.class:214
 msgid "Zoom:"
-msgstr "-"
+msgstr "Масштаб:"
 
 #: FMap.class:219
 msgid ""
 "Zoom: Less value = closer view,\n"
 "More value = far away view"
 msgstr ""
-"Zoom: Menor valor = vista cercana,\n"
-"Mayor valor = vista lejana"
+"Масштаб: Менше значення = близький вигляд,\n"
+"Більше значення = далекий вигляд"
 
 #: FMap.class:227
 msgid "&Apply Changes"
-msgstr "&Aplicar Cambios"
+msgstr "&Застосувати зміни"
 
 #: FMap.class:232
 msgid "Delete all labels"
-msgstr "Borrar etiquetas"
+msgstr "Видалити всі етикетки"
 
 #: FMap.class:233
 msgid "&Clean Map"
-msgstr "&Limpiar Mapa"
+msgstr "&Очистити Мапу"
 
 #: FMap.class:238
 msgid "Close window"
-msgstr "Cerrar Ventana"
+msgstr "Закрити вікно"
 
 #: FPref.class:28
 msgid "Incorrect GridSquare"
-msgstr "Locator incorrecto"
+msgstr "Неправильний Локатор"
 
 #: FPref.class:77
 msgid ""
 "You need to fill the mandatory fields\n"
 "or GridSquare is incorrect"
 msgstr ""
-"Es necesario completar los campos obligatorios\n"
-"o el Locator es incorrecto"
+"Ви повинні заповнити обов'язкові поля\n"
+"або неправильно вказаний Locator"
 
 #: FPref.class:219
 msgid "Hamlib not installed!"
-msgstr "Hamlib no está instalado!"
+msgstr "Hamlib не встановлено!"
 
 #: FPref.class:267
 msgid "Xplanet not installed!"
-msgstr "Xplanet no está instalado!"
+msgstr "Xplanet не встановлено!"
 
 #: FPref.class:398
 msgid "Grig not installed!"
-msgstr "Grig no está instalado!"
+msgstr "Grig не встановлено!"
 
 #: FPref.class:401
 msgid "Grig needs rpc.rigd to work!"
-msgstr "Grig necesita rpc.rigd activado!"
+msgstr "Grig потребує rpc.rigd для роботи!"
 
 #: FPref.class:519
 msgid "My &Station"
-msgstr "Mi E&stación"
+msgstr "&Моя Станція"
 
 #: FPref.class:523
 msgid "My Station Data"
-msgstr "Datos de mi Estación"
+msgstr "Дані Моєї Станції"
 
 #: FPref.class:527
 msgid "*QRZ:"
@@ -1874,119 +1875,119 @@ msgstr "-"
 
 #: FPref.class:532
 msgid "*Name:"
-msgstr "*Nombre:"
+msgstr "*Iм'я:"
 
 #: FPref.class:537
 msgid "*GridSquare:"
-msgstr "*Locator:"
+msgstr "*Локатор:"
 
 #: FPref.class:542
 msgid "My Callsign"
-msgstr "Mi Indicativo"
+msgstr "Мій Кличний"
 
 #: FPref.class:555
 msgid "My First Name"
-msgstr "Mi Nombre"
+msgstr "Моє Ім'я"
 
 #: FPref.class:562
 msgid "My GridSquare"
-msgstr "Mi Locator"
+msgstr "Мій Локатор"
 
 #: FPref.class:570
 msgid "QSO begin/end time"
-msgstr "Hora inicio/fin QSO"
+msgstr "Час початку/завершення QSO"
 
 #: FPref.class:574
 msgid "Use equal begin/end time in QSO"
-msgstr "Usar la misma hora de inicio y fin de QSO"
+msgstr "Використовувати рівний час поч./зав. в QSO"
 
 #: FPref.class:580
 msgid "Preferred Band && Mode"
-msgstr "Banda y Modo preferido"
+msgstr "Популярний Бенд та Мода"
 
 #: FPref.class:609
 msgid "UTC Offset"
-msgstr "Diferencia con UTC"
+msgstr "UTC Зсув"
 
 #: FPref.class:613
 msgid "UTC Offset (in hours):"
-msgstr "Diferencia con UTC (en horas):"
+msgstr "UTC Зсув (в годинах):"
 
 #: FPref.class:627
 msgid "Telnet Server"
-msgstr "Servidor Telnet"
+msgstr "Telnet Сервер"
 
 #: FPref.class:643
 msgid "Add"
-msgstr "Añadir"
+msgstr "Додати"
 
 #: FPref.class:648
 msgid ""
 "Auto connect to server with\n"
 "your current callsign "
 msgstr ""
-"Conectar automáticamente\n"
-"con tu indicativo actual"
+"Авто підключитися до сервера за\n"
+"вашим теперішнім кличним сигналом"
 
 #: FPref.class:649
 msgid "Auto-connect"
-msgstr "Auto conectar"
+msgstr "Авто-підключення"
 
 #: FPref.class:655
 msgid "Filters"
-msgstr "Filtros"
+msgstr "Фільтри"
 
 #: FPref.class:659
 msgid "HF Spots"
-msgstr "Anuncios HF"
+msgstr "HF Споти"
 
 #: FPref.class:665
 msgid "V/UHF Spots"
-msgstr "Anuncios V/UHF"
+msgstr "V/UHF Споти"
 
 #: FPref.class:671
 msgid "WARC Spots"
-msgstr "Anuncios WARC"
+msgstr "WARC Споти"
 
 #: FPref.class:677
 msgid "Ann Messages"
-msgstr "Mensajes Ann"
+msgstr "Інші Повідомлення"
 
 #: FPref.class:683
 msgid "WWV Messages"
-msgstr "Mensajes WWV"
+msgstr "WWV Повідомлення"
 
 #: FPref.class:689
 msgid "WCY Messages"
-msgstr "Mensajes WCY"
+msgstr "WCY Повідомлення"
 
 #: FPref.class:696
 msgid "Cluster"
-msgstr "-"
+msgstr "Кластер"
 
 #: FPref.class:700
 msgid "Log Cluster Remarks"
-msgstr "Registrar comentarios del cluster"
+msgstr "Реєструвати Зауваження Кластера"
 
 #: FPref.class:704
 msgid "C&olors"
-msgstr "C&olores"
+msgstr "&Кольори"
 
 #: FPref.class:732
 msgid "Confirmed:"
-msgstr "Confirmado:"
+msgstr "Підтверджено:"
 
 #: FPref.class:738
 msgid "Worked:"
-msgstr "Trabajado:"
+msgstr "Відпрацьовано:"
 
 #: FPref.class:744
 msgid "Needed:"
-msgstr "No Trabajado:"
+msgstr "Не Працювали:"
 
 #: FPref.class:750
 msgid "Default:"
-msgstr "Por defecto:"
+msgstr "Звичайна:"
 
 #: FPref.class:755
 msgid "&Hamlib"
@@ -1994,15 +1995,15 @@ msgstr "-"
 
 #: FPref.class:759
 msgid "Hamlib (CAT) Parameters"
-msgstr "Parámetros Hamlib (CAT)"
+msgstr "Hamlib (CAT) Параметри"
 
 #: FPref.class:763
 msgid "Activate"
-msgstr "Activar"
+msgstr "Активувати"
 
 #: FPref.class:768
 msgid "Poll every:"
-msgstr "Consultar cada:"
+msgstr "Опитати кожні:"
 
 #: FPref.class:775
 msgid "100"
@@ -2034,15 +2035,15 @@ msgstr "-"
 
 #: FPref.class:781
 msgid "msec."
-msgstr "ms."
+msgstr "мсек."
 
 #: FPref.class:786
 msgid "Rig select:"
-msgstr "Seleccionar Equipo"
+msgstr "Виберіть TRX:"
 
 #: FPref.class:797
 msgid "Device:"
-msgstr "Dispositivo:"
+msgstr "Пристрій:"
 
 #: FPref.class:802
 msgid "/dev/ttyS0"
@@ -2082,39 +2083,39 @@ msgstr "-"
 
 #: FPref.class:814
 msgid "Speed:"
-msgstr "Velocidad:"
+msgstr "Швидкість:"
 
 #: FPref.class:819
 msgid "bauds"
-msgstr "baudios"
+msgstr "бод"
 
 #: FPref.class:830
 msgid "Output debugger. Use it when you have problems"
-msgstr "Salida depurada. Usar si tienes problemas."
+msgstr "Вивід відладчика. Використовуйте його, коли у Вас виникають проблеми"
 
 #: FPref.class:831
 msgid "Debug output"
-msgstr "Depurar salida"
+msgstr "Вивід відладки"
 
 #: FPref.class:836
 msgid "Use Grig (if installed)"
-msgstr "Usar Grig (si está instalado)"
+msgstr "Використовувати Grig"
 
 #: FPref.class:848
 msgid ""
 "If checked, I will try to use rpc rig service to\n"
 "allow multiple connections to a single rig."
 msgstr ""
-"Si está marcado, se intentará usar el servicio rpc.rigd para\n"
-"permitir múltiples conexiones a un solo equipo de radio."
+"Якщо обрано, будуть використовуватись rpc.rigd служби\n"
+"що дозволить кілька підключень до однієї установки."
 
 #: FPref.class:849
 msgid "Use rpc.rigd"
-msgstr "Usar rpc.rigd"
+msgstr "Вик. rpc.rigd"
 
 #: FPref.class:853
 msgid "Ot&hers"
-msgstr "Otros"
+msgstr "Ін&ші"
 
 #: FPref.class:857
 msgid "XPlanet"
@@ -2122,111 +2123,111 @@ msgstr "-"
 
 #: FPref.class:861
 msgid "Use Xplanet Maps (If installed)"
-msgstr "Usar Mapas Xplanet (Si está instalado)"
+msgstr "Використовувати Xplanet Maps"
 
 #: FPref.class:873
 msgid "Callbook"
-msgstr "-"
+msgstr ""
 
 #: FPref.class:878
 msgid "(A subscription to QRZ.com(xml) is needed)"
-msgstr "(Necesaria suscripción a QRZ.com(xml))"
+msgstr "(Необхідна реєстрація на сайті QRZ.com)"
 
 #: FPref.class:894
 msgid "User:"
-msgstr "Usuario:"
+msgstr "Користувач:"
 
 #: FPref.class:899
 msgid "Password:"
-msgstr "Contraseña:"
+msgstr "Пароль:"
 
 #: FPref.class:904
 msgid "Fill QSO data from QRZ.com (Web method)"
-msgstr "Completar datos de QSO desde QRZ.com (Método Web)"
+msgstr "Заповнити QSO дані з QRZ.com (Веб метод)"
 
 #: FPref.class:909
 msgid "Don't fetch data from any callbook"
-msgstr "No recuperar datos de ningún callbook"
+msgstr ""
 
 #: FPref.class:914
 msgid "Fill QSO data from QRZ.com"
-msgstr "Completar datos de QSO desde QRZ.com"
+msgstr "Заповнити QSO дані з QRZ.com"
 
 #: FPref.class:919
 msgid "Fill QSO data from HamQTH"
-msgstr "Completar datos de QSO desde HamQTH"
+msgstr "Заповнити QSO дані з HamQTH"
 
 #: FPref.class:953
 msgid "* (Mandatory Fields)"
-msgstr "*(Campos Obligatorios)"
+msgstr "* (Обов'язкові поля)"
 
 #: FPref.class:958 Fservers.class:85
 msgid "&Accept"
-msgstr "&Aceptar"
+msgstr "&Прийняти"
 
 #: FPreview.class:60
 msgid "Labels Print preview"
-msgstr "Vista Previa Etiquetas"
+msgstr "Попередній Перегляд Друку"
 
 #: FPreview.class:117
 msgid "&Print"
-msgstr "Im&primir"
+msgstr "Д&рук"
 
 #: FQueue.class:29
 msgid "QSL Print Queue"
-msgstr "Cola de impresión de QSL"
+msgstr "Черга Друку QSL"
 
 #: FQueue.class:62
 msgid "My Call"
-msgstr "-"
+msgstr "Мій Кличний"
 
 #: FQueue.class:218
 msgid ""
 "Print queue will be deleted\n"
 "Do you want to continue?"
 msgstr ""
-"La cola de impresión se borrará\n"
-"¿Deseas continuar?"
+"Друк черги буде вилучено\n"
+"Ви бажаєте продовжити?"
 
 #: FQueue.class:255
 msgid "Printing queue"
-msgstr "Cola de Impresión"
+msgstr "Друк черги"
 
 #: FQueue.class:291
 msgid "Clear Queue"
-msgstr "Borrar cola"
+msgstr "Очистити Чергу"
 
 #: FSearch.class:44
 msgid "Log Search"
-msgstr "Buscar en Log"
+msgstr "Пошук по Логу"
 
 #: FSearch.class:59
 msgid "Distance"
-msgstr "Distancia"
+msgstr "Відстань"
 
 #: FSearch.class:59
 msgid "Comments"
-msgstr "Comentarios"
+msgstr "Коментарі"
 
 #: FSearch.class:59
 msgid "Prop."
-msgstr "-"
+msgstr "Пош."
 
 #: FSearch.class:140
 msgid "Records: &1 (Ordered by &2 - &3)"
-msgstr "Registros: &1 (Ordenados por &2 - &3)"
+msgstr "Записи: &1 (Сортувати за &2 - &3)"
 
 #: FSearch.class:140
 msgid "Ascending"
-msgstr "Ascendente"
+msgstr "Зростанням"
 
 #: FSearch.class:140
 msgid "Descending"
-msgstr "Descendente"
+msgstr "Спаданням"
 
 #: FSearch.class:179
 msgid "Cfmd"
-msgstr "-"
+msgstr ""
 
 #: FSearch.class:179
 msgid "MGR"
@@ -2234,155 +2235,155 @@ msgstr "-"
 
 #: FSearch.class:682
 msgid "Search QSO"
-msgstr "Buscar QSO"
+msgstr "Пошук QSO"
 
 #: FSearch.class:770
 msgid "Order by:"
-msgstr "Ordenado por:"
+msgstr "Сортувати за:"
 
 #: FSearch.class:774
 msgid "Choose Order by"
-msgstr "Elegir Orden"
+msgstr "Виберіть Сортувати за"
 
 #: FSearch.class:810
 msgid "Search while typing"
-msgstr "Buscar mientras escribes"
+msgstr "Пошук при введенні"
 
 #: FSearch.class:811
 msgid "Auto Search"
-msgstr "Auto Búsqueda"
+msgstr "Авто-Пошук"
 
 #: FSearch.class:816
 msgid "Tick the checkbox to export TXT"
-msgstr "Marca el checkbox para exportar a TXT"
+msgstr "Встановіть прапорець для експорту TXT"
 
 #: FSearch.class:825
 msgid "Reset Dates"
-msgstr "Reiniciar Fechas"
+msgstr "Скидання Дати"
 
 #: FSearch.class:830
 msgid "Start date:"
-msgstr "Fecha inicio:"
+msgstr "Початкова дата:"
 
 #: FSearch.class:835
 msgid "End date:"
-msgstr "Fecha fin:"
+msgstr "Кінцева дата:"
 
 #: FSearch.class:850
 msgid "Prop. Type:"
-msgstr "Tipo Prop."
+msgstr "Тип Пошир.:"
 
 #: FSearch.class:880
 msgid "Comments:"
-msgstr "Comentarios:"
+msgstr "Коментарі:"
 
 #: FSearch.class:886
 msgid "Export in TXT format"
-msgstr "Exportar en formato TXT"
+msgstr "Експорт в формат TXT"
 
 #: FSearch.class:887
 msgid "Export TXT"
-msgstr "Exportar TXT"
+msgstr "Експорт TXT"
 
 #: FSetup.class:21
 msgid "Custom"
-msgstr "Personalizado"
+msgstr "Персональні"
 
 #: FSetup.class:25
 msgid "105x37mm, 16 per page (2 columns 8 rows)"
-msgstr "105x37mm, 16 por pagina (2 columnas 8 filas)"
+msgstr "105x37мм, 16 на сторінку (2 стовпчики 8 рядків)"
 
 #: FSetup.class:33
 msgid "70x37mm, 24 per page (3 columns 8 rows)"
-msgstr "70x37mm, 24 por pagina (3 columnas 8 filas)"
+msgstr "70x37мм, 24 на сторінку (3 стовпчики 8 рядків)"
 
 #: FSetup.class:41
 msgid "70x30mm, 27 per page (3 columns 9 rows)"
-msgstr "70x30mm, 27 por pagina (3 columnas 9 filas)"
+msgstr "70x30мм, 27 на сторінку (3 стовпчики 9 рядків)"
 
 #: FSetup.class:49
 msgid "70x25,4mm, 33 per page (3 columns 11 rows)"
-msgstr "70x25,4mm, 33 por pagina (3 columnas 11 filas)"
+msgstr "70x25,4мм, 33 на сторінку (3 стовпчики 11 рядків)"
 
 #: FSetup.class:57
 msgid "52,5x29,7mm, 40 per page (4 columns 10 rows)"
-msgstr "52,5x29,7mm, 40 por pagina (4 columnas 10 filas)"
+msgstr "52,5x29,7мм, 40 на сторінку (4 стовпчики 10 рядків)"
 
 #: FSetup.class:65
 msgid "105x35mm, 16 per page (2 columns 8 rows)"
-msgstr "105x35mm, 16 por pagina (2 columnas 8 filas)"
+msgstr "105x35мм, 16 на сторінку (2 стовпчики 8 рядків)"
 
 #: FSetup.class:73
 msgid "70x35mm, 24 per page (3 columns 8 rows)"
-msgstr "70x35mm, 24 por pagina (3 columnas 8 filas)"
+msgstr "70x35мм, 24 на сторінку (3 стовпчики 8 рядків)"
 
 #: FSetup.class:182
 msgid "Setup Label"
-msgstr "Configurar Etiqueta"
+msgstr "Параметри Етикеток"
 
 #: FSetup.class:194
 msgid "Choose model:"
-msgstr "Escoger modelo:"
+msgstr "Виберіть модель:"
 
 #: FSetup.class:211
 msgid "Con&figure"
-msgstr "Con&figurar"
+msgstr "&Налаштування"
 
 #: FSetup.class:217
 msgid "Label Preview"
-msgstr "Vista Previa Etiquetas"
+msgstr "Попередній Перегляд"
 
 #: FSetup.class:229
 msgid "Data Layout"
-msgstr "Diseño Datos"
+msgstr "Розміщення Даних"
 
 #: FSetup.class:234
 msgid "Full layout"
-msgstr "Diseño Completo"
+msgstr "Повна Розмітка"
 
 #: FSetup.class:241
 msgid "Medium Layout"
-msgstr "Diseño Medio"
+msgstr "Середня Розмітка"
 
 #: FSetup.class:247
 msgid "Basic Layout"
-msgstr "Diseño Básico"
+msgstr "Базова Розмітка"
 
 #: FSetup.class:256
 msgid ""
 "Choose a model from the dropdown that matches your label dimensions, and "
 "then pick a layout that fit into the label "
 msgstr ""
-"Elije un modelo en el menú desplegable que corresponda a las dimensiones de "
-"la etiqueta, y luego elige un diseño que encaje en la etiqueta"
+"Виберіть модель зі списку, яка відповідає вашому розміру етикетки, потім "
+"виберіть макет, який вписується в етикетку"
 
 #: FSquares.class:60
 msgid "Main Squares Summary"
-msgstr "Resumen Cuadrículas Principales"
+msgstr "Лок.: Основна Сітка Резюме"
 
 #: FSquares.class:62
 msgid "Gridsquares Summary"
-msgstr "Resumen de Cuadrículas"
+msgstr "Лок.: Сітка Резюме"
 
 #: FSquares.class:64
 msgid "EME Summary"
-msgstr "Resumen EME"
+msgstr "EME Резюме"
 
 #: FSquares.class:89
 msgid "<h2>Main Squares "
-msgstr "<h2>Cuadrículas principales  "
+msgstr ""
 
 #: FSquares.class:89
 msgid " by "
-msgstr " por "
+msgstr ""
 
 #: FSquares.class:89
 msgid " in Band = "
-msgstr " en Banda = "
+msgstr ""
 
 #: FSquares.class:89
 msgid " and Propagation mode = "
-msgstr " y Modo de Propagación = "
+msgstr ""
 
 #: FSquares.class:90
 msgid ""
@@ -2391,54 +2392,46 @@ msgid ""
 "td><td>QSL_rcvd</td><td>QSL_sent</td><td>Country</td><td>Gridsquare</"
 "td><td>Main Grid</td><td>QSOs</td></tr>"
 msgstr ""
-"<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr"
-"\"><td>Callsign</td><td>Fecha</td><td>Banda</td><td>Modo</td><td>Modo Prop.</"
-"td><td>QSL_rcvd</td><td>QSL_env</td><td>Entidad</td><td>Locator</"
-"td><td>Cuadrícula princ.</td><td>QSOs</td></tr>"
 
 #: FSquares.class:98
 msgid ""
 "<tr><td colspan=\"8\"></td><td><b>Total References</b></td><td align=\"right"
 "\">"
 msgstr ""
-"<tr><td colspan=\"8\"></td><td><b>Referencias Totales</b></td><td align="
-"\"right\">"
 
 #: FSquares.class:99
 msgid ""
 "<tr><td colspan=\"8\"></td><td><b>Total QSO</b></td><td align=\"right\" "
 "colspan=\"2\">"
 msgstr ""
-"<tr><td colspan=\"8\"></td><td><b>QSOs totales</b></td><td align=\"right\" "
-"colspan=\"2\">"
 
 #: FSquares.class:109 FSummary.class:109
 msgid "Error in "
-msgstr "Error en "
+msgstr "Помилка в "
 
 #: FSquares.class:128
 msgid "<h2>Gridsquares "
-msgstr "<h2>Cuadrículas  "
+msgstr ""
 
 #: FSquares.class:128
 msgid " in band = "
-msgstr " en banda = "
+msgstr ""
 
 #: FSquares.class:128
 msgid ", mode = "
-msgstr ", modo = "
+msgstr ""
 
 #: FSquares.class:197
 msgid "confirmed"
-msgstr "confirmado"
+msgstr ""
 
 #: FSquares.class:200
 msgid "worked"
-msgstr "trabajado "
+msgstr "Відпрацьовано"
 
 #: FSquares.class:243
 msgid "Squares Summary"
-msgstr "Resumen Cuadrículas"
+msgstr "Резюме"
 
 #: FSquares.class:259 FSummary.class:380
 msgid "ComboBox1"
@@ -2450,59 +2443,59 @@ msgstr "-"
 
 #: FStats.class:33
 msgid "Entity/Band"
-msgstr "Entidad/Banda"
+msgstr "Країна/Бенд"
 
 #: FStats.class:80
 msgid "Total Entities Worked: "
-msgstr "Total Entidades Trabajadas: "
+msgstr "Всього Відпрацьовано: "
 
 #: FStats.class:83
 msgid "Total Entities Confirmed: "
-msgstr "Total Entidades Confirmadas: "
+msgstr "Всього Підтверджено: "
 
 #: FStats.class:152
 msgid "Total QSOs"
-msgstr "-"
+msgstr "Всього QSOs"
 
 #: FStats.class:174
 msgid "E&xport CSV"
-msgstr "E&xportar CSV"
+msgstr "Е&кспорт CSV"
 
 #: FSummary.class:25
 msgid "All band"
-msgstr "Toda banda"
+msgstr ""
 
 #: FSummary.class:29
 msgid "All mode"
-msgstr "Todo modo"
+msgstr ""
 
 #: FSummary.class:56
 msgid "DXCC Summary"
-msgstr "Resumen DXCC"
+msgstr "DXCC Резюме"
 
 #: FSummary.class:58
 msgid "WAC Summary"
-msgstr "Resumen WAC "
+msgstr "WAC Резюме"
 
 #: FSummary.class:60
 msgid "WAS Summary"
-msgstr "Resumen WAS "
+msgstr "WAS Резюме"
 
 #: FSummary.class:62
 msgid "USACA Summary"
-msgstr "Resumen USACA "
+msgstr "USACA Резюме"
 
 #: FSummary.class:64
 msgid "IOTA Summary"
-msgstr "Resumen IOTA"
+msgstr "IOTA Резюме"
 
 #: FSummary.class:66
 msgid "TPEA Summary"
-msgstr "Resumen TPEA "
+msgstr "TPEA Резюме"
 
 #: FSummary.class:88
 msgid "<h2>&1: &2 by &3 in &4 and &5</h2><br>\n"
-msgstr "<h2>&1: &2 por &3 en &4 y &5</h2><br>\n"
+msgstr ""
 
 #: FSummary.class:90
 msgid ""
@@ -2510,9 +2503,6 @@ msgid ""
 "\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>QSL_rcvd</"
 "td><td>QSL_sent</td><td>Country</td><td>QSOs</td></tr>"
 msgstr ""
-"<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr"
-"\"><td>Indicativo</td><td>Fecha</td><td>Banda</td><td>Modo</td><td>QSL_rcvd</"
-"td><td>QSL_env</td><td>Entidad</td><td>QSOs</td></tr>"
 
 #: FSummary.class:129
 msgid ""
@@ -2520,9 +2510,6 @@ msgid ""
 "\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>QSL_rcvd</"
 "td><td>QSL_sent</td><td>Country</td><td>Continent</td><td>QSOs</td></tr>"
 msgstr ""
-"<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr"
-"\"><td>Indicativo</td><td>Fecha</td><td>Banda</td><td>Modo</td><td>QSL_rcvd</"
-"td><td>QSL_env</td><td>Entidad</td><td>Continente</td><td>QSOs</td></tr>"
 
 #: FSummary.class:169
 msgid ""
@@ -2530,9 +2517,6 @@ msgid ""
 "\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>QSL_rcvd</"
 "td><td>QSL_sent</td><td>Country</td><td>State</td><td>QSOs</td></tr>"
 msgstr ""
-"<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr"
-"\"><td>Indicativo</td><td>Fecha</td><td>Banda</td><td>Modo</td><td>QSL_rcvd</"
-"td><td>QSL_env</td><td>Entidad</td><td>Estado</td><td>QSOs</td></tr>"
 
 #: FSummary.class:208
 msgid ""
@@ -2540,9 +2524,6 @@ msgid ""
 "\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>QSL_rcvd</"
 "td><td>QSL_sent</td><td>State</td><td>County</td><td>QSOs</td></tr>"
 msgstr ""
-"<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr"
-"\"><td>Indicativo</td><td>Fecha</td><td>Banda</td><td>Modo</td><td>QSL_rcvd</"
-"td><td>QSL_env</td><td>Estado</td><td>Condado</td><td>QSOs</td></tr>"
 
 #: FSummary.class:247
 msgid ""
@@ -2550,9 +2531,6 @@ msgid ""
 "\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>QSL_rcvd</"
 "td><td>QSL_sent</td><td>Country</td><td>IOTA</td><td>QSOs</td></tr>"
 msgstr ""
-"<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr"
-"\"><td>Indicativo</td><td>Fecha</td><td>Banda</td><td>Modo</td><td>QSL_rcvd</"
-"td><td>QSL_env</td><td>Entidad</td><td>IOTA</td><td>QSOs</td></tr>"
 
 #: FSummary.class:286
 msgid ""
@@ -2560,37 +2538,35 @@ msgid ""
 "\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>QSL_rcvd</"
 "td><td>QSL_sent</td><td>Country</td><td>TPEA</td><td>QSOs</td></tr>"
 msgstr ""
-"<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr"
-"\"><td>Indicativo</td><td>Fecha</td><td>Banda</td><td>Modo</td><td>QSL_rcvd</"
-"td><td>QSL_env</td><td>Entidad</td><td>TPEA</td><td>QSOs</td></tr>"
 
 #: FSummary.class:314
 msgid "Confirmed references"
-msgstr "Referencias confirmadas"
+msgstr ""
 
 #: FSummary.class:317
 msgid "Worked references"
-msgstr "Referencias trabajadas"
+msgstr ""
 
 #: FSummary.class:364
 msgid "Summary"
-msgstr "Resumen "
+msgstr "Резюме"
 
 #: FeADIF.class:129
 msgid "Incorrect dates. Start date cannot be greater than End date."
-msgstr "Fecha incorrecta. La fecha de inicio no puede ser menor que la de fin."
+msgstr ""
+"Неправильні дати. Дата Початку не може бути більше, ніж Дата Закінчення."
 
 #: FeADIF.class:175 global.module:390
 msgid "Error exporting Record\n"
-msgstr "Error exportando registro\n"
+msgstr "-\n"
 
 #: FeADIF.class:225
 msgid "&Save as..."
-msgstr "&Guardar como..."
+msgstr "&Зберегти як..."
 
 #: FeADIF.class:230 FiADIF.class:585
 msgid "File:"
-msgstr "Archivo:"
+msgstr "Файл:"
 
 #: FeADIF.class:244 FiADIF.class:623
 msgid "QSO:"
@@ -2598,15 +2574,15 @@ msgstr "-"
 
 #: FeADIF.class:253
 msgid "Whole Log"
-msgstr "Log completo "
+msgstr "Логу"
 
 #: FeADIF.class:259
 msgid "Between two dates"
-msgstr "Entre dos fechas"
+msgstr "Між двома датами"
 
 #: FeADIF.class:311
 msgid "&Export"
-msgstr "&Exportar"
+msgstr "&Експорт"
 
 #: FeADIF.class:316 FiADIF.class:590
 msgid "QSOs:"
@@ -2617,52 +2593,52 @@ msgid ""
 "Some errors found.\n"
 "Check 'ImportErrors.txt' into User Folder?"
 msgstr ""
-"Algunos errores encontrados. ¿Comprobar\n"
-"'ImportErrors.txt' en la carpeta de usuario?"
+"Виявлені деякі помилки.\n"
+"Перевірити 'ImportErrors.txt' в Теці Користувача?"
 
 #: FiADIF.class:235
 msgid "Dupe: id="
-msgstr "Duplicado: id="
+msgstr "Дублікат: id="
 
 #: FiADIF.class:252
 msgid "Missing field/s in ADIF record. Not logged!: "
-msgstr "Campo/s no encontrado/s en ADIF. QSO no registrado!:"
+msgstr "Відсутнє поле/я в ADIF запису. QSO не записано!:"
 
 #: FiADIF.class:277
 msgid "Distance error in qso: "
-msgstr "Error en distancia con qso:  "
+msgstr "Помилка в відстані qso: "
 
 #: FiADIF.class:297
 msgid "DXCC not found for: "
-msgstr "DXCC no encontrado para: "
+msgstr "DXCC не знайдено:"
 
 #: FiADIF.class:439
 msgid "Error logging in Log_qso\n"
-msgstr "Error logging en Log_qso\n"
+msgstr "-\n"
 
 #: FiADIF.class:512
 msgid "Importing ADIF has been aborted!"
-msgstr "¡La importación de ADIF ha sido abortada!"
+msgstr "Імпорт ADIF було перервано!"
 
 #: FiADIF.class:580
 msgid "&Browse"
-msgstr "&Buscar"
+msgstr "&Перегляд"
 
 #: FiADIF.class:595
 msgid "Errors:"
-msgstr "Errores:"
+msgstr "Помилок:"
 
 #: FiADIF.class:628
 msgid "Duplicated:"
-msgstr "Duplicados:"
+msgstr "Дублікатів:"
 
 #: FiADIF.class:641
 msgid "OS Origin of ADIF file"
-msgstr "S.O. origen ADIF"
+msgstr ""
 
 #: FiADIF.class:642
 msgid "ADIF Origin"
-msgstr "Origen ADIF"
+msgstr "Оригінал ADIF"
 
 #: FiADIF.class:646
 msgid "Linux"
@@ -2678,63 +2654,63 @@ msgstr "-"
 
 #: FiADIF.class:673
 msgid "&Import"
-msgstr "&Importar"
+msgstr "&Імпорт"
 
 #: FmtoBD.class:25
 msgid "Creating temp table..."
-msgstr "Creando tabla temporal..."
+msgstr "Створення тимчасової таблиці..."
 
 #: FmtoBD.class:79
 msgid "Finished!"
-msgstr "Finalizado!"
+msgstr "Завершений!"
 
 #: FmtoBD.class:86
 msgid "Error in CreateTableTemp:\n"
-msgstr "Error en CreateTableTemp:\n"
+msgstr "-\n"
 
 #: FmtoBD.class:93
 msgid "Recreating log table..."
-msgstr "Creando tabla log..."
+msgstr "Відтворення таблиці Логу..."
 
 #: FmtoBD.class:150
 msgid "Error in CreateTableLog:\n"
-msgstr "Error en CreateTableLog:\n"
+msgstr "-\n"
 
 #: FmtoBD.class:158
 msgid "Backing up data..."
-msgstr "Haciendo copia de seguridad..."
+msgstr "Резервне копіювання даних..."
 
 #: FmtoBD.class:168
 msgid "Error in CopyData:\n"
-msgstr "Error en CopyData:\n"
+msgstr "-\n"
 
 #: FmtoBD.class:177
 msgid "Restoring data..."
-msgstr "Restaurando datos..."
+msgstr "Відновлення даних..."
 
 #: FmtoBD.class:194
 msgid "Cleaning up..."
-msgstr "Limpiando..."
+msgstr "Очищення..."
 
 #: FmtoBD.class:210
 msgid "Error in RestoreData:\n"
-msgstr "Error en RestoreData:\n"
+msgstr "-\n"
 
 #: FmtoBD.class:223
 msgid "Compacting DB has been aborted!"
-msgstr "Compactado de BD abortado!"
+msgstr "Стискання БД було скасовано!"
 
 #: FmtoBD.class:231
 msgid ""
 "Compacting and recalculating records\n"
 "Please, wait for a while..."
 msgstr ""
-"Compactando y recalculando registros\n"
-"Espera un momento..."
+"Стискання та перерахунок записів\n"
+"Будь ласка, почекайте якийсь час..."
 
 #: FmtoBD.class:261
 msgid "Compact Database"
-msgstr "Compactar Base de Datos"
+msgstr "Стискання Бази Даних"
 
 #: FmtoBD.class:269
 msgid ""
@@ -2743,60 +2719,54 @@ msgid ""
 "so it's advisable to backup the database before\n"
 "proceeding."
 msgstr ""
-"Esto modifica la base de datos\n"
-"Se compactará y recalculará los numeros de registros,\n"
-"por lo que es aconsejable realizar un respaldo\n"
-"antes de proceder."
+"Ця операція змінює базу даних.\n"
+"Вона стане компактна і буде перераховано записи.\n"
+"Перед продовженням, наполегливо рекомендуємо\n"
+"ЗРОБИТИ РЕЗЕРВНУ КОПІЮ БАЗИ ДАНИХ!"
 
 #: Fservers.class:36
 msgid ""
 "Incorrect format\n"
 "Check for : (colon) between address and port number."
 msgstr ""
-"Formato incorrecto\n"
-"Comprueba que has escrito : (dos puntos) entre\n"
-"la dirección y el nº de puerto."
+"Неправильний формат!\n"
+"Перевірте : (двокрапка) між адресою і номером порту."
 
 #: Fservers.class:61
 msgid "Add telnet server"
-msgstr "Añadir servidor telnet"
+msgstr "Додати telnet сервер"
 
 #: Fservers.class:69
 msgid ""
 "Write down server address followed by :port<br>\n"
 "i.e.:  <span style=\"color:#0000FF;\">eadx.net:23</span>"
 msgstr ""
-"Escribe la direccion del servidor seguida de :puerto<br>\n"
-"p.ej.:  <span style=\"color:#0000FF;\">eadx.net:23</span>"
+"Запишіть адресу сервера та :порт<br>\n"
+"Наприклад:  <span style=\"color:#0000FF;\">eadx.net:23</span>"
 
 #: HQTH.class:167
 msgid ""
 "Error reading XML (Data HamQTH)\n"
 " Line: "
-msgstr "-"
+msgstr ""
 
 #: QRZ.class:174
 msgid ""
 "Error reading XML (Data QRZ.COM)\n"
 " Line: "
-msgstr ""
-"Error leyendo XML (Data QRZ.COM)\n"
-" Linea: "
+msgstr "-"
 
 #: dbLog.module:37
 msgid "Error connecting to database: "
-msgstr "Error conectando a base de datos: "
+msgstr "Помилка підключення до бази даних: "
 
 #: global.module:430
 msgid ""
 "There is a new version of dfhLog.\n"
 "Do you want to visit the download page?"
 msgstr ""
-"Hay una nueva versión de dfhLog.\n"
-"¿Deseas visitar la página de descarga?"
-
-#~ msgid "dfhlog"
-#~ msgstr "-"
+"Існує нова версія dfhLog.\n"
+"Ви хочете відвідати сторінку завантаження?"
 
 #~ msgid ""
 #~ "Amateur Radio Logging program\n"
@@ -2810,5 +2780,5 @@ msgstr ""
 #~ "English, Spanish, Galego, Portugues, Ukrainian"
 #~ msgstr "-"
 
-#~ msgid "(c) 2000-2009 EA7DFH"
+#~ msgid "dfhlog"
 #~ msgstr "-"
