@@ -391,8 +391,9 @@ PUBLIC SUB btnOK_Click()
         txtRemarks.Clear
         vDist.Value = NULL
         chkTXT.Value = FALSE
+        txtCall.SetFocus
     ENDIF 
-    txtCall.SetFocus
+    
 END
 
 PRIVATE FUNCTION parseCbo(cbo AS ComboBox) AS String

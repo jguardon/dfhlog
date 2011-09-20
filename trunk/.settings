@@ -248,10 +248,14 @@ SearchComment=False
 SearchString=True
 
 [OpenFile]
-File[1]="cty.class:0.0"
-File[2]="global.module:51.3"
+File[1]="FSearch.form"
+File[2]="FSearch.class:393.24"
 Active=2
-Count=2
+File[3]="FFindQSO.form"
+File[4]="FFindQSO.class:0.0"
+File[5]="FLog.form"
+File[6]="FLog.class:0.0"
+Count=6
 
 [Watches]
 Count=0
