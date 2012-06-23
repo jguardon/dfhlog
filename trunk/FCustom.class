@@ -1,0 +1,117 @@
+' Gambas class file
+' dfhLog- Hamradio LogBook
+'     Copyright (C) 2009  Jesús Guardón, EA7DFH <ea7dfh@gmail.com>
+' 
+'     This program is free software: you can redistribute it and/or modify
+'     it under the terms of the GNU General Public License as published by
+'     the Free Software Foundation, either version 3 of the License, or
+'     (at your option) any later version.
+' 
+'     This program is distributed in the hope that it will be useful,
+'     but WITHOUT ANY WARRANTY; without even the implied warranty of
+'     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'     GNU General Public License for more details.
+' 
+'     You should have received a copy of the GNU General Public License
+'     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+PRIVATE current AS String
+
+PUBLIC SUB Form_Open()
+     
+    current = Fmain.lblini["Default/Model", "APPLI 1270"]
+    txtDescription.Text = Fmain.lblini[current & "/Description"]
+    vbWidth.Value = Fmain.lblini[current & "/Width"]
+    vbHeight.Value = Fmain.lblini[current & "/Height"]
+    vbCols.Value = Fmain.lblini[current & "/Cols"]
+    vbRows.Value = Fmain.lblini[current & "/Rows"]
+    vbTMargin.Value = Fmain.lblini[current & "/TMargin"]
+    vbLMargin.Value = Fmain.lblini[current & "/LMargin"]
+    spOffsX.Value = Fmain.lblini[current & "/XOffset", 0.0] * 10
+    spOffsY.Value = Fmain.lblini[current & "/YOffset", 0.0] * 10
+    cbtCall.Value = Fmain.lblini["Colors/Call", 0]
+    cbtData.Value = Fmain.lblini["Colors/Data", 0]
+    btnCallFont.Text = Fmain.lblini["Fonts/Call"]
+    btnCallFont.Font = Font[Fmain.lblini["Fonts/Call", "Arial"]]
+    btnDataFont.Text = Fmain.lblini["Fonts/Data"]
+    btnDataFont.Font = Font[Fmain.lblini["Fonts/Data", "Arial"]]
+
+END
+
+PUBLIC SUB setControls(custom AS Boolean, title AS String)
+    ME.Title = title
+    IF custom = FALSE THEN 
+        FrameCustom.Enabled = FALSE
+    ENDIF
+END
+
+
+PUBLIC SUB btnOK_Click()
+    ' comprobar medidas con A4
+    IF (vbHeight.Value * vbRows.Value) + vbTMargin.Value > 297 OR (vbWidth.Value * vbCols.Value) + vbLMargin.Value > 210 THEN 
+        Message.Warning(("Either, total height or total width values\nare greater than A4 dimensions!"))
+        RETURN 
+    ELSE 
+        IF FrameCustom.Enabled THEN 
+            Fmain.lblini[current & "/Description"] = txtDescription.Text
+            Fmain.lblini[current & "/Width"] = vbWidth.Value
+            Fmain.lblini[current & "/Height"] = vbHeight.Value
+            Fmain.lblini[current & "/Cols"] = vbCols.Value
+            Fmain.lblini[current & "/Rows"] = vbRows.Value
+            Fmain.lblini[current & "/TMargin"] = vbTMargin.Value
+            Fmain.lblini[current & "/LMargin"] = vbLMargin.Value
+            
+        ENDIF
+        
+        Fmain.lblini.Save 
+        ME.Close
+    ENDIF 
+END
+
+PUBLIC SUB btnCancel_Click()
+    ME.Close
+END
+
+PUBLIC SUB cbtCall_Change()
+    Fmain.lblini["Colors/Call"] = cbtCall.Value
+    Fmain.lblini.Save 
+    FSetup.drawTestLabel()
+END
+
+PUBLIC SUB cbtData_Change()
+    Fmain.lblini["Colors/Data"] = cbtData.Value
+    Fmain.lblini.Save 
+    FSetup.drawTestLabel()
+END
+
+PUBLIC SUB btnCallFont_Click()
+    IF Dialog.SelectFont() THEN RETURN
+ 
+    Fmain.lblini["Fonts/Call"] = Dialog.Font.ToString()
+    btnCallFont.Text = Dialog.Font.ToString()
+    btnCallFont.Font = Dialog.Font
+    Fmain.lblini.Save 
+    FSetup.drawTestLabel()
+END
+
+PUBLIC SUB btnDataFont_Click()
+    IF Dialog.SelectFont() THEN RETURN
+ 
+    Fmain.lblini["Fonts/Data"] = Dialog.Font.ToString()
+    btnDataFont.Text = Dialog.Font.ToString()
+    btnDataFont.Font = Dialog.Font
+    Fmain.lblini.Save 
+    FSetup.drawTestLabel()
+END
+
+PUBLIC SUB spOffsX_Change()
+    Fmain.lblini[current & "/XOffset"] = spOffsX.Value / 10
+    Fmain.lblini.Save 
+    FSetup.drawTestLabel()
+END
+
+PUBLIC SUB spOffsY_Change()
+    Fmain.lblini[current & "/YOffset"] = spOffsY.Value / 10
+    FSetup.drawTestLabel()
+    Fmain.lblini.Save 
+END

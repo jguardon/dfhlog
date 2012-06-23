@@ -1,0 +1,302 @@
+# Gambas Form File 2.0
+
+{ Form Form
+  MoveScaled(0,0,109,81)
+  Text = ("")
+  Icon = Picture["icons/dfhlog24.png"]
+  Arrangement = Arrange.Horizontal
+  { SidePanel1 SidePanel
+    MoveScaled(1,1,30,79)
+    Arrangement = Arrange.Fill
+    Padding = 3
+    Orientation = Align.Right
+    Resizable = False
+    Border = True
+    { ToolPanel1 ToolPanel
+      MoveScaled(1,2,27,75)
+      Spacing = 2
+      Count = 2
+      TextFont = Font["Bold"]
+      Animated = True
+      Index = 0
+      Text = ("Colors")
+      Picture = Picture["icon:/16/color"]
+      { Frame2 Frame
+        MoveScaled(0,1,27,19)
+        Text = ("Grid")
+        { Label8 Label
+          MoveScaled(2,4,16,3)
+          Text = ("Main Division:")
+        }
+        { cbtnMDiv ColorButton
+          MoveScaled(19,3,6,4)
+          Value = &HC06000&
+        }
+        { Label9 Label
+          MoveScaled(2,9,16,3)
+          Text = ("Sub Division:")
+        }
+        { cbtnSubDiv ColorButton
+          MoveScaled(19,8,6,4)
+          Value = &H909090&
+        }
+        { Label10 Label
+          MoveScaled(2,14,16,3)
+          Text = ("GridSquares:")
+        }
+        { cbtnGSquares ColorButton
+          MoveScaled(19,13,6,4)
+          Value = &H00FF00&
+        }
+      }
+      { Frame3 Frame
+        MoveScaled(0,21,27,29)
+        Text = ("DX Lines")
+        { Label11 Label
+          MoveScaled(2,4,16,3)
+          Text = ("DX on 6M:")
+        }
+        { cbtn6M ColorButton
+          MoveScaled(19,3,6,4)
+          Value = &H00FF00&
+        }
+        { Label12 Label
+          MoveScaled(2,9,16,3)
+          Text = ("DX on 4M:")
+        }
+        { cbtn4M ColorButton
+          MoveScaled(19,8,6,4)
+          Value = &HFF8000&
+        }
+        { Label13 Label
+          MoveScaled(2,14,16,3)
+          Text = ("DX on 2M:")
+        }
+        { cbtn2M ColorButton
+          MoveScaled(19,13,6,4)
+          Value = &HFF0000&
+        }
+        { Label14 Label
+          MoveScaled(2,19,16,3)
+          Text = ("DX on 70CM:")
+        }
+        { cbtn70CM ColorButton
+          MoveScaled(19,18,6,4)
+          Value = &H0000FF&
+        }
+        { Label15 Label
+          MoveScaled(2,24,16,3)
+          Text = ("DX on +23CM:")
+        }
+        { cbtnSHF ColorButton
+          MoveScaled(19,23,6,4)
+          Value = &HFF00FF&
+        }
+      }
+      { Timer1 #Timer
+        #X = 14
+        #Y = 570
+        Enabled = True
+        Delay = 5000
+      }
+      { btnSave Button
+        MoveScaled(6,65,16,3)
+        Text = ("&Save Settings")
+      }
+      { Frame4 Frame
+        MoveScaled(0,51,27,13)
+        Text = ("Behavior")
+        { chkMUF CheckBox
+          MoveScaled(2,3,24,3)
+          Text = ("Sound Alert on MUF/ES")
+        }
+        { Label16 Label
+          MoveScaled(2,7,12,3)
+          Text = ("DX Minutes:")
+        }
+        { spDXTime SpinBox
+          MoveScaled(16,7,9,3)
+          ToolTip = ("Minutes to hold DX Lines on Map")
+          MinValue = 1
+          MaxValue = 120
+          Value = 30
+        }
+      }
+      Index = 1
+      Text = ("Filter")
+      Picture = Picture["icon:/16/find"]
+      { dateIni ValueBox
+        MoveScaled(13,3,13,3)
+        ToolTip = ("Start Date")
+        Type = ValueBox.Date
+      }
+      { dateFin ValueBox
+        MoveScaled(13,8,13,3)
+        ToolTip = ("End Date")
+        Type = ValueBox.Date
+      }
+      { Label4 Label
+        MoveScaled(1,13,12,3)
+        AutoResize = True
+        Text = ("Distance >:")
+      }
+      { Label5 Label
+        MoveScaled(1,18,12,3)
+        AutoResize = True
+        Text = ("Mode:")
+      }
+      { Label6 Label
+        MoveScaled(1,23,12,3)
+        AutoResize = True
+        Text = ("Band:")
+      }
+      { Label7 Label
+        MoveScaled(1,28,12,3)
+        AutoResize = True
+        Text = ("Prop. Mode:")
+      }
+      { Frame1 Frame
+        MoveScaled(1,32,25,15)
+        Text = ("")
+        { rbWorked RadioButton
+          MoveScaled(3,2,19,3)
+          Text = ("Worked")
+          Value = True
+        }
+        { rbConf RadioButton
+          MoveScaled(3,6,19,3)
+          Text = ("Confirmed")
+        }
+        { rbNotConf RadioButton
+          MoveScaled(3,10,19,3)
+          Text = ("Not Confirmed")
+        }
+      }
+      { btnOK Button
+        MoveScaled(1,49,25,4)
+        Text = ("OK")
+      }
+      { Label2 Label
+        MoveScaled(1,3,12,3)
+        AutoResize = True
+        Text = ("Start:")
+      }
+      { Label3 Label
+        MoveScaled(1,8,12,3)
+        AutoResize = True
+        Text = ("End:")
+      }
+      { cboModo ComboBox
+        MoveScaled(13,18,13,3)
+        ToolTip = ("Mode selection")
+        ReadOnly = True
+        Text = ("")
+      }
+      { cboBand ComboBox
+        MoveScaled(13,23,13,3)
+        ToolTip = ("Band selection")
+        ReadOnly = True
+        Text = ("")
+      }
+      { cboPropa ComboBox
+        MoveScaled(13,28,13,3)
+        ToolTip = ("Prop. Mode Selection")
+        ReadOnly = True
+        Text = ("")
+      }
+      { vDist ValueBox
+        MoveScaled(13,13,13,3)
+        ToolTip = ("Distance greater than...")
+      }
+      Index = 0
+    }
+  }
+  { Panel1 Panel
+    MoveScaled(32,1,77,79)
+    Expand = True
+    Arrangement = Arrange.Vertical
+    { HBox1 HBox
+      MoveScaled(0,0,87,3.1429)
+      Spacing = 5
+      { ToolBar1 ToolBar
+        MoveScaled(0,0,36,3)
+        { chkPanel ToolButton
+          MoveScaled(0,0,3,3)
+          ToolTip = ("Show/Hide Panel")
+          Text = ("")
+          Picture = Picture["icon:/16/first"]
+          Border = True
+          Toggle = True
+        }
+        { chkSquares ToolButton
+          MoveScaled(5,0,3,3)
+          ToolTip = ("Show Grid")
+          Text = ("")
+          Picture = Picture["icons/sq.png"]
+          Border = True
+          Toggle = True
+        }
+        { chkDX ToolButton
+          MoveScaled(9,0,3,3)
+          ToolTip = ("Show DX Lines")
+          Text = ("")
+          Picture = Picture["icons/dxLine.png"]
+          Border = True
+          Toggle = True
+        }
+        { chkDXtxt ToolButton
+          MoveScaled(13,0,3,3)
+          ToolTip = ("Show DX Callsign")
+          Text = ("")
+          Picture = Picture["icons/btext.png"]
+          Border = True
+          Toggle = True
+        }
+        { btnClear ToolButton
+          MoveScaled(18,0,3,3)
+          ToolTip = ("Clean Map")
+          Text = ("")
+          Picture = Picture["icons/gtk-delete.png"]
+          Border = True
+        }
+        { Separator1 Separator
+          MoveScaled(21,0,1,3)
+        }
+        { ToolButton1 ToolButton
+          MoveScaled(22,0,3,3)
+          ToolTip = ("Close")
+          Text = ("")
+          Picture = Picture["icon:/16/quit"]
+          Border = True
+        }
+      }
+      { Label1 Label
+        MoveScaled(38,0,21,3)
+        Expand = True
+        Text = ("Coords:")
+      }
+      { lblMUF Label
+        MoveScaled(60,0,17,3)
+        Visible = False
+        Font = Font["Bold"]
+        Background = &HFF0000&
+        Foreground = &HFFFF00&
+        Text = ("2M SPORADIC")
+        Alignment = Align.Center
+      }
+    }
+    { HBox2 HBox
+      MoveScaled(0,4,87,75)
+      Expand = True
+      { ScrollView1 ScrollView
+        MoveScaled(0,0,77,74)
+        Expand = True
+        { canvas DrawingArea
+          MoveScaled(0,0,117,88)
+          Tracking = True
+          Merge = True
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,48 @@
+' Gambas module file
+' dfhLog- Hamradio LogBook
+'     Copyright (C) 2009  Jesús Guardón, EA7DFH <ea7dfh@gmail.com>
+' 
+'     This program is free software: you can redistribute it and/or modify
+'     it under the terms of the GNU General Public License as published by
+'     the Free Software Foundation, either version 3 of the License, or
+'     (at your option) any later version.
+' 
+'     This program is distributed in the hope that it will be useful,
+'     but WITHOUT ANY WARRANTY; without even the implied warranty of
+'     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'     GNU General Public License for more details.
+' 
+'     You should have received a copy of the GNU General Public License
+'     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+PUBLIC SUB Main() 'Select language from command line args. You need to install selected locales to work
+    'USAGE dfhLog.gambas -xx  (where xx is your selected language)
+    DIM a AS String
+    DIM f AS Form
+    IF Application.Args[1] THEN 'if no args, it shows in your default lang
+        a = Application.Args[1]
+        SELECT CASE a
+            CASE "-es"
+                System.Language = "es_ES.UTF-8"
+            CASE "-gl"
+                System.Language = "gl_ES.UTF-8"
+            CASE "-pt"
+                System.Language = "pt_PT.UTF-8"
+            CASE "-en"
+                System.Language = "en_US.UTF-8"
+            CASE "-uk"
+                System.Language = "uk_UK.UTF-8"
+            'TODO add more languages
+            CASE ELSE 
+                Message.Info(("Possible values for arguments are:\n-es (for Spanish)\n-gl (for Galego)\n" &
+                "-pt (for Portuguesse)\n-en (for English)\n-uk (for Ukrainian)"))            
+        END SELECT
+    ENDIF
+    IF NOT Exist(User.Home &/ ".fonts") THEN TRY MKDIR User.Home &/ ".fonts/"
+    IF NOT Exist(User.Home &/ ".fonts/SF.ttf") THEN TRY COPY "data/SF.ttf" TO User.Home &/ ".fonts/SF.ttf"
+    FMain.Show
+END
+
+
+

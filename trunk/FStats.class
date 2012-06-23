@@ -1,0 +1,115 @@
+' Gambas class file
+' dfhLog- Hamradio LogBook
+'     Copyright (C) 2009  Jesús Guardón, EA7DFH <ea7dfh@gmail.com>
+' 
+'     This program is free software: you can redistribute it and/or modify
+'     it under the terms of the GNU General Public License as published by
+'     the Free Software Foundation, either version 3 of the License, or
+'     (at your option) any later version.
+' 
+'     This program is distributed in the hope that it will be useful,
+'     but WITHOUT ANY WARRANTY; without even the implied warranty of
+'     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'     GNU General Public License for more details.
+' 
+'     You should have received a copy of the GNU General Public License
+'     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+PUBLIC SUB Form_Open()
+    initTable
+    createStats
+END
+
+PRIVATE SUB initTable()
+    DIM bands AS String
+    DIM i AS Integer = 1
+    DIM j AS Integer
+    DIM sEnt AS String    
+    world.$aListDxcc.Sort
+    tblGStats.Rows.Count = world.$aListDxcc.Count  
+    
+    tblGStats.Columns.Count = global.getBandas().Count + 1
+    tblGStats.Columns[0].Text = ("Entity/Band")
+    FOR EACH bands IN global.getBandas()
+        tblGStats.Columns[i].Text = bands
+        tblGStats.Columns[i].Width = 50
+        INC i
+    NEXT
+    tblGStats.Columns[0].Width = 150
+    FOR EACH sEnt IN world.$aListDxcc        
+        tblGStats[j, 0].Text = sEnt
+      INC j 
+    NEXT  
+END
+
+PRIVATE SUB createStats()
+    DIM hres AS Result    
+    DIM sql AS String
+    DIM banda AS String 
+    DIM sAux AS String 
+    DIM iRow, iCol AS Integer 
+    DIM f AS String = Temp$ & ".jpg"  
+    
+    sql = "SELECT country, band, qsl_rcvd FROM log  GROUP BY  qsl_rcvd,  band, country ORDER BY qsl_rcvd;"
+    IF FMain.connDB() THEN RETURN
+    hres = dbLog.cnLog.Exec(sql)    
+     
+    FOR EACH hres 
+        IF world.$aListDxcc.Exist(hres!country) THEN 
+            iRow = world.$aListDxcc.Find(hres!country)
+            IF global.getBandas().Find(hres!band) = -1 THEN CONTINUE 
+            iCol = global.getBandas().Find(hres!band) + 1
+            IF hres!qsl_rcvd = "Y" THEN 
+                tblGStats[iRow, iCol].Alignment = 3
+                tblGStats[iRow, iCol].Font = Font["Bold"]
+                tblGStats[iRow, iCol].BackColor = FMain.ini["Colores/Confirmado", Color.Green]
+                tblGStats[iRow, iCol].ForeColor = Color.White
+                tblGStats[iRow, iCol].Text = ("C")
+            ELSE
+                tblGStats[iRow, iCol].Alignment = 3 
+                tblGStats[iRow, iCol].Font = Font["Bold"]
+                tblGStats[iRow, iCol].BackColor = FMain.ini["Colores/Trabajado", Color.Orange]
+                tblGStats[iRow, iCol].ForeColor = Color.White
+                tblGStats[iRow, iCol].Text = ("W")
+            ENDIF 
+        ENDIF     
+    NEXT
+    sql = "SELECT DISTINCT country FROM log;"    
+    hres = dbLog.cnLog.Exec(sql)
+    lblTotal.Text = ("Total Entities Worked: ") & hres.Count
+    sql = "SELECT DISTINCT country FROM log WHERE qsl_rcvd='Y';"    
+    hres = dbLog.cnLog.Exec(sql)
+    lblTotalCfd.Text = ("Total Entities Confirmed: ") & hres.Count
+    
+    CATCH 
+        Message.Error(Error.Text & "\n" & Error.Where)  
+END
+
+PUBLIC SUB btnClose_Click()
+    ME.Close()
+END
+
+PUBLIC SUB btnPrint_Click()
+    DIM i, j, k AS Integer
+    DIM s AS String
+    DIM fic AS File
+    DIM path AS String = Temp$ & ".csv"    
+    s &= "\"\","
+    FOR k = 0 TO global.getBandas().Count - 1
+        s &= "\"" & global.getBandas()[k] & "\","
+    NEXT
+    FOR i = 0 TO tblGStats.Rows.Count - 1
+        s &= "\n"
+        FOR j = 0 TO tblGStats.Columns.Count - 1
+            s &= "\"" & tblGStats[i, j].Text & "\","
+        NEXT 
+    NEXT 
+    OPEN path FOR WRITE CREATE AS #fic
+    PRINT #fic, s
+    CLOSE #fic
+    'Desktop.Open(path)
+    SHELL "ooffice -calc " & path 
+    CATCH 
+        Message.Error(Error.Text & "\n" & Error.Where)    
+END

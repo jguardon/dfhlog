@@ -1,0 +1,218 @@
+# Gambas Form File 2.0
+
+{ Form Form
+  MoveScaled(0,0,129,79)
+  Text = ("Search QSOs")
+  Icon = Picture["icon:/16/find"]
+  Arrangement = Arrange.Vertical
+  Spacing = 4
+  Padding = 3
+  { HBox3 HBox
+    MoveScaled(0,0,128,25)
+    { fControls Frame
+      MoveScaled(0,1,127,23)
+      Expand = True
+      Text = ("Search QSO")
+      { dtIni ValueBox
+        MoveScaled(2,6,15,3)
+        Type = ValueBox.Date
+      }
+      { btnCalIni Button
+        MoveScaled(17,6,3,3)
+        ToolTip = ("DatePicker")
+        Text = ("")
+        Picture = Picture["icon:/16/view-detail"]
+      }
+      { dtFin ValueBox
+        MoveScaled(2,12,15,3)
+        Type = ValueBox.Date
+      }
+      { btnCalFin Button
+        MoveScaled(17,12,3,3)
+        ToolTip = ("DatePicker")
+        Text = ("")
+        Picture = Picture["icon:/16/view-detail"]
+      }
+      { txtCall TextBox
+        MoveScaled(24,6,16,3)
+        Tag = "clear"
+        Text = ("")
+        MaxLength = 20
+      }
+      { txtLoc TextBox
+        MoveScaled(24,12,16,3)
+        Tag = "clear"
+        Text = ("")
+        MaxLength = 6
+      }
+      { vDist ValueBox
+        MoveScaled(24,18,16,3)
+        Tag = "clear"
+        ToolTip = ("Distance greater than...")
+        MaxLength = 6
+      }
+      { txtMgr TextBox
+        MoveScaled(44,6,16,3)
+        Tag = "clear"
+        Text = ("")
+        MaxLength = 20
+      }
+      { txtQTH TextBox
+        MoveScaled(44,12,16,3)
+        Tag = "clear"
+        Text = ("")
+        MaxLength = 50
+      }
+      { txtRemarks TextBox
+        MoveScaled(44,18,16,3)
+        Tag = "clear"
+        Text = ("")
+        MaxLength = 50
+      }
+      { cboBand ComboBox
+        MoveScaled(64,6,18,3)
+        ReadOnly = True
+        Text = ("")
+      }
+      { cboMode ComboBox
+        MoveScaled(64,12,18,3)
+        ReadOnly = True
+        Text = ("")
+      }
+      { cboProp ComboBox
+        MoveScaled(64,18,18,3)
+        ReadOnly = True
+        Text = ("")
+      }
+      { Frame3 Frame
+        MoveScaled(84,3,20,14)
+        Text = ("Order by:")
+        { cboOrder ComboBox
+          MoveScaled(1,3,17,3)
+          ToolTip = ("Choose Order by")
+          ReadOnly = True
+          Text = ("")
+        }
+        { rbASC RadioButton
+          MoveScaled(2,7,15,3)
+          Text = ("Ascending")
+          Value = True
+        }
+        { rbDESC RadioButton
+          MoveScaled(2,10,15,3)
+          Text = ("Descending")
+        }
+      }
+      { Frame2 Frame
+        MoveScaled(105,4,20,10)
+        Text = ("")
+        { chkWkd RadioButton
+          MoveScaled(1,2,17,3)
+          Text = ("Worked")
+          Value = True
+        }
+        { chkCfd RadioButton
+          MoveScaled(1,6,17,3)
+          Text = ("Confirmed")
+        }
+      }
+      { chkSWT CheckBox
+        MoveScaled(87,18,18,3)
+        Foreground = &H000080&
+        ToolTip = ("Search while typing")
+        Text = ("Auto Search")
+      }
+      { btnOK Button
+        MoveScaled(105,15,20,6)
+        ToolTip = ("Tick the checkbox to export TXT")
+        Text = ("&Search")
+        Picture = Picture["icon:/24/find"]
+        Default = True
+      }
+      { btnReset Button
+        MoveScaled(2,18,18,3)
+        Foreground = &H000080&
+        Text = ("Reset Dates")
+      }
+      { Label1 Label
+        MoveScaled(2,3,15,3)
+        Text = ("Start date:")
+      }
+      { Label3 Label
+        MoveScaled(2,9,15,3)
+        Text = ("End date:")
+      }
+      { Label4 Label
+        MoveScaled(24,3,14,3)
+        Text = ("Callsign:")
+      }
+      { Label5 Label
+        MoveScaled(24,9,14,3)
+        Text = ("Locator:")
+      }
+      { Label7 Label
+        MoveScaled(64,15,14,3)
+        Text = ("Prop. Type:")
+      }
+      { Label8 Label
+        MoveScaled(64,9,14,3)
+        Text = ("Mode:")
+      }
+      { Label9 Label
+        MoveScaled(64,3,14,3)
+        Text = ("Band:")
+      }
+      { Label6 Label
+        MoveScaled(24,15,13,3)
+        Text = ("Distance >:")
+      }
+      { Label11 Label
+        MoveScaled(44,3,14,3)
+        Text = ("Manager:")
+      }
+      { Label12 Label
+        MoveScaled(44,9,14,3)
+        Text = ("QTH:")
+      }
+      { Label13 Label
+        MoveScaled(44,15,13,3)
+        Text = ("Comments:")
+      }
+      { chkTXT CheckBox
+        MoveScaled(110,17,2,2)
+        Foreground = &HFF0000&
+        ToolTip = ("Export in TXT format")
+        Text = ("Export TXT")
+      }
+    }
+  }
+  { HBox1 HBox
+    MoveScaled(0,25,128,49)
+    Expand = True
+    { cv GridView
+      MoveScaled(0,1,128,48)
+      Expand = True
+      Mode = Select.Multiple
+      Header = GridView.Horizontal
+    }
+  }
+  { HBox2 HBox
+    MoveScaled(0,74,128,4)
+    Spacing = 5
+    Padding = 3
+    { lblNumRec Label
+      MoveScaled(1,1,40,3)
+      AutoResize = True
+      Text = ("Records:")
+    }
+    { Label2 Label
+      MoveScaled(42,1,67,3)
+      Expand = True
+      Text = ("")
+    }
+    { btnClose Button
+      MoveScaled(111,1,16,3)
+      Text = ("&Close")
+    }
+  }
+}

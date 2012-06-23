@@ -1,0 +1,220 @@
+' Gambas class file
+' dfhLog- Hamradio LogBook
+'     Copyright (C) 2009  Jesús Guardón, EA7DFH <ea7dfh@gmail.com>
+' 
+'     This program is free software: you can redistribute it and/or modify
+'     it under the terms of the GNU General Public License as published by
+'     the Free Software Foundation, either version 3 of the License, or
+'     (at your option) any later version.
+' 
+'     This program is distributed in the hope that it will be useful,
+'     but WITHOUT ANY WARRANTY; without even the implied warranty of
+'     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'     GNU General Public License for more details.
+' 
+'     You should have received a copy of the GNU General Public License
+'     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+PRIVATE $type AS Integer
+PRIVATE $sWkdcfd AS String
+
+PUBLIC SUB Form_Open()
+
+    DIM banda, modo, propa AS String
+    
+    cboBand.Add(("All"), 0)
+    FOR EACH banda IN global.getBandas()  
+        cboBand.Add(banda)
+    NEXT
+    cboMode.Add(("All"), 0)
+    FOR EACH modo IN global.getModos()    
+        cboMode.Add(modo)
+    NEXT 
+    cboProp.Add(("All"), 0)
+    FOR EACH propa IN global.getPropa()    
+        cboProp.Add(propa)
+    NEXT
+
+END
+
+PRIVATE FUNCTION parseCbo(cbo AS ComboBox) AS String
+    DIM s AS String
+    
+    IF cbo.Index = 0 THEN 
+      s = "%"
+    ELSE 
+      s = cbo.Text
+    ENDIF 
+    
+    RETURN s
+
+END
+
+PUBLIC SUB getSummary(type AS Integer)
+    
+    $type = type
+ 
+    SELECT CASE $type
+    
+        CASE 1 'main        
+            lblSummary.Text = ("Main Squares Summary")            
+        CASE 2 'squares
+            lblSummary.Text = ("Gridsquares Summary")
+        CASE 3 'eme
+            lblSummary.Text = ("EME Summary")
+            Label1.Visible = FALSE
+            cboProp.Visible = FALSE
+        
+    END SELECT 
+    
+    ME.ShowModal()
+    
+END 
+
+PRIVATE SUB getMainSq(banda AS String, modo AS String, prop AS String, wcd AS String)
+    DIM hres AS Result
+    DIM sql AS String
+    DIM f AS File
+    DIM countRef AS Integer = 0
+    DIM totalQSO AS Integer = 0
+    DIM path AS String = Temp & ".html"
+    
+    f = OPEN path FOR OUTPUT APPEND     
+    
+    IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN 
+    sql = "select call, qso_date, band, mode, prop_mode, qsl_rcvd, qsl_sent, country ,gridsquare, count(call) as num from log where band like &1 and mode like &2 and prop_mode like &3 and qsl_rcvd like &4 and gridsquare <>'' group by substr(gridsquare,1,2) order by gridsquare"
+    ' select call, qso_date, gridsquare , count(call)  from log where band='2M' and gridsquare <>'' and qsl_rcvd='Y'  group by substr(gridsquare,0,4) order by gridsquare, id 
+    hres = dbLog.cnLog.Exec(sql, parseCbo(cboBand), parseCbo(cboMode), parseCbo(cboProp), wcd)
+    PRINT #f, html.header("Main Squares Summary")
+    PRINT #f, ("<h2>Main Squares ") & $sWkdcfd & (" by ") & FMain.ini["Estacion/QRZ"] & (" in Band = ") & cboBand.Text & ", Mode = " & cboMode.Text & (" and Propagation mode = ") & cboProp.Text & "</h2><br>\n"
+    PRINT #f, ("<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>Prop. Mode</td><td>QSL_rcvd</td><td>QSL_sent</td><td>Country</td><td>Gridsquare</td><td>Main Grid</td><td>QSOs</td></tr>")
+    
+    DO WHILE hres.Available    
+      PRINT #f, "<tr><td>" & hres!call & "</td><td>" & global.parseFecha(hres!qso_date) & "</td><td>" & hres!band & "</td><td>" & hres!mode & "</td><td>" & hres!prop_mode & "</td><td>" & hres!qsl_rcvd & "</td><td>" & hres!qsl_sent & "</td><td>" & hres!country & "</td><td>" & hres!gridsquare & "</td><td>" & Left(hres!gridsquare, 2) & "</td><td align=\"right\">" & hres!num & "</td></tr>"
+      INC countRef
+      totalQSO += CInt(hres!num)
+      hres.MoveNext()
+    LOOP
+    PRINT #f, ("<tr><td colspan=\"8\"></td><td><b>Total References</b></td><td align=\"right\">") & countRef & "</td>"
+    PRINT #f, ("<tr><td colspan=\"8\"></td><td><b>Total QSO</b></td><td align=\"right\" colspan=\"2\">") & totalQSO & "</td>"
+    PRINT #f, "</table>"
+    PRINT #f, html.footer()
+    
+      
+    CLOSE #f
+    Desktop.Open(path)
+    ME.Close()
+    
+    CATCH 
+        Message.Error(("Error in ") & "getMainSq\n" & Error.Text & "\n" & Error.Where)
+  
+END
+
+PRIVATE SUB getSqs(banda AS String, modo AS String, prop AS String, wcd AS String)
+    DIM hres AS Result
+    DIM sql AS String
+    DIM f AS File
+    DIM countRef AS Integer = 0
+    DIM totalQSO AS Integer = 0
+    DIM path AS String = Temp & ".html"
+    
+    f = OPEN path FOR OUTPUT APPEND     
+    
+    IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN 
+    sql = "select call, qso_date, band, mode, prop_mode, qsl_rcvd, qsl_sent, country ,gridsquare, count(call) as num from log where band like &1 and mode like &2 and prop_mode like &3 and qsl_rcvd like &4 and gridsquare <>'' group by substr(gridsquare,1,4) order by gridsquare"
+    ' select call, qso_date, gridsquare , count(call)  from log where band='2M' and gridsquare <>'' and qsl_rcvd='Y'  group by substr(gridsquare,0,4) order by gridsquare, id 
+    hres = dbLog.cnLog.Exec(sql, parseCbo(cboBand), parseCbo(cboMode), parseCbo(cboProp), wcd)
+    PRINT #f, html.header("Gridquares Summary")
+    PRINT #f, ("<h2>Gridsquares ") & $sWkdcfd & (" by ") & FMain.ini["Estacion/QRZ"] & (" in band = ") & cboBand.Text & (", mode = ") & cboMode.Text & (" and Propagation mode = ") & cboProp.Text & "</h2><br>\n"
+    PRINT #f, ("<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>Prop. Mode</td><td>QSL_rcvd</td><td>QSL_sent</td><td>Country</td><td>Gridsquare</td><td>Main Grid</td><td>QSOs</td></tr>")
+    
+    DO WHILE hres.Available    
+      PRINT #f, "<tr><td>" & hres!call & "</td><td>" & global.parseFecha(hres!qso_date) & "</td><td>" & hres!band & "</td><td>" & hres!mode & "</td><td>" & hres!prop_mode & "</td><td>" & hres!qsl_rcvd & "</td><td>" & hres!qsl_sent & "</td><td>" & hres!country & "</td><td>" & hres!gridsquare & "</td><td>" & Left(hres!gridsquare, 4) & "</td><td align=\"right\">" & hres!num & "</td></tr>"
+      INC countRef
+      totalQSO += CInt(hres!num)
+      hres.MoveNext()
+    LOOP
+    PRINT #f, ("<tr><td colspan=\"8\"></td><td><b>Total References</b></td><td align=\"right\">") & countRef & "</td>"
+    PRINT #f, ("<tr><td colspan=\"8\"></td><td><b>Total QSO</b></td><td align=\"right\" colspan=\"2\">") & totalQSO & "</td>"
+    PRINT #f, "</table>"
+    PRINT #f, html.footer()
+    
+      
+    CLOSE #f
+    Desktop.Open(path)
+    ME.Close()
+    
+    CATCH 
+        Message.Error(("Error in ") & "getSqs\n" & Error.Text & "\n" & Error.Where)
+  
+END
+
+PRIVATE SUB getEME(banda AS String, modo AS String, prop AS String, wcd AS String)
+    DIM hres AS Result
+    DIM sql AS String
+    DIM f AS File
+    DIM countRef AS Integer = 0
+    DIM totalQSO AS Integer = 0
+    DIM path AS String = Temp & ".html"
+    
+    f = OPEN path FOR OUTPUT APPEND     
+    
+    IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN 
+    sql = "select call, qso_date, band, mode, prop_mode, qsl_rcvd, qsl_sent, country ,gridsquare, count(call) as num from log where band like &1 and mode like &2 and prop_mode = 'EME' and qsl_rcvd like &3 and gridsquare <>'' group by substr(gridsquare,1,4) order by gridsquare"
+    ' select call, qso_date, gridsquare , count(call)  from log where band='2M' and gridsquare <>'' and qsl_rcvd='Y'  group by substr(gridsquare,0,4) order by gridsquare, id 
+    hres = dbLog.cnLog.Exec(sql, parseCbo(cboBand), parseCbo(cboMode), wcd)
+    PRINT #f, html.header("EME Initials Summary")
+    PRINT #f, ("<h2>EME Initials " & $sWkdcfd & " by " & FMain.ini["Estacion/QRZ"] & (" in " & cboBand.Text & " band and " & cboMode.Text & " mode</h2><br>\n"))
+    PRINT #f, ("<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>Prop. Mode</td><td>QSL_rcvd</td><td>QSL_sent</td><td>Country</td><td>Gridsquare</td><td>Main Grid</td><td>QSOs</td></tr>")
+    
+    DO WHILE hres.Available    
+      PRINT #f, "<tr><td>" & hres!call & "</td><td>" & global.parseFecha(hres!qso_date) & "</td><td>" & hres!band & "</td><td>" & hres!mode & "</td><td>" & hres!prop_mode & "</td><td>" & hres!qsl_rcvd & "</td><td>" & hres!qsl_sent & "</td><td>" & hres!country & "</td><td>" & hres!gridsquare & "</td><td>" & Left(hres!gridsquare, 4) & "</td><td align=\"right\">" & hres!num & "</td></tr>"
+      INC countRef
+      totalQSO += CInt(hres!num)
+      hres.MoveNext()
+    LOOP
+    PRINT #f, "<tr><td colspan=\"8\"></td><td><b>Total References</b></td><td align=\"right\">" & countRef & "</td>"
+    PRINT #f, "<tr><td colspan=\"8\"></td><td><b>Total QSO</b></td><td align=\"right\" colspan=\"2\">" & totalQSO & "</td>"
+    PRINT #f, "</table>"
+    PRINT #f, html.footer()
+    
+      
+    CLOSE #f
+    Desktop.Open(path)
+    ME.Close()
+    
+    CATCH 
+        Message.Error(("Error in ") & "getEME\n" & Error.Text & "\n" & Error.Where)
+  
+END
+
+
+PUBLIC SUB btnOK_Click()
+
+  DIM wkdcfd AS String
+    IF rbCfd.Value = TRUE THEN 
+        wkdcfd = "Y"
+        $sWkdcfd = ("confirmed")
+    ELSE 
+        wkdcfd = "%"
+        $sWkdcfd = ("worked")
+    ENDIF
+    
+    SELECT CASE $type
+    
+        CASE 1 'dxcc        
+            getMainSq(cboBand.Text, cboMode.Text, cboProp.Text, wkdcfd)            
+        CASE 2 'wac
+            getSqs(cboBand.Text, cboMode.Text, cboProp.Text, wkdcfd)
+        CASE 3 'was
+            getEME(cboBand.Text, cboMode.Text, cboProp.Text, wkdcfd)
+        
+    END SELECT     
+  
+END
+
+PUBLIC SUB btnCancel_Click()
+
+    ME.Close()
+
+END

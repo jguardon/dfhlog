@@ -1,0 +1,48 @@
+' Gambas class file
+' dfhLog- Hamradio LogBook
+'     Copyright (C) 2009  Jesús Guardón, EA7DFH <ea7dfh@gmail.com>
+' 
+'     This program is free software: you can redistribute it and/or modify
+'     it under the terms of the GNU General Public License as published by
+'     the Free Software Foundation, either version 3 of the License, or
+'     (at your option) any later version.
+' 
+'     This program is distributed in the hope that it will be useful,
+'     but WITHOUT ANY WARRANTY; without even the implied warranty of
+'     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'     GNU General Public License for more details.
+' 
+'     You should have received a copy of the GNU General Public License
+'     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+PRIVATE $fecha AS Date
+PRIVATE $target AS String
+
+PUBLIC SUB DateChooser1_Activate()
+    $fecha = DateChooser1.Value
+    
+    SELECT CASE $target
+        CASE "fmain"        
+            FMain.setDate($fecha)
+        CASE "feadif_i"
+            FeADIF.setDateIni($fecha)
+        CASE "feadif_f"
+            FeADIF.setDateFin($fecha)
+        CASE "fsearch_i"
+            FSearch.setDateIni($fecha)
+        CASE "fsearch_f"
+            FSearch.setDateFin($fecha)
+    END SELECT
+    
+    ME.Close()
+    
+END
+
+PUBLIC SUB getDatePicker(ctl AS Control, tgt AS String)
+    $target = tgt
+    ME.Stacking = Window.Above  
+    ME.Move(ctl.ScreenX, ctl.ScreenY)
+    ME.Show()
+    
+END
+

@@ -1,0 +1,499 @@
+' Gambas module file
+' dfhLog- Hamradio LogBook
+'     Copyright (C) 2009  Jesús Guardón, EA7DFH <ea7dfh@gmail.com>
+' 
+'     This program is free software: you can redistribute it and/or modify
+'     it under the terms of the GNU General Public License as published by
+'     the Free Software Foundation, either version 3 of the License, or
+'     (at your option) any later version.
+' 
+'     This program is distributed in the hope that it will be useful,
+'     but WITHOUT ANY WARRANTY; without even the implied warranty of
+'     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'     GNU General Public License for more details.
+' 
+'     You should have received a copy of the GNU General Public License
+'     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+PRIVATE regx AS Regexp
+PRIVATE bandas AS NEW String[]
+PRIVATE modos AS NEW String[]
+PRIVATE propa AS NEW String[]
+PRIVATE LL AS NEW latlon
+PUBLIC MapLoc AS Boolean = FALSE
+PRIVATE ent AS NEW cty
+PUBLIC $iQSOn AS NEW Integer[]
+PUBLIC $iAdded2Queue AS Integer 
+PUBLIC dwnld AS NEW HttpClient AS "_getVer"
+PRIVATE $ver AS String
+PUBLIC $alertedMUF AS Boolean = FALSE
+PUBLIC $alertedES AS Boolean = FALSE
+PUBLIC $aLabels AS NEW Collection
+PRIVATE $utc AS String
+PUBLIC $cSpot AS NEW Object[]
+PRIVATE snd AS NEW Sound("data/Siren.wav")
+
+PUBLIC FUNCTION base64(st AS String, OPTIONAL decode AS Boolean = FALSE) AS String
+  DIM ret AS String
+  IF st THEN 
+    IF decode THEN 
+      SHELL Subst("echo \"&1\" | base64 -id", st) TO ret
+    ELSE 
+      SHELL Subst("echo \"&1\" | base64 -", st) TO ret
+    ENDIF 
+    RETURN Trim(ret)
+  ENDIF 
+  
+END
+
+PUBLIC FUNCTION UTCNow() AS Date
+    
+    RETURN DateAdd(Now, gb.Hour, FMain.$utcdiff)
+END
+
+PUBLIC FUNCTION pidOf(program AS String) AS String 'checks if a program is running and returns its PID
+    DIM gotpid AS String = ""
+    TRY SHELL "pidof " & program TO gotpid
+    
+    RETURN gotpid
+END
+
+PUBLIC FUNCTION chkLoc(loc AS String) AS Boolean
+    '[a-r]{2}\\d{2}|[a-r]{2}\\d{2}[a-x]{2}    
+    loc = Trim(loc)
+    IF loc THEN
+        regx = NEW Regexp(loc, "^[A-R]{2}\\d{2}[A-X]{2}$|^[A-R]{2}\\d{2}$")     
+        IF regx.Text THEN 
+           'DEBUG regx.Text
+            RETURN TRUE
+        ELSE 
+            RETURN FALSE      
+        ENDIF 
+    ENDIF 
+END
+
+'array bandas
+
+PUBLIC FUNCTION getBandas() AS String[]
+    bandas = ["2190M", "160M", "80M", "40M", "30M", "20M", "17M", "15M", "12M", "10M", "6M", "4M", "2M", "70CM", "23CM", "13CM", "6CM", "3CM", "1.25CM", "6MM"]  
+    
+    RETURN bandas
+
+END
+
+PUBLIC FUNCTION getModos() AS String[]
+    modos = ["AM", "AMTOR", "APRS", "ARQ", "ATV", "BPSK", "CHIP64", "CHIP128", "CW", "FAX", "FM", "FSK", "FSK441", "HELL", "JT44", "JT65", "JT65A", "JT65B", "JT65C", "JT6M", "LSB", "MFSK", "MFSK8", "MFSK16", "MT63", "OLIVIA", "PACKET", "PACTOR", "PSK31", "PSK63", "RTTY", "RTTYM", "SSB", "SSTV", "THRB", "TOR", "USB", "VOI"]    
+   
+    RETURN modos
+  
+END
+
+PUBLIC FUNCTION getPropa() AS String[]  
+    propa = ["ACS", "AUR", "AUE", "BS", "EME", "ES", "FAI", "F2", "ION", "LOS", "MS", "RS", "SAT", "TEP", "TR", "TRS", "TRD"]
+    
+    RETURN propa
+  
+END
+
+PUBLIC FUNCTION getBand(freq AS Float) AS String
+  freq /= 1000
+  
+  SELECT CASE freq
+    CASE 0.1357 TO 0.1378
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "2190M"
+    CASE 1.8 TO 2.0
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "160M"
+    CASE 3.5 TO 3.8
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "80M"
+    CASE 7.0 TO 7.2
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "40M"
+    CASE 10.1 TO 10.15
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "30M"
+    CASE 14.0 TO 14.35
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "20M"
+    CASE 18.068 TO 18.168
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "17M"
+    CASE 21.0 TO 21.45
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "15M"
+    CASE 24.89 TO 24.99
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "12M"
+    CASE 28.0 TO 29.7
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "10M"
+    CASE 50.0 TO 52.0
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "6M"
+    CASE 70.0 TO 70.5
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "4M"
+    CASE 144.0 TO 146.0
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "2M"
+    CASE 430.0 TO 440.0
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "70CM"
+    CASE 1240.0 TO 1300.0
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "23CM"
+    CASE 2300.0 TO 2450.0
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "13CM"
+    CASE 5650.0 TO 5850.0
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "6CM"
+    CASE 10000.0 TO 10500.0
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "3CM"
+    CASE 24000.0 TO 24250.0
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "1.25CM"
+    CASE 47000.0 TO 47200.0
+        FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
+        RETURN "6MM"
+    CASE ELSE 
+        FMain.Controls["lcdQRG"].ForeColor = Color.Red
+        RETURN 
+  END SELECT 
+  
+END
+
+'locator formulas from Yves Goergen  (http://beta.unclassified.de/code/dotnet/maidenheadlocator/)
+PUBLIC FUNCTION locator2latlon(loc AS String) AS latlon
+ 
+    loc = Upper(loc)
+    IF Len(loc) = 4 THEN loc &= "LL"
+    
+    LL.lon = (Asc(loc, 1) - Asc("A")) * 20 + (Asc(loc, 3) - Asc("0")) * 2 + (Asc(loc, 5) - Asc("A") + 0.5) / 12 - 180
+    LL.lat = (Asc(loc, 2) - Asc("A")) * 10 + (Asc(loc, 4) - Asc("0")) + (Asc(loc, 6) - Asc("A") + 0.5) / 24 - 90
+    
+    RETURN LL
+  
+END
+
+PUBLIC FUNCTION latLong2locator(lat AS Float, lon AS Float) AS String
+    DIM v AS Integer
+    DIM locator AS String = ""
+    
+    lat += 90
+    lon += 180
+    v = CInt(lon / 20)
+    lon -= v * 20
+    locator &= Chr$(Asc("A") + v)
+    v = CInt(lat / 10)
+    lat -= v * 10
+    locator &= Chr$(Asc("A") + v)
+    locator &= CStr(CInt(lon / 2))
+    locator &= CStr(CInt(lat))
+    lon -= CInt(lon / 2) * 2
+    lat -= CInt(lat)
+    locator &= Chr$(Asc("A") + lon * 12)
+    locator &= Chr$(Asc("A") + lat * 24)
+    
+    RETURN locator
+  
+END
+
+
+PUBLIC FUNCTION distance(lat1 AS Float, lon1 AS Float, lat2 AS Float, lon2 AS Float) AS Float
+    DIM dx AS Float
+    DIM hn AS Float = Rad(lat1)
+    DIM he AS Float = Rad(lon1)
+    DIM n AS Float = Rad(lat2)
+    DIM e AS Float = Rad(lon2)
+    DIM co AS Float = Cos(he - e) * Cos(hn) * Cos(n) + Sin(hn) * Sin(n)
+    DIM ca AS Float = ATan(Abs(Sqr(1 - co * co) / co))
+    IF co < 0 THEN ca = Pi - ca
+    dx = 6367 * ca
+    
+    RETURN dx
+  
+END
+
+PUBLIC FUNCTION distLoc(loc1 AS String, loc2 AS String) AS Float
+  
+    RETURN distance(locator2latlon(loc1).lat, locator2latlon(loc1).lon, locator2latlon(loc2).lat, locator2latlon(loc2).lon)
+  
+END
+
+PUBLIC FUNCTION bearing(lat1 AS Float, lon1 AS Float, lat2 AS Float, lon2 AS Float) AS Float
+  
+    DIM az, si AS Float
+    DIM hn AS Float = Rad(lat1)
+    DIM he AS Float = Rad(lon1)
+    DIM n AS Float = Rad(lat2)
+    DIM e AS Float = Rad(lon2)
+    DIM co AS Float = Cos(he - e) * Cos(hn) * Cos(n) + Sin(hn) * Sin(n)
+    DIM ca AS Float = ATan(Abs(Sqr(1 - co * co) / co))
+    IF co < 0 THEN ca = Pi - ca
+    si = Sin(e - he) * Cos(n) * Cos(hn)
+    co = Sin(n) - Sin(hn) * Cos(ca)
+    az = ATan(Abs(si / co))
+    IF co < 0 THEN az = Pi - az
+    IF si < 0 THEN az = az * -1
+    IF az < 0 THEN az = az + 2 * Pi
+    
+    RETURN Deg(az)
+  
+END
+
+PUBLIC FUNCTION bearingLoc(loc1 AS String, loc2 AS String) AS Float
+    DIM b AS Float
+    IF loc1 = loc2 THEN 
+      b = 0
+    ELSE 
+      b = bearing(locator2latlon(loc1).lat, locator2latlon(loc1).lon, locator2latlon(loc2).lat, locator2latlon(loc2).lon)
+    ENDIF 
+    
+    RETURN b
+  
+END
+
+PUBLIC FUNCTION parseFecha(fecha AS String) AS String  
+    DIM Y, M, D, nF AS String
+    DIM F AS String[]
+    'PRINT fecha
+    fecha = Left(fecha, 10)
+    IF fecha THEN   
+        F = Split(fecha, "/")        
+        Y = F[2]
+        M = F[0]
+        D = F[1]
+        nF = D & "/" & M & "/" & Y  
+    ENDIF  
+    IF NOT ERROR THEN 
+        RETURN nF
+    ELSE 
+        RETURN fecha
+    ENDIF
+    CATCH 
+        DEBUG Error.Text, Error.Where         
+END
+
+PUBLIC FUNCTION clusterColor(call AS String, band AS String) AS Integer
+    DIM colorDX AS Integer
+    DIM entidad AS String 
+    DIM hresul AS Result
+    ent = world.findEntity(call)
+    IF ent <> NULL THEN 
+          entidad = ent.entity
+          IF FMain.connDB() THEN RETURN 
+          hResul = dbLog.cnLog.Exec("SELECT qsl_rcvd, band FROM log WHERE country = &1 AND band= &2;", entidad, band)
+          IF NOT hResul.Available THEN 
+              'DEBUG call, band, hResul!QSL_r
+              colorDX = FMain.ini["Colores/Necesitado", Color.Blue]
+          ELSE
+              DO WHILE hResul.Available             
+                    IF hResul!qsl_rcvd = "Y" THEN 
+                        'DEBUG call, band, hResul!QSL_r
+                        colorDX = FMain.ini["Colores/Confirmado", Color.Green]
+                        EXIT
+                    ELSE 
+                        'DEBUG call, band, hResul!QSL_r
+                        colorDX = FMain.ini["Colores/Trabajado", Color.Orange]                  
+                    ENDIF                   
+                    hResul.MoveNext()
+              LOOP 
+          ENDIF 
+          
+    ENDIF 
+    RETURN colorDX
+  
+    CATCH 
+        DEBUG Error.Text, Error.Where
+END
+
+PUBLIC SUB addToQueue(id AS Integer)
+    DIM hres AS Result
+    DIM sql, sql1 AS String
+    
+    IF id <> NULL THEN 
+        sql1 = "INSERT OR IGNORE INTO qQSL "
+        sql = "SELECT id, operator, call, qso_date, time_on, band, mode, prop_mode, rst_sent, gridsquare, " &
+        "my_gridsquare, qsl_via, qsl_rcvd, qsl_sent FROM log WHERE id=&1 AND qsl_sent <> 'Y';"
+        IF FMain.connDB() THEN RETURN         
+        hres = dbLog.cnLog.Exec(sql, id)        
+        IF hres.Available
+            INC $iAdded2Queue
+            dbLog.cnLog.Exec(sql1 & sql, id)
+        ENDIF
+    ENDIF
+    
+    CATCH 
+        Message.Error(Error.Text, Error.Where)
+END
+
+PUBLIC SUB saveADIF(myFile AS String)
+    DIM hres AS Result
+    DIM sql AS String
+    DIM crlf AS String
+    DIM sField AS String
+    DIM hFile AS File 
+    DIM L AS Integer
+    DIM hField AS ResultField    
+    DIM i AS Integer
+    
+    crlf = Chr$(13) & Chr$(10)
+    
+    $iQSOn.Sort()
+    
+    OPEN myFile FOR WRITE CREATE AS #hFile
+      PRINT #hFile, "ADIF file created by dfhLog v." & application.Version & " (c) EA7DFH," &  
+       crlf & "distributed under the GPL GNU Licence " & crlf & "<EOH>" & crlf & crlf
+       
+       IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN        
+       FOR i = 0 TO $iQSOn.Count - 1
+            sql = "SELECT * FROM log WHERE id=&1 ORDER BY id;"
+            hres = dbLog.cnLog.Exec(sql, $iQSOn[i])
+            
+            DO WHILE hres.Available
+            
+                 FOR EACH hField IN hres.Fields
+                     WITH hField
+                         L = Len(Trim(Str(hres[.Name])))
+                         IF L > 0 AND .Name <> "id" AND .Name <> "dxcc" THEN 
+                         sField = Trim(Str(hres[.Name]))
+                             SELECT CASE .Name
+                                 CASE "qso_date", "qslrdate", "qslsdate"
+                                     sField = Year(hres!qso_date) & Format(Month(hres!qso_date), "0#") & Format(Day(hres!qso_date), "0#")
+                                     L = Len(sField)
+                                 CASE "time_on", "time_off"
+                                     sField = Left(Replace(hres[.Name], ":", ""), 4)
+                                     L = Len(sField)
+                                 CASE "mode"
+                                     IF sField = "USB" OR sField = "LSB" THEN sField = "SSB"
+                                 CASE ELSE 
+                                     sField = Trim(Str(hres[.Name]))
+                             END SELECT
+                             PRINT #hFile, "<" & Upper(.Name) & ":" & Str(L) & ">" & sField;
+                         ENDIF 
+                     END WITH 
+                 NEXT 
+                 PRINT #hFile, " <EOR>"
+                 WAIT 0.01
+                 hres.MoveNext()
+            LOOP  
+       NEXT 
+
+    FINALLY
+        CLOSE #hFile
+
+    CATCH
+        Message.Error(("Error exporting Record\n") & hField!call & " " & hField!qso_date & "\n" & Error.Text)
+END
+
+PUBLIC SUB getVersion()
+    DIM distro AS String
+    SHELL "cat /etc/issue" TO distro
+    distro = Replace(distro, "\\n \\l", "")
+    distro = Replace(distro, " ", "_")
+    $ver = ""
+    dwnld.Async = TRUE
+    dwnld.Timeout = 5
+    dwnld.URL = "http://www.ea7dfh.com/dfhlog/version.php?call=" & FMain.ini["Estacion/QRZ"] & "&loc=" & FMain.ini["Estacion/Locator"] & "&ver=" & Application.Version & "&dist=" & distro
+    dwnld.Get() 
+    
+END
+
+PUBLIC SUB _getVer_Read()
+    DIM buffer AS String
+    READ #LAST, buffer, Lof(LAST)
+    $ver &= buffer
+    CATCH 
+        DEBUG Error.Text, Error.Where  
+END
+
+PUBLIC SUB _getVer_Error()
+  
+    DEBUG "Error downloading Version number\n" & dwnld.Status, Error.Text  
+  
+END
+
+PUBLIC SUB _getVer_Finished()
+    DIM myVersion, verUpdate AS Float
+    DIM sMyVer AS String = "1." & Replace(Application.Version, ".", "")  
+    
+    $ver = "1." & Replace($ver, ".", "")
+    myVersion = CFloat(sMyVer)
+    
+    IF $ver THEN 
+        verUpdate = CFloat($ver)
+        IF verUpdate > myVersion THEN 
+            IF Message.Question(("There is a new version of dfhLog.\nDo you want to visit the download page?"), ("Yes"), ("No")) = 2 THEN RETURN 
+            Desktop.Open("http://code.google.com/p/dfhlog/downloads/list")       
+        ENDIF 
+    ENDIF 
+    CATCH 
+        DEBUG Error.Text, Error.Where
+END
+
+PUBLIC FUNCTION unixTS() AS Integer 'returns unix timestamp
+    DIM dt AS Date
+    dt = Date(1970, 1, 1, 0, 0, 0)
+    RETURN DateDiff(dt, Now, gb.Second) 
+    
+END
+
+PUBLIC SUB processMapSpots(dxLine AS String) 'insert data into spots table to plot dx lines on map
+    DIM DX, spotter, band, remarks, prop, loc1, loc2 AS String
+    DIM freq AS Float
+    DIM loc AS String[]
+    DIM regx AS Regexp
+    DIM sql AS String = "INSERT INTO spots VALUES(&1,&2,&3,&4,&5,&6,&7);"
+
+    spotter = Mid(dxLine, 7, InStr(dxLine, ":") - 7) 'something weird happens when spotter contains "/" !?!?
+    DX = Trim(Mid(dxLine, 27, 10))
+    freq = CFloat(Trim(Mid(dxLine, 15, 10)))
+    band = global.getBand(freq)
+    remarks = Trim(Mid(dxLine, 37, 34))
+    regx = NEW Regexp(remarks, "(?i)([a-r]{2}\\d{2}[a-x]{2}|[a-r]{2}\\d{2})\\s?([\\s<(:]([a-z]{2,5})[\\s>):]|-|->|>|/|><|<->|<>)\\s?(([a-r]{2}\\d{2}[a-x]{2}|[a-r]{2}\\d{2}))")
+    IF regx.SubMatches.Count = 5 THEN 
+        loc1 = Upper(regx.SubMatches[1].Text)
+        prop = Upper(regx.SubMatches[3].Text)
+        loc2 = Upper(regx.SubMatches[4].Text)
+        IF FMain.connDB() THEN RETURN 
+        dbLog.cnLog.Exec(sql, unixTS(), band, spotter, DX, loc1, loc2, prop)
+        dbLog.cnLog.Exec("DELETE FROM spots WHERE timestamp < &1;", (unixTS() - FMain.ini["FMapLoc/DXTime", 1800]))
+    ENDIF
+    alertMUF
+    CATCH 
+        DEBUG Error.Text & "\n" & Error.Where & "\n" & dxLine
+END
+
+PUBLIC SUB alertMUF()    
+    DIM hres AS Result
+    DIM sql AS String
+    DIM spotMUF, spotES AS Integer
+
+    sql = "SELECT * from spots WHERE band='6M' AND prop='ES';"
+    IF FMain.connDB() THEN RETURN 
+    hres = dbLog.cnLog.Exec(sql)
+    spotMUF = hres.Count
+    sql = "SELECT * from spots WHERE band='2M' AND prop='ES';"
+    hres = dbLog.cnLog.Exec(sql)
+    spotES = hres.Count
+    
+    IF spotES >= 3 AND $alertedES = FALSE THEN 
+        IF FMain.ini["FMapLoc/MUFAlert"] = TRUE THEN snd.Play()
+        $alertedES = TRUE
+    ELSE IF spotES < 3 AND $alertedES = TRUE
+        $alertedES = FALSE
+    ENDIF
+         
+    IF spotMUF > 3 AND $alertedMUF = FALSE THEN         
+        IF FMain.ini["FMapLoc/MUFAlert"] = TRUE THEN snd.Play()
+        $alertedMUF = TRUE
+    ELSE IF spotMUF < 3 AND $alertedMUF = TRUE
+        $alertedMUF = FALSE
+    ENDIF 
+    CATCH 
+        DEBUG Error.Text, Error.Where
+END

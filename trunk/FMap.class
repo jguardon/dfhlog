@@ -1,0 +1,139 @@
+' Gambas class file
+' dfhLog- Hamradio LogBook
+'     Copyright (C) 2009  Jesús Guardón, EA7DFH <ea7dfh@gmail.com>
+' 
+'     This program is free software: you can redistribute it and/or modify
+'     it under the terms of the GNU General Public License as published by
+'     the Free Software Foundation, either version 3 of the License, or
+'     (at your option) any later version.
+' 
+'     This program is distributed in the hope that it will be useful,
+'     but WITHOUT ANY WARRANTY; without even the implied warranty of
+'     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'     GNU General Public License for more details.
+' 
+'     You should have received a copy of the GNU General Public License
+'     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+PRIVATE iLat AS Integer
+PRIVATE iLon AS Integer
+PRIVATE iZoom AS Integer
+STATIC PUBLIC xplanet_opened AS Boolean = FALSE
+
+
+PUBLIC SUB Form_Open()
+
+  DIM sTitle AS String
+  DIM aHandle AS NEW Pointer[]
+  DIM iHandle AS Integer
+  
+     ME.Top = FMain.ini["FxMap/Top", ME.Top]  
+     ME.Left = FMain.ini["FxMap/Left", ME.Left] 
+     ME.Height = FMain.ini["FxMap/Height", ME.Height]  
+     ME.Width = FMain.ini["FxMap/Width", ME.Width]
+     xplanet_opened = TRUE
+  
+   sTitle = ("DX Map")
+   ME.Title = sTitle
+      WHILE aHandle.Count < 1
+      
+            aHandle = Desktop.find(Trim(sTitle))
+            
+          WAIT 0.1
+      WEND
+  iHandle = aHandle[0]
+  TRY Embedder1.Embed(iHandle)
+  
+  loadSettings()
+  
+END
+
+PUBLIC SUB loadSettings()
+  
+  iLat = FMain.ini["Map/Lat", 40]
+  iLon = FMain.ini["Map/Lon", -3]
+  iZoom = FMain.ini["Map/Zoom", 150]
+  
+  SpinLat.Value = iLat
+  SpinLon.Value = iLon
+  SpinZoom.Value = iZoom
+  
+END
+
+PUBLIC SUB form_Close()
+  
+  Embedder1.Discard
+  FMain.p.Kill
+'  FMain.Controls["btnMap"].Enabled = TRUE
+  FMain.ini["FxMap/Top"] = ME.ScreenY
+  FMain.ini["FxMap/Left"] = ME.ScreenX
+  FMain.ini["FxMap/Height"] = ME.Height
+  FMain.ini["FxMap/Width"] = ME.Width
+  xplanet_opened = FALSE
+  
+END
+
+PUBLIC SUB Embedder1_Embed()
+
+  DEC Application.Busy
+
+END
+
+PUBLIC SUB btnAply_Click()
+    
+    DIM F AS File
+    DIM S, fic AS String
+    
+    FMain.ini["Map/Lat"] = iLat
+    FMain.ini["Map/Lon"] = iLon
+    FMain.ini["Map/Zoom"] = iZoom
+    FMain.ini.Save
+    
+    fic = User.Home &/ ".xplanet/origin/do"
+    
+    F = OPEN fic FOR WRITE CREATE 
+    
+    PRINT #F, "20090531.1200", iZoom, Replace(Format(iLat, "00#.00"), ",", "."), Replace(Format(iLon, "00#.00"), ",", ".")
+    
+    CLOSE #F
+    
+  
+
+END
+
+PUBLIC SUB btnClose_Click()
+
+  ME.Close()
+
+END
+
+PUBLIC SUB SpinLat_Change()
+
+  iLat = SpinLat.Value
+
+END
+
+PUBLIC SUB SpinLon_Change()
+
+  iLon = SpinLon.Value
+
+END
+
+PUBLIC SUB SpinZoom_Change()
+
+  iZoom = SpinZoom.Value
+
+END
+
+PUBLIC SUB btnClearMap_Click()
+
+    DIM F AS File
+    DIM S, fic AS String
+       
+    fic = User.Home &/ ".xplanet/markers/dx"
+    
+    F = OPEN fic FOR WRITE CREATE 
+        
+    CLOSE #F
+
+END

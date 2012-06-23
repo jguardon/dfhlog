@@ -1,0 +1,533 @@
+' Gambas class file
+' ADIF import
+' dfhLog- Hamradio LogBook
+'     Copyright (C) 2009  Jesús Guardón, EA7DFH <ea7dfh@gmail.com>
+' 
+'     This program is free software: you can redistribute it and/or modify
+'     it under the terms of the GNU General Public License as published by
+'     the Free Software Foundation, either version 3 of the License, or
+'     (at your option) any later version.
+' 
+'     This program is distributed in the hope that it will be useful,
+'     but WITHOUT ANY WARRANTY; without even the implied warranty of
+'     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'     GNU General Public License for more details.
+' 
+'     You should have received a copy of the GNU General Public License
+'     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+' Class from Pino Zollo's project (ZP4KFX) at http://www.qsl.net/zp4kfx/Linux/dblog.html
+' Modified by Jesus Guardon, EA7DFH
+PRIVATE hFileError AS File 
+PRIVATE Record AS String
+PRIVATE Record_t AS String 
+PRIVATE Fields AS NEW Collection
+PRIVATE campo AS String 
+PRIVATE file_l AS Integer
+PRIVATE n_char AS Integer
+PRIVATE cCty AS cty
+PRIVATE mycallsign AS String
+PRIVATE myGrid AS String
+PRIVATE myCurrentCall AS String
+
+'   ---------------   for Data Base ---------------------
+PRIVATE qso_date AS String
+PRIVATE time_on AS String
+PRIVATE time_off AS String
+PRIVATE call AS String
+PRIVATE freq AS String
+PRIVATE freq_rx AS String
+PRIVATE band AS String
+PRIVATE mode AS String
+PRIVATE prop_mode AS String
+PRIVATE rst_rcvd AS String
+PRIVATE rst_sent AS String
+PRIVATE name AS String
+PRIVATE gridsquare AS String
+PRIVATE qth AS String
+PRIVATE comment AS String
+PRIVATE qsl_sent AS String
+PRIVATE qsl_rcvd AS String
+PRIVATE qslsdate AS String
+PRIVATE qslrdate AS String
+PRIVATE qsl_via AS String
+PRIVATE pfx AS String
+PRIVATE cont AS String
+PRIVATE cqz AS String
+PRIVATE ituz AS String
+PRIVATE state AS String
+PRIVATE cnty AS String
+PRIVATE iota AS String
+PRIVATE operator AS String
+PRIVATE tx_pwr AS String
+PRIVATE own_gridsq AS String
+PRIVATE sat_name AS String
+PRIVATE sat_mode AS String
+PRIVATE email AS String
+PRIVATE tpea AS String
+PRIVATE ndxcc AS Integer
+PRIVATE entidad AS String
+PRIVATE dist AS Float
+
+PRIVATE rData AS Result
+PRIVATE nDup AS Integer ' number of duplicated
+PRIVATE Lqso AS Integer ' number of logged qso
+PRIVATE Errors AS Integer
+PRIVATE importing AS Boolean = FALSE
+
+'------------------------------------------
+PUBLIC SUB _new()
+    mycallsign = FMain.ini["Estacion/QRZ"]
+    cCty = FMain.c 'cty class
+        
+    Fields.Add("<qso_date:", 1)
+    Fields.Add("<time_on:", 2)
+    Fields.Add("<time_off:", 3)  
+    Fields.Add("<call:", 4)
+    Fields.Add("<freq:", 5)
+    Fields.Add("<freq_rx:", 6)
+    Fields.Add("<band:", 7)
+    Fields.Add("<mode:", 8)
+    Fields.Add("<prop_mode:", 9)
+    Fields.Add("<rst_rcvd:", 10)
+    Fields.Add("<rst_sent:", 11)
+    Fields.Add("<name:", 12)
+    Fields.Add("<gridsquare:", 13)
+    Fields.Add("<qth:", 14)
+    Fields.Add("<comment:", 15)
+    Fields.Add("<qsl_sent:", 16)
+    Fields.Add("<qsl_rcvd:", 17)
+    Fields.Add("<qslsdate:", 18)
+    Fields.Add("<qslrdate:", 19)
+    Fields.Add("<qsl_via:", 20)
+    Fields.Add("<pfx:", 21)
+    Fields.Add("<cont:", 22)
+    Fields.Add("<cqz:", 23)
+    Fields.Add("<ituz:", 24)
+    Fields.Add("<state:", 25)
+    Fields.Add("<cnty:", 26)     
+    Fields.Add("<iota:", 27)    
+    Fields.Add("<operator:", 28)
+    Fields.Add("<tx_pwr:", 29)
+    Fields.Add("<own_gridsq:", 30)
+    Fields.Add("<my_gridsquare:", 31)  
+    Fields.Add("<sat_name:", 32)
+    Fields.Add("<sat_mode:", 33)
+    Fields.Add("<email:", 34)
+    Fields.Add("<tpea:", 35) 
+   
+  ' they must correspond to columns in data base
+END
+
+PUBLIC SUB Form_Open()
+    DIM hRes AS Result
+    ME.Move(FMain.ScreenX + (FMain.Width - ME.Width) / 2, FMain.ScreenY + (FMain.Height - ME.Height) / 2) 
+    btnOK.Enabled = FALSE
+    myGrid = FMain.ini["Estacion/Locator"]
+    myCurrentCall = FMain.ini["Estacion/QRZ"]
+END 
+
+PUBLIC SUB btnOpn_Click()
+    Dialog.Title = ("ADIF Import")
+    Dialog.Filter = ["*.adi;*.ADI;*.adif", "ADIF", "*", ("All Files")]
+    Dialog.Path = user.Home
+    
+    IF Dialog.OpenFile() THEN RETURN 
+    txtPath.Text = dialog.Path
+    IF txtPath.Text THEN btnOK.Enabled = TRUE  
+END
+
+PUBLIC SUB importQSOs()
+  
+    DIM hFileADIF AS File 
+    DIM Linea AS String
+    DIM FoundEOH AS Boolean
+    DIM final AS Boolean 
+    DIM Teol AS Integer
+    'btnCancel.Enabled = FALSE
+    IF chkLinux.Value = TRUE THEN Teol = gb.Unix
+    IF chkMac.Value = TRUE THEN Teol = gb.Mac
+    IF chkWindows.Value = TRUE THEN Teol = gb.Windows
+    WAIT 0.1
+    
+    FoundEOH = FALSE 
+    nDup = 0
+    Lqso = 0
+    Errors = 0
+    n_char = 0
+    pb.Value = 0
+    lblDupes.Text = "0"
+    lblQSOs.Text = "0"
+    lblErrors.Text = "0"
+    lblCurrent.Text = ""
+    ResetVariables()
+
+    OPEN user.Home &/ "ImportErrors.txt" FOR WRITE CREATE AS #hFileError
+    OPEN dialog.Path FOR READ AS #hFileADIF
+    hFileADIF.EndOfLine = Teol
+    WITH Stat(dialog.Path)
+        file_l = .Size  ' file lenght
+    END WITH 
+    
+    WHILE NOT Eof(hFileADIF) 
+        IF importing = FALSE THEN EXIT 
+        IF NOT FoundEOH THEN
+            REPEAT   ' Look for Header
+                IF NOT Eof(hFileADIF) THEN LINE INPUT #hFileADIF, Linea
+                Record = Record & Linea 
+            UNTIL RInStr(Linea, "<EOH>") <> 0 OR RInStr(Linea, "<eoh>") <> 0 
+            Record = ""
+            Linea = ""
+            n_char = Len(Record)
+            FoundEOH = TRUE
+        ELSE 
+            final = FALSE
+            REPEAT  ' Look for records
+                IF NOT Eof(hFileADIF) THEN 
+                    LINE INPUT #hFileADIF, Linea
+                ELSE 
+                    final = TRUE
+                    BREAK ' in case of rubbish at the end of the file
+                END IF
+                Record = Record & Linea          
+            UNTIL RInStr(Linea, "<EOR>") <> 0 OR RInStr(Linea, "<eor>") <> 0  ' hope not <EoR> HI
+            n_char = n_char + Len(Record)
+            Record_t = Lower$(Record) ' as in ADIF field can have mixed case
+             'WAIT 0.1
+             'PRINT Record  
+            IF NOT final THEN 
+                Process_Record() ' avoid process rubbish at end of file
+            ENDIF
+            Record = ""
+            Linea = ""
+        END IF 
+    WEND  
+    pb.Value = 1 
+    CLOSE #hFileADIF
+    CLOSE #hFileError
+    btnCancel.Text = ("&Close")
+    'btnCancel.Enabled = TRUE
+    btnOK.Enabled = FALSE
+    
+    IF Errors > 0 THEN 
+        IF Message.Error(("Some errors found.\nCheck 'ImportErrors.txt' into User Folder?"), ("Yes"), ("No")) = 2 THEN RETURN 
+        Desktop.Open(User.Home &/ "ImportErrors.txt")
+    ENDIF 
+  
+END
+
+PUBLIC SUB Process_Record()
+    DIM pos AS Integer
+    ResetVariables()
+    CleanRecord()
+    FOR EACH campo IN Fields  ' Find fields
+          pos = InStr(Record_t, campo) ' All done in Lower case
+          IF pos <> 0 THEN Process_Field(campo, pos) 
+        ' Forget about fields in ADIF file which are not managed by the data Base
+    NEXT   
+    
+  ' Check if already into DB
+    
+    rData = dbLog.cnLog.Exec("SELECT  id from log WHERE call = '" & call & 
+            "' AND qso_date = '" & qso_date & "' AND band = '" & band & "' AND mode = '" & mode & "'" & " AND time_on ='" & time_on & "';")
+            
+    IF rData.Available THEN ' write into the error file
+        PRINT #hFileError, ("Dupe: id="); rData!id, call, qso_date, band, mode
+        INC nDup
+        WAIT 0.01
+        lblDupes.Text = nDup
+        INC Errors
+        lblErrors.Text = Errors
+        pb.Value = n_char / file_l
+    ELSE   ' Log it 
+        'PRINT call, qso_date, time_on, name, qth, time_off
+        FindDXCC(call) ' in case dxcc was empty
+        findDistance(call, gridsquare)
+        'check for mandatory fields present in adif file
+        IF qso_date <> NULL AND time_on <> NULL AND call <> NULL AND band <> NULL AND mode <> NULL AND rst_rcvd <> NULL AND rst_sent <> NULL THEN
+            Log_qso() ' write record to DB
+        ELSE 
+            INC Errors
+            lblErrors.Text = Errors
+            PRINT #hFileError, ("Missing field/s in ADIF record. Not logged!: "); call, qso_date, time_on, band, mode, rst_rcvd, rst_sent            
+        ENDIF  
+        lblCurrent.Text = call & " " & qso_date & " " & time_on & " " & entidad 
+        
+    END IF
+    
+    ' CATCH
+    '    Message.Error(("Error in Process Record\n") & call & " " & qso_date & "\n" & Error.Text)
+END
+
+PUBLIC SUB findDistance(indic AS String, locator AS String)
+
+    DIM mycall AS String = FMain.ini["Estacion/QRZ"]
+    DIM myLoc AS String = FMain.ini["Estacion/Locator"]
+    
+    IF locator THEN 
+        dist = Round(global.distLoc(myLoc, locator), -1)
+    ELSE 
+        dist = Round(global.distance(cCty.lat, cCty.lon, global.locator2latlon(myLoc).lat, global.locator2latlon(myLoc).lon), -1)
+    ENDIF 
+    
+    CATCH
+        'Message.Error(("Error in findDistance\nDistance error in qso: ") & call & " " & qso_date & " " & band & " " & mode & ("\nCheck 'ImportErrors.txt' into User Folder"))
+        INC Errors
+        lblErrors.Text = Errors
+        PRINT #hFileError, ("Distance error in qso: "); call, qso_date, band, mode
+   
+END
+
+
+PUBLIC SUB FindDXCC(callsign AS String)
+
+    cCty = world.findEntity(callsign)
+    ndxcc = cCty.number
+    entidad = cCty.entity
+    IF pfx = "" THEN pfx = cCty.pfx
+    IF cqz = "" THEN cqz = cCty.cqz
+    IF ituz = "" THEN ituz = cCty.ituz
+    IF cont = "" THEN cont = cCty.continent
+    'DEBUG entidad
+   
+    CATCH 
+        'Message.Error(("Error in FindDXCC\nDXCC not found for: ") & call & " " & qso_date & " " & band & " " & mode & ("\nCheck 'ImportErrors.txt' into User Folder"))
+        INC Errors
+        lblErrors.Text = Errors
+        PRINT #hFileError, ("DXCC not found for: "); call, qso_date, band, mode
+END
+
+PUBLIC SUB Process_Field(field AS String, p AS Integer)
+    DIM Ini AS Integer 
+    DIM Fin AS Integer
+    DIM Long AS Integer  
+    DIM Valor AS String     
+  
+    'Get field value
+    Ini = p + Len(field)   ' where starts the number
+    Fin = InStr(Record, ">", Ini) 
+    Long = Val(Mid$(Record, Ini, Fin - Ini))
+    Valor = Mid$(Record, Fin + 1, Long)
+    'Format it if needed
+    SELECT CASE Field
+       CASE "<qso_date:", "<qslsdate:", "<qslrdate:"
+            Valor = Mid$(Valor, 1, 4) & "-" & Mid$(Valor, 5, 2) & "-" & Mid$(Valor, 7, 2)       
+       CASE "<time_on:", "<time_off:" 
+            IF Len(Valor) = 6 THEN ' with seconds
+                Valor = Mid$(Valor, 1, 2) & ":" & Mid$(Valor, 3, 2) & ":" & Mid$(Valor, 5, 2)
+            ELSE   ' only HHMM
+                Valor = Mid$(Valor, 1, 2) & ":" & Mid$(Valor, 3, 2) & ":00"
+            END IF 
+       CASE "<qth:", "<comment:", "<name:" 
+            Valor = Replace$(Valor, "'", "''")  ' Escape apostroph
+            ' what about accented wovels ? and ° ?
+            Valor = Replace$(Valor, Chr$(176), "°")
+            Valor = Replace$(Valor, Chr$(224), "à")  ' For Italian
+            Valor = Replace$(Valor, Chr$(232), "è")
+            Valor = Replace$(Valor, Chr$(236), "ì")
+            Valor = Replace$(Valor, Chr$(242), "ò")
+            Valor = Replace$(Valor, Chr$(249), "ù")
+            Valor = Replace$(Valor, Chr$(233), "é")  ' For Spanish
+            Valor = Replace$(Valor, Chr$(209), String.Chr(00209))
+            Valor = Replace$(Valor, Chr$(241), String.Chr(00241))
+            Valor = Replace$(Valor, Chr$(225), String.Chr(00225)) ' a acute
+            Valor = Replace$(Valor, Chr$(237), String.Chr(00237)) ' i acute
+            Valor = Replace$(Valor, Chr$(243), String.Chr(00243)) ' o acute
+            Valor = Replace$(Valor, Chr$(250), String.Chr(00250)) ' u acute
+            Valor = Replace$(Valor, Chr$(216), "0") ' 0/
+       CASE "<operator:"
+            IF Valor = "" THEN Valor = mycallsign
+    END SELECT   
+   
+  ' Write value into the correspondent variable
+    SELECT CASE field 
+  
+        CASE "<qso_date:"             
+           qso_date = Valor 
+        CASE "<time_on:"           
+           time_on = Valor 
+        CASE "<time_off:"
+           time_off = Valor   
+        CASE "<call:"            
+           call = Upper$(Valor)
+        CASE "<freq:"
+           freq = Valor
+        CASE "<freq_rx:"
+           freq_rx = Valor
+        CASE "<band:"            
+           band = Upper$(Valor)
+        CASE "<mode:"            
+           mode = Upper$(Valor)
+        CASE "<prop_mode:"
+           prop_mode = Upper$(Valor)
+        CASE "<rst_rcvd:"            
+           rst_rcvd = Valor
+        CASE "<rst_sent:"            
+           rst_sent = Valor
+        CASE "<name:"
+           name = Valor
+        CASE "<gridsquare:"
+           gridsquare = Upper$(Valor)
+        CASE "<qth:"
+           qth = Valor
+        CASE "<comment:"
+           comment = Valor
+        CASE "<qsl_sent:"
+           qsl_sent = Upper$(Valor)
+        CASE "<qsl_rcvd:"
+           qsl_rcvd = Upper$(Valor)
+        CASE "<qslsdate:"
+           qslsdate = Valor
+        CASE "<qslrdate:"
+           qslrdate = Valor
+        CASE "<qsl_via:"
+           qsl_via = Upper(Valor)
+        CASE "<pfx:"
+           pfx = Upper$(Valor)
+        CASE "<cont:"
+           cont = Upper$(Valor)
+        CASE "<cqz:"
+           cqz = Valor
+        CASE "<ituz:"
+           ituz = Valor
+        CASE "<state:"
+           state = Upper$(Valor)
+        CASE "<cnty:"
+           cnty = Upper$(Valor)
+        CASE "<iota:"
+           iota = Upper$(Valor)
+        CASE "<operator:"
+           operator = Upper$(Valor)
+        CASE "<tx_pwr:"
+           tx_pwr = Valor
+        CASE "<own_gridsq:", "<my_gridsquare:"
+           own_gridsq = Upper$(Valor) 
+        CASE "<sat_name:"
+           sat_name = Valor
+        CASE "<sat_mode:"
+           sat_mode = Valor
+        CASE "<email:"
+           email = Valor
+        CASE "<tpea:"
+           tpea = Valor
+    
+    END SELECT
+END
+
+PUBLIC SUB Log_qso()
+  
+    DIM Insert$ AS String
+    
+    IF time_off = "" THEN time_off = time_on
+    IF NOT own_gridsq THEN own_gridsq = myGrid    
+    IF NOT operator THEN operator = myCurrentCall    
+  
+    Insert$ = "INSERT INTO log VALUES (&1,&2,&3,&4,&5,&6,&7,&8,&9,&10,&11,&12,&13,&14,&15,&16,&17,&18," &
+              "&19,&20,&21,&22,&23,&24,&25,&26,&27,&28,&29,&30,&31,&32,&33,&34,&35,&36,&37,&38);" 
+  
+    rData = dbLog.cnLog.Exec(Insert$, "", qso_date, time_on, time_off, call, freq, freq_rx, band, mode, prop_mode, rst_rcvd, rst_sent, name, gridsquare, qth, comment, qsl_sent, qsl_rcvd, qslsdate, qslrdate, qsl_via, pfx, cont, cqz, ituz, state, cnty, iota, operator, tx_pwr, own_gridsq, sat_name, sat_mode, email, entidad, ndxcc, tpea, dist) 
+  
+    INC Lqso
+    WAIT 0.001
+    lblQSOs.Text = Lqso
+    pb.Value = n_char / file_l
+    CATCH
+        PRINT #hFileError, "Error logging " & Error.Text & " \n"; call, qso_date, time_on, band, freq, mode, rst_sent, rst_rcvd, name, qth, gridsquare
+        INC Errors
+        WAIT 0.001
+        lblErrors.Text = Errors
+        Message.Error(("Error logging in Log_qso\n") & call & "\n" & Error.Text) 
+
+END
+
+
+PUBLIC SUB ResetVariables()
+
+    qso_date = ""
+    time_on = ""
+    time_off = ""
+    call = ""
+    freq = ""
+    freq_rx = ""
+    band = ""
+    mode = ""
+    prop_mode = ""
+    rst_rcvd = ""
+    rst_sent = ""
+    name = ""
+    gridsquare = ""
+    qth = ""
+    comment = ""
+    qsl_sent = ""
+    qsl_rcvd = ""
+    qslsdate = ""
+    qslrdate = ""
+    qsl_via = ""
+    pfx = ""
+    cont = ""
+    cqz = ""
+    ituz = ""
+    state = ""
+    cnty = ""
+    iota = ""
+    operator = ""
+    tx_pwr = ""
+    own_gridsq = ""
+    sat_name = ""
+    sat_mode = ""
+    ndxcc = 0
+    entidad = ""
+    email = ""
+    tpea = ""
+    dist = 0.0
+   
+END
+
+PUBLIC SUB CleanRecord()
+    ' Remove idiot ADIF items
+    Record = Replace$(Record, ":C>", ">", 1)
+    Record = Replace$(Record, ":D>", ">", 1)
+    Record = Replace$(Record, ":T>", ">", 1)
+    Record = Replace$(Record, ":B>", ">", 1)
+    Record = Replace$(Record, ":N>", ">", 1)
+    Record = Replace$(Record, ":S>", ">", 1)
+    Record = Replace$(Record, ":M>", ">", 1)
+    Record = Replace$(Record, ":L>", ">", 1)
+    Record_t = Replace$(Record_t, ":c>", ">")
+    Record_t = Replace$(Record_t, ":d>", ">")
+    Record_t = Replace$(Record_t, ":t>", ">")
+    Record_t = Replace$(Record_t, ":b>", ">")
+    Record_t = Replace$(Record_t, ":n>", ">")
+    Record_t = Replace$(Record_t, ":s>", ">")
+    Record_t = Replace$(Record_t, ":m>", ">")
+    Record_t = Replace$(Record_t, ":l>", ">")
+    ' Add more if needed
+END
+
+PUBLIC SUB btnCancel_Click()
+    
+    IF importing = TRUE THEN 
+        importing = FALSE
+        dbLog.cnLog.Rollback()
+        Message.Question(("Importing ADIF has been aborted!"))
+    ENDIF 
+     ME.Close()
+
+END
+
+PUBLIC SUB btnOK_Click()
+    IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN 
+    dbLog.cnLog.Begin()
+    importing = TRUE
+    importQSOs() 
+    dbLog.cnLog.Commit()
+    dbLog.cnLog.Exec("VACUUM")
+    dbLog.CloseDB() 
+    importing = FALSE
+END
+
+PUBLIC SUB Form_Close()
+
+    dbLog.CloseDB()
+
+END
