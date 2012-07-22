@@ -1,0 +1,395 @@
+' Gambas class file
+' dfhLog- Hamradio LogBook
+'     Copyright (C) 2009  Jesús Guardón, EA7DFH <ea7dfh@gmail.com>
+'
+'     This program is free software: you can redistribute it and/or modify
+'     it under the terms of the GNU General Public License as published by
+'     the Free Software Foundation, either version 3 of the License, or
+'     (at your option) any later version.
+'
+'     This program is distributed in the hope that it will be useful,
+'     but WITHOUT ANY WARRANTY; without even the implied warranty of
+'     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'     GNU General Public License for more details.
+'
+'     You should have received a copy of the GNU General Public License
+'     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+PRIVATE hField AS cField
+PRIVATE currField AS String
+PRIVATE canvas AS Object
+PRIVATE imgBG AS Picture
+PRIVATE dragging AS Boolean
+PRIVATE $freetext AS String
+
+PUBLIC SUB Form_Open()
+
+    IF IsNull(Printer) THEN Message.Error(("No printers available,sorry"))
+    canvas = daQSL
+    initData
+
+    setCanvasSize
+    imgBG = Picture[Fmain.qslini["BGImage/Path"]]
+    chkBG.Value = CBool(Fmain.qslini["Image/Display", "False"])
+    drawPage
+    labelX.Text = Round(global.$aLabels[cboFields.Text].iX, -1)
+    labelY.Text = Round(global.$aLabels[cboFields.Text].iY, -1)
+    btnColor.Color = Fmain.qslini[cboFields.Text & "/Color", 0]
+    lblPath.Text = Fmain.qslini["BGImage/Path"]
+    'lblPrinter.Text = Printer.Name
+    lblRes.Text = "Res: " & Printer.Resolution & " dpi"
+    currField = cboFields.Text
+CATCH
+    Message.Error(Error.Text & "\n" & Error.Where)
+
+END
+
+PRIVATE SUB initData()
+
+    DIM s AS String
+    DIM i AS Integer
+
+    IF NOT global.$aLabels["MYCALL"] THEN
+        FOR EACH s IN cboFields.List
+            i += 5
+            hField = NEW cField
+            hField.sName = "{" & s & "}"
+            hField.iX = Fmain.qslini[s & "/X", 10.0 + i]
+            hField.iY = Fmain.qslini[s & "/Y", 10.0 + i]
+            global.$aLabels.Add(hField, s)
+
+        NEXT
+    ENDIF
+
+END
+
+PUBLIC SUB setCanvasSize()
+
+    DIM hSize AS String
+
+    hSize = Fmain.qslini["QSLsize/Width", 140] & "x" & Fmain.qslini["QSLsize/Height", 90] & "mm"
+    ME.Title = ("QSL Design") & " (" & hSize & ")"
+    daQSL.Width = cUnits.mmToUnit(Fmain.qslini["QSLsize/Width", 140], "px")
+    daQSL.Height = cUnits.mmToUnit(Fmain.qslini["QSLsize/Height", 90], "px")
+    drawPage
+
+END
+
+PUBLIC SUB btnFont_Click()
+
+    currField = cboFields.Text
+
+    IF Dialog.SelectFont() = TRUE THEN RETURN
+
+    global.$aLabels[currField].fFont = Dialog.Font
+    Fmain.qslini[currField & "/Font"] = Dialog.Font.ToString()
+
+    drawPage
+
+END
+
+PUBLIC SUB daQSL_MouseMove()
+
+    lblMouse.Text = "X= " & Format(cUnits.UnitTomm(Mouse.X, "px"), "0.0") & " mm / Y= " & Format(cUnits.UnitTomm(Mouse.Y, "px"), "0.0") & " mm"
+    'lblY.Text = "Y= " & Format((Mouse.Y / 10) * 3, "0.0") & " mm"
+    IF Mouse.Left THEN
+        dragging = TRUE
+        global.$aLabels[currField].iX = cUnits.UnitTomm(Mouse.X, "px")
+        labelX.Text = Round(global.$aLabels[currField].iX, -1)
+        global.$aLabels[currField].iY = cUnits.UnitTomm(Mouse.Y, "px")
+        labelY.Text = Round(global.$aLabels[currField].iY, -1)
+
+        drawPage
+    ENDIF
+
+END
+
+PUBLIC SUB daQSL_MouseDown()
+
+    'TODO get item
+    currField = cboFields.Text
+    global.$aLabels[currField].iX = cUnits.UnitTomm(Mouse.StartX, "px")
+    global.$aLabels[currField].iY = cUnits.UnitTomm(Mouse.StartY, "px")
+
+END
+
+PUBLIC SUB daQSL_MouseUp()
+
+    dragging = FALSE
+
+END
+
+PRIVATE SUB clear()
+
+    daQSL.Clear
+
+END
+
+PRIVATE SUB drawPage(OPTIONAL hPrinter AS Boolean = FALSE)
+
+    DIM unit AS String = "px"
+    DIM device AS Object
+
+    IF hPrinter THEN
+        unit = "pt"
+        device = Printer
+        ' Printer.Orientation = Printer.Landscape
+        ' DEBUG cUnits.UnitTomm(Printer.Height, "pt")
+    ELSE
+        device = daQSL
+    ENDIF
+    clear()
+    Draw.Begin(device)
+
+    IF chkBG.Value = TRUE THEN TRY Draw.Picture(imgBG, 0, 0, cUnits.mmToUnit(Fmain.qslini["QSLsize/Width", 140], unit),
+        cUnits.mmToUnit(Fmain.qslini["QSLsize/Height", 90], unit))
+
+    FOR EACH hField IN global.$aLabels
+        Draw.FillStyle = Fill.Solid
+        ' [GB2:FCOL] Draw.ForeColor = Fmain.qslini[global.$aLabels.Key & "/Color", 0]
+        Draw.Foreground = Fmain.qslini[global.$aLabels.Key & "/Color", 0]
+        Draw.Font = Font[Fmain.qslini[global.$aLabels.Key & "/Font", "Arial"]]
+        Draw.Text(hField.sName, cUnits.mmToUnit(hField.iX, unit), cUnits.mmToUnit(hField.iY, unit))
+
+        IF hField.sName = "{" & currField & "}" AND dragging = TRUE THEN
+
+            Draw.FillStyle = Draw.Invert
+            Draw.Rect(cUnits.mmToUnit(hField.iX, unit), cUnits.mmToUnit(hField.iY, unit), cUnits.UnitTomm(Draw.TextWidth(hField.sName), "mm"), cUnits.UnitTomm(Draw.TextHeight(hField.sName), "mm"))
+
+        ENDIF
+
+        Fmain.qslini[global.$aLabels.Key & "/X"] = Round(hField.iX, -1)
+        Fmain.qslini[global.$aLabels.Key & "/Y"] = Round(hField.iY, -1)
+
+    NEXT
+
+    Draw.End()
+
+CATCH
+    Message.Error(Error.Text & "\n" & Error.Where)
+    ME.Close
+
+END
+
+PUBLIC SUB printQSLs()
+
+    DIM unit AS String = "pt"
+    DIM hres AS Result
+    DIM err AS Boolean = FALSE
+
+    initData
+    $freetext = Fmain.qslini["FREE_TEXT/Text", NULL]
+    IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN
+    hres = dbLog.cnLog.Exec("SELECT id FROM qQSL")
+    IF hres.Count < 1 THEN
+        Message.Info(("QSL queue is empty!"))
+        RETURN
+    ENDIF
+    INC Application.Busy
+    EXEC ["notify-send", "--urgency=normal", "--icon=" & User.Home &/ ".config/dfhlog/dfhlog.png", ("Printing"), ("QSLs sent to printer, please wait...")]
+    hres = dbLog.cnLog.Exec("select * from qQSL ORDER BY call ASC")
+    Draw.Begin(Printer)
+    WHILE hres.Available
+
+        global.$aLabels["MYCALL"].sText = hres!my_call
+        global.$aLabels["HISCALL"].sText = hres!call
+        global.$aLabels["DATE"].sText = Format(hres!date, "dd/mm/yyyy")
+        global.$aLabels["UTC"].sText = Left(hres!time, 5)
+        global.$aLabels["BAND"].sText = hres!band
+        global.$aLabels["MODE"].sText = hres!mode
+        global.$aLabels["PROP"].sText = hres!prop_mode
+        global.$aLabels["RST"].sText = hres!rst_sent
+        global.$aLabels["HISLOC"].sText = Subst("(In &1)", hres!gridsquare)
+        global.$aLabels["MYLOC"].sText = hres!my_gridsquare
+        global.$aLabels["MANAGER"].sText = hres!qsl_via
+        global.$aLabels["FREE_TEXT"].sText = $freetext
+        IF hres!qsl_rcvd = "Y" THEN
+            global.$aLabels["TNX QSL"].sText = "TNX QSL"
+            global.$aLabels["PSE QSL"].sText = ""
+        ELSE
+            global.$aLabels["PSE QSL"].sText = "PSE QSL"
+            global.$aLabels["TNX QSL"].sText = ""
+        ENDIF
+
+        FOR EACH hField IN global.$aLabels
+            Draw.FillStyle = Fill.Solid
+            ' [GB2:FCOL] Draw.ForeColor = Fmain.qslini[global.$aLabels.Key & "/Color", 0]
+            Draw.Foreground = Fmain.qslini[global.$aLabels.Key & "/Color", 0]
+            Draw.Font = Font[Fmain.qslini[global.$aLabels.Key & "/Font", "Arial"]]
+            Draw.Text(hField.sText, cUnits.mmToUnit(hField.iX, unit), cUnits.mmToUnit(hField.iY, unit))
+        NEXT
+
+        dbLog.cnLog.Exec("UPDATE log SET qsl_sent='Y' WHERE id=&1;", hres!id)
+        dbLog.cnLog.Exec("UPDATE qQSL SET qsl_sent='Y' WHERE id=&1;", hres!id)
+        Printer.NewPage
+        hres.MoveNext
+        IF err THEN BREAK
+    WEND
+FINALLY
+    Draw.End()
+    DEC Application.Busy
+CATCH
+    err = TRUE
+    Message.Error(Error.Text & "\n" & Error.Where)
+
+END
+
+PUBLIC SUB cboFields_Click()
+
+    currField = cboFields.Text
+    btnColor.Color = Fmain.qslini[currField & "/Color", 0]
+
+    labelX.Text = Fmain.qslini[currField & "/X", 20]
+    labelY.Text = Fmain.qslini[currField & "/Y", 20]
+
+END
+
+PUBLIC SUB btnColor_Change()
+
+    currField = cboFields.Text
+    global.$aLabels[currField].iColor = Dialog.Color
+    Fmain.qslini[currField & "/Color"] = Dialog.Color
+    drawPage()
+
+END
+
+PUBLIC SUB btnCancel_Click()
+
+    ME.Close()
+
+END
+
+PUBLIC SUB btnUp_Click()
+
+    DIM i AS Float
+
+    i = CFloat(labelY.Text)
+    currField = cboFields.Text
+    IF i > 0 THEN
+        i -= 0.1
+        global.$aLabels[currField].iY = i
+        labelY.Text = Round(i, -1)
+        drawPage()
+
+    ENDIF
+
+END
+
+PUBLIC SUB btnDwn_Click()
+
+    DIM i AS Float
+
+    i = CFloat(labelY.Text)
+    currField = cboFields.Text
+    IF i < Fmain.qslini["QSLsize/Height", 90] THEN
+        i += 0.1
+        global.$aLabels[currField].iY = i
+        labelY.Text = Round(i, -1)
+        drawPage()
+
+    ENDIF
+
+END
+
+PUBLIC SUB btnLeft_Click()
+
+    DIM i AS Float
+
+    i = CFloat(labelX.Text)
+    currField = cboFields.Text
+    IF i > 0 THEN
+        i -= 0.1
+        global.$aLabels[currField].iX = i
+        labelX.Text = Round(i, -1)
+        drawPage()
+
+    ENDIF
+
+END
+
+PUBLIC SUB btnRight_Click()
+
+    DIM i AS Float
+
+    i = CFloat(labelX.Text)
+    currField = cboFields.Text
+    IF i < Fmain.qslini["QSLsize/Width", 140] THEN
+        i += 0.1
+        global.$aLabels[currField].iX = i
+        labelX.Text = Round(i, -1)
+        drawPage()
+
+    ENDIF
+
+END
+
+PUBLIC SUB chkBG_Click()
+
+    drawPage()
+    Fmain.qslini["Image/Display"] = CBool(chkBG.Value)
+
+END
+
+PUBLIC SUB btnSetup_Click()
+
+    Printer.Setup()
+    lblPrinter.Text = Printer.Name
+
+END
+
+PUBLIC SUB btnPrnTest_Click()
+
+    INC Application.Busy
+    drawPage(TRUE)
+    DEC Application.Busy
+    'canvas = daQSL
+    drawPage()
+
+END
+
+PUBLIC SUB btnImage_Click()
+
+    Dialog.Title = ("Choose a background image")
+    Dialog.Filter = ["*.png;*.jpg;*.jpeg;*.gif;*.bmp", ("Picture files")]
+    IF Dialog.OpenFile() THEN RETURN
+    imgBG = Picture[Dialog.Path]
+    Fmain.qslini["BGImage/Path"] = Dialog.Path
+    lblPath.Text = Dialog.Path
+    drawPage()
+
+END
+
+PUBLIC SUB Form_Close()
+
+    canvas = NULL
+    hField = NULL
+    'aLabels = NULL
+    imgBG = NULL
+
+END
+
+PUBLIC SUB btnSize_Click()
+
+    FCardSize.ShowModal
+
+END
+
+PUBLIC SUB daQSL_Leave()
+
+    lblMouse.Text = "X= --- / Y= --- "
+
+END
+
+PUBLIC SUB btnPrint_Click()
+
+    printQSLs()
+
+END
+
+PUBLIC SUB btnFreeText_Click()
+
+    $freetext = InputBox("Set a free text to show in QSL or leave blank otherwise.", "Set free text", $freetext)
+    Fmain.qslini["FREE_TEXT/Text"] = $freetext
+    FMain.qslini.Save
+
+END

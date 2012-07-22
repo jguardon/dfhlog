@@ -1,0 +1,690 @@
+' Gambas class file
+
+' dfhLog- Hamradio LogBook
+'     Copyright (C) 2009  Jesús Guardón, EA7DFH <ea7dfh@gmail.com>
+'
+'     This program is free software: you can redistribute it and/or modify
+'     it under the terms of the GNU General Public License as published by
+'     the Free Software Foundation, either version 3 of the License, or
+'     (at your option) any later version.
+'
+'     This program is distributed in the hope that it will be useful,
+'     but WITHOUT ANY WARRANTY; without even the implied warranty of
+'     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'     GNU General Public License for more details.
+'
+'     You should have received a copy of the GNU General Public License
+'     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+Private $hres As Result
+Private $rf As ResultField
+Private $aMyFields As New String[]
+Public active As Boolean = False
+' menus
+Private $hmenu As New Menu(Me)
+Private $hmenuInfo As Menu
+Private $hmenuSep As Menu
+Private $hmenuEdit As Menu
+Private $hmenuDel As Menu
+Private $hmenuExpADIF As Menu
+Private $hmenuQSLr As Menu
+Private $hmenuQSLs As Menu
+Private $hmenuNQSLr As Menu
+Private $hmenuNQSLs As Menu
+Private $hmenuPrint As Menu
+
+Public Sub Form_Open()
+
+    Dim propa, banda, modo, sql As String
+    Dim resul As Result
+
+    createMenu()
+    active = True
+    Me.Move(FMain.ScreenX + (FMain.Width - Me.Width) / 2, FMain.ScreenY + (FMain.Height - Me.Height) / 2)
+    prepararCV()
+
+    Me.Title = ("Log Search")
+
+    cboProp.Add(("All"), 0)
+    For Each propa In global.getPropa()
+        cboProp.Add(propa)
+    Next
+    cboBand.Add(("All"), 0)
+    For Each banda In global.getBandas()
+        cboBand.Add(banda)
+    Next
+    cboMode.Add(("All"), 0)
+    For Each modo In global.getModos()
+        cboMode.Add(modo)
+    Next
+    chkSWT.Value = FMain.ini["AutoSearch/Value", False]
+    cboOrder.List = [("QSO Nr"), ("Callsign"), ("Locator"), ("Distance"), ("Manager"), ("QTH"), ("Comments"), ("Band"), ("Mode"), ("Prop.")]
+    If dbLog.connDB(FMain.ini["Log/File"]) Then Return
+    sql = "SELECT id, qso_date, time_on, call, band, mode, prop_mode, rst_rcvd, rst_sent, name, gridsquare, qth, qsl_sent, qsl_rcvd, " &
+        "qsl_via, pfx, country, cont, cqz, ituz, operator, tx_pwr, my_gridsquare, sat_name, distance, comment " &
+        "FROM log;"
+    resul = dbLog.cnLog.Exec(sql)
+
+    For Each $rf In resul.Fields
+        $aMyFields.Add($rf.Name)
+    Next
+
+    dtIni.Value = Date(1900, 1, 1)
+    dtFin.Value = Now()
+    txtCall.SetFocus
+
+End
+
+Private Sub prepararCV()
+
+    Dim i As Integer
+    Dim w_default As String = "60|60|60|60|60|60|60|60|60|60|60|60|60|60|60|60|60|60|60|60|60|60|60|60|60|60"
+    Dim widths As New String[]
+
+    widths = Split(FMain.ini["FSearch/Widths", w_default], "|")
+    cv.Columns.Count = 26
+
+    cv.Columns[0].Title = ("Nr")
+    cv.Columns[1].Text = ("Date")
+    cv.Columns[2].Text = ("Time")
+    cv.Columns[3].Text = ("Callsign")
+    cv.Columns[4].Text = ("Band")
+    cv.Columns[5].Text = ("Mode")
+    cv.Columns[6].Text = ("Propa.")
+    cv.Columns[7].Text = ("RST(R)")
+    cv.Columns[8].Text = ("RST(E)")
+    cv.Columns[9].Text = ("Name")
+    cv.Columns[10].Text = ("Locator")
+    cv.Columns[11].Text = ("QTH")
+    cv.Columns[12].Text = ("QSL(S)")
+    cv.Columns[13].Text = ("QSL(R)")
+    cv.Columns[14].Text = ("QSL Via")
+    cv.Columns[15].Text = ("Prefix")
+    cv.Columns[16].Text = ("DXCC")
+    cv.Columns[17].Text = ("Cont.")
+    cv.Columns[18].Text = ("CQz")
+    cv.Columns[19].Text = ("ITUz")
+    cv.Columns[20].Text = ("Operator")
+    cv.Columns[21].Text = ("Power")
+    cv.Columns[22].Text = ("My Locator")
+    cv.Columns[23].Text = ("Satellite")
+    cv.Columns[24].Text = ("Distance (Km)")
+    cv.Columns[25].Text = ("Remarks")
+
+    For i = 0 To cv.Columns.Count - 1
+        cv.Columns[i].Width = CInt(widths[i])
+    Next
+
+End
+
+Private Sub searchQSO()
+
+    Dim sql As String
+    Dim dist As Integer
+
+    Inc Application.Busy
+    If vDist.Value = Null Then
+        dist = 0
+    Else
+        dist = vDist.Value
+    Endif
+
+    sql = "SELECT id, qso_date, time_on, call, band, mode, prop_mode, rst_rcvd, rst_sent, name, gridsquare, qth, qsl_sent, qsl_rcvd, " &
+        "qsl_via, pfx, country, cont, cqz, ituz, operator, tx_pwr, my_gridsquare, sat_name, distance, comment " &
+        "FROM log WHERE qso_date BETWEEN &1 AND &2 AND call LIKE &3 AND band LIKE &4 and mode LIKE &5 " &
+        "AND prop_mode LIKE &6 AND qsl_rcvd LIKE &7 AND gridsquare LIKE &8 AND distance >= &9 AND qsl_via LIKE &10 " &
+        "AND qth LIKE &11 AND comment LIKE &12 ORDER BY " & parseOrderby() & " " & parseASC() & ";"
+
+    If dbLog.connDB(FMain.ini["Log/File"]) Then Return
+    $hres = dbLog.cnLog.Exec(sql, dtIni.Value, dtFin.Value, txtCall.Text & "%", parseCbo(cboBand), parseCbo(cboMode), parseCbo(cboProp),
+        parseQSL(), txtLoc.Text & "%", dist, txtMgr.Text & "%", "%" & txtQTH.Text & "%", "%" & txtRemarks.Text & "%")
+
+    cv.Rows.Count = $hres.Count
+
+    lblNumRec.Text = Subst$(("Records: &1 (Ordered by &2 - &3)"), $hres.Count, cboOrder.Text, IIf(rbASC.Value = True, ("Ascending"), ("Descending")))
+    cv.Refresh
+    If chkTXT.Value Then toText()
+
+    Dec Application.Busy
+
+Catch
+    Debug Error.Text & "\n" & Error.Where
+
+End
+
+Private Sub toText()
+
+    Dim hres As Result
+    Dim ii As Integer = 0
+    Dim i As Integer
+    Dim F As File
+    Dim filename As String = Temp$ & ".txt"
+    Dim sql As String
+    Dim dist As Integer
+
+    If vDist.Value = Null Then
+        dist = 0
+    Else
+        dist = vDist.Value
+    Endif
+
+    sql = "SELECT id, qso_date, time_on, call, band, mode, prop_mode, rst_rcvd, rst_sent, name, gridsquare, qth, qsl_sent, qsl_rcvd, " &
+        "qsl_via, pfx, country, cont, cqz, ituz, operator, tx_pwr, my_gridsquare, sat_name, distance, comment " &
+        "FROM log WHERE qso_date BETWEEN &1 AND &2 AND call LIKE &3 AND band LIKE &4 and mode LIKE &5 " &
+        "AND prop_mode LIKE &6 AND qsl_rcvd LIKE &7 AND gridsquare LIKE &8 AND distance >= &9 AND qsl_via LIKE &10 " &
+        "AND qth LIKE &11 AND comment LIKE &12 ORDER BY " & parseOrderby() & " " & parseASC() & ";"
+
+    F = Open filename For Output Create
+    If dbLog.connDB(FMain.ini["Log/File"]) Then Return
+    hres = dbLog.cnLog.Exec(sql, dtIni.Value, dtFin.Value, txtCall.Text & "%", parseCbo(cboBand), parseCbo(cboMode), parseCbo(cboProp),
+        parseQSL(), txtLoc.Text & "%", dist, txtMgr.Text & "%", "%" & txtQTH.Text & "%", "%" & txtRemarks.Text & "%")
+
+    Do While hres.Available
+        If (ii Mod 69 = 0) Then
+            Print #F, "\n" & fitText(("Date"), 11) & fitText(("UTC"), 6) & fitText(("Callsign"), 13) & fitText(("Band"), 7, True) & fitText(("Mode"), 7) & fitText(("Locator"), 8) & fitText(("Cfmd"), 5) & fitText(("MGR"), 8) & ("Remarks")
+            Print #F, String(100, "-")
+        Endif
+        Print #F, fitText(global.parseFecha(hres!qso_date), 11) & fitText(Left(hres!time_on, 5), 6) & fitText(hres!call, 13) & fitText(hres!band, 7, True) & fitText(hres!mode, 7) & fitText(hres!gridsquare, 8) & fitText(hres!qsl_rcvd, 5) & fitText(hres!qsl_via, 8) & Left(hres!comment, 35)
+        hres.MoveNext
+        Inc ii
+
+    Loop
+
+    Print #F, "\n"
+    Print #F, Subst$(("Records: &1 (Ordered by &2 - &3)"), hres.Count, cboOrder.Text, IIf(rbASC.Value = True, ("Ascending"), ("Descending")))
+    Close #F
+
+    Desktop.Open(filename)
+
+Catch
+    Debug Error.Text & "\n" & Error.Where
+
+End
+
+Public Function fitText(subject As String, lenght As Integer, Optional alignRight As Boolean) As String
+
+    Dim iSpaces As Integer
+    Dim iLen As Integer = Len(subject)
+
+    iSpaces = lenght - iLen
+    If alignRight Then
+        Return Space(iSpaces - 1) & subject & Space(1)
+    Else
+        Return subject & Space(iSpaces)
+    Endif
+
+End
+
+Public Sub cv_Data(Row As Integer, Column As Integer)
+
+    $hres.MoveTo(Row)
+    If Column = 1 Then
+        cv.Data.Text = Format$($hres[$aMyFields[Column]], "dd/mm/yyyy")
+    Else
+        cv.Data.Text = $hres[$aMyFields[Column]]
+    Endif
+    If row Mod 2 = 0 Then cv.Data.Background = Color.LightBackground
+
+End
+
+Private Sub createMenu()
+
+    $hmenuInfo = New Menu($hmenu)
+
+    $hmenuSep = New Menu($hmenu)
+    $hmenuSep.Text = ""
+
+    $hmenuEdit = New Menu($hmenu) As "mnuEditarQSO"
+    $hmenuEdit.Text = ("Edit QSO")
+    $hmenuEdit.Picture = Picture["icons/gtk-edit.png"]
+    $hmenuEdit.Shortcut = "Ctrl+E"
+
+    $hmenuDel = New Menu($hmenu) As "mnuBorrarQSO"
+    $hmenuDel.Text = ("Delete QSO")
+    $hmenuDel.Picture = Picture["icons/gtk-delete.png"]
+    $hmenuDel.Shortcut = "Ctrl+D"
+
+    $hmenuSep = New Menu($hmenu)
+    $hmenuSep.Text = ""
+
+    $hmenuExpADIF = New Menu($hMenu) As "mnuExpADIF"
+    $hmenuExpADIF.Text = ("Export to ADIF")
+    $hmenuExpADIF.Picture = Picture["icon:/16/up"]
+    $hmenuExpADIF.Shortcut = "Ctrl+Alt+A"
+
+    $hmenuSep = New Menu($hmenu)
+    $hmenuSep.Text = ""
+
+    $hmenuQSLr = New Menu($hmenu) As "mnuQSLrec"
+    $hmenuQSLr.Text = ("Check QSL as recvd.")
+    $hmenuQSLr.Picture = Picture["icons/gtk-redo-rtl.png"]
+    $hmenuQSLr.Shortcut = "F5"
+
+    $hmenuQSLs = New Menu($hmenu) As "mnuQSLenv"
+    $hmenuQSLs.Text = ("Check QSL as sent.")
+    $hmenuQSLs.Picture = Picture["icons/gtk-undo-rtl.png"]
+    $hmenuQSLs.Shortcut = "F6"
+
+    $hmenuSep = New Menu($hmenu)
+    $hmenuSep.Text = ""
+
+    $hmenuNQSLr = New Menu($hmenu) As "mnuQSLnotrec"
+    $hmenuNQSLr.Text = ("Uncheck QSL as recvd.")
+    $hmenuNQSLr.Picture = Picture["icons/gtk-redo-not.png"]
+    $hmenuNQSLr.Shortcut = "F7"
+
+    $hmenuNQSLs = New Menu($hmenu) As "mnuQSLnotenv"
+    $hmenuNQSLs.Text = ("Uncheck QSL as sent.")
+    $hmenuNQSLs.Picture = Picture["icons/gtk-undo-not.png"]
+    $hmenuNQSLs.Shortcut = "F8"
+
+    $hmenuSep = New Menu($hmenu)
+    $hmenuSep.Text = ""
+
+    $hmenuPrint = New Menu($hmenu) As "mnuPrintQSL"
+    $hmenuPrint.Text = ("Print QSL")
+    $hmenuPrint.Picture = Picture["icons/gtk-print.png"]
+    $hmenuPrint.Shortcut = "Ctrl+P"
+
+End
+
+Private Sub menuLog()
+
+    getSelectedQSO()
+    If global.$iQSOn.Count > 1 Then
+        $hmenuInfo.Text = ("For selected QSOs: ") & global.$iQSOn.Count
+    Else
+        $hmenuInfo.Text = (("For QSO with: ") & cv[cv.Row, 3].Text)
+    Endif
+    If global.$iQSOn.Count > 1 Then $hmenuEdit.enabled = False
+    ' pop up
+    $hMenu.Popup()
+
+End
+
+Public Sub getSelectedQSO()
+
+    Dim i As Integer
+
+    global.$iQSOn.Clear()
+    For i = 0 To cv.Rows.Count - 1
+        If cv.Rows[i].Selected = True Then
+            global.$iQSOn.Add(CInt(cv[i, 0].Text))
+        Endif
+    Next
+
+End
+
+Public Sub mnuEditarQSO_Click()
+
+    getSelectedQSO
+    If global.$iQSOn.Count = 1 Then
+        FMain.modifyQSO(CInt(global.$iQSOn[0]))
+        FMain.Visible = True
+    Else
+        Message.Warning(("Only one QSO could be edited at a time!"))
+    Endif
+
+End
+
+Public Sub mnuExpADIF_Click()
+
+    Dim i As Integer
+    Dim filePath As String
+
+    Dialog.Title = ("Save ADIF file")
+    Dialog.Filter = ["*.adi", ("ADIF file")]
+    If Dialog.SaveFile() Then Return
+    filePath = Dialog.Path & ".adi"
+    global.saveADIF(filePath)
+
+End
+
+Public Sub fillData()
+
+    Inc Application.Busy
+    searchQSO()
+    Dec Application.Busy
+
+End
+
+Public Sub mnuBorrarQSO_Click()
+
+    Dim i As Integer
+
+    If Message.Warning(("Selected QSO will be deleted\nDo you want to continue?"), ("Delete QSO"), ("Cancel")) = 2 Then Return
+    If dbLog.connDB(FMain.ini["Log/File"]) Then Return
+    For i = 0 To global.$iQSOn.Count - 1
+        dbLog.cnLog.Exec("DELETE FROM log WHERE id=&1;", global.$iQSOn[i])
+    Next
+    fillData()
+    FMain.fillData()
+Catch
+    Message.Error(("Error deleting QSO\n") & Error.Text & "\n" & Error.Where)
+
+End
+
+Public Sub mnuQSLrec_Click()
+
+    FMain.setQSLrcvd(global.$iQSOn)
+    fillData()
+
+End
+
+Public Sub mnuQSLenv_Click()
+
+    FMain.setQSLsent(global.$iQSOn)
+    fillData()
+
+End
+
+Public Sub mnuQSLnotrec_Click()
+
+    FMain.setQSLrcvd(global.$iQSOn, True)
+    fillData()
+
+End
+
+Public Sub mnuQSLnotenv_Click()
+
+    FMain.setQSLsent(global.$iQSOn, True)
+    fillData()
+
+End
+
+Public Sub mnuPrintQSL_Click()
+
+    Dim i As Integer
+
+    For i = 0 To global.$iQSOn.Count - 1
+        Try global.addToQueue(global.$iQSOn[i])
+    Next
+    If Not Error Then Message.Info(("Added ") & global.$iAdded2Queue & (" QSOs to the QSL print queue."))
+
+End
+
+Public Sub cv_Menu()
+
+    If cv.Rows.Count > 0 Then
+        Try menuLog()
+        cv.Rows.Unselect()
+    Endif
+
+End
+
+Public Sub btnClose_Click()
+
+    Me.Close()
+
+End
+
+Public Sub btnOK_Click()
+
+    fillData()
+    If chkSWT.Value = False Then
+        txtCall.Clear
+        txtLoc.Clear
+        txtMgr.Clear
+        txtQTH.Clear
+        txtRemarks.Clear
+        vDist.Value = Null
+        chkTXT.Value = False
+        txtCall.SetFocus
+    Endif
+
+End
+
+Private Function parseCbo(cbo As ComboBox) As String
+
+    Dim s As String
+
+    If cbo.Index = 0 Then
+        s = "%"
+    Else
+        s = cbo.Text
+    Endif
+
+    Return s
+
+End
+
+Private Function parseQSL() As String
+
+    Dim s As String
+
+    If chkCfd.Value = True Then
+        s = "Y"
+    Else
+        s = "%"
+    Endif
+
+    Return s
+
+End
+
+Private Function parseASC() As String
+
+    If rbASC.Value = True Then
+        Return "ASC"
+    Else
+        Return "DESC"
+    Endif
+
+End
+
+Private Function parseOrderby() As String
+
+    Select Case cboOrder.Index
+        Case 0
+            Return "id"
+        Case 1
+            Return "call"
+        Case 2
+            Return "gridsquare"
+        Case 3
+            Return "distance"
+        Case 4
+            Return "qsl_via"
+        Case 5
+            Return "qth"
+        Case 6
+            Return "comment"
+        Case 7
+            Return "band"
+        Case 8
+            Return "mode"
+        Case 9
+            Return "prop_mode"
+    End Select
+
+End
+
+Public Sub btnReset_Click()
+
+    dtIni.Value = Date(1900, 1, 1)
+    dtFin.Value = Now()
+
+End
+
+Public Sub btnCalIni_Click()
+
+    FCal.getDatePicker(btnCalIni, "fsearch_i")
+
+End
+
+Public Sub setDateIni(d As Date)
+
+    dtIni.Value = d
+
+End
+
+Public Sub btnCalFin_Click()
+
+    FCal.getDatePicker(btnCalFin, "fsearch_f")
+
+End
+
+Public Sub setDateFin(d As Date)
+
+    dtFin.Value = d
+
+End
+
+Public Sub txtCall_Change()
+
+    txtCall.Text = Upper(txtCall.Text)
+
+End
+
+Public Sub txtCall_KeyRelease()
+
+    chkTXT.Value = False
+    If chkSWT.Value Then btnOK_Click
+
+End
+
+Public Sub Form_Close()
+
+    Dim i As Integer
+    Dim widths As String
+
+    For i = 0 To cv.Columns.Count - 1
+        widths &= cv.Columns[i].Width & "|"
+    Next
+    FMain.ini["FSearch/Widths"] = Left$(widths, Len(widths) - 1)
+    FMain.ini.Save
+    active = False
+
+End
+
+Public Sub txtLoc_Change()
+
+    txtLoc.Text = Upper(txtLoc.Text)
+
+End
+
+Public Sub txtLoc_KeyRelease()
+
+    chkTXT.Value = False
+    If chkSWT.Value Then btnOK_Click
+
+End
+
+Public Sub txtMgr_Change()
+
+    txtMgr.Text = Upper$(txtMgr.Text)
+
+End
+
+Public Sub txtMgr_KeyRelease()
+
+    chkTXT.Value = False
+    If chkSWT.Value Then btnOK_Click
+
+End
+
+Public Sub cv_Click()
+
+    If cv.Rows.Count > 0 Then
+        getSelectedQSO
+    Endif
+
+End
+
+Public Sub vDist_KeyRelease()
+
+    chkTXT.Value = False
+    If chkSWT.Value Then btnOK_Click
+
+End
+
+Public Sub txtQTH_KeyRelease()
+
+    chkTXT.Value = False
+    If chkSWT.Value Then btnOK_Click
+
+End
+
+Public Sub txtRemarks_KeyRelease()
+
+    chkTXT.Value = False
+    If chkSWT.Value Then btnOK_Click
+
+End
+
+Public Sub cboOrder_Click()
+
+    chkTXT.Value = False
+    If chkSWT.Value Then btnOK_Click
+
+End
+
+Public Sub rbASC_Click()
+
+    chkTXT.Value = False
+    If chkSWT.Value Then btnOK_Click
+
+End
+
+Public Sub rbDESC_Click()
+
+    chkTXT.Value = False
+    If chkSWT.Value Then btnOK_Click
+
+End
+
+Public Sub chkWkd_Click()
+
+    chkTXT.Value = False
+    If chkSWT.Value Then btnOK_Click
+
+End
+
+Public Sub chkCfd_Click()
+
+    chkTXT.Value = False
+    If chkSWT.Value Then btnOK_Click
+
+End
+
+Public Sub cboBand_Click()
+
+    chkTXT.Value = False
+    If chkSWT.Value Then btnOK_Click
+
+End
+
+Public Sub cboMode_Click()
+
+    chkTXT.Value = False
+    If chkSWT.Value Then btnOK_Click
+
+End
+
+Public Sub cboProp_Click()
+
+    chkTXT.Value = False
+    If chkSWT.Value Then btnOK_Click
+
+End
+
+Public Sub dtIni_Change()
+
+    chkTXT.Value = False
+    If chkSWT.Value Then btnOK_Click
+
+End
+
+Public Sub dtFin_Change()
+
+    chkTXT.Value = False
+    If chkSWT.Value Then btnOK_Click
+
+End
+
+Public Sub chkSWT_Click()
+
+    chkTXT.Value = False
+    FMain.ini["AutoSearch/Value"] = CBool(chkSWT.Value)
+
+End

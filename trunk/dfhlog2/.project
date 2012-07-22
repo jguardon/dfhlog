@@ -1,22 +1,40 @@
 # Gambas Project File 3.0
-# Compiled with Gambas 3.2.0
+# Compiled with Gambas 3.2.90
 Title=dfhlog
-Startup=FMain
-Version=0.0.1
+Startup=Mstart
+Icon=icons/dfhlog.png
+Version=1.99.0
 Component=gb.image
 Component=gb.qt4
 Component=gb.form
 Component=gb.db
 Component=gb.db.form
+Component=gb.db.sqlite3
+Component=gb.desktop
+Component=gb.form.dialog
 Component=gb.settings
+Component=gb.form.mdi
 Component=gb.net
 Component=gb.net.curl
-Component=gb.net.smtp
 Component=gb.pcre
 Component=gb.qt4.ext
+Component=gb.sdl.sound
 Component=gb.xml
-Component=gb.xml.xslt
+Component=gb.xml.rpc
+Description="Amateur Radio Logging program\n\nImport/Export ADIF files, cluster connection, Hamlib based CAT control, \nQRZ.com support, XPlanet Maps and Custom GridSquare Maps, \nsimple awards support (WAS, DXCC, IOTA, USACA, TPEA).\n\nCurrent available languages:\n\nEnglish, Spanish, Galego, Portugues, Ukrainian"
+Authors="Jesús Guardón, EA7DFH\nea7dfh@gmail.com"
 TabSize=4
 Translate=1
-Language=es
+Language=en
+ExecPath=/home/jesus/Gambas/dfhlog.gambas
+SourcePath=/home/jesus/Paquetes
+Maintainer=Jesus Guardon Cerezo
+Address=ea7dfh@gmail.com
+Url=http://code.google.com/p/dfhlog
+License=General Public Licence
+CreateEachDirectory=1
 Packager=1
+Systems=debian
+Menus=debian:"Applications/Amateur Radio"
+Categories=debian:"HamRadio"
+Groups=debian:"database"

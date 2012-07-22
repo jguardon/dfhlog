@@ -1,0 +1,57 @@
+# Gambas Form File 3.0
+{ Form Form 
+  MoveScaled(0,0,25,64)
+  Text = ("dfhlog - BandMap")
+  Icon = Picture["icons/bmap.png"]
+  Stacking = Window.Above
+  Arrangement = Arrange.Vertical
+  Spacing = True
+  Margin = True
+  Padding = 3
+  { ToolBar1 ToolBar 
+    MoveScaled(0,1,36,4)
+    { btnZoomIn ToolButton 
+      MoveScaled(0,0,4,4)
+      ToolTip = ("Zoom In")
+      Picture = Picture["icon:/small/zoom-in"]
+      Border = True
+    }
+    { btnZoomOut ToolButton 
+      MoveScaled(4,0,4,4)
+      ToolTip = ("Zoom Out")
+      Picture = Picture["icon:/small/zoom-out"]
+      Border = True
+    }
+    { Separator1 Separator 
+      MoveScaled(7,0,3,4)
+    }
+    { btnZoomFit ToolButton 
+      MoveScaled(8,0,4,4)
+      ToolTip = ("Zoom Fit")
+      Picture = Picture["icon:/small/zoom-fit"]
+      Border = True
+    }
+    { btnReset ToolButton 
+      MoveScaled(12,0,4,4)
+      ToolTip = ("Zoom Reset")
+      Picture = Picture["icon:/small/zoom-normal"]
+      Border = True
+    }
+    { Separator2 Separator 
+      MoveScaled(15,0,3,4)
+    }
+    { btnClear ToolButton 
+      MoveScaled(17,0,4,4)
+      ToolTip = ("Clear Stations")
+      Picture = Picture["icon:/small/clear"]
+      Border = True
+    }
+  }
+  { daBandMap DrawingArea 
+    MoveScaled(0,5,24,58)
+    Background = &HFFFFFF&
+    Expand = True
+    Tracking = True
+    Border = Border.Sunken
+  }
+}

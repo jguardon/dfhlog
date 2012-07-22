@@ -1,0 +1,191 @@
+' Gambas class file
+' Export ADIF
+' dfhLog- Hamradio LogBook
+'     Copyright (C) 2009  Jesús Guardón, EA7DFH <ea7dfh@gmail.com>
+'
+'     This program is free software: you can redistribute it and/or modify
+'     it under the terms of the GNU General Public License as published by
+'     the Free Software Foundation, either version 3 of the License, or
+'     (at your option) any later version.
+'
+'     This program is distributed in the hope that it will be useful,
+'     but WITHOUT ANY WARRANTY; without even the implied warranty of
+'     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'     GNU General Public License for more details.
+'
+'     You should have received a copy of the GNU General Public License
+'     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+'
+' Class from Pino Zollo's project (ZP4KFX) at http://www.qsl.net/zp4kfx/Linux/dblog.html
+' Modified by Jesus Guardon, EA7DFH
+
+PRIVATE filePath AS String
+PRIVATE hres AS Result
+PRIVATE i AS Integer = 0
+
+PUBLIC SUB rbWhole_Click()
+
+    IF rbWhole.Value = TRUE THEN
+        pDates.Visible = FALSE
+    ELSE
+        pDates.Visible = TRUE
+    ENDIF
+
+END
+
+PUBLIC SUB rbBetween_Click()
+
+    IF rbBetween.Value = TRUE THEN
+        pDates.Visible = TRUE
+    ELSE
+        pDates.Visible = FALSE
+    ENDIF
+
+END
+
+PUBLIC SUB Form_Open()
+
+    btnOK.Enabled = FALSE
+    vStart.Value = Date(1900, 1, 1)
+    vEnd.Value = Now()
+
+END
+
+PUBLIC SUB btnCancel_Click()
+
+    ME.Close()
+
+END
+
+PUBLIC SUB btnSaveAs_Click()
+
+    btnCancel.Text = ("&Cancel")
+    Dialog.Title = ("Save ADIF file")
+    Dialog.Filter = ["*.adi", ("ADIF file")]
+    IF Dialog.SaveFile() THEN RETURN
+    filePath = Dialog.Path & ".adi"
+    txtPath.Text = filePath
+    IF txtPath.Text THEN btnOK.Enabled = TRUE
+
+END
+
+PUBLIC SUB btnStart_Click()
+
+    FCal.getDatePicker(btnStart, "feadif_i")
+
+END
+
+PUBLIC SUB setDateIni(d AS Date)
+
+    vStart.Value = d
+
+END
+
+PUBLIC SUB btnEnd_Click()
+
+    FCal.getDatePicker(btnEnd, "feadif_f")
+
+END
+
+PUBLIC SUB setDateFin(d AS Date)
+
+    vEnd.Value = d
+
+END
+
+PUBLIC FUNCTION checkDates() AS Boolean
+
+    DIM valid AS Boolean
+
+    IF vStart.Text = NULL OR vEnd.Text = NULL THEN
+        valid = FALSE
+    ELSE
+        IF (vStart.Value > vEnd.Value) THEN
+            valid = FALSE
+        ELSE
+            valid = TRUE
+        ENDIF
+    ENDIF
+
+    RETURN valid
+
+END
+
+PUBLIC SUB btnOK_Click()
+
+    DIM sql AS String
+    DIM crlf AS String
+    DIM sField AS String
+    DIM hFile AS File
+    DIM L AS Integer
+    DIM hField AS ResultField
+    DIM nr AS Integer
+
+    crlf = Chr$(13) & Chr$(10)
+    btnOK.Enabled = FALSE
+    btnSaveAs.Enabled = FALSE
+
+    ' [GB2:OPEN] OPEN filePath FOR WRITE CREATE AS #hFile
+    hFile = OPEN filePath FOR WRITE CREATE
+    PRINT #hFile, "ADIF file created by dfhLog v." & application.Version & " (c) EA7DFH," &
+    crlf & "distributed under the GPL GNU License " & crlf & "<EOH>" & crlf & crlf
+
+    IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN
+
+    IF rbWhole.Value = TRUE THEN
+        sql = "SELECT * FROM log ORDER BY id;"
+        hres = dbLog.cnLog.Exec(sql)
+    ELSE
+        sql = "SELECT * FROM log WHERE qso_date BETWEEN &1 and &2 ORDER BY id;"
+        'hres = dbLog.cnLog.Exec(sql, global.parseFecha(vStart.Text), global.parseFecha(vEnd.Text))
+        hres = dbLog.cnLog.Exec(sql, vStart.Value, vEnd.Value)
+        IF checkDates() = FALSE THEN
+            Message.Warning(("Incorrect dates. Start date cannot be greater than End date."))
+            RETURN
+        ENDIF
+    ENDIF
+    nr = hres.Count
+
+    DO WHILE hres.Available
+        FOR EACH hField IN hres.Fields
+            WITH hField
+                L = Len(Trim(Str(hres[.Name])))
+                IF L > 0 AND .Name <> "id" AND .Name <> "dxcc" THEN
+                    sField = Trim(Str(hres[.Name]))
+                    SELECT CASE .Name
+                        CASE "qso_date", "qslrdate", "qslsdate"
+                            sField = Year(hres!qso_date) & Format(Month(hres!qso_date), "0#") & Format(Day(hres!qso_date), "0#")
+                            L = Len(sField)
+                        CASE "time_on", "time_off"
+                            sField = Left(Replace(hres[.Name], ":", ""), 4)
+                            L = Len(sField)
+                        CASE "mode"
+                            IF sField = "USB" OR sField = "LSB" THEN sField = "SSB"
+                        CASE ELSE
+                            sField = Trim(Str(hres[.Name]))
+                    END SELECT
+                    PRINT #hFile, "<" & Upper(.Name) & ":" & Str(L) & ">" & sField;
+                ENDIF
+            END WITH
+        NEXT
+        PRINT #hFile, " <EOR>"
+        lblCurrent.Text = hres!qso_date & " " & hres!call
+        lblQSOs.Text = Str(i)
+        WAIT 0.01
+        pb.Value = i / nr
+        hres.MoveNext()
+        INC i
+    LOOP
+    pb.Value = 1
+
+FINALLY
+    FLUSH #hFile
+    CLOSE #hFile
+    dbLog.CloseDB()
+    btnSaveAs.Enabled = TRUE
+    btnCancel.Text = ("&Close")
+
+CATCH
+    Message.Error(("Error exporting Record\n") & hField!call & " " & hField!qso_date & "\n" & Error.Text)
+
+END

@@ -1,0 +1,150 @@
+* Tue Aug 02 2011 Jesus Guardon Cerezo <ea7dfh@gmail.com> 1.1
+
+* Tue Aug 02 2011 Jesus Guardon Cerezo <ea7dfh@gmail.com> 1.1
+- Added HamQTH callbook lookup
+- Fix some translations
+- Updated cty.dat
+- Fix some minor bugs
+
+* Thu May 19 2011 Jesus Guardon Cerezo <ea7dfh@gmail.com> 1.0
+- Change major version numbering to 1.x meaning stable version.
+- New feature: Ukrainian language added. Thanks to (Volodymyr, UR3QJW)
+- Fix: Optimized QRZ.com search. Locator works again without loggin in.
+- Request: If locator is not found in qrz then it tries to retrieve from previous contacts in database (EA7AH)
+- Fix: GridMap is now part of the package, no need of external one.
+- Request: New free text field in QSL design (EA7AH)
+- Fix: Optimized drawing routines in Grid Map.
+
+* Sun Mar 06 2011 Jesus Guardon Cerezo <ea7dfh@gmail.com> 0.0.42
+- QRZ.com search fixed (again)
+
+* Tue Jun 01 2010 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.41
+- BUG fixed: Solved error in newer versions of hamlib (Ubuntu Lucid)
+- Request: In QSL design, no more print the 'X' for QSL rcvd/sent status.
+
+* Wed Mar 10 2010 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.40
+- GUI improved: Introduced BandMap for use with cluster and CAT. Idea from (EA7EJG).
+- GUI improved: Search form now is bigger and performs better.
+- GUI improved: New arrangement of widgets in main form.
+- Feature added: qrz.com search now works in edit mode.
+- BUG fixed: weird behavior when editing qso from search form, lines turned blank. Thanks to (EA6AZ)
+- BUG fixed: popup menus did not show from shortcuts. Thanks to (EA1EYE).
+- BUG fixed: not all worked gridsquares was shown in grid map.
+- Several other bugs fixed.
+
+* Sun Mar 07 2010 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.41
+
+* Sat Dec 19 2009 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.39
+- Added printing support for QSL and labels
+- Some bugs fixed
+- Debian package structure redesigned
+- Added desktop notifications (debian based)
+- UTC time now can be adjusted manually
+- Possibility of choosing the plattform origin in ADIF files (newline character may differ from Mac and Window$ to Linux)
+
+* Tue Sep 29 2009 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.38
+-  QRZ.com search fixed (again)
+
+* Thu Sep 10 2009 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.37
+- Modified the QRZ.com Web query, as they changed the page structure very often.
+- Added a button in the QRZ.com textbox to launch the default browser with the current callsign.
+- Now when log a QSO or cancel it, the focus returns to the callsign textbox. Thanks to (EA7TB).
+- Added Save to TXT feature in Search form, to export results in plain formatted text. Suggested by (EA7TB).
+- Modified the behaviour of DateChooser.
+- Possibility to log the cluster comments into log as an option in the preferences form. Suggested by (EA7TB).
+- Translations to Galego, Portugues and Spanish updated.
+- Some minor bugs were fixed.
+
+* Sun Jun 14 2009 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.36
+- Changed the name of executable file to all lowercase.
+- Added printing support using kugar package, marked as dependency.
+- Fixed some bugs related to CAT and RPC.
+- Changed the CAT button icon on toolbar.
+
+* Mon Jun 01 2009 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.35
+- Bug Fixed: Bad detection of CQ/ITU Zones when importing from ADIF not including these fields. Thanks to (EA7AH).
+- Added a new button (Quick entry) for disable some entry fields, leving only Call & locator for a quick entry when rushing, i.e: Sporadics-E on VHF. Idea from (EA7AH).
+- Modified CAT system, using now RPC daemon to connect to Rig. Alas, it needs to run as root, so a workaround has been made. No very elegant but works.
+- Added RPC interconnection to fldigi application <http://www.w1hkj.com/Fldigi.html> to get fields text into dfhlog, ready to log QSO. Idea from (EA3ABB). BTW, this feature and above needs 'portmap' package to be installed.
+
+* Fri May 08 2009 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.34
+- Specific debian/ubuntu package which includes all libraries; other distros remains solving proper dependencies on its own.
+- Added a notify window that shows dx from cluster when minimized
+
+* Mon May 04 2009 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.34
+- Bug Fixed: Error when exporting to ADIF between two dates. Thanks to (EA7TB).
+- Bug Fixed: Bad key in config file not allowing QRZ.com searches. Thanks to (EA7EJG)
+- Improved CPU time in sockets -hamlib and telnet- by updating Gambas2 libraries.
+
+* Sat Apr 18 2009 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.33
+- Bug Fixed: Initialized variables of colors in statistics. Thanks to (EA7EJG)
+- Completely revisited MapLoc
+- Database structure changed to fit MapLoc
+
+* Sat Apr 04 2009 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.32
+-Improved ADIF import routine. Now it checks for mandatory fields. Also, now only pop up a message error if there were errors at the end of process.
+-Improved UTCNow routine, now it consumes less cpu.
+-Added Partial Statistics while logging a QSO by mode/band.
+-Added Global Statistics on all bands from menu.
+-AutoSpot routine improved. Tristate checkbox to send spots without confirmation, with a previous confirmation or not send spots at all.
+-Improved compact database routine. No more NULL fields breaking searches.
+-Added QRZ.com Web search method (no subscription needed).
+-Improved gridview filling. Fastest with huge amount of records.
+-Added: author keeps track of version and linux distribution when the application asks for new versions (experimental).
+-Updated current translations.
+-Bug Fixed: Did not export TPEA field to ADIF.
+-Bug Fixed: Callsigns splitted incorrectly when '/' symbol included.
+-Bug Fixed: When firstly installed, cluster filters state didn't match internal variables. Thanks to (EA1EYE).
+
+* Sun Mar 22 2009 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.31
+-Forgot to mention KLog EA4TV's based code for the world class. Thanks, Jaime.
+ <http://jaime.robles.es/klog>
+-Spanish translation updated
+-Galician translation finished. Thanks to (EA3GLJ).
+-Portuguese translation finished. Thanks to (CT1DRB).
+-Database structure modified
+-Locator Map fully operative
+-Changed 'About..' form
+-Some printing test added (QSL)
+-Management of QSL print queue
+-Now we can choose to use the same start time or not
+-Autologin on cluster
+-Now we can abort the importing ADIF process
+-Updated contextual menus
+-Multiple selections on gridviews
+-Partial export ADIF from logs
+-Checking for new versions online
+-Changed main toolbar size
+
+* Sun Mar 01 2009 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.30
+- Spanish translation finished
+- Map Loc semi-operative
+- Fixed some other bugs
+
+* Wed Feb 11 2009 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.29
+
+* Sun Feb 08 2009 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.28
+
+* Sun Jan 25 2009 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.27
+- Solved some bugs;
+- Added some other pending features:
+- Search QSO
+- Set QSLrcvd & QSLsent from contextual menu
+- Edit QSO data from contextual menu
+- Added datepicker to date fields
+
+* Sat Jan 24 2009 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.26
+
+* Sun Jan 18 2009 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.25
+
+* Sun Jan 18 2009 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.24
+
+* Sun Jan 11 2009 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.21
+
+* Tue Dec 23 2008 Jesus Guardon <ea7dfh@ea7dfh.com> 0.0.17
+
+* Sun Dec 21 2008 jesus <ea7dfh@ea7dfh.com> 0.0.15
+
+* Fri Nov 28 2008 jesus <ea7dfh@ea7dfh.com> 
+- Initial release
+

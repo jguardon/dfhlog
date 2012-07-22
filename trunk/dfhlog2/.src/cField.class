@@ -1,0 +1,91 @@
+' Gambas class file
+
+PRIVATE $sName AS String
+PRIVATE $sText AS String
+PRIVATE $iX AS Float
+PRIVATE $iY AS Float
+PRIVATE $fFont AS Font
+PRIVATE $iColor AS Integer
+
+PROPERTY sName AS String
+PROPERTY sText AS String
+PROPERTY iX AS Float
+PROPERTY iY AS Float
+PROPERTY fFont AS Font
+PROPERTY iColor AS Integer
+
+PUBLIC SUB _new()
+
+END
+
+PRIVATE FUNCTION sName_Read() AS String
+
+    RETURN $sName
+
+END
+
+PRIVATE SUB sName_Write(Value AS String)
+
+    $sName = Value
+
+END
+
+PRIVATE FUNCTION sText_Read() AS String
+
+    RETURN $sText
+
+END
+
+PRIVATE SUB sText_Write(Value AS String)
+
+    $sText = Value
+
+END
+
+PRIVATE FUNCTION iX_Read() AS Float
+
+    RETURN $iX
+
+END
+
+PRIVATE SUB iX_Write(Value AS Float)
+
+    $iX = Value
+
+END
+
+PRIVATE FUNCTION iY_Read() AS Float
+
+    RETURN $iY
+
+END
+
+PRIVATE SUB iY_Write(Value AS Float)
+
+    $iY = Value
+
+END
+
+PRIVATE FUNCTION fFont_Read() AS Font
+
+    RETURN $fFont
+
+END
+
+PRIVATE SUB fFont_Write(Value AS Font)
+
+    $fFont = Value
+
+END
+
+PRIVATE FUNCTION iColor_Read() AS Integer
+
+    RETURN $iColor
+
+END
+
+PRIVATE SUB iColor_Write(Value AS Integer)
+
+    $iColor = Value
+
+END

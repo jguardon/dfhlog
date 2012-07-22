@@ -1,0 +1,344 @@
+' Gambas class file
+' dfhLog- Hamradio LogBook
+'     Copyright (C) 2009  Jesús Guardón, EA7DFH <ea7dfh@gmail.com>
+'
+'     This program is free software: you can redistribute it and/or modify
+'     it under the terms of the GNU General Public License as published by
+'     the Free Software Foundation, either version 3 of the License, or
+'     (at your option) any later version.
+'
+'     This program is distributed in the hope that it will be useful,
+'     but WITHOUT ANY WARRANTY; without even the implied warranty of
+'     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'     GNU General Public License for more details.
+'
+'     You should have received a copy of the GNU General Public License
+'     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+PRIVATE $type AS Integer
+PRIVATE $sWkdcfd AS String
+
+PUBLIC SUB Form_Open()
+
+    DIM banda, modo AS String
+
+    cboBand.Add(("All band"), 0)
+    FOR EACH banda IN global.getBandas()
+        cboBand.Add(banda)
+    NEXT
+    cboMode.Add(("All mode"), 0)
+    FOR EACH modo IN global.getModos()
+        cboMode.Add(modo)
+    NEXT
+
+END
+
+PRIVATE FUNCTION parseCbo(cbo AS ComboBox) AS String
+
+    DIM s AS String
+
+    IF cbo.Index = 0 THEN
+        s = "%"
+    ELSE
+        s = cbo.Text
+    ENDIF
+
+    RETURN s
+
+END
+
+PUBLIC SUB getSummary(type AS Integer)
+
+    $type = type
+
+    SELECT CASE $type
+
+        CASE 1 'dxcc
+            lblSummary.Text = ("DXCC Summary")
+        CASE 2 'wac
+            lblSummary.Text = ("WAC Summary")
+        CASE 3 'was
+            lblSummary.Text = ("WAS Summary")
+        CASE 4 'usaca
+            lblSummary.Text = ("USACA Summary")
+        CASE 5 'iota
+            lblSummary.Text = ("IOTA Summary")
+        CASE 6 'tpea
+            lblSummary.Text = ("TPEA Summary")
+    END SELECT
+
+    ME.ShowModal()
+
+END
+
+PRIVATE SUB getDXCC(banda AS String, modo AS String, wcd AS String)
+
+    DIM hres AS Result
+    DIM sql AS String
+    DIM f AS File
+    DIM countRef AS Integer = 0
+    DIM totalQSO AS Integer = 0
+    DIM path AS String = Temp & ".html"
+
+    f = OPEN path FOR OUTPUT APPEND
+
+    IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN
+    sql = "select call, qso_date, band, mode, qsl_rcvd, qsl_sent, country, count(call) as num from log where band like &1 and mode like &2 and qsl_rcvd like &3 group by country order by country"
+
+    hres = dbLog.cnLog.Exec(sql, parseCbo(cboBand), parseCbo(cboMode), wcd)
+    PRINT #f, html.header("DXCC Summary")
+    PRINT #f, Subst$(("<h2>&1: &2 by &3 in &4 and &5</h2><br>\n"), "DXCC", $sWkdcfd, FMain.ini["Estacion/QRZ"], cboBand.Text, cboMode.Text)
+
+    PRINT #f, ("<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>QSL_rcvd</td><td>QSL_sent</td><td>Country</td><td>QSOs</td></tr>")
+
+    DO WHILE hres.Available
+        PRINT #f, "<tr><td>" & hres!call & "</td><td>" & (hres!qso_date) & "</td><td>" & hres!band & "</td><td>" & hres!mode & "</td><td>" & hres!qsl_rcvd & "</td><td>" & hres!qsl_sent & "</td><td>" & hres!country & "</td><td align=\"right\">" & hres!num & "</td></tr>"
+        INC countRef
+        totalQSO += CInt(hres!num)
+        hres.MoveNext()
+    LOOP
+    PRINT #f, "<tr><td colspan=\"5\"></td><td><b>Total References</b></td><td align=\"right\">" & countRef & "</td>"
+    PRINT #f, "<tr><td colspan=\"5\"></td><td><b>Total QSO</b></td><td align=\"right\" colspan=\"2\">" & totalQSO & "</td>"
+    PRINT #f, "</table>"
+    PRINT #f, html.footer()
+
+    CLOSE #f
+    Desktop.Open(path)
+    ME.Close()
+
+CATCH
+    Message.Error(("Error in ") & "getDXCC\n" & Error.Text & "\n" & Error.Where)
+
+END
+
+PRIVATE SUB getWAC(banda AS String, modo AS String, wcd AS String)
+
+    DIM hres AS Result
+    DIM sql AS String
+    DIM f AS File
+    DIM countRef AS Integer = 0
+    DIM totalQSO AS Integer = 0
+    DIM path AS String = Temp & ".html"
+
+    f = OPEN path FOR OUTPUT APPEND
+
+    IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN
+    sql = "select call, qso_date, band, mode, qsl_rcvd, qsl_sent, country ,cont, count(call) as num from log where band like &1 and mode like &2 and qsl_rcvd like &3 group by cont order by cont"
+
+    hres = dbLog.cnLog.Exec(sql, parseCbo(cboBand), parseCbo(cboMode), wcd)
+    PRINT #f, html.header("WAC Summary")
+    PRINT #f, Subst$(("<h2>&1: &2 by &3 in &4 and &5</h2><br>\n"), "WAC", $sWkdcfd, FMain.ini["Estacion/QRZ"], cboBand.Text, cboMode.Text)
+    PRINT #f, ("<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>QSL_rcvd</td><td>QSL_sent</td><td>Country</td><td>Continent</td><td>QSOs</td></tr>")
+
+    DO WHILE hres.Available
+        PRINT #f, "<tr><td>" & hres!call & "</td><td>" & (hres!qso_date) & "</td><td>" & hres!band & "</td><td>" & hres!mode & "</td><td>" & hres!qsl_rcvd & "</td><td>" & hres!qsl_sent & "</td><td>" & hres!country & "</td><td>" & hres!cont & "</td><td align=\"right\">" & hres!num & "</td></tr>"
+        INC countRef
+        totalQSO += CInt(hres!num)
+        hres.MoveNext()
+    LOOP
+    PRINT #f, "<tr><td colspan=\"6\"></td><td><b>Total References</b></td><td align=\"right\">" & countRef & "</td>"
+    PRINT #f, "<tr><td colspan=\"6\"></td><td><b>Total QSO</b></td><td align=\"right\" colspan=\"2\">" & totalQSO & "</td>"
+    PRINT #f, "</table>"
+    PRINT #f, html.footer()
+
+    CLOSE #f
+    Desktop.Open(path)
+    ME.Close()
+
+CATCH
+    Message.Error(("Error in ") & "getWAC\n" & Error.Text & "\n" & Error.Where)
+
+END
+
+PRIVATE SUB getWAS(banda AS String, modo AS String, wcd AS String)
+
+    DIM hres AS Result
+    DIM sql AS String
+    DIM f AS File
+    DIM countRef AS Integer = 0
+    DIM totalQSO AS Integer = 0
+    DIM path AS String = Temp & ".html"
+
+    f = OPEN path FOR OUTPUT APPEND
+
+    IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN
+
+    sql = "select call, qso_date, band, mode, qsl_rcvd, qsl_sent, country ,state, count(call) as num from log where band like &1 and mode like &2 and qsl_rcvd like &3 and state <> '' group by state order by state"
+
+    hres = dbLog.cnLog.Exec(sql, parseCbo(cboBand), parseCbo(cboMode), wcd)
+    PRINT #f, html.header("WAS Summary")
+    PRINT #f, Subst$(("<h2>&1: &2 by &3 in &4 and &5</h2><br>\n"), "WAS", $sWkdcfd, FMain.ini["Estacion/QRZ"], cboBand.Text, cboMode.Text)
+    PRINT #f, ("<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>QSL_rcvd</td><td>QSL_sent</td><td>Country</td><td>State</td><td>QSOs</td></tr>")
+
+    DO WHILE hres.Available
+        PRINT #f, "<tr><td>" & hres!call & "</td><td>" & (hres!qso_date) & "</td><td>" & hres!band & "</td><td>" & hres!mode & "</td><td>" & hres!qsl_rcvd & "</td><td>" & hres!qsl_sent & "</td><td>" & hres!country & "</td><td>" & hres!state & "</td><td align=\"right\">" & hres!num & "</td></tr>"
+        INC countRef
+        totalQSO += CInt(hres!num)
+        hres.MoveNext()
+    LOOP
+    PRINT #f, "<tr><td colspan=\"6\"></td><td><b>Total References</b></td><td align=\"right\">" & countRef & "</td>"
+    PRINT #f, "<tr><td colspan=\"6\"></td><td><b>Total QSO</b></td><td align=\"right\" colspan=\"2\">" & totalQSO & "</td>"
+    PRINT #f, "</table>"
+    PRINT #f, html.footer()
+
+    CLOSE #f
+    Desktop.Open(path)
+    ME.Close()
+
+CATCH
+    Message.Error(("Error in ") & "getWAS\n" & Error.Text & "\n" & Error.Where)
+
+END
+
+PRIVATE SUB getUSACA(banda AS String, modo AS String, wcd AS String)
+
+    DIM hres AS Result
+    DIM sql AS String
+    DIM f AS File
+    DIM countRef AS Integer = 0
+    DIM totalQSO AS Integer = 0
+    DIM path AS String = Temp & ".html"
+
+    f = OPEN path FOR OUTPUT APPEND
+
+    IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN
+    sql = "select call, qso_date, band, mode, qsl_rcvd, qsl_sent, state ,cnty, count(call) as num from log where band like &1 and mode like &2 and qsl_rcvd like &3 and cnty <> '' group by cnty order by cnty"
+
+    hres = dbLog.cnLog.Exec(sql, parseCbo(cboBand), parseCbo(cboMode), wcd)
+    PRINT #f, html.header("USACA Summary")
+    PRINT #f, Subst$(("<h2>&1: &2 by &3 in &4 and &5</h2><br>\n"), "USACA", $sWkdcfd, FMain.ini["Estacion/QRZ"], cboBand.Text, cboMode.Text)
+    PRINT #f, ("<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>QSL_rcvd</td><td>QSL_sent</td><td>State</td><td>County</td><td>QSOs</td></tr>")
+
+    DO WHILE hres.Available
+        PRINT #f, "<tr><td>" & hres!call & "</td><td>" & (hres!qso_date) & "</td><td>" & hres!band & "</td><td>" & hres!mode & "</td><td>" & hres!qsl_rcvd & "</td><td>" & hres!qsl_sent & "</td><td>" & hres!state & "</td><td>" & hres!cnty & "</td><td align=\"right\">" & hres!num & "</td></tr>"
+        INC countRef
+        totalQSO += CInt(hres!num)
+        hres.MoveNext()
+    LOOP
+    PRINT #f, "<tr><td colspan=\"6\"></td><td><b>Total References</b></td><td align=\"right\">" & countRef & "</td>"
+    PRINT #f, "<tr><td colspan=\"6\"></td><td><b>Total QSO</b></td><td align=\"right\" colspan=\"2\">" & totalQSO & "</td>"
+    PRINT #f, "</table>"
+    PRINT #f, html.footer()
+
+    CLOSE #f
+    Desktop.Open(path)
+    ME.Close()
+
+CATCH
+    Message.Error(("Error in ") & "getUSACA\n" & Error.Text & "\n" & Error.Where)
+
+END
+
+PRIVATE SUB getIOTA(banda AS String, modo AS String, wcd AS String)
+
+    DIM hres AS Result
+    DIM sql AS String
+    DIM f AS File
+    DIM countRef AS Integer = 0
+    DIM totalQSO AS Integer = 0
+    DIM path AS String = Temp & ".html"
+
+    f = OPEN path FOR OUTPUT APPEND
+
+    IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN
+    sql = "select call, qso_date, band, mode, qsl_rcvd, qsl_sent, country ,iota, count(call) as num from log where band like &1 and mode like &2 and qsl_rcvd like &3 and iota <> '' group by iota order by iota"
+
+    hres = dbLog.cnLog.Exec(sql, parseCbo(cboBand), parseCbo(cboMode), wcd)
+    PRINT #f, html.header("IOTA Summary")
+    PRINT #f, Subst$(("<h2>&1: &2 by &3 in &4 and &5</h2><br>\n"), "IOTA", $sWkdcfd, FMain.ini["Estacion/QRZ"], cboBand.Text, cboMode.Text)
+    PRINT #f, ("<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>QSL_rcvd</td><td>QSL_sent</td><td>Country</td><td>IOTA</td><td>QSOs</td></tr>")
+
+    DO WHILE hres.Available
+        PRINT #f, "<tr><td>" & hres!call & "</td><td>" & (hres!qso_date) & "</td><td>" & hres!band & "</td><td>" & hres!mode & "</td><td>" & hres!qsl_rcvd & "</td><td>" & hres!qsl_sent & "</td><td>" & hres!country & "</td><td>" & hres!iota & "</td><td align=\"right\">" & hres!num & "</td></tr>"
+        INC countRef
+        totalQSO += CInt(hres!num)
+        hres.MoveNext()
+    LOOP
+    PRINT #f, "<tr><td colspan=\"6\"></td><td><b>Total References</b></td><td align=\"right\">" & countRef & "</td>"
+    PRINT #f, "<tr><td colspan=\"6\"></td><td><b>Total QSO</b></td><td align=\"right\" colspan=\"2\">" & totalQSO & "</td>"
+    PRINT #f, "</table>"
+    PRINT #f, html.footer()
+
+    CLOSE #f
+    Desktop.Open(path)
+    ME.Close()
+
+CATCH
+    Message.Error(("Error in ") & "getIOTA\n" & Error.Text & "\n" & Error.Where)
+
+END
+
+PRIVATE SUB getTPEA(banda AS String, modo AS String, wcd AS String)
+
+    DIM hres AS Result
+    DIM sql AS String
+    DIM f AS File
+    DIM countRef AS Integer = 0
+    DIM totalQSO AS Integer = 0
+    DIM path AS String = Temp & ".html"
+
+    f = OPEN path FOR OUTPUT APPEND
+
+    IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN
+    sql = "select call, qso_date, band, mode, qsl_rcvd, qsl_sent, country ,TPEA, count(call) as num from log where band like &1 and mode like &2 and qsl_rcvd like &3 and TPEA <> '' group by TPEA order by TPEA"
+
+    hres = dbLog.cnLog.Exec(sql, parseCbo(cboBand), parseCbo(cboMode), wcd)
+    PRINT #f, html.header("TPEA Summary")
+    PRINT #f, Subst$(("<h2>&1: &2 by &3 in &4 and &5</h2><br>\n"), "TPEA", $sWkdcfd, FMain.ini["Estacion/QRZ"], cboBand.Text, cboMode.Text)
+    PRINT #f, ("<table align=\"center\" border=\"1\" width=\"70%\"><tr id=\"hdr\"><td>Callsign</td><td>Date</td><td>Band</td><td>Mode</td><td>QSL_rcvd</td><td>QSL_sent</td><td>Country</td><td>TPEA</td><td>QSOs</td></tr>")
+
+    DO WHILE hres.Available
+        PRINT #f, "<tr><td>" & hres!call & "</td><td>" & (hres!qso_date) & "</td><td>" & hres!band & "</td><td>" & hres!mode & "</td><td>" & hres!qsl_rcvd & "</td><td>" & hres!qsl_sent & "</td><td>" & hres!country & "</td><td>" & hres!TPEA & "</td><td align=\"right\">" & hres!num & "</td></tr>"
+        INC countRef
+        totalQSO += CInt(hres!num)
+        hres.MoveNext()
+    LOOP
+    PRINT #f, "<tr><td colspan=\"6\"></td><td><b>Total References</b></td><td align=\"right\">" & countRef & "</td>"
+    PRINT #f, "<tr><td colspan=\"6\"></td><td><b>Total QSO</b></td><td align=\"right\" colspan=\"2\">" & totalQSO & "</td>"
+    PRINT #f, "</table>"
+    PRINT #f, html.footer()
+
+    CLOSE #f
+    Desktop.Open(path)
+    ME.Close()
+
+CATCH
+    Message.Error(("Error in ") & "getTPEA\n" & Error.Text & "\n" & Error.Where)
+
+END
+
+PUBLIC SUB btnOK_Click()
+
+    DIM wkdcfd AS String
+
+    IF rbCfd.Value = TRUE THEN
+        wkdcfd = "Y"
+        $sWkdcfd = ("Confirmed references")
+    ELSE
+        wkdcfd = "%"
+        $sWkdcfd = ("Worked references")
+    ENDIF
+
+    SELECT CASE $type
+
+        CASE 1 'dxcc
+            getDXCC(cboBand.Text, cboMode.Text, wkdcfd)
+        CASE 2 'wac
+            getWAC(cboBand.Text, cboMode.Text, wkdcfd)
+        CASE 3 'was
+            getWAS(cboBand.Text, cboMode.Text, wkdcfd)
+        CASE 4 'usaca
+            getUSACA(cboBand.Text, cboMode.Text, wkdcfd)
+        CASE 5 'iota
+            getIOTA(cboBand.Text, cboMode.Text, wkdcfd)
+        CASE 6 'tpea
+            getTPEA(cboBand.Text, cboMode.Text, wkdcfd)
+    END SELECT
+
+END
+
+PUBLIC SUB btnCancel_Click()
+
+    ME.Close()
+
+END

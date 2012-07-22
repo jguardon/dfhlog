@@ -1,0 +1,358 @@
+' Gambas class file
+' dfhLog- Hamradio LogBook
+'     Copyright (C) 2009  Jesús Guardón, EA7DFH <ea7dfh@gmail.com>
+'
+'     This program is free software: you can redistribute it and/or modify
+'     it under the terms of the GNU General Public License as published by
+'     the Free Software Foundation, either version 3 of the License, or
+'     (at your option) any later version.
+'
+'     This program is distributed in the hope that it will be useful,
+'     but WITHOUT ANY WARRANTY; without even the implied warranty of
+'     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'     GNU General Public License for more details.
+'
+'     You should have received a copy of the GNU General Public License
+'     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+PRIVATE _downloadAsyncKey AS NEW HttpClient AS "_DownloadKey"
+PRIVATE _downloadAsyncData AS NEW HttpClient AS "_DownloadData"
+PRIVATE downloadBufferKey AS String
+PRIVATE downloadBufferData AS String
+PRIVATE xml AS NEW XmlReader
+PRIVATE keyQRZ AS String
+PRIVATE csgn AS String
+
+'****PROPERTIES******
+PRIVATE $qerror AS String
+PRIVATE $qcall AS String
+PRIVATE $fname AS String
+PRIVATE $name AS String
+PRIVATE $addr1 AS String
+PRIVATE $addr2 AS String
+PRIVATE $country AS String
+PRIVATE $state AS String
+PRIVATE $grid AS String
+PRIVATE $county AS String
+PRIVATE $qslmgr AS String
+PRIVATE $email AS String
+
+PROPERTY READ qcall AS String
+PROPERTY READ name AS String
+PROPERTY READ fname AS String
+PROPERTY READ qerror AS String
+PROPERTY READ addr1 AS String
+PROPERTY READ addr2 AS String
+PROPERTY READ country AS String
+PROPERTY READ state AS String
+PROPERTY READ grid AS String
+PROPERTY READ county AS String
+PROPERTY READ qslmgr AS String
+PROPERTY READ email AS String
+
+EVENT QRZOk()
+
+'***************** QRZ.com XML method *****************
+PUBLIC SUB DownloadAsyncKey(URL AS String)
+
+    downloadBufferKey = ""
+    _downloadAsyncKey.Async = TRUE
+    _downloadAsyncKey.TimeOut = 10
+    _downloadAsyncKey.URL = URL
+    _downloadAsyncKey.Get()
+
+END
+
+PUBLIC SUB DownloadAsyncData(URL AS String)
+
+    downloadBufferData = ""
+    _downloadAsyncData.Async = TRUE
+    _downloadAsyncData.TimeOut = 10
+    _downloadAsyncData.URL = URL
+    _downloadAsyncData.Get()
+
+END
+
+PUBLIC SUB _DownloadKey_Read()
+
+    DIM buffer AS String
+
+    READ #LAST, buffer, Lof(LAST)
+    downloadBufferKey &= buffer
+
+END
+
+PUBLIC SUB _DownloadData_Read()
+
+    DIM buffer AS String
+
+    READ #LAST, buffer, Lof(LAST)
+    downloadBufferData &= buffer
+
+END
+
+PUBLIC SUB _DownloadKey_Error()
+
+    DEBUG "Error downloading Key" & _downloadAsyncKey.Status
+
+END
+
+PUBLIC SUB _DownloadData_Error()
+
+    DEBUG "Error " & _downloadAsyncData.Status & " downloading " '& _downloadAsyncData.URL
+
+END
+
+PUBLIC SUB _DownloadKey_Finished()
+
+    DIM sElement AS String
+
+    xml.FromString(downloadBufferKey)
+
+    WHILE NOT Xml.Eof
+        SELECT CASE Xml.Node.Type
+            CASE XmlReaderNodeType.Element
+                sElement = Xml.Node.Name
+                IF sElement = "Key" THEN
+                    xml.Read()
+                    keyQRZ = xml.Node.Value
+                ENDIF
+        END SELECT
+        Xml.Read()
+    WEND
+
+    TRY DownloadAsyncData("http://online.qrz.com/bin/xml?s=" & keyQRZ & ";callsign=" & csgn)
+    'DEBUG downloadBufferKey
+CATCH
+    Message.Error("Error leyendo XML (Key QRZ.COM)\n Linea: " & Error.Where)
+
+END
+
+PUBLIC SUB _DownloadData_Finished()
+
+    DIM sElement AS String
+
+    xml.FromString(downloadBufferData)
+
+    WHILE NOT Xml.Eof
+        SELECT CASE Xml.Node.Type
+            CASE XmlReaderNodeType.Element
+                sElement = Xml.Node.Name
+                SELECT CASE sElement
+                    CASE "call"
+                        xml.Read()
+                        $qcall = xml.Node.Value
+                    CASE "fname"
+                        xml.Read()
+                        $fname = xml.Node.Value
+                    CASE "name"
+                        xml.Read()
+                        $name = xml.Node.Value
+                    CASE "addr1"
+                        xml.Read()
+                        $addr1 = xml.Node.Value
+                    CASE "addr2"
+                        xml.Read()
+                        $addr2 = xml.Node.Value
+                    CASE "country"
+                        xml.Read()
+                        $country = xml.Node.Value
+                    CASE "state"
+                        xml.Read()
+                        $state = xml.Node.Value
+                    CASE "grid"
+                        xml.Read()
+                        $grid = xml.Node.Value
+                    CASE "county"
+                        xml.Read()
+                        $county = xml.Node.Value
+                    CASE "qslmgr"
+                        xml.Read()
+                        $qslmgr = xml.Node.Value
+                    CASE "email"
+                        xml.Read()
+                        $email = xml.Node.Value
+                    CASE "Error"
+                        xml.Read()
+                        $qerror = xml.Node.Value
+                    CASE "key"
+                        xml.Read()
+                        keyQRZ = xml.Node.Value
+
+                END SELECT
+
+        END SELECT
+        Xml.Read()
+
+    WEND
+    RAISE QRZOk()
+
+CATCH
+    Message.Error(("Error reading XML (Data QRZ.COM)\n Line: ") & Error.Where)
+
+END
+
+PRIVATE SUB getKeyQRZcom()
+
+    DIM uqrz AS String = FMain.ini["Estacion/UserQRZ"]
+    DIM pqrz AS String = FMain.ini["Estacion/PassQRZ"]
+
+    TRY DownloadAsyncKey("http://online.qrz.com/bin/xml?username=" & uqrz & ";password=" & pqrz)
+
+END
+
+PUBLIC SUB getQRZcom(callsign AS String)
+
+    csgn = callsign
+    IF FMain.ini["qrzCom/Value"] = 1 THEN
+        IF NOT KeyQRZ OR $qerror = "Session Timeout" OR $qerror = "Username / password required" THEN
+            getKeyQRZcom()
+        ELSE
+            TRY DownloadAsyncData("http://online.qrz.com/bin/xml?s=" & keyQRZ & ";callsign=" & Trim(callsign))
+        ENDIF
+    ELSE IF FMain.ini["qrzCom/Value"] = 2
+        getQRZcomWeb("http://www.qrz.com/db/" & Trim(callsign))
+    ENDIF
+
+END
+
+PUBLIC SUB clearQRZ()
+
+    $qerror = NULL
+    $qcall = NULL
+    $fname = NULL
+    $name = NULL
+    $addr1 = NULL
+    $addr2 = NULL
+    $country = NULL
+    $state = NULL
+    $grid = NULL
+    $county = NULL
+    $qslmgr = NULL
+    $email = NULL
+
+END
+'*************** QRZ.com Web method ***************
+
+PRIVATE _download AS NEW HttpClient AS "Download"
+PRIVATE downloadBuffer AS String
+PRIVATE $finished AS Boolean = TRUE
+
+PUBLIC SUB getQRZcomWeb(URL AS String)
+
+    downloadBuffer = ""
+    IF $finished = TRUE THEN
+        _download.Async = TRUE
+        _download.TimeOut = 5
+        _download.URL = URL
+        _download.Get()
+    ENDIF
+
+END
+
+PUBLIC SUB Download_Read()
+
+    DIM buffer AS String
+
+    $finished = FALSE
+    READ #LAST, buffer, Lof(LAST)
+    downloadBuffer &= buffer
+
+END
+
+PUBLIC SUB Download_Error()
+
+    _download.Close
+    DEBUG "Error downloading " & _download.Status
+
+END
+
+PUBLIC SUB Download_Finished()
+
+    extractData(downloadBuffer)
+    $finished = TRUE
+    RAISE QRZOk()
+
+END
+
+PRIVATE SUB extractData(S AS String)
+
+    $qcall = "Login is required for\nadditional detail."
+
+    ' Thinking about dropping QRZ.com web support :-(
+
+    ' Looking FOR a way to manage sessions to log in into their pages AND fetch data
+    ' even if they have a 150 lookups limit per day. Very bad...
+END
+
+PRIVATE FUNCTION name_Read() AS String
+
+    RETURN $name
+
+END
+
+PRIVATE FUNCTION fname_Read() AS String
+
+    RETURN $fname
+
+END
+
+PRIVATE FUNCTION qerror_Read() AS String
+
+    RETURN $qerror
+
+END
+
+PRIVATE FUNCTION addr1_Read() AS String
+
+    RETURN $addr1
+
+END
+
+PRIVATE FUNCTION addr2_Read() AS String
+
+    RETURN $addr2
+
+END
+
+PRIVATE FUNCTION state_Read() AS String
+
+    RETURN $state
+
+END
+
+PRIVATE FUNCTION grid_Read() AS String
+
+    RETURN Upper($grid)
+
+END
+
+PRIVATE FUNCTION county_Read() AS String
+
+    RETURN $county
+
+END
+
+PRIVATE FUNCTION qslmgr_Read() AS String
+
+    RETURN Upper($qslmgr)
+
+END
+
+PRIVATE FUNCTION email_Read() AS String
+
+    RETURN Lower($email)
+
+END
+
+PRIVATE FUNCTION qcall_Read() AS String
+
+    RETURN Upper($qcall)
+
+END
+
+PRIVATE FUNCTION country_Read() AS String
+
+    RETURN $country
+
+END
