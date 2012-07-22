@@ -182,7 +182,7 @@ Public Sub Form_Open()
     Dim propa, banda, modo, entidad As String
 
     Me.Title = "dfhLog - v " & Application.Version & " - " & ini["Estacion/QRZ"]
-    lcdQRG.Visible = False
+    '     lcdQRG.Visible = False
     If world.created Then
         c = New Cty
         cdx = New Cty
