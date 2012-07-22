@@ -1,4 +1,5 @@
 ' Gambas module file
+
 ' dfhLog- Hamradio LogBook
 '     Copyright (C) 2009  Jesús Guardón, EA7DFH <ea7dfh@gmail.com>
 '
@@ -15,38 +16,38 @@
 '     You should have received a copy of the GNU General Public License
 '     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-PUBLIC cnLog AS Connection
+Public cnLog As Connection
 
-PUBLIC FUNCTION connDB(path AS String) AS Boolean
+Public Function connDB(path As String) As Boolean
 
-    DIM myHost, myDBName AS String
+    Dim myHost, myDBName As String
 
     myHost = Left(path, RInStr(path, "/"))
     myDBName = Right(path, Len(path) - RInStr(path, "/"))
     '     DEBUG myHost;; myDBName
-    IF cnLog <> NULL THEN RETURN FALSE
+    If cnLog <> Null Then Return False
 
-    cnLog = NEW Connection
+    cnLog = New Connection
 
     cnLog.Host = myHost
     cnLog.Name = myDBName
     cnLog.Type = "sqlite3"
-    TRY cnLog.Open()
+    Try cnLog.Open()
 
-    IF ERROR THEN
-        cnLog = NULL
+    If Error Then
+        cnLog = Null
         Message.Error(("Error connecting to database: ") & myDBName & "\n" & Error.Text)
-        RETURN TRUE
-    ENDIF
+        Return True
+    Endif
 
-    RETURN FALSE
+    Return False
 
-END
+End
 
-PUBLIC SUB CloseDB()
+Public Sub CloseDB()
 
-    IF cnLog = NULL THEN RETURN
+    If cnLog = Null Then Return
     cnLog.Close()
-    cnLog = NULL
+    cnLog = Null
 
-END
+End

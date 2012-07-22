@@ -1,4 +1,5 @@
 ' Gambas module file
+
 ' dfhLog- Hamradio LogBook
 '     Copyright (C) 2009  Jesús Guardón, EA7DFH <ea7dfh@gmail.com>
 '
@@ -15,207 +16,207 @@
 '     You should have received a copy of the GNU General Public License
 '     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-PRIVATE regx AS Regexp
-PRIVATE bandas AS NEW String[]
-PRIVATE modos AS NEW String[]
-PRIVATE propa AS NEW String[]
-PRIVATE LL AS NEW latlon
-PUBLIC MapLoc AS Boolean = FALSE
-PRIVATE ent AS NEW cty
-PUBLIC $iQSOn AS NEW Integer[]
-PUBLIC $iAdded2Queue AS Integer
-PUBLIC dwnld AS NEW HttpClient AS "_getVer"
-PRIVATE $ver AS String
-PUBLIC $alertedMUF AS Boolean = FALSE
-PUBLIC $alertedES AS Boolean = FALSE
-PUBLIC $aLabels AS NEW Collection
-PRIVATE $utc AS String
-PUBLIC $cSpot AS NEW Object[]
-PRIVATE snd AS NEW Sound("data/Siren.wav")
+Private regx As Regexp
+Private bandas As New String[]
+Private modos As New String[]
+Private propa As New String[]
+Private LL As New Latlon
+Public MapLoc As Boolean = False
+Private ent As New Cty
+Public $iQSOn As New Integer[]
+Public $iAdded2Queue As Integer
+Public dwnld As New HttpClient As "_getVer"
+Private $ver As String
+Public $alertedMUF As Boolean = False
+Public $alertedES As Boolean = False
+Public $aLabels As New Collection
+Private $utc As String
+Public $cSpot As New Object[]
+Private snd As New Sound("data/Siren.wav")
 
-PUBLIC FUNCTION base64(st AS String, OPTIONAL decode AS Boolean = FALSE) AS String
+Public Function base64(st As String, Optional decode As Boolean = False) As String
 
-    DIM ret AS String
+    Dim ret As String
 
-    IF st THEN
-        IF decode THEN
-            SHELL Subst("echo \"&1\" | base64 -id", st) TO ret
-        ELSE
-            SHELL Subst("echo \"&1\" | base64 -", st) TO ret
-        ENDIF
-        RETURN Trim(ret)
-    ENDIF
+    If st Then
+        If decode Then
+            Shell Subst("echo \"&1\" | base64 -id", st) To ret
+        Else
+            Shell Subst("echo \"&1\" | base64 -", st) To ret
+        Endif
+        Return Trim(ret)
+    Endif
 
-END
+End
 
-PUBLIC FUNCTION UTCNow() AS Date
+Public Function UTCNow() As Date
 
-    RETURN DateAdd(Now, gb.Hour, FMain.$utcdiff)
+    Return DateAdd(Now, gb.Hour, FMain.$utcdiff)
 
-END
+End
 
-PUBLIC FUNCTION pidOf(program AS String) AS String 'checks if a program is running and returns its PID
+Public Function pidOf(program As String) As String 'checks if a program is running and returns its PID
 
-    DIM gotpid AS String = ""
+    Dim gotpid As String = ""
 
-    TRY SHELL "pidof " & program TO gotpid
+    Try Shell "pidof " & program To gotpid
 
-    RETURN gotpid
+    Return gotpid
 
-END
+End
 
-PUBLIC FUNCTION chkLoc(loc AS String) AS Boolean
+Public Function chkLoc(loc As String) As Boolean
     '[a-r]{2}\\d{2}|[a-r]{2}\\d{2}[a-x]{2}
 
     loc = Trim(loc)
-    IF loc THEN
-        regx = NEW Regexp(loc, "^[A-R]{2}\\d{2}[A-X]{2}$|^[A-R]{2}\\d{2}$")
-        IF regx.Text THEN
-            'DEBUG regx.Text
-            RETURN TRUE
-        ELSE
-            RETURN FALSE
-        ENDIF
-    ENDIF
+    If loc Then
+        regx = New Regexp(loc, "^[A-R]{2}\\d{2}[A-X]{2}$|^[A-R]{2}\\d{2}$")
+        '         Debug regx.SubMatches.Count
+        If regx.SubMatches.Count = 0 Then
+            Return True
+        Else
+            Return False
+        Endif
+    Endif
 
-END
+End
 
 'array bandas
 
-PUBLIC FUNCTION getBandas() AS String[]
+Public Function getBandas() As String[]
 
     bandas = ["2190M", "160M", "80M", "40M", "30M", "20M", "17M", "15M", "12M", "10M", "6M", "4M", "2M", "70CM", "23CM", "13CM", "6CM", "3CM", "1.25CM", "6MM"]
 
-    RETURN bandas
+    Return bandas
 
-END
+End
 
-PUBLIC FUNCTION getModos() AS String[]
+Public Function getModos() As String[]
 
     modos = ["AM", "AMTOR", "APRS", "ARQ", "ATV", "BPSK", "CHIP64", "CHIP128", "CW", "FAX", "FM", "FSK", "FSK441", "HELL", "JT44", "JT65", "JT65A", "JT65B", "JT65C", "JT6M", "LSB", "MFSK", "MFSK8", "MFSK16", "MT63", "OLIVIA", "PACKET", "PACTOR", "PSK31", "PSK63", "RTTY", "RTTYM", "SSB", "SSTV", "THRB", "TOR", "USB", "VOI"]
 
-    RETURN modos
+    Return modos
 
-END
+End
 
-PUBLIC FUNCTION getPropa() AS String[]
+Public Function getPropa() As String[]
 
     propa = ["ACS", "AUR", "AUE", "BS", "EME", "ES", "FAI", "F2", "ION", "LOS", "MS", "RS", "SAT", "TEP", "TR", "TRS", "TRD"]
 
-    RETURN propa
+    Return propa
 
-END
+End
 
-PUBLIC FUNCTION getBand(freq AS Float) AS String
+Public Function getBand(freq As Float) As String
 
     freq /= 1000
 
-    SELECT CASE freq
-        CASE 0.1357 TO 0.1378
+    Select Case freq
+        Case 0.1357 To 0.1378
             ' [GB2:FCOL] FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
             FMain.Controls["lcdQRG"].Foreground = &H00FF00&
-            RETURN "2190M"
-        CASE 1.8 TO 2.0
+            Return "2190M"
+        Case 1.8 To 2.0
             ' [GB2:FCOL] FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
             FMain.Controls["lcdQRG"].Foreground = &H00FF00&
-            RETURN "160M"
-        CASE 3.5 TO 3.8
+            Return "160M"
+        Case 3.5 To 3.8
             ' [GB2:FCOL] FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
             FMain.Controls["lcdQRG"].Foreground = &H00FF00&
-            RETURN "80M"
-        CASE 7.0 TO 7.2
+            Return "80M"
+        Case 7.0 To 7.2
             ' [GB2:FCOL] FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
             FMain.Controls["lcdQRG"].Foreground = &H00FF00&
-            RETURN "40M"
-        CASE 10.1 TO 10.15
+            Return "40M"
+        Case 10.1 To 10.15
             ' [GB2:FCOL] FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
             FMain.Controls["lcdQRG"].Foreground = &H00FF00&
-            RETURN "30M"
-        CASE 14.0 TO 14.35
+            Return "30M"
+        Case 14.0 To 14.35
             ' [GB2:FCOL] FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
             FMain.Controls["lcdQRG"].Foreground = &H00FF00&
-            RETURN "20M"
-        CASE 18.068 TO 18.168
+            Return "20M"
+        Case 18.068 To 18.168
             ' [GB2:FCOL] FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
             FMain.Controls["lcdQRG"].Foreground = &H00FF00&
-            RETURN "17M"
-        CASE 21.0 TO 21.45
+            Return "17M"
+        Case 21.0 To 21.45
             ' [GB2:FCOL] FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
             FMain.Controls["lcdQRG"].Foreground = &H00FF00&
-            RETURN "15M"
-        CASE 24.89 TO 24.99
+            Return "15M"
+        Case 24.89 To 24.99
             ' [GB2:FCOL] FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
             FMain.Controls["lcdQRG"].Foreground = &H00FF00&
-            RETURN "12M"
-        CASE 28.0 TO 29.7
+            Return "12M"
+        Case 28.0 To 29.7
             ' [GB2:FCOL] FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
             FMain.Controls["lcdQRG"].Foreground = &H00FF00&
-            RETURN "10M"
-        CASE 50.0 TO 52.0
+            Return "10M"
+        Case 50.0 To 52.0
             ' [GB2:FCOL] FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
             FMain.Controls["lcdQRG"].Foreground = &H00FF00&
-            RETURN "6M"
-        CASE 70.0 TO 70.5
+            Return "6M"
+        Case 70.0 To 70.5
             ' [GB2:FCOL] FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
             FMain.Controls["lcdQRG"].Foreground = &H00FF00&
-            RETURN "4M"
-        CASE 144.0 TO 146.0
+            Return "4M"
+        Case 144.0 To 146.0
             ' [GB2:FCOL] FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
             FMain.Controls["lcdQRG"].Foreground = &H00FF00&
-            RETURN "2M"
-        CASE 430.0 TO 440.0
+            Return "2M"
+        Case 430.0 To 440.0
             ' [GB2:FCOL] FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
             FMain.Controls["lcdQRG"].Foreground = &H00FF00&
-            RETURN "70CM"
-        CASE 1240.0 TO 1300.0
+            Return "70CM"
+        Case 1240.0 To 1300.0
             ' [GB2:FCOL] FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
             FMain.Controls["lcdQRG"].Foreground = &H00FF00&
-            RETURN "23CM"
-        CASE 2300.0 TO 2450.0
+            Return "23CM"
+        Case 2300.0 To 2450.0
             ' [GB2:FCOL] FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
             FMain.Controls["lcdQRG"].Foreground = &H00FF00&
-            RETURN "13CM"
-        CASE 5650.0 TO 5850.0
+            Return "13CM"
+        Case 5650.0 To 5850.0
             ' [GB2:FCOL] FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
             FMain.Controls["lcdQRG"].Foreground = &H00FF00&
-            RETURN "6CM"
-        CASE 10000.0 TO 10500.0
+            Return "6CM"
+        Case 10000.0 To 10500.0
             ' [GB2:FCOL] FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
             FMain.Controls["lcdQRG"].Foreground = &H00FF00&
-            RETURN "3CM"
-        CASE 24000.0 TO 24250.0
+            Return "3CM"
+        Case 24000.0 To 24250.0
             ' [GB2:FCOL] FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
             FMain.Controls["lcdQRG"].Foreground = &H00FF00&
-            RETURN "1.25CM"
-        CASE 47000.0 TO 47200.0
+            Return "1.25CM"
+        Case 47000.0 To 47200.0
             ' [GB2:FCOL] FMain.Controls["lcdQRG"].ForeColor = &H00FF00&
             FMain.Controls["lcdQRG"].Foreground = &H00FF00&
-            RETURN "6MM"
-        CASE ELSE
+            Return "6MM"
+        Case Else
             ' [GB2:FCOL] FMain.Controls["lcdQRG"].ForeColor = Color.Red
             FMain.Controls["lcdQRG"].Foreground = Color.Red
-            RETURN
-    END SELECT
+            Return
+    End Select
 
-END
+End
 
 'locator formulas from Yves Goergen  (http://beta.unclassified.de/code/dotnet/maidenheadlocator/)
-PUBLIC FUNCTION locator2latlon(loc AS String) AS latlon
+Public Function locator2latlon(loc As String) As Latlon
 
     loc = Upper(loc)
-    IF Len(loc) = 4 THEN loc &= "LL"
+    If Len(loc) = 4 Then loc &= "LL"
 
     LL.lon = (Asc(loc, 1) - Asc("A")) * 20 + (Asc(loc, 3) - Asc("0")) * 2 + (Asc(loc, 5) - Asc("A") + 0.5) / 12 - 180
     LL.lat = (Asc(loc, 2) - Asc("A")) * 10 + (Asc(loc, 4) - Asc("0")) + (Asc(loc, 6) - Asc("A") + 0.5) / 24 - 90
 
-    RETURN LL
+    Return LL
 
-END
+End
 
-PUBLIC FUNCTION latLong2locator(lat AS Float, lon AS Float) AS String
+Public Function latLong2locator(lat As Float, lon As Float) As String
 
-    DIM v AS Integer
-    DIM locator AS String = ""
+    Dim v As Integer
+    Dim locator As String = ""
 
     lat += 90
     lon += 180
@@ -232,329 +233,328 @@ PUBLIC FUNCTION latLong2locator(lat AS Float, lon AS Float) AS String
     locator &= Chr$(Asc("A") + lon * 12)
     locator &= Chr$(Asc("A") + lat * 24)
 
-    RETURN locator
+    Return locator
 
-END
+End
 
-PUBLIC FUNCTION distance(lat1 AS Float, lon1 AS Float, lat2 AS Float, lon2 AS Float) AS Float
+Public Function distance(lat1 As Float, lon1 As Float, lat2 As Float, lon2 As Float) As Float
 
-    DIM dx AS Float
-    DIM hn AS Float = Rad(lat1)
-    DIM he AS Float = Rad(lon1)
-    DIM n AS Float = Rad(lat2)
-    DIM e AS Float = Rad(lon2)
-    DIM co AS Float = Cos(he - e) * Cos(hn) * Cos(n) + Sin(hn) * Sin(n)
-    DIM ca AS Float = ATan(Abs(Sqr(1 - co * co) / co))
+    Dim dx As Float
+    Dim hn As Float = Rad(lat1)
+    Dim he As Float = Rad(lon1)
+    Dim n As Float = Rad(lat2)
+    Dim e As Float = Rad(lon2)
+    Dim co As Float = Cos(he - e) * Cos(hn) * Cos(n) + Sin(hn) * Sin(n)
+    Dim ca As Float = ATan(Abs(Sqr(1 - co * co) / co))
 
-    IF co < 0 THEN ca = Pi - ca
+    If co < 0 Then ca = Pi - ca
     dx = 6367 * ca
 
-    RETURN dx
+    Return dx
 
-END
+End
 
-PUBLIC FUNCTION distLoc(loc1 AS String, loc2 AS String) AS Float
+Public Function distLoc(loc1 As String, loc2 As String) As Float
 
-    RETURN distance(locator2latlon(loc1).lat, locator2latlon(loc1).lon, locator2latlon(loc2).lat, locator2latlon(loc2).lon)
+    Return distance(locator2latlon(loc1).lat, locator2latlon(loc1).lon, locator2latlon(loc2).lat, locator2latlon(loc2).lon)
 
-END
+End
 
-PUBLIC FUNCTION bearing(lat1 AS Float, lon1 AS Float, lat2 AS Float, lon2 AS Float) AS Float
+Public Function bearing(lat1 As Float, lon1 As Float, lat2 As Float, lon2 As Float) As Float
 
-    DIM az, si AS Float
-    DIM hn AS Float = Rad(lat1)
-    DIM he AS Float = Rad(lon1)
-    DIM n AS Float = Rad(lat2)
-    DIM e AS Float = Rad(lon2)
-    DIM co AS Float = Cos(he - e) * Cos(hn) * Cos(n) + Sin(hn) * Sin(n)
-    DIM ca AS Float = ATan(Abs(Sqr(1 - co * co) / co))
+    Dim az, si As Float
+    Dim hn As Float = Rad(lat1)
+    Dim he As Float = Rad(lon1)
+    Dim n As Float = Rad(lat2)
+    Dim e As Float = Rad(lon2)
+    Dim co As Float = Cos(he - e) * Cos(hn) * Cos(n) + Sin(hn) * Sin(n)
+    Dim ca As Float = ATan(Abs(Sqr(1 - co * co) / co))
 
-    IF co < 0 THEN ca = Pi - ca
+    If co < 0 Then ca = Pi - ca
     si = Sin(e - he) * Cos(n) * Cos(hn)
     co = Sin(n) - Sin(hn) * Cos(ca)
     az = ATan(Abs(si / co))
-    IF co < 0 THEN az = Pi - az
-    IF si < 0 THEN az = az * -1
-    IF az < 0 THEN az = az + 2 * Pi
+    If co < 0 Then az = Pi - az
+    If si < 0 Then az = az * -1
+    If az < 0 Then az = az + 2 * Pi
 
-    RETURN Deg(az)
+    Return Deg(az)
 
-END
+End
 
-PUBLIC FUNCTION bearingLoc(loc1 AS String, loc2 AS String) AS Float
+Public Function bearingLoc(loc1 As String, loc2 As String) As Float
 
-    DIM b AS Float
+    Dim b As Float
 
-    IF loc1 = loc2 THEN
+    If loc1 = loc2 Then
         b = 0
-    ELSE
+    Else
         b = bearing(locator2latlon(loc1).lat, locator2latlon(loc1).lon, locator2latlon(loc2).lat, locator2latlon(loc2).lon)
-    ENDIF
+    Endif
 
-    RETURN b
+    Return b
 
-END
+End
 
-PUBLIC FUNCTION parseFecha(fecha AS String) AS String
+Public Function parseFecha(fecha As String) As String
 
-    DIM Y, M, D, nF AS String
-    DIM F AS String[]
+    Dim Y, M, D, nF As String
+    Dim F As String[]
     'PRINT fecha
     fecha = Left(fecha, 10)
-    IF fecha THEN
+    If fecha Then
         F = Split(fecha, "/")
         Y = F[2]
         M = F[0]
         D = F[1]
         nF = D & "/" & M & "/" & Y
-    ENDIF
-    IF NOT ERROR THEN
-        RETURN nF
-    ELSE
-        RETURN fecha
-    ENDIF
-CATCH
-    DEBUG Error.Text, Error.Where
+    Endif
+    If Not Error Then
+        Return nF
+    Else
+        Return fecha
+    Endif
+Catch
+    Debug Error.Text, Error.Where
 
-END
+End
 
-PUBLIC FUNCTION clusterColor(call AS String, band AS String) AS Integer
+Public Function clusterColor(call As String, band As String) As Integer
 
-    DIM colorDX AS Integer
-    DIM entidad AS String
-    DIM hresul AS Result
+    Dim colorDX As Integer
+    Dim entidad As String
+    Dim hresul As Result
 
     ent = world.findEntity(call)
-    IF ent <> NULL THEN
+    If ent <> Null Then
         entidad = ent.entity
-        IF FMain.connDB() THEN RETURN
+        If FMain.connDB() Then Return
         hResul = dbLog.cnLog.Exec("SELECT qsl_rcvd, band FROM log WHERE country = &1 AND band= &2;", entidad, band)
-        IF NOT hResul.Available THEN
+        If Not hResul.Available Then
             'DEBUG call, band, hResul!QSL_r
             colorDX = FMain.ini["Colores/Necesitado", Color.Blue]
-        ELSE
-            DO WHILE hResul.Available
-                IF hResul!qsl_rcvd = "Y" THEN
+        Else
+            Do While hResul.Available
+                If hResul!qsl_rcvd = "Y" Then
                     'DEBUG call, band, hResul!QSL_r
                     colorDX = FMain.ini["Colores/Confirmado", Color.Green]
-                    EXIT
-                ELSE
+                    Exit
+                Else
                     'DEBUG call, band, hResul!QSL_r
                     colorDX = FMain.ini["Colores/Trabajado", Color.Orange]
-                ENDIF
+                Endif
                 hResul.MoveNext()
-            LOOP
-        ENDIF
+            Loop
+        Endif
 
-    ENDIF
-    RETURN colorDX
+    Endif
+    Return colorDX
 
-CATCH
-    DEBUG Error.Text, Error.Where
+Catch
+    Debug Error.Text, Error.Where
 
-END
+End
 
-PUBLIC SUB addToQueue(id AS Integer)
+Public Sub addToQueue(id As Integer)
 
-    DIM hres AS Result
-    DIM sql, sql1 AS String
+    Dim hres As Result
+    Dim sql, sql1 As String
 
-    IF id <> NULL THEN
+    If id <> Null Then
         sql1 = "INSERT OR IGNORE INTO qQSL "
         sql = "SELECT id, operator, call, qso_date, time_on, band, mode, prop_mode, rst_sent, gridsquare, " &
             "my_gridsquare, qsl_via, qsl_rcvd, qsl_sent FROM log WHERE id=&1 AND qsl_sent <> 'Y';"
-        IF FMain.connDB() THEN RETURN
+        If FMain.connDB() Then Return
         hres = dbLog.cnLog.Exec(sql, id)
-        IF hres.Available
-            INC $iAdded2Queue
+        If hres.Available
+            Inc $iAdded2Queue
             dbLog.cnLog.Exec(sql1 & sql, id)
-        ENDIF
-    ENDIF
+        Endif
+    Endif
 
-CATCH
+Catch
     Message.Error(Error.Text, Error.Where)
 
-END
+End
 
-PUBLIC SUB saveADIF(myFile AS String)
+Public Sub saveADIF(myFile As String)
 
-    DIM hres AS Result
-    DIM sql AS String
-    DIM crlf AS String
-    DIM sField AS String
-    DIM hFile AS File
-    DIM L AS Integer
-    DIM hField AS ResultField
-    DIM i AS Integer
+    Dim hres As Result
+    Dim sql As String
+    Dim crlf As String
+    Dim sField As String
+    Dim hFile As File
+    Dim L As Integer
+    Dim hField As ResultField
+    Dim i As Integer
 
     crlf = Chr$(13) & Chr$(10)
 
     $iQSOn.Sort()
 
     ' [GB2:OPEN] OPEN myFile FOR WRITE CREATE AS #hFile
-    hFile = OPEN myFile FOR WRITE CREATE
-    PRINT #hFile, "ADIF file created by dfhLog v." & application.Version & " (c) EA7DFH," &
+    hFile = Open myFile For Write Create
+    Print #hFile, "ADIF file created by dfhLog v." & application.Version & " (c) EA7DFH," &
     crlf & "distributed under the GPL GNU Licence " & crlf & "<EOH>" & crlf & crlf
 
-    IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN
-    FOR i = 0 TO $iQSOn.Count - 1
+    If dbLog.connDB(FMain.ini["Log/File"]) Then Return
+    For i = 0 To $iQSOn.Count - 1
         sql = "SELECT * FROM log WHERE id=&1 ORDER BY id;"
         hres = dbLog.cnLog.Exec(sql, $iQSOn[i])
 
-        DO WHILE hres.Available
+        Do While hres.Available
 
-            FOR EACH hField IN hres.Fields
-                WITH hField
+            For Each hField In hres.Fields
+                With hField
                     L = Len(Trim(Str(hres[.Name])))
-                    IF L > 0 AND .Name <> "id" AND .Name <> "dxcc" THEN
+                    If L > 0 And .Name <> "id" And .Name <> "dxcc" Then
                         sField = Trim(Str(hres[.Name]))
-                        SELECT CASE .Name
-                            CASE "qso_date", "qslrdate", "qslsdate"
+                        Select Case .Name
+                            Case "qso_date", "qslrdate", "qslsdate"
                                 sField = Year(hres!qso_date) & Format(Month(hres!qso_date), "0#") & Format(Day(hres!qso_date), "0#")
                                 L = Len(sField)
-                            CASE "time_on", "time_off"
+                            Case "time_on", "time_off"
                                 sField = Left(Replace(hres[.Name], ":", ""), 4)
                                 L = Len(sField)
-                            CASE "mode"
-                                IF sField = "USB" OR sField = "LSB" THEN sField = "SSB"
-                            CASE ELSE
+                            Case "mode"
+                                If sField = "USB" Or sField = "LSB" Then sField = "SSB"
+                            Case Else
                                 sField = Trim(Str(hres[.Name]))
-                        END SELECT
-                        PRINT #hFile, "<" & Upper(.Name) & ":" & Str(L) & ">" & sField;
-                    ENDIF
-                END WITH
-            NEXT
-            PRINT #hFile, " <EOR>"
-            WAIT 0.01
+                        End Select
+                        Print #hFile, "<" & Upper(.Name) & ":" & Str(L) & ">" & sField;
+                    Endif
+                End With
+            Next
+            Print #hFile, " <EOR>"
+            Wait 0.01
             hres.MoveNext()
-        LOOP
-    NEXT
+        Loop
+    Next
 
-FINALLY
-    CLOSE #hFile
+Finally
+    Close #hFile
 
-CATCH
+Catch
     Message.Error(("Error exporting Record\n") & hField!call & " " & hField!qso_date & "\n" & Error.Text)
 
-END
+End
 
-PUBLIC SUB getVersion()
+Public Sub getVersion()
 
-    DIM distro AS String
+    Dim distro As String
 
-    SHELL "cat /etc/issue" TO distro
+    Shell "cat /etc/issue" To distro
     distro = Replace(distro, "\\n \\l", "")
     distro = Replace(distro, " ", "_")
     $ver = ""
-    dwnld.Async = TRUE
+    dwnld.Async = True
     dwnld.Timeout = 5
     dwnld.URL = "http://www.ea7dfh.com/dfhlog/version.php?call=" & FMain.ini["Estacion/QRZ"] & "&loc=" & FMain.ini["Estacion/Locator"] & "&ver=" & Application.Version & "&dist=" & distro
     dwnld.Get()
 
-END
+End
 
-PUBLIC SUB _getVer_Read()
+Public Sub _getVer_Read()
 
-    DIM buffer AS String
+    Dim buffer As String
 
-    READ #LAST, buffer, Lof(LAST)
+    Read #Last, buffer, Lof(Last)
     $ver &= buffer
-CATCH
-    DEBUG Error.Text, Error.Where
+Catch
+    Debug Error.Text, Error.Where
 
-END
+End
 
-PUBLIC SUB _getVer_Error()
+Public Sub _getVer_Error()
 
-    DEBUG "Error downloading Version number\n" & dwnld.Status, Error.Text
+    Debug "Error downloading Version number\n" & dwnld.Status, Error.Text
 
-END
+End
 
-PUBLIC SUB _getVer_Finished()
+Public Sub _getVer_Finished()
 
-    DIM myVersion, verUpdate AS Float
-    DIM sMyVer AS String = "1." & Replace(Application.Version, ".", "")
+    Dim myVersion, curVersion As Float = CFloat("1." & Replace(Application.Version, ".", ""))
 
-    $ver = "1." & Replace($ver, ".", "")
-    myVersion = CFloat(sMyVer)
-
-    IF $ver THEN
-        verUpdate = CFloat($ver)
-        IF verUpdate > myVersion THEN
-            IF Message.Question(("There is a new version of dfhLog.\nDo you want to visit the download page?"), ("Yes"), ("No")) = 2 THEN RETURN
+    If $ver Then
+        $ver = Left($ver, -1)
+        $ver = "1." & Replace($ver, ".", "")
+        curVersion = CFloat($ver)
+        '         Debug curVersion, myVersion
+        If curVersion > myVersion Then
+            If Message.Question(("There is a new version of dfhLog.\nDo you want to visit the download page?"), ("Yes"), ("No")) = 2 Then Return
             Desktop.Open("http://code.google.com/p/dfhlog/downloads/list")
-        ENDIF
-    ENDIF
-CATCH
-    DEBUG Error.Text, Error.Where
+        Endif
+    Endif
+Catch
+    Debug Error.Text, Error.Where
 
-END
+End
 
-PUBLIC FUNCTION unixTS() AS Integer 'returns unix timestamp
+Public Function unixTS() As Integer 'returns unix timestamp
 
-    DIM dt AS Date
+    Dim dt As Date
 
     dt = Date(1970, 1, 1, 0, 0, 0)
-    RETURN DateDiff(dt, Now, gb.Second)
+    Return DateDiff(dt, Now, gb.Second)
 
-END
+End
 
-PUBLIC SUB processMapSpots(dxLine AS String) 'insert data into spots table to plot dx lines on map
+Public Sub processMapSpots(dxLine As String) 'insert data into spots table to plot dx lines on map
 
-    DIM DX, spotter, band, remarks, prop, loc1, loc2 AS String
-    DIM freq AS Float
-    DIM loc AS String[]
-    DIM regx AS Regexp
-    DIM sql AS String = "INSERT INTO spots VALUES(&1,&2,&3,&4,&5,&6,&7);"
+    Dim DX, spotter, band, remarks, prop, loc1, loc2 As String
+    Dim freq As Float
+    Dim loc As String[]
+    Dim regx As Regexp
+    Dim sql As String = "INSERT INTO spots VALUES(&1,&2,&3,&4,&5,&6,&7);"
 
     spotter = Mid(dxLine, 7, InStr(dxLine, ":") - 7) 'something weird happens when spotter contains "/" !?!?
     DX = Trim(Mid(dxLine, 27, 10))
     freq = CFloat(Trim(Mid(dxLine, 15, 10)))
     band = global.getBand(freq)
     remarks = Trim(Mid(dxLine, 37, 34))
-    regx = NEW Regexp(remarks, "(?i)([a-r]{2}\\d{2}[a-x]{2}|[a-r]{2}\\d{2})\\s?([\\s<(:]([a-z]{2,5})[\\s>):]|-|->|>|/|><|<->|<>)\\s?(([a-r]{2}\\d{2}[a-x]{2}|[a-r]{2}\\d{2}))")
-    IF regx.SubMatches.Count = 5 THEN
+    regx = New Regexp(remarks, "(?i)([a-r]{2}\\d{2}[a-x]{2}|[a-r]{2}\\d{2})\\s?([\\s<(:]([a-z]{2,5})[\\s>):]|-|->|>|/|><|<->|<>)\\s?(([a-r]{2}\\d{2}[a-x]{2}|[a-r]{2}\\d{2}))")
+    If regx.SubMatches.Count = 5 Then
         loc1 = Upper(regx.SubMatches[1].Text)
         prop = Upper(regx.SubMatches[3].Text)
         loc2 = Upper(regx.SubMatches[4].Text)
-        IF FMain.connDB() THEN RETURN
+        If FMain.connDB() Then Return
         dbLog.cnLog.Exec(sql, unixTS(), band, spotter, DX, loc1, loc2, prop)
         dbLog.cnLog.Exec("DELETE FROM spots WHERE timestamp < &1;", (unixTS() - FMain.ini["FMapLoc/DXTime", 1800]))
-    ENDIF
+    Endif
     alertMUF
-CATCH
-    DEBUG Error.Text & "\n" & Error.Where & "\n" & dxLine
+Catch
+    Debug Error.Text & "\n" & Error.Where & "\n" & dxLine
 
-END
+End
 
-PUBLIC SUB alertMUF()
+Public Sub alertMUF()
 
-    DIM hres AS Result
-    DIM sql AS String
-    DIM spotMUF, spotES AS Integer
+    Dim hres As Result
+    Dim sql As String
+    Dim spotMUF, spotES As Integer
 
     sql = "SELECT * from spots WHERE band='6M' AND prop='ES';"
-    IF FMain.connDB() THEN RETURN
+    If FMain.connDB() Then Return
     hres = dbLog.cnLog.Exec(sql)
     spotMUF = hres.Count
     sql = "SELECT * from spots WHERE band='2M' AND prop='ES';"
     hres = dbLog.cnLog.Exec(sql)
     spotES = hres.Count
 
-    IF spotES >= 3 AND $alertedES = FALSE THEN
-        IF FMain.ini["FMapLoc/MUFAlert"] = TRUE THEN snd.Play()
-        $alertedES = TRUE
-    ELSE IF spotES < 3 AND $alertedES = TRUE
-        $alertedES = FALSE
-    ENDIF
+    If spotES >= 3 And $alertedES = False Then
+        If FMain.ini["FMapLoc/MUFAlert"] = True Then snd.Play()
+        $alertedES = True
+    Else If spotES < 3 And $alertedES = True
+        $alertedES = False
+    Endif
 
-    IF spotMUF > 3 AND $alertedMUF = FALSE THEN
-        IF FMain.ini["FMapLoc/MUFAlert"] = TRUE THEN snd.Play()
-        $alertedMUF = TRUE
-    ELSE IF spotMUF < 3 AND $alertedMUF = TRUE
-        $alertedMUF = FALSE
-    ENDIF
-CATCH
-    DEBUG Error.Text, Error.Where
+    If spotMUF > 3 And $alertedMUF = False Then
+        If FMain.ini["FMapLoc/MUFAlert"] = True Then snd.Play()
+        $alertedMUF = True
+    Else If spotMUF < 3 And $alertedMUF = True
+        $alertedMUF = False
+    Endif
+Catch
+    Debug Error.Text, Error.Where
 
-END
+End

@@ -1,5 +1,6 @@
 # Gambas Form File 3.0
-{ Form Form 
+
+{ Form Form
   MoveScaled(0,0,128.5714,100)
   Drop = True
   Text = ("dfhLog")
@@ -7,281 +8,280 @@
   Arrangement = Arrange.Vertical
   Margin = True
   Padding = 2
-  { Archivo Menu 
+  { Archivo Menu
     Text = ("&File")
     Shortcut = "Alt+F"
-    { nuevo Menu 
+    { nuevo Menu
       Text = ("&New Log")
       Picture = Picture["icon:/16/new"]
       Shortcut = "Alt+N"
     }
-    { mnuOpnLog Menu 
+    { mnuOpnLog Menu
       Action = "opnLog"
       Text = ("Open L&og")
       Picture = Picture["icon:/16/open"]
       Shortcut = "Alt+O"
     }
-    { sep Menu 
+    { sep Menu
     }
-    { mnuRlog Menu 
+    { mnuRlog Menu
       Text = ("Watch &Log")
       Picture = Picture["icon:/16/watch"]
       Shortcut = "Alt+V"
     }
-    { sep1 Menu 
+    { sep1 Menu
     }
-    { mnuAdifImp Menu 
+    { mnuAdifImp Menu
       Text = ("ADIF Import")
       Picture = Picture["icon:/16/down"]
       Shortcut = "Ctrl+I"
     }
-    { mnuAdifExport Menu 
+    { mnuAdifExport Menu
       Text = ("ADIF Export")
       Picture = Picture["icon:/16/up"]
       Shortcut = "Ctrl+P"
     }
-    { sep2 Menu 
+    { sep2 Menu
     }
-    { BD Menu 
+    { BD Menu
       Text = ("&Database")
       Picture = Picture["icon:/16/package"]
-      { mnuBDcompact Menu 
+      { mnuBDcompact Menu
         Text = ("Compact DB")
         Picture = Picture["icon:/16/archive"]
         Shortcut = "Ctrl+F5"
       }
-      { mnuBackup Menu 
+      { mnuBackup Menu
         Text = ("Backup DB")
         Picture = Picture["icon:/16/floppy"]
         Shortcut = "Ctrl+F6"
       }
     }
-    { sep3 Menu 
+    { sep3 Menu
     }
-    { options Menu 
+    { options Menu
       Action = "shPref"
       Text = ("Se&ttings")
       Picture = Picture["icon:/16/tools"]
       Shortcut = "F2"
     }
-    { sep4 Menu 
+    { sep4 Menu
     }
-    { Salir Menu 
+    { Salir Menu
       Text = ("E&xit")
       Picture = Picture["icon:/16/cancel"]
       Shortcut = "Ctrl+X"
     }
   }
-  { mnuS Menu 
+  { mnuS Menu
     Text = ("&Search")
-    { mnuSearch Menu 
+    { mnuSearch Menu
       Text = ("Searc&h QSOs")
       Picture = Picture["icon:/16/find"]
       Shortcut = "Ctrl+S"
     }
   }
-  { mnuSummary Menu 
+  { mnuSummary Menu
     Text = ("Summar&y")
-    { mnuDXCC Menu 
+    { mnuDXCC Menu
       Text = ("DXCC")
     }
-    { mnuWAC Menu 
+    { mnuWAC Menu
       Text = ("WAC")
     }
-    { mnuWAS Menu 
+    { mnuWAS Menu
       Text = ("WAS")
     }
-    { mnuUSACA Menu 
+    { mnuUSACA Menu
       Text = ("USACA")
     }
-    { mnuIOTA Menu 
+    { mnuIOTA Menu
       Text = ("IOTA")
     }
-    { mnuTPEA Menu 
+    { mnuTPEA Menu
       Text = ("TPEA")
     }
-    { sep5 Menu 
+    { sep5 Menu
     }
-    { mnuMGridSq Menu 
+    { mnuMGridSq Menu
       Text = ("Main GridSquares")
       Picture = Picture["icons/sq.png"]
     }
-    { mnuGridSq Menu 
+    { mnuGridSq Menu
       Text = ("GridSquares")
       Picture = Picture["icons/Subsq.png"]
     }
-    { mnuInitials Menu 
+    { mnuInitials Menu
       Text = ("EME Initials")
     }
-    { sep6 Menu 
+    { sep6 Menu
     }
-    { mnuGStats Menu 
+    { mnuGStats Menu
       Text = ("Global Stats")
       Picture = Picture["icons/chart_bar.png"]
       Shortcut = "Ctrl+G"
     }
   }
-  { mnuPrint Menu 
+  { mnuPrint Menu
     Text = ("&Printing")
-    { mnuQueue Menu 
+    { mnuQueue Menu
       Text = ("QSL queu&e")
       Picture = Picture["icon:/16/layers"]
     }
-    { sep7 Menu 
+    { sep7 Menu
     }
-    { mnuQSLDesign Menu 
+    { mnuQSLDesign Menu
       Text = ("QSL &Design")
       Picture = Picture["icon:/16/desktop"]
     }
-    { mnuLblDesign Menu 
+    { mnuLblDesign Menu
       Text = ("&Label Design")
       Picture = Picture["icon:/16/desktop"]
     }
-    { sep8 Menu 
+    { sep8 Menu
     }
-    { mnuGoPrintQSLs Menu 
+    { mnuGoPrintQSLs Menu
       Text = ("Print QSLs")
       Picture = Picture["icon:/16/print"]
       Shortcut = "Ctrl+Alt+P"
     }
-    { mnuGoPrintLbls Menu 
+    { mnuGoPrintLbls Menu
       Text = ("Print Labels")
       Picture = Picture["icon:/16/view-split-v"]
       Shortcut = "Ctrl+Alt+L"
     }
   }
-  { Cluster Menu 
+  { Cluster Menu
     Text = ("C&luster")
     Shortcut = "Alt+L"
-    { conectar Menu 
+    { conectar Menu
       Text = ("&Connect")
       Picture = Picture["icon:/16/connect"]
       Shortcut = "F9"
     }
-    { desconectar Menu 
+    { desconectar Menu
       Text = ("&Disconnect")
       Picture = Picture["icon:/16/disconnect"]
       Shortcut = "F10"
     }
   }
-  { mnuMapas Menu 
+  { mnuMapas Menu
     Text = ("&Maps")
     Shortcut = "Alt+M"
-    { mnuDXMap Menu 
+    { mnuDXMap Menu
       Text = ("DXMap")
       Picture = Picture["icon:/16/earth"]
       Shortcut = "Alt+P"
     }
-    { mnuSquares Menu 
+    { mnuSquares Menu
       Text = ("GridS&quares")
       Picture = Picture["icons/sq.png"]
       Shortcut = "Alt+Q"
     }
   }
-  { ayuda Menu 
+  { ayuda Menu
     Text = ("&?")
-    { help Menu 
+    { help Menu
       Text = ("Con&tent")
       Picture = Picture["icon:/16/help"]
       Shortcut = "Alt+H"
     }
-    { acerca Menu 
+    { acerca Menu
       Text = ("A&bout...")
       Shortcut = "Alt+B"
     }
   }
-  { HBox1 HBox 
+  { HBox1 HBox
     MoveScaled(0,0,127,4)
     Spacing = True
-    { ToolBar1 ToolBar 
+    { ToolBar1 ToolBar
       MoveScaled(0,0,68,4)
-      { btnNewLog ToolButton 
+      { btnNewLog ToolButton
         MoveScaled(0,0,4,4)
         ToolTip = ("New Log")
-        Action = "opnLog"
         Picture = Picture["icon:/16/file"]
       }
-      { btnOpnLog ToolButton 
+      { btnOpnLog ToolButton
         MoveScaled(4,0,4,4)
         ToolTip = ("Open Log")
         Action = "opnLog"
         Picture = Picture["icon:/16/open"]
       }
-      { Separator1 Separator 
+      { Separator1 Separator
         MoveScaled(7,0,2,4)
       }
-      { btnPrefs ToolButton 
+      { btnPrefs ToolButton
         MoveScaled(8,0,4,4)
         ToolTip = ("Settings")
         Picture = Picture["icon:/16/tools"]
       }
-      { Separator3 Separator 
+      { Separator3 Separator
         MoveScaled(11,0,2,4)
       }
-      { btnWatch ToolButton 
+      { btnWatch ToolButton
         MoveScaled(12,0,4,4)
         ToolTip = ("Watch Log")
         Picture = Picture["icon:/16/watch"]
       }
-      { btnSearch ToolButton 
+      { btnSearch ToolButton
         MoveScaled(16,0,4,4)
         ToolTip = ("Search QSOs")
         Picture = Picture["icon:/16/find"]
       }
-      { btnEditLast ToolButton 
+      { btnEditLast ToolButton
         MoveScaled(19,0,4,4)
         ToolTip = ("Edit Last QSO")
         Picture = Picture["icon:/16/undo"]
       }
-      { Separator4 Separator 
+      { Separator4 Separator
         MoveScaled(23,0,2,4)
       }
-      { btnConn ToolButton 
+      { btnConn ToolButton
         MoveScaled(24,0,4,4)
         ToolTip = ("Conn/Dis. Cluster")
         Picture = Picture["icon:/16/connect"]
         Toggle = True
       }
-      { btnBandMap ToolButton 
+      { btnBandMap ToolButton
         MoveScaled(27,0,4,4)
         ToolTip = ("BandMap")
         Picture = Picture["icons/bmap.png"]
         Toggle = True
       }
-      { btnCAT ToolButton 
+      { btnCAT ToolButton
         MoveScaled(30,0,4,4)
         ToolTip = ("CAT")
         Picture = Picture["icons/ic910.png"]
         Toggle = True
       }
-      { Separator2 Separator 
+      { Separator2 Separator
         MoveScaled(34,0,2,4)
       }
-      { btnSqrMap ToolButton 
+      { btnSqrMap ToolButton
         MoveScaled(35,0,4,4)
         ToolTip = ("GridSquares Map")
         Picture = Picture["icons/sq.png"]
       }
-      { btnMap ToolButton 
+      { btnMap ToolButton
         MoveScaled(38,0,4,4)
         ToolTip = ("DX Map")
         Picture = Picture["icon:/16/earth"]
       }
-      { Separator5 Separator 
+      { Separator5 Separator
         MoveScaled(42,0,2,4)
       }
-      { btnQuick ToolButton 
+      { btnQuick ToolButton
         MoveScaled(44,0,4,4)
         ToolTip = ("Activate quick entry method, i.e. for Sporadics E in VHF")
         Picture = Picture["icons/quick.png"]
         Toggle = True
       }
     }
-    { Label1 Label 
+    { Label1 Label
       MoveScaled(70,0,7,4)
       Expand = True
     }
-    { lcdQRG TextBox 
+    { lcdQRG TextBox
       MoveScaled(102,0,24,4)
       Font = Font["SF Digital Readout,Bold,+7"]
       Background = &H707070&
@@ -292,43 +292,43 @@
       MaxLength = 15
     }
   }
-  { HBox2 HBox 
+  { HBox2 HBox
     MoveScaled(0,4,128,88)
     Expand = True
     Spacing = True
     Margin = True
     Padding = 1
-    { VSplit1 VSplit 
+    { VSplit1 VSplit
       MoveScaled(0,0,128,88)
       Expand = True
-      { frameQSO Frame 
+      { frameQSO Frame
         MoveScaled(0,0,127,61)
         Expand = True
         Text = ("QSO")
-        { lblErrorqrz Label 
+        { lblErrorqrz Label
           MoveScaled(18,3,32,3)
           Foreground = &HC00000&
           AutoResize = True
         }
-        { Label3 Label 
+        { Label3 Label
           MoveScaled(2,7,10,4)
           Foreground = &H0000C0&
           Text = ("Callsign:")
         }
-        { txtCall TextBox 
-          MoveScaled(2,10,31,4)
+        { txtCall TextBox
+          MoveScaled(2,10,31,5)
           Font = Font["Bold,14"]
           ToolTip = ("DX Callsign")
           MaxLength = 20
         }
-        { cboFreq ComboBox 
+        { cboFreq ComboBox
           MoveScaled(37,11,13,4)
           Tag = "exclude"
           ToolTip = ("Band Selection")
           Expand = True
           ReadOnly = True
         }
-        { cboModo ComboBox 
+        { cboModo ComboBox
           MoveScaled(54,11,13,4)
           Tag = "exclude"
           ToolTip = ("Mode Selection")
@@ -336,31 +336,31 @@
           ReadOnly = True
           Sorted = True
         }
-        { cboPropa ComboBox 
+        { cboPropa ComboBox
           MoveScaled(71,11,14,4)
           Tag = "exclude"
           ToolTip = ("Propagation Type")
           ReadOnly = True
         }
-        { vFecha ValueBox 
+        { vFecha ValueBox
           MoveScaled(2,18,12,4)
           Tag = "exclude"
           ToolTip = ("Date of QSO")
           Type = ValueBox.Date
         }
-        { vHora ValueBox 
+        { vHora ValueBox
           MoveScaled(20,18,13,4)
           Tag = "exclude"
           ToolTip = ("Time on")
           Type = ValueBox.Time
         }
-        { vHora2 ValueBox 
+        { vHora2 ValueBox
           MoveScaled(37,18,13,4)
           Tag = "exclude"
           ToolTip = ("Time off")
           Type = ValueBox.Time
         }
-        { txtFreq TextBox 
+        { txtFreq TextBox
           MoveScaled(54,18,13,4)
           Tag = "exclude"
           ToolTip = ("Freq. in KHZ ")
@@ -368,7 +368,7 @@
           Alignment = Align.Right
           MaxLength = 11
         }
-        { txtFreq2 TextBox 
+        { txtFreq2 TextBox
           MoveScaled(71,18,14,4)
           Tag = "exclude"
           ToolTip = ("Freq. in KHZ ")
@@ -376,50 +376,50 @@
           Alignment = Align.Right
           MaxLength = 11
         }
-        { txtRSTr TextBox 
+        { txtRSTr TextBox
           MoveScaled(2,24,7,4)
           Tag = "exclude"
           ToolTip = ("RST Received")
           Alignment = Align.Right
           MaxLength = 3
         }
-        { txtRSTe TextBox 
+        { txtRSTe TextBox
           MoveScaled(10,24,7,4)
           Tag = "exclude"
           ToolTip = ("RST Sent")
           Alignment = Align.Right
           MaxLength = 3
         }
-        { txtLocQSO TextBox 
+        { txtLocQSO TextBox
           MoveScaled(20,24,13,4)
           Tag = "t"
           ToolTip = ("DX GridSquare")
           MaxLength = 6
         }
-        { txtNameQSO TextBox 
+        { txtNameQSO TextBox
           MoveScaled(37,24,30,4)
           Tag = "exclude"
           ToolTip = ("DX Name")
           MaxLength = 50
         }
-        { txtQTHqso TextBox 
+        { txtQTHqso TextBox
           MoveScaled(71,24,14,4)
           Tag = "exclude"
           ToolTip = ("DX City")
           MaxLength = 50
         }
-        { txtComment TextBox 
+        { txtComment TextBox
           MoveScaled(2,30,46,4)
           Tag = "exclude"
           ToolTip = ("Remarks")
         }
-        { txtPwr TextBox 
+        { txtPwr TextBox
           MoveScaled(52,30,15,4)
           Tag = "exclude"
           ToolTip = ("TX Power")
           Alignment = Align.Right
         }
-        { lblEmail TextBox 
+        { lblEmail TextBox
           MoveScaled(71,30,14,4)
           Font = Font["Underline"]
           Foreground = &H0000C0&
@@ -427,7 +427,7 @@
           Mouse = Mouse.Pointing
           ToolTip = ("DX email")
         }
-        { btnOK Button 
+        { btnOK Button
           MoveScaled(109,53,17,6)
           ToolTip = ("Accepts & Log QSO")
           Expand = True
@@ -435,181 +435,181 @@
           Picture = Picture["icon:/16/apply"]
           Default = True
         }
-        { btnClear Button 
+        { btnClear Button
           MoveScaled(88,53,17,6)
           ToolTip = ("Whipes current entered data")
           Expand = True
           Text = ("&Cancel")
           Picture = Picture["icon:/16/clear"]
         }
-        { Label8 Label 
+        { Label8 Label
           MoveScaled(71,7,14,4)
           Foreground = &H0000C0&
           Text = ("Prop. Mode:")
         }
-        { Label5 Label 
+        { Label5 Label
           MoveScaled(2,21,8,4)
           Foreground = &H0000C0&
           Text = ("RST(R):")
         }
-        { Label6 Label 
+        { Label6 Label
           MoveScaled(10,21,9,4)
           Foreground = &H0000C0&
           Text = ("RST(S):")
         }
-        { Label7 Label 
+        { Label7 Label
           MoveScaled(20,21,13,4)
           Foreground = &H0000C0&
           Text = ("Locator:")
         }
-        { Label9 Label 
+        { Label9 Label
           MoveScaled(37,21,13,4)
           Foreground = &H0000C0&
           Text = ("Name:")
         }
-        { Label10 Label 
+        { Label10 Label
           MoveScaled(71,21,9,4)
           Foreground = &H0000C0&
           Text = ("QTH:")
         }
-        { Label17 Label 
+        { Label17 Label
           MoveScaled(71,27,15,4)
           Foreground = &H0000C0&
           Text = ("E-mail:")
         }
-        { Label13 Label 
+        { Label13 Label
           MoveScaled(2,15,10,4)
           Foreground = &H0000C0&
           Text = ("Date:")
         }
-        { Label14 Label 
+        { Label14 Label
           MoveScaled(20,15,10,4)
           Foreground = &H0000C0&
           Text = ("Time on:")
         }
-        { Label15 Label 
+        { Label15 Label
           MoveScaled(37,15,10,4)
           Foreground = &H0000C0&
           Text = ("Time off:")
         }
-        { Label18 Label 
+        { Label18 Label
           MoveScaled(2,27,31,4)
           Foreground = &H0000C0&
           Text = ("Remarks:")
         }
-        { Label19 Label 
+        { Label19 Label
           MoveScaled(2,3,4,3)
           Foreground = &H0000C0&
           Text = ("Nr:")
         }
-        { lblNoQSO Label 
+        { lblNoQSO Label
           MoveScaled(7,3,4,3)
           Foreground = &H008000&
           AutoResize = True
           Text = ("0")
         }
-        { Label21 Label 
+        { Label21 Label
           MoveScaled(54,7,9,4)
           Foreground = &H0000C0&
           Text = ("Mode:")
         }
-        { Label22 Label 
+        { Label22 Label
           MoveScaled(37,7,9,4)
           Foreground = &H0000C0&
           Text = ("Band:")
         }
-        { Label29 Label 
+        { Label29 Label
           MoveScaled(52,27,15,4)
           Foreground = &H0000C0&
           Text = ("Power:")
         }
-        { TabStrip1 TabStrip 
+        { TabStrip1 TabStrip
           MoveScaled(2,35,83,24)
           Count = 2
           Index = 0
           Text = ("&QSL")
-          { Frame2 Frame 
+          { Frame2 Frame
             MoveScaled(1,1,36,18)
             Text = ("Card")
-            { chkQSLr CheckBox 
+            { chkQSLr CheckBox
               MoveScaled(2,3,16,4)
               Foreground = &H0000C0&
               Tag = "exclude"
               ToolTip = ("QSL rcvd")
               Text = ("QSL Recvd:")
             }
-            { dteQSLr ValueBox 
+            { dteQSLr ValueBox
               MoveScaled(2,6,14,4)
               Enabled = False
               Tag = "exclude"
               ToolTip = ("Date of QSL rcvd")
               Type = ValueBox.Date
             }
-            { chkQSLe CheckBox 
+            { chkQSLe CheckBox
               MoveScaled(2,10,16,4)
               Foreground = &H0000C0&
               Tag = "exclude"
               ToolTip = ("QSL sent")
               Text = ("QSL Sent:")
             }
-            { dteQSLe ValueBox 
+            { dteQSLe ValueBox
               MoveScaled(2,13,14,4)
               Enabled = False
               Tag = "exclude"
               ToolTip = ("Date of QSL sent")
               Type = ValueBox.Date
             }
-            { cboVia ComboBox 
+            { cboVia ComboBox
               MoveScaled(19,6,15,4)
               Tag = "exclude"
               ToolTip = ("QSL via...")
               ReadOnly = True
               List = [("Bureau"), ("Manager"), ("Direct"), ("No QSL")]
             }
-            { txtMgrQSO TextBox 
+            { txtMgrQSO TextBox
               MoveScaled(19,13,15,4)
               Enabled = False
               Foreground = &H000000&
               Tag = "exclude"
               ToolTip = ("QSL via Mgr")
             }
-            { Label11 Label 
+            { Label11 Label
               MoveScaled(19,3,4,4)
               Foreground = &H0000C0&
               Text = ("Via:")
             }
-            { Label12 Label 
+            { Label12 Label
               MoveScaled(19,10,9,4)
               Foreground = &H0000C0&
               Text = ("Manager:")
             }
           }
-          { Frame3 Frame 
+          { Frame3 Frame
             MoveScaled(38,1,21,18)
             Enabled = False
             Text = ("LOTW")
-            { chkQSLr2 CheckBox 
+            { chkQSLr2 CheckBox
               MoveScaled(3,3,16,4)
               Foreground = &H0000C0&
               Tag = "exclude"
               ToolTip = ("QSL rcvd")
               Text = ("QSL Recvd:")
             }
-            { dteQSLr2 ValueBox 
+            { dteQSLr2 ValueBox
               MoveScaled(3,6,15,4)
               Enabled = False
               Tag = "exclude"
               ToolTip = ("Date of QSL rcvd")
               Type = ValueBox.Date
             }
-            { chkQSLe2 CheckBox 
+            { chkQSLe2 CheckBox
               MoveScaled(3,10,16,4)
               Foreground = &H0000C0&
               Tag = "exclude"
               ToolTip = ("QSL sent")
               Text = ("QSL Sent:")
             }
-            { dteQSLe2 ValueBox 
+            { dteQSLe2 ValueBox
               MoveScaled(3,13,15,4)
               Enabled = False
               Tag = "exclude"
@@ -617,32 +617,32 @@
               Type = ValueBox.Date
             }
           }
-          { Frame4 Frame 
+          { Frame4 Frame
             MoveScaled(60,1,21,18)
             Enabled = False
             Text = ("E-QSL")
-            { chkQSLr3 CheckBox 
+            { chkQSLr3 CheckBox
               MoveScaled(3,3,16,4)
               Foreground = &H0000C0&
               Tag = "exclude"
               ToolTip = ("QSL rcvd")
               Text = ("QSL Recvd:")
             }
-            { dteQSLr3 ValueBox 
+            { dteQSLr3 ValueBox
               MoveScaled(3,6,15,4)
               Enabled = False
               Tag = "exclude"
               ToolTip = ("Date of QSL rcvd")
               Type = ValueBox.Date
             }
-            { chkQSLe3 CheckBox 
+            { chkQSLe3 CheckBox
               MoveScaled(3,10,15,4)
               Foreground = &H0000C0&
               Tag = "exclude"
               ToolTip = ("QSL sent")
               Text = ("QSL Sent:")
             }
-            { dteQSLe3 ValueBox 
+            { dteQSLe3 ValueBox
               MoveScaled(3,13,15,4)
               Enabled = False
               Tag = "exclude"
@@ -652,243 +652,246 @@
           }
           Index = 1
           Text = ("A&wards")
-          { txtTPEA TextBox 
+          { txtTPEA TextBox
             MoveScaled(1,3,12,4)
             Tag = "exclude"
             ToolTip = ("TPEA award")
             ReadOnly = True
           }
-          { btnOpnTPEA Button 
+          { btnOpnTPEA Button
             MoveScaled(13,3,4,4)
             Tag = "exclude"
             Text = ("...")
           }
-          { txtIOTA TextBox 
+          { txtIOTA TextBox
             MoveScaled(1,9,12,4)
             Tag = "exclude"
             ToolTip = ("IOTA award")
             ReadOnly = True
           }
-          { btnOpnIOTA Button 
+          { btnOpnIOTA Button
             MoveScaled(13,9,4,4)
             Tag = "exclude"
             Text = ("...")
           }
-          { txtState TextBox 
+          { txtState TextBox
             MoveScaled(20,3,17,4)
             Tag = "exclude"
             ToolTip = ("WAS award")
             ReadOnly = True
           }
-          { btnOpnWAS Button 
+          { btnOpnWAS Button
             MoveScaled(37,3,4,4)
             Tag = "exclude"
             Text = ("...")
           }
-          { txtCounty TextBox 
+          { txtCounty TextBox
             MoveScaled(20,9,17,4)
             Tag = "exclude"
             ToolTip = ("USACA award")
             ReadOnly = True
           }
-          { btnOpnCounty Button 
+          { btnOpnCounty Button
             MoveScaled(37,9,4,4)
             Tag = "exclude"
             Text = ("...")
           }
-          { txtSatName TextBox 
+          { txtSatName TextBox
             MoveScaled(1,15,12,4)
             Tag = "exclude"
             ToolTip = ("Sat Name")
           }
-          { Button5 Button 
+          { Button5 Button
             MoveScaled(13,15,4,4)
             Tag = "exclude"
             Text = ("...")
           }
-          { txtSatMode TextBox 
+          { txtSatMode TextBox
             MoveScaled(20,15,17,4)
             Tag = "exclude"
             ToolTip = ("Sat mode")
           }
-          { Button6 Button 
+          { Button6 Button
             MoveScaled(37,15,4,4)
             Tag = "exclude"
             Text = ("...")
           }
-          { Label24 Label 
+          { Label24 Label
             MoveScaled(20,6,14,4)
             Foreground = &H0000C0&
             Text = ("County (USA):")
           }
-          { Label25 Label 
+          { Label25 Label
             MoveScaled(1,6,9,4)
             Foreground = &H0000C0&
             Text = ("IOTA:")
           }
-          { Label26 Label 
+          { Label26 Label
             MoveScaled(1,0,9,4)
             Foreground = &H0000C0&
             Text = ("TPEA:")
           }
-          { Label27 Label 
+          { Label27 Label
             MoveScaled(1,12,9,4)
             Foreground = &H0000C0&
             Text = ("Satellite:")
           }
-          { Label28 Label 
+          { Label28 Label
             MoveScaled(20,12,9,4)
             Foreground = &H0000C0&
             Text = ("Sat Mode:")
           }
-          { Label23 Label 
+          { Label23 Label
             MoveScaled(20,0,12,4)
             Foreground = &H0000C0&
             Text = ("State (USA):")
           }
+          { ButtonBox1 ButtonBox
+            MoveScaled(46,3,24,4)
+          }
           Index = 0
         }
-        { Frame1 Frame 
+        { Frame1 Frame
           MoveScaled(88,3,38,49)
           Text = ("Info")
-          { lblWorked Label 
-            MoveScaled(1,3,36,4)
+          { lblWorked Label
+            MoveScaled(1,5,36,3)
             Font = Font["Bold"]
             Alignment = Align.Center
             Border = Border.Sunken
           }
-          { Label16 Label 
-            MoveScaled(1,12,9,4)
+          { Label16 Label
+            MoveScaled(1,14,9,3)
             Text = ("Cont:")
             Alignment = Align.Left
             Border = Border.Sunken
           }
-          { lblCont Label 
-            MoveScaled(10,12,9,4)
+          { lblCont Label
+            MoveScaled(10,14,9,3)
             Alignment = Align.Center
             Border = Border.Sunken
           }
-          { lbld Label 
-            MoveScaled(1,18,18,4)
+          { lbld Label
+            MoveScaled(1,20,18,3)
             Text = ("Distance:")
             Alignment = Align.Left
             Border = Border.Sunken
           }
-          { lblDist Label 
-            MoveScaled(19,18,18,4)
+          { lblDist Label
+            MoveScaled(19,20,18,3)
             Alignment = Align.Right
             Border = Border.Sunken
           }
-          { lblPfx Label 
-            MoveScaled(28,12,9,4)
+          { lblPfx Label
+            MoveScaled(28,14,9,3)
             Alignment = Align.Center
             Border = Border.Sunken
           }
-          { Label30 Label 
-            MoveScaled(19,12,9,4)
+          { Label30 Label
+            MoveScaled(19,14,9,3)
             Text = ("Prefix:")
             Alignment = Align.Left
             Border = Border.Sunken
           }
-          { Label31 Label 
-            MoveScaled(1,15,9,4)
+          { Label31 Label
+            MoveScaled(1,17,9,3)
             Text = ("CQ:")
             Alignment = Align.Left
             Border = Border.Sunken
           }
-          { lblCQ Label 
-            MoveScaled(10,15,9,4)
+          { lblCQ Label
+            MoveScaled(10,17,9,3)
             Alignment = Align.Center
             Border = Border.Sunken
           }
-          { lblr Label 
-            MoveScaled(1,21,18,4)
+          { lblr Label
+            MoveScaled(1,23,18,3)
             Text = ("Rhumb:")
             Alignment = Align.Left
             Border = Border.Sunken
           }
-          { lblRumbo Label 
-            MoveScaled(19,21,18,4)
+          { lblRumbo Label
+            MoveScaled(19,23,18,3)
             Alignment = Align.Right
             Border = Border.Sunken
           }
-          { lblITU Label 
-            MoveScaled(28,15,9,4)
+          { lblITU Label
+            MoveScaled(28,17,9,3)
             Alignment = Align.Center
             Border = Border.Sunken
           }
-          { Label32 Label 
-            MoveScaled(19,15,9,4)
+          { Label32 Label
+            MoveScaled(19,17,9,3)
             Text = ("ITU:")
             Alignment = Align.Left
             Border = Border.Sunken
           }
-          { cboEntidad ComboBox 
-            MoveScaled(1,9,36,4)
+          { cboEntidad ComboBox
+            MoveScaled(1,11,36,3)
             ToolTip = ("Current DXCC")
             ReadOnly = True
           }
-          { lblSqWorked Label 
-            MoveScaled(1,6,36,4)
+          { lblSqWorked Label
+            MoveScaled(1,8,36,3)
             Font = Font["Bold"]
             Alignment = Align.Center
             Border = Border.Sunken
           }
-          { txtDataQRZ TextArea 
-            MoveScaled(1,28,36,17)
+          { txtDataQRZ TextArea
+            MoveScaled(1,29,36,17)
             Font = Font["-1"]
             ReadOnly = True
             ScrollBar = Scroll.Horizontal
           }
-          { Separator6 Separator 
-            MoveScaled(19,25,18,4)
+          { Separator6 Separator
+            MoveScaled(19,26,18,3)
           }
-          { Label34 Label 
-            MoveScaled(1,24.5714,18,4)
+          { Label34 Label
+            MoveScaled(1,26,18,3)
             Text = ("Online Callbook")
           }
-          { btnShwqrz Button 
-            MoveScaled(1,45,36,2)
+          { btnShwqrz Button
+            MoveScaled(1,46,36,3)
             Enabled = False
             ToolTip = ("Show Callbook Webpage")
             Text = ("Web Callbook ")
           }
         }
-        { lblQSOTimer Label 
+        { lblQSOTimer Label
           MoveScaled(55,3,30,3)
           Visible = False
           Foreground = &HFF8000&
           Text = ("00:00:00")
           Alignment = Align.Right
         }
-        { Label20 Label 
+        { Label20 Label
           MoveScaled(54,15,11,4)
           Foreground = &H0000C0&
           Text = ("Freq.TX:")
         }
-        { Label33 Label 
+        { Label33 Label
           MoveScaled(71,15,11,4)
           Foreground = &H0000C0&
           Text = ("Freq.RX:")
         }
-        { btnCalIni Button 
+        { btnCalIni Button
           MoveScaled(14,18,4,4)
           Mouse = Mouse.Pointing
           ToolTip = ("DatePicker")
           Picture = Picture["icon:/16/view-detail"]
           Border = False
         }
-        { txtModeChange TextBox 
+        { txtModeChange TextBox
           MoveScaled(67,11,3,4)
           Visible = False
         }
-        { chkRT CheckBox 
-          MoveScaled(52,35,16,4)
+        { chkRT CheckBox
+          MoveScaled(51,35,18,4)
           Tag = "exclude"
           ToolTip = ("Real Time QSO")
           Text = ("Real Time QSO")
         }
-        { chkAutoSpot CheckBox 
+        { chkAutoSpot CheckBox
           MoveScaled(71,35,14,4)
           Tag = "exclude"
           ToolTip = ("Status:\nRed=Send spot without confirmation\nOrange=Send spot after confirmation\nUnchecked=Don't send spots\n\nFor convenience, status is not saved\nbetween sessions.")
@@ -896,7 +899,7 @@
           Tristate = True
         }
       }
-      { tabLC TabStrip 
+      { tabLC TabStrip
         MoveScaled(0,61,127,26)
         Expand = True
         Arrangement = Arrange.Vertical
@@ -904,12 +907,12 @@
         Count = 4
         Index = 0
         Text = ("Lo&g")
-        { HBox6 HBox 
+        { HBox6 HBox
           MoveScaled(0,0,126,21)
           Expand = True
           Margin = True
           Padding = 2
-          { grdQSO ColumnView 
+          { grdQSO ColumnView
             MoveScaled(1,3,124,16)
             Expand = True
             Resizable = True
@@ -917,33 +920,32 @@
         }
         Index = 1
         Text = ("Cl&uster")
-        { HBox4 HBox 
+        { HBox4 HBox
           MoveScaled(0,0,112,17)
           Expand = True
           Margin = True
           Padding = 2
-          { tblCluster TableView 
+          { tblCluster TableView
             MoveScaled(0,0,111,16)
             Font = Font["Monospace,Bold"]
             Expand = True
             Grid = False
-            Scrollbar = Scroll.Vertical
           }
         }
-        { HBox5 HBox 
+        { HBox5 HBox
           MoveScaled(-1,17,109,4)
           Spacing = True
           Margin = True
           Padding = 2
-          { txtClx TextBox 
+          { txtClx TextBox
             MoveScaled(1,0,73,4)
             Expand = True
           }
-          { btnClearClx Button 
+          { btnClearClx Button
             MoveScaled(75,0,16,4)
             Text = ("Delete")
           }
-          { btnSendClx Button 
+          { btnSendClx Button
             MoveScaled(92,0,16,4)
             Text = ("Send")
           }
@@ -951,24 +953,23 @@
         Index = 2
         Text = ("&Wkd Before")
         Picture = Picture["icons/T.png"]
-        { HBox7 HBox 
+        { HBox7 HBox
           MoveScaled(30,0,24,24)
           Expand = True
-          { grdWkdB4 GridView 
+          { grdWkdB4 GridView
             MoveScaled(4,4,16,16)
             Expand = True
             Header = GridView.Horizontal
-            Scrollbar = Scroll.Vertical
           }
         }
         Index = 3
         Text = ("St&ats")
-        { tblStats GridView 
+        { tblStats GridView
           MoveScaled(0,0,96,19)
           Expand = True
           Header = GridView.Horizontal
         }
-        { statsEntity Label 
+        { statsEntity Label
           MoveScaled(1,14,24,4)
           Background = &HFFFFFF&
           Ignore = True
@@ -977,43 +978,58 @@
       }
     }
   }
-  { Timer1 #Timer 
-    #MoveScaled(0,0)
+  { Timer1 #Timer
+    #MoveScaled(69,64)
     Enabled = True
   }
-  { HBox3 HBox 
+  { HBox3 HBox
     MoveScaled(0,92,128,4)
     Spacing = True
     Margin = True
     Padding = 1
-    { lblPath Label 
+    { lblPath Label
       MoveScaled(1,1,85,4)
       Expand = True
       Text = ("Database:")
       Alignment = Align.Left
       Border = Border.Sunken
     }
-    { Label2 Label 
+    { Label2 Label
       MoveScaled(103,1,24,4)
       Alignment = Align.Center
       Border = Border.Sunken
     }
   }
-  { sktHamlib #Socket 
-    #MoveScaled(1,1)
+  { sktHamlib #Socket
+    #MoveScaled(76,64)
     Host = "localhost"
     Port = 695
   }
-  { TimerQSO #Timer 
-    #MoveScaled(2,2)
+  { TimerQSO #Timer
+    #MoveScaled(83,64)
   }
-  { sktCluster #Socket 
-    #MoveScaled(3,3)
+  { sktCluster #Socket
+    #MoveScaled(90,64)
     Host = "ea7urg.homelinux.org"
     Port = 8001
   }
-  { timerCAT #Timer 
-    #MoveScaled(4,4)
+  { timerCAT #Timer
+    #MoveScaled(97,64)
     Delay = 500
+  }
+}
+
+# Gambas Action File 3.0
+
+{ Actions
+  { Action opnLog
+    Text = "Open L&og"
+    Shortcut = "Alt+O"
+    Picture = "icon:/16/open"
+  }
+  { Action shPref
+    Text = "Se&ttings"
+    Shortcut = "F2"
+    Picture = "icon:/16/tools"
   }
 }
