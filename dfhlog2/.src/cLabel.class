@@ -1,0 +1,441 @@
+' Gambas class file
+
+' Class cLabel
+PRIVATE $id AS Integer
+PRIVATE $mycall AS String
+PRIVATE $call AS String
+PRIVATE $locator AS String
+PRIVATE $date AS Date
+PRIVATE $utc AS String
+PRIVATE $rst AS String
+PRIVATE $band AS String
+PRIVATE $mode AS String
+PRIVATE $via AS String
+PRIVATE $prop AS String
+PRIVATE $qsl AS String
+PRIVATE $font AS Font
+PRIVATE $x AS Float
+PRIVATE $y AS Float
+PRIVATE $width AS Float
+PRIVATE $height AS Float
+
+PRIVATE $layout AS String
+PRIVATE $current AS String
+PRIVATE $xoffset AS Float
+PRIVATE $yoffset AS Float
+
+PROPERTY id AS Integer
+PROPERTY mycall AS String
+PROPERTY call AS String
+PROPERTY locator AS String
+PROPERTY {Date} AS Date
+PROPERTY utc AS String
+PROPERTY rst AS String
+PROPERTY band AS String
+PROPERTY mode AS String
+PROPERTY via AS String
+PROPERTY prop AS String
+PROPERTY qsl AS String
+
+PROPERTY {font} AS Font
+' PROPERTY x AS Float
+' PROPERTY y AS Float
+PROPERTY width AS Float
+PROPERTY height AS Float
+
+PUBLIC SUB _new(OPTIONAL testOnelabel AS Boolean = FALSE, OPTIONAL aFields AS String[])
+
+    $layout = Fmain.lblini["Layout/Type", "full"]
+    $current = Fmain.lblini["Default/Model", "APPLI 1274"]
+    $xoffset = Fmain.lblini[$current & "/XOffset", 0]
+    $yoffset = Fmain.lblini[$current & "/YOffset", 0]
+
+    IF testOnelabel THEN
+        $mycall = "VP8/EA7XXX/MM"
+        $call = "EA7XXX/QRP"
+        $date = Now
+        $utc = "00:00"
+        $band = "BAND"
+        $mode = "MODE"
+        $prop = "ION"
+        $rst = "599"
+        $locator = "HH55HH"
+        $via = "MANAGER"
+        $qsl = "TNX QSL"
+
+    ELSE IF aFields THEN
+
+        $mycall = aFields[1]
+        $call = aFields[2]
+        $date = CDate(aFields[3])
+        $utc = aFields[4]
+        $band = aFields[5]
+        $mode = aFields[6]
+        $prop = aFields[7]
+        $rst = aFields[8]
+        $locator = aFields[9]
+        '$mylocator = aFields[10]
+        $via = aFields[11]
+        $qsl = aFields[12]
+        IF $qsl = "Y" THEN
+            $qsl = "TNX QSL"
+        ELSE
+            $qsl = "PSE QSL"
+        ENDIF
+    ENDIF
+
+END
+
+PUBLIC SUB drawLabel(x AS Float, y AS Float, OPTIONAL unit AS String = "px")
+
+    SELECT CASE $layout
+
+        CASE "full"
+
+            WITH cUnits
+                x = x + $xoffset
+                y = y + $yoffset
+                Draw.LineStyle = Line.Solid
+                Draw.Foreground = Color.Black
+                Draw.Line(.mmToUnit(3 + x, unit), .mmToUnit(7 + y, unit), .mmToUnit(100 + x, unit), .mmToUnit(7 + y, unit))
+                Draw.Line(.mmToUnit(3 + x, unit), .mmToUnit(12 + y, unit), .mmToUnit(100 + x, unit), .mmToUnit(12 + y, unit))
+                Draw.Line(.mmToUnit(3 + x, unit), .mmToUnit(22 + y, unit), .mmToUnit(100 + x, unit), .mmToUnit(22 + y, unit))
+                'vertical lines
+                Draw.Line(.mmToUnit(3 + x, unit), .mmToUnit(7 + y, unit), .mmToUnit(3 + x, unit), .mmToUnit(22 + y, unit))
+                Draw.Line(.mmToUnit(30 + x, unit), .mmToUnit(7 + y, unit), .mmToUnit(30 + x, unit), .mmToUnit(22 + y, unit))
+                Draw.Line(.mmToUnit(50 + x, unit), .mmToUnit(7 + y, unit), .mmToUnit(50 + x, unit), .mmToUnit(22 + y, unit))
+                Draw.Line(.mmToUnit(63 + x, unit), .mmToUnit(7 + y, unit), .mmToUnit(63 + x, unit), .mmToUnit(22 + y, unit))
+                Draw.Line(.mmToUnit(75 + x, unit), .mmToUnit(7 + y, unit), .mmToUnit(75 + x, unit), .mmToUnit(22 + y, unit))
+                Draw.Line(.mmToUnit(87 + x, unit), .mmToUnit(7 + y, unit), .mmToUnit(87 + x, unit), .mmToUnit(22 + y, unit))
+                Draw.Line(.mmToUnit(100 + x, unit), .mmToUnit(7 + y, unit), .mmToUnit(100 + x, unit), .mmToUnit(22 + y, unit))
+                'headers
+                Draw.Font = Font["Arial,Bold, 9"]
+                Draw.Text($mycall & " confirming QSO:", .mmToUnit(3 + x, unit), .mmToUnit(2.5 + y, unit))
+                Draw.Text("To Radio", .mmToUnit(9 + x, unit), .mmToUnit(7.5 + y, unit))
+                Draw.Text("D/M/Y", .mmToUnit(35 + x, unit), .mmToUnit(7.5 + y, unit))
+                Draw.Text("UTC", .mmToUnit(53 + x, unit), .mmToUnit(7.5 + y, unit))
+                Draw.Text("RST", .mmToUnit(66 + x, unit), .mmToUnit(7.5 + y, unit))
+                Draw.Text("Band", .mmToUnit(76.5 + x, unit), .mmToUnit(7.5 + y, unit))
+                Draw.Text("2Way", .mmToUnit(88.5 + x, unit), .mmToUnit(7.5 + y, unit))
+                'DATA
+                Draw.Font = Font[Fmain.lblini["Fonts/Call"]]
+                Draw.Foreground = Fmain.lblini["Colors/Call", 0]
+                Draw.Text($call, .mmToUnit(17 + x, unit), .mmToUnit(15 + y, unit), 0, 0, Align.Center)
+                Draw.Foreground = Fmain.lblini["Colors/Data", 0]
+                Draw.Font = Font[Fmain.lblini["Fonts/Data"]]
+                Draw.Text(Format($date, "dd/mm/yyyy"), .mmToUnit(31 + x, unit), .mmToUnit(14 + y, unit))
+                Draw.Text(Left$($utc, 5), .mmToUnit(52 + x, unit), .mmToUnit(14 + y, unit))
+                Draw.Text($rst, .mmToUnit(67 + x, unit), .mmToUnit(14 + y, unit))
+                Draw.Text($band, .mmToUnit(76.5 + x, unit), .mmToUnit(14 + y, unit))
+                Draw.Text($mode, .mmToUnit(88.5 + x, unit), .mmToUnit(14 + y, unit))
+                IF $locator THEN Draw.Text("(In " & $locator & ")", .mmToUnit(5 + x, unit), .mmToUnit(17 + y, unit))
+                'footer
+                Draw.Text("QSL via: " & $via, .mmToUnit(3 + x, unit), .mmToUnit(23.5 + y, unit))
+                Draw.Text("Prop: " & $prop, .mmToUnit(3 + x, unit), .mmToUnit(28 + y, unit))
+                Draw.Text($qsl, .mmToUnit(85 + x, unit), .mmToUnit(28 + y, unit))
+            END WITH
+
+        CASE "medium"
+
+            WITH cUnits
+                x = x + $xoffset
+                y = y + $yoffset
+                Draw.LineStyle = Line.Solid
+                Draw.Foreground = Color.Black
+                'horizontal lines
+                Draw.Line(.mmToUnit(3 + x, unit), .mmToUnit(6 + y, unit), .mmToUnit(65 + x, unit), .mmToUnit(6 + y, unit))
+                Draw.Line(.mmToUnit(3 + x, unit), .mmToUnit(10 + y, unit), .mmToUnit(65 + x, unit), .mmToUnit(10 + y, unit))
+                Draw.Line(.mmToUnit(3 + x, unit), .mmToUnit(16 + y, unit), .mmToUnit(65 + x, unit), .mmToUnit(16 + y, unit))
+                'vertical lines
+                Draw.Line(.mmToUnit(3 + x, unit), .mmToUnit(6 + y, unit), .mmToUnit(3 + x, unit), .mmToUnit(16 + y, unit))
+                Draw.Line(.mmToUnit(22 + x, unit), .mmToUnit(6 + y, unit), .mmToUnit(22 + x, unit), .mmToUnit(16 + y, unit))
+                Draw.Line(.mmToUnit(33 + x, unit), .mmToUnit(6 + y, unit), .mmToUnit(33 + x, unit), .mmToUnit(16 + y, unit))
+                Draw.Line(.mmToUnit(41 + x, unit), .mmToUnit(6 + y, unit), .mmToUnit(41 + x, unit), .mmToUnit(16 + y, unit))
+                Draw.Line(.mmToUnit(52 + x, unit), .mmToUnit(6 + y, unit), .mmToUnit(52 + x, unit), .mmToUnit(16 + y, unit))
+                Draw.Line(.mmToUnit(65 + x, unit), .mmToUnit(6 + y, unit), .mmToUnit(65 + x, unit), .mmToUnit(16 + y, unit))
+                'headers
+                Draw.Font = Font["Arial,Bold, 8"]
+                Draw.Text("Confirms QSO to: ", .mmToUnit(3 + x, unit), .mmToUnit(2.5 + y, unit))
+                Draw.Font = Font[Fmain.lblini["Fonts/Call"]]
+                Draw.Foreground = Fmain.lblini["Colors/Call", 0]
+                Draw.Text($call, .mmToUnit(32 + x, unit), .mmToUnit(1 + y, unit), Align.Bottom)
+                Draw.Font = Font["Arial,Bold, 8"]
+                Draw.Foreground = Color.Black
+                Draw.Text("D/M/Y", .mmToUnit(8 + x, unit), .mmToUnit(6.5 + y, unit))
+                Draw.Text("UTC", .mmToUnit(24.5 + x, unit), .mmToUnit(6.5 + y, unit))
+                Draw.Text("RST", .mmToUnit(34 + x, unit), .mmToUnit(6.5 + y, unit))
+                Draw.Text("Band", .mmToUnit(43 + x, unit), .mmToUnit(6.5 + y, unit))
+                Draw.Text("2Way", .mmToUnit(54 + x, unit), .mmToUnit(6.5 + y, unit))
+                'DATA
+                Draw.Foreground = Fmain.lblini["Colors/Data", 0]
+                Draw.Font = Font[Fmain.lblini["Fonts/Data"]]
+                Draw.Text(Format($date, "dd/mm/yyyy"), .mmToUnit(4 + x, unit), .mmToUnit(11 + y, unit))
+                Draw.Text(Left$($utc, 5), .mmToUnit(23 + x, unit), .mmToUnit(11 + y, unit))
+                Draw.Text($rst, .mmToUnit(34 + x, unit), .mmToUnit(11 + y, unit))
+                Draw.Text($band, .mmToUnit(42 + x, unit), .mmToUnit(11 + y, unit))
+                Draw.Text($mode, .mmToUnit(53 + x, unit), .mmToUnit(11 + y, unit))
+                IF $locator THEN Draw.Text("(In " & $locator & ")", .mmToUnit(3 + x, unit), .mmToUnit(16 + y, unit))
+                'footer
+                IF $via THEN Draw.Text("QSL via: " & $via, .mmToUnit(33 + x, unit), .mmToUnit(16 + y, unit))
+                Draw.Text("Prop: " & $prop, .mmToUnit(3 + x, unit), .mmToUnit(20 + y, unit))
+                Draw.Text($qsl, .mmToUnit(50 + x, unit), .mmToUnit(20 + y, unit))
+            END WITH
+
+        CASE "basic"
+
+            WITH cUnits
+                x = x + $xoffset
+                y = y + $yoffset
+                Draw.LineStyle = Line.Solid
+                Draw.Foreground = Color.Black
+                'horizontal lines
+                Draw.Line(.mmToUnit(3 + x, unit), .mmToUnit(7 + y, unit), .mmToUnit(50 + x, unit), .mmToUnit(7 + y, unit))
+                'mixed
+                Draw.Font = Font["Arial,Bold, 9"]
+                Draw.Text("To Radio:", .mmToUnit(3 + x, unit), .mmToUnit(3 + y, unit))
+                Draw.Font = Font[Fmain.lblini["Fonts/Call"]]
+                Draw.Foreground = Fmain.lblini["Colors/Call", 0]
+                Draw.Text($call, .mmToUnit(20 + x, unit), .mmToUnit(2 + y, unit))
+                Draw.Font = Font["Arial,Bold, 9"]
+                Draw.Foreground = Color.Black
+                Draw.Text("Date:", .mmToUnit(3 + x, unit), .mmToUnit(7.5 + y, unit))
+                Draw.Foreground = Fmain.lblini["Colors/Data", 0]
+                Draw.Font = Font[Fmain.lblini["Fonts/Data"]]
+                Draw.Text(Format($date, "dd/mm/yyyy"), .mmToUnit(12 + x, unit), .mmToUnit(7.5 + y, unit))
+                Draw.Font = Font["Arial,Bold, 9"]
+                Draw.Foreground = Color.Black
+                Draw.Text("UTC:", .mmToUnit(31 + x, unit), .mmToUnit(7.5 + y, unit))
+                Draw.Foreground = Fmain.lblini["Colors/Data", 0]
+                Draw.Font = Font[Fmain.lblini["Fonts/Data"]]
+                Draw.Text(Left$($utc, 5), .mmToUnit(40 + x, unit), .mmToUnit(7.5 + y, unit))
+                Draw.Font = Font["Arial,Bold, 9"]
+                Draw.Foreground = Color.Black
+                Draw.Text("RST:", .mmToUnit(3 + x, unit), .mmToUnit(11.5 + y, unit))
+                Draw.Foreground = Fmain.lblini["Colors/Data", 0]
+                Draw.Font = Font[Fmain.lblini["Fonts/Data"]]
+                Draw.Text($rst, .mmToUnit(10.5 + x, unit), .mmToUnit(11.5 + y, unit))
+                Draw.Font = Font["Arial,Bold, 9"]
+                Draw.Foreground = Color.Black
+                Draw.Text("Band:", .mmToUnit(16.5 + x, unit), .mmToUnit(11.5 + y, unit))
+                Draw.Foreground = Fmain.lblini["Colors/Data", 0]
+                Draw.Font = Font[Fmain.lblini["Fonts/Data"]]
+                Draw.Text($band, .mmToUnit(26 + x, unit), .mmToUnit(11.5 + y, unit))
+                Draw.Font = Font["Arial,Bold, 9"]
+                Draw.Foreground = Color.Black
+                Draw.Text("2x:", .mmToUnit(36 + x, unit), .mmToUnit(11.5 + y, unit))
+                Draw.Font = Font[Fmain.lblini["Fonts/Data"]]
+                Draw.Foreground = Fmain.lblini["Colors/Data", 0]
+                Draw.Text($mode, .mmToUnit(41 + x, unit), .mmToUnit(11.5 + y, unit))
+                Draw.Foreground = Fmain.lblini["Colors/Data", 0]
+                Draw.Font = Font[Fmain.lblini["Fonts/Data"]]
+                IF $locator THEN Draw.Text("(In " & $locator & ")", .mmToUnit(3 + x, unit), .mmToUnit(15.5 + y, unit))
+                IF $via THEN Draw.Text("Via: " & $via, .mmToUnit(25 + x, unit), .mmToUnit(15.5 + y, unit))
+                Draw.Text("Prop: " & $prop, .mmToUnit(3 + x, unit), .mmToUnit(19 + y, unit))
+                Draw.Text($qsl, .mmToUnit(35 + x, unit), .mmToUnit(19 + y, unit))
+            END WITH
+
+    END SELECT
+
+END
+
+'********* PROPERTIES ***********
+
+PRIVATE FUNCTION mycall_Read() AS String
+
+    RETURN $mycall
+
+END
+
+PRIVATE SUB mycall_Write(Value AS String)
+
+    $mycall = Value
+
+END
+
+PRIVATE FUNCTION call_Read() AS String
+
+    RETURN $call
+
+END
+
+PRIVATE SUB call_Write(Value AS String)
+
+    $call = Value
+
+END
+
+PRIVATE FUNCTION locator_Read() AS String
+
+    RETURN $locator
+
+END
+
+PRIVATE SUB locator_Write(Value AS String)
+
+    $locator = Value
+
+END
+
+PRIVATE FUNCTION Date_Read() AS Date
+
+    RETURN $date
+
+END
+
+PRIVATE SUB Date_Write(Value AS Date)
+
+    $date = Value
+
+END
+
+PRIVATE FUNCTION utc_Read() AS String
+
+    RETURN Left$($utc, 5)
+
+END
+
+PRIVATE SUB utc_Write(Value AS String)
+
+    $utc = Value
+
+END
+
+PRIVATE FUNCTION rst_Read() AS String
+
+    RETURN $rst
+
+END
+
+PRIVATE SUB rst_Write(Value AS String)
+
+    $rst = Value
+
+END
+
+PRIVATE FUNCTION band_Read() AS String
+
+    RETURN $band
+
+END
+
+PRIVATE SUB band_Write(Value AS String)
+
+    $band = Value
+
+END
+
+PRIVATE FUNCTION mode_Read() AS String
+
+    RETURN $mode
+
+END
+
+PRIVATE SUB mode_Write(Value AS String)
+
+    $mode = Value
+
+END
+
+PRIVATE FUNCTION via_Read() AS String
+
+    RETURN $via
+
+END
+
+PRIVATE SUB via_Write(Value AS String)
+
+    $via = Value
+
+END
+
+PRIVATE FUNCTION prop_Read() AS String
+
+    RETURN $prop
+
+END
+
+PRIVATE SUB prop_Write(Value AS String)
+
+    $prop = Value
+
+END
+
+PRIVATE FUNCTION qsl_Read() AS String
+
+    RETURN $qsl
+
+END
+
+PRIVATE SUB qsl_Write(Value AS String)
+
+    $qsl = Value
+
+END
+
+PRIVATE FUNCTION font_Read() AS Font
+
+    RETURN $font
+
+END
+
+PRIVATE SUB font_Write(Value AS Font)
+
+    $font = Value
+
+END
+
+PRIVATE FUNCTION width_Read() AS Float
+
+    RETURN $width
+
+END
+
+PRIVATE SUB width_Write(Value AS Float)
+
+    $width = Value
+
+END
+
+PRIVATE FUNCTION height_Read() AS Float
+
+    RETURN $height
+
+END
+
+PRIVATE SUB height_Write(Value AS Float)
+
+    $height = Value
+
+END
+
+' PRIVATE FUNCTION x_Read() AS Float
+'     RETURN $x
+'
+' END
+'
+' PRIVATE SUB x_Write(Value AS Float)
+'     $x = Value
+'
+' END
+'
+' PRIVATE FUNCTION y_Read() AS Float
+'     RETURN $y
+'
+' END
+'
+' PRIVATE SUB y_Write(Value AS Float)
+'     $y = Value
+'
+' END
+
+PRIVATE FUNCTION id_Read() AS Integer
+
+    RETURN $id
+
+END
+
+PRIVATE SUB id_Write(Value AS Integer)
+
+    $id = Value
+
+END

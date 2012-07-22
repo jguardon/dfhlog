@@ -1,0 +1,39 @@
+# Gambas Form File 3.0
+{ Form Form 
+  MoveScaled(0,0,86,46)
+  Text = ("QSOs with gridsquare: ")
+  Icon = Picture["icon:/16/find"]
+  Resizable = False
+  Arrangement = Arrange.Vertical
+  Spacing = True
+  Margin = True
+  Padding = 3
+  { HBox1 HBox 
+    MoveScaled(0,0,85,41)
+    Expand = True
+    { cv GridView 
+      MoveScaled(0,1,84,31)
+      Expand = True
+      Mode = Select.Multiple
+      Header = GridView.Horizontal
+    }
+  }
+  { HBox2 HBox 
+    MoveScaled(0,41,85,4)
+    Spacing = True
+    Margin = True
+    Padding = 3
+    { lblNumRec Label 
+      MoveScaled(1,1,24,4)
+      Text = ("Records:")
+    }
+    { Label2 Label 
+      MoveScaled(36,1,24,4)
+      Expand = True
+    }
+    { btnClose Button 
+      MoveScaled(67,1,16,4)
+      Text = ("&Close")
+    }
+  }
+}

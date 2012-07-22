@@ -2312,14 +2312,14 @@ Private Sub update_stats()
             If hres!qsl_rcvd = "Y" Then
                 tblStats[iRow, i].Alignment = 3
                 tblStats[iRow, i].Font = Font["Bold"]
-                tblStats[iRow, i].Background = ini["Colores/Confirmado", Color.Orange]
-                tblStats[iRow, i].Foreground = Color.White
+                tblStats[iRow, i].BackColor = ini["Colores/Confirmado", Color.Orange]
+                tblStats[iRow, i].ForeColor = Color.White
                 tblStats[iRow, i].Text = ("C")
             Else
                 tblStats[iRow, i].Alignment = 3
                 tblStats[iRow, i].Font = Font["Bold"]
-                tblStats[iRow, i].Background = ini["Colores/Trabajado", Color.Green]
-                tblStats[iRow, i].Foreground = Color.White
+                tblStats[iRow, i].BackColor = ini["Colores/Trabajado", Color.Green]
+                tblStats[iRow, i].ForeColor = Color.White
                 tblStats[iRow, i].Text = ("W")
             Endif
             'PRINT "Digi " & sAux, hres!qsl_rcvd, hres!band

@@ -1,0 +1,174 @@
+' Gambas class file
+' dfhLog- Hamradio LogBook
+'     Copyright (C) 2009  Jesús Guardón, EA7DFH <ea7dfh@gmail.com>
+'
+'     This program is free software: you can redistribute it and/or modify
+'     it under the terms of the GNU General Public License as published by
+'     the Free Software Foundation, either version 3 of the License, or
+'     (at your option) any later version.
+'
+'     This program is distributed in the hope that it will be useful,
+'     but WITHOUT ANY WARRANTY; without even the implied warranty of
+'     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'     GNU General Public License for more details.
+'
+'     You should have received a copy of the GNU General Public License
+'     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+PUBLIC SUB Form_Open()
+
+    DIM c AS RadioButton
+    DIM cbList AS String[] = [("Custom"), "APPLI 1274", "APPLI 1273", "APPLI 1271", "APPLI 1270", "APPLI 1286", "APPLI 1287", "APPLI 1298"]
+
+    IF Fmain.lblini["APPLI 1274/Width"] = NULL THEN
+
+        Fmain.lblini["APPLI 1274/Description"] = ("105x37mm, 16 per page (2 columns 8 rows)")
+        Fmain.lblini["APPLI 1274/Width"] = 105
+        Fmain.lblini["APPLI 1274/Height"] = 37
+        Fmain.lblini["APPLI 1274/Cols"] = 2
+        Fmain.lblini["APPLI 1274/Rows"] = 8
+        Fmain.lblini["APPLI 1274/TMargin"] = 0
+        Fmain.lblini["APPLI 1274/LMargin"] = 0
+
+        Fmain.lblini["APPLI 1273/Description"] = ("70x37mm, 24 per page (3 columns 8 rows)")
+        Fmain.lblini["APPLI 1273/Width"] = 70
+        Fmain.lblini["APPLI 1273/Height"] = 37
+        Fmain.lblini["APPLI 1273/Cols"] = 3
+        Fmain.lblini["APPLI 1273/Rows"] = 8
+        Fmain.lblini["APPLI 1273/TMargin"] = 0
+        Fmain.lblini["APPLI 1273/LMargin"] = 0
+
+        Fmain.lblini["APPLI 1271/Description"] = ("70x30mm, 27 per page (3 columns 9 rows)")
+        Fmain.lblini["APPLI 1271/Width"] = 70
+        Fmain.lblini["APPLI 1271/Height"] = 30
+        Fmain.lblini["APPLI 1271/Cols"] = 3
+        Fmain.lblini["APPLI 1271/Rows"] = 9
+        Fmain.lblini["APPLI 1271/TMargin"] = 13.5
+        Fmain.lblini["APPLI 1271/LMargin"] = 0
+
+        Fmain.lblini["APPLI 1270/Description"] = ("70x25,4mm, 33 per page (3 columns 11 rows)")
+        Fmain.lblini["APPLI 1270/Width"] = 70
+        Fmain.lblini["APPLI 1270/Height"] = 25.4
+        Fmain.lblini["APPLI 1270/Cols"] = 3
+        Fmain.lblini["APPLI 1270/Rows"] = 11
+        Fmain.lblini["APPLI 1270/TMargin"] = 8.3
+        Fmain.lblini["APPLI 1270/LMargin"] = 0
+
+        Fmain.lblini["APPLI 1286/Description"] = ("52,5x29,7mm, 40 per page (4 columns 10 rows)")
+        Fmain.lblini["APPLI 1286/Width"] = 52.5
+        Fmain.lblini["APPLI 1286/Height"] = 29.7
+        Fmain.lblini["APPLI 1286/Cols"] = 4
+        Fmain.lblini["APPLI 1286/Rows"] = 10
+        Fmain.lblini["APPLI 1286/TMargin"] = 0
+        Fmain.lblini["APPLI 1286/LMargin"] = 0
+
+        Fmain.lblini["APPLI 1287/Description"] = ("105x35mm, 16 per page (2 columns 8 rows)")
+        Fmain.lblini["APPLI 1287/Width"] = 105
+        Fmain.lblini["APPLI 1287/Height"] = 35
+        Fmain.lblini["APPLI 1287/Cols"] = 2
+        Fmain.lblini["APPLI 1287/Rows"] = 8
+        Fmain.lblini["APPLI 1287/TMargin"] = 8.5
+        Fmain.lblini["APPLI 1287/LMargin"] = 0
+
+        Fmain.lblini["APPLI 1298/Description"] = ("70x35mm, 24 per page (3 columns 8 rows)")
+        Fmain.lblini["APPLI 1298/Width"] = 70
+        Fmain.lblini["APPLI 1298/Height"] = 35
+        Fmain.lblini["APPLI 1298/Cols"] = 3
+        Fmain.lblini["APPLI 1298/Rows"] = 8
+        Fmain.lblini["APPLI 1298/TMargin"] = 8.5
+        Fmain.lblini["APPLI 1298/LMargin"] = 0
+
+        Fmain.lblini["Default/Model"] = "APPLI 1274"
+
+        Fmain.lblini.Save
+
+    ENDIF
+    cboModel.List = cbList
+    cboModel.Text = Fmain.lblini["Default/Model", "APPLI 1274"]
+    FOR EACH c IN Frame2.Children
+        IF c.Tag = Fmain.lblini["Layout/Type", "full"] THEN c.Value = TRUE
+    NEXT
+    drawTestLabel
+
+END
+
+PUBLIC SUB drawTestLabel()
+
+    DIM lbl AS NEW cLabel(TRUE)
+    DIM current AS String
+
+    current = Fmain.lblini["Default/Model", "APPLI 1270"]
+
+    daTestLabel.Width = cUnits.mmToUnit(Fmain.lblini[current & "/Width", 105], "px")
+    daTestLabel.Height = cUnits.mmToUnit(Fmain.lblini[current & "/Height", 37], "px")
+    daTestLabel.Clear
+    Draw.Begin(daTestLabel)
+    lbl.drawLabel(0, 0, "px")
+    Draw.End
+    lbl = NULL
+
+END
+
+PUBLIC SUB cboModel_Click()
+
+    DIM current AS String
+
+    current = Fmain.lblini["Default/Model", "APPLI 1270"]
+    IF cboModel.Index = 0 THEN
+        IF Fmain.lblini[current & "/Width"] = NULL THEN
+            FCustom.ShowModal
+        ENDIF
+    ENDIF
+    Fmain.lblini["Default/Model"] = cboModel.Text
+    cboModel.ToolTip = Fmain.lblini[cboModel.Text & "/Description"]
+    drawTestLabel
+
+END
+
+PUBLIC SUB btnConfig_Click()
+
+    IF cboModel.Index = 0 THEN
+        FCustom.setControls(TRUE, ("Custom Label"))
+    ELSE
+        FCustom.setControls(FALSE, cboModel.Text)
+    ENDIF
+
+    FCustom.ShowModal
+    drawTestLabel
+
+END
+
+PUBLIC SUB btnOK_Click()
+
+    Fmain.lblini.Save
+    ME.Close
+
+END
+
+PUBLIC SUB btnCancel_Click()
+
+    ME.Close
+
+END
+
+PUBLIC SUB rbFull_Click()
+
+    Fmain.lblini["Layout/Type"] = rbFull.Tag
+
+    drawTestLabel
+
+END
+
+PUBLIC SUB rbMedium_Click()
+
+    Fmain.lblini["Layout/Type"] = rbMedium.Tag
+    drawTestLabel
+
+END
+
+PUBLIC SUB rbBasic_Click()
+
+    Fmain.lblini["Layout/Type"] = rbBasic.Tag
+    drawTestLabel
+
+END

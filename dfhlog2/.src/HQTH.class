@@ -1,0 +1,297 @@
+' Gambas class file
+' dfhLog- Hamradio LogBook
+'     Copyright (C) 2009  Jesús Guardón, EA7DFH <ea7dfh@gmail.com>
+'
+'     This program is free software: you can redistribute it and/or modify
+'     it under the terms of the GNU General Public License as published by
+'     the Free Software Foundation, either version 3 of the License, or
+'     (at your option) any later version.
+'
+'     This program is distributed in the hope that it will be useful,
+'     but WITHOUT ANY WARRANTY; without even the implied warranty of
+'     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'     GNU General Public License for more details.
+'
+'     You should have received a copy of the GNU General Public License
+'     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+PRIVATE _downloadAsyncKey AS NEW HttpClient AS "_DownloadKey"
+PRIVATE _downloadAsyncData AS NEW HttpClient AS "_DownloadData"
+PRIVATE downloadBufferKey AS String
+PRIVATE downloadBufferData AS String
+PRIVATE xml AS NEW XmlReader
+PRIVATE keyHQTH AS String
+PRIVATE csgn AS String
+
+'****PROPERTIES******
+PRIVATE $qerror AS String
+PRIVATE $qcall AS String
+PRIVATE $fname AS String
+PRIVATE $name AS String
+PRIVATE $addr1 AS String
+PRIVATE $addr2 AS String
+PRIVATE $country AS String
+PRIVATE $state AS String
+PRIVATE $grid AS String
+PRIVATE $county AS String
+PRIVATE $qslmgr AS String
+PRIVATE $email AS String
+
+PROPERTY READ qcall AS String
+PROPERTY READ name AS String
+PROPERTY READ fname AS String
+PROPERTY READ qerror AS String
+PROPERTY READ addr1 AS String
+PROPERTY READ addr2 AS String
+PROPERTY READ country AS String
+PROPERTY READ state AS String
+PROPERTY READ grid AS String
+PROPERTY READ county AS String
+PROPERTY READ qslmgr AS String
+PROPERTY READ email AS String
+
+EVENT HQTHOk()
+
+'***************** HAMQTH XML method *****************
+PUBLIC SUB DownloadAsyncKey(URL AS String)
+
+    downloadBufferKey = ""
+    _downloadAsyncKey.Async = TRUE
+    _downloadAsyncKey.TimeOut = 10
+    _downloadAsyncKey.URL = URL
+    _downloadAsyncKey.Get()
+
+END
+
+PUBLIC SUB DownloadAsyncData(URL AS String)
+
+    downloadBufferData = ""
+    _downloadAsyncData.Async = TRUE
+    _downloadAsyncData.TimeOut = 10
+    _downloadAsyncData.URL = URL
+    _downloadAsyncData.Get()
+
+END
+
+PUBLIC SUB _DownloadKey_Read()
+
+    DIM buffer AS String
+
+    READ #LAST, buffer, Lof(LAST)
+    downloadBufferKey &= buffer
+
+END
+
+PUBLIC SUB _DownloadData_Read()
+
+    DIM buffer AS String
+
+    READ #LAST, buffer, Lof(LAST)
+    downloadBufferData &= buffer
+
+END
+
+PUBLIC SUB _DownloadKey_Error()
+
+    DEBUG "Error downloading Key" & _downloadAsyncKey.Status
+
+END
+
+PUBLIC SUB _DownloadData_Error()
+
+    DEBUG "Error " & _downloadAsyncData.Status & " downloading " '& _downloadAsyncData.URL
+
+END
+
+PUBLIC SUB _DownloadKey_Finished()
+
+    DIM sElement AS String
+
+    xml.FromString(downloadBufferKey)
+    WHILE NOT Xml.Eof
+        SELECT CASE Xml.Node.Type
+            CASE XmlReaderNodeType.Element
+                sElement = Xml.Node.Name
+                IF sElement = "session_id" THEN
+                    xml.Read()
+                    keyHQTH = xml.Node.Value
+                ENDIF
+        END SELECT
+        Xml.Read()
+    WEND
+
+    TRY DownloadAsyncData("http://www.hamqth.com/xml.php?id=" & keyHQTH & "&callsign=" & csgn)
+
+CATCH
+    Message.Error("Error reading XML (Id HamQTH)\n Line: " & Error.Where)
+
+END
+
+PUBLIC SUB _DownloadData_Finished()
+
+    DIM sElement AS String
+
+    xml.FromString(downloadBufferData)
+    WHILE NOT Xml.Eof
+        SELECT CASE Xml.Node.Type
+            CASE XmlReaderNodeType.Element
+                sElement = Xml.Node.Name
+                SELECT CASE sElement
+                    CASE "callsign"
+                        xml.Read()
+                        $qcall = xml.Node.Value
+                    CASE "nick"
+                        xml.Read()
+                        $fname = xml.Node.Value
+                    CASE "adr_street1"
+                        xml.Read()
+                        $addr1 = xml.Node.Value
+                    CASE "adr_city"
+                        xml.Read()
+                        $addr2 = xml.Node.Value
+                    CASE "adr_zip"
+                        xml.Read()
+                        $country &= "-" & xml.Node.Value
+                    CASE "qth"
+                        xml.Read()
+                        $country = xml.Node.Value
+                    CASE "us_state"
+                        xml.Read()
+                        $state = xml.Node.Value
+                    CASE "grid"
+                        xml.Read()
+                        $grid = xml.Node.Value
+                    CASE "us_county"
+                        xml.Read()
+                        $county = xml.Node.Value
+                    CASE "qsl_via"
+                        xml.Read()
+                        $qslmgr = xml.Node.Value
+                    CASE "email"
+                        xml.Read()
+                        $email = xml.Node.Value
+                    CASE "error"
+                        xml.Read()
+                        $qerror = xml.Node.Value
+
+                END SELECT
+
+        END SELECT
+        Xml.Read()
+
+    WEND
+    RAISE HQTHOk()
+
+CATCH
+    Message.Error(("Error reading XML (Data HamQTH)\n Line: ") & Error.Where)
+
+END
+
+PRIVATE SUB getId()
+
+    DIM uqrz AS String = FMain.ini["Estacion/UserHQTH"]
+    DIM pqrz AS String = global.base64(FMain.ini["Estacion/PassHQTH"], TRUE)
+
+    TRY DownloadAsyncKey("http://www.hamqth.com/xml.php?u=" & uqrz & "&p=" & pqrz)
+
+END
+
+PUBLIC SUB getHamqth(callsign AS String)
+
+    csgn = callsign
+    IF NOT keyHQTH OR IF $qerror = "Session does not exist or expired" OR IF $qerror = "Username or password missing" THEN
+        getId()
+    ELSE
+        TRY DownloadAsyncData("http://www.hamqth.com/xml.php?id=" & keyHQTH & "&callsign=" & Trim(callsign))
+    ENDIF
+
+END
+
+PUBLIC SUB clear()
+
+    $qerror = NULL
+    $qcall = NULL
+    $fname = NULL
+    $name = NULL
+    $addr1 = NULL
+    $addr2 = NULL
+    $country = NULL
+    $state = NULL
+    $grid = NULL
+    $county = NULL
+    $qslmgr = NULL
+    $email = NULL
+
+END
+
+PRIVATE FUNCTION name_Read() AS String
+
+    RETURN $name
+
+END
+
+PRIVATE FUNCTION fname_Read() AS String
+
+    RETURN $fname
+
+END
+
+PRIVATE FUNCTION qerror_Read() AS String
+
+    RETURN $qerror
+
+END
+
+PRIVATE FUNCTION addr1_Read() AS String
+
+    RETURN $addr1
+
+END
+
+PRIVATE FUNCTION addr2_Read() AS String
+
+    RETURN $addr2
+
+END
+
+PRIVATE FUNCTION state_Read() AS String
+
+    RETURN $state
+
+END
+
+PRIVATE FUNCTION grid_Read() AS String
+
+    RETURN Upper($grid)
+
+END
+
+PRIVATE FUNCTION county_Read() AS String
+
+    RETURN $county
+
+END
+
+PRIVATE FUNCTION qslmgr_Read() AS String
+
+    RETURN Upper($qslmgr)
+
+END
+
+PRIVATE FUNCTION email_Read() AS String
+
+    RETURN Lower($email)
+
+END
+
+PRIVATE FUNCTION qcall_Read() AS String
+
+    RETURN Upper($qcall)
+
+END
+
+PRIVATE FUNCTION country_Read() AS String
+
+    RETURN $country
+
+END

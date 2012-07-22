@@ -1,0 +1,53 @@
+# Gambas Form File 3.0
+{ Form Form 
+  MoveScaled(0,0,51,32)
+  Text = ("Summary")
+  Icon = Picture["icon:/16/bookmark"]
+  Resizable = False
+  Margin = True
+  { lblSummary Label 
+    MoveScaled(0,0,51,6)
+    Font = Font["Bold,+4"]
+    Background = &HBFDFFF&
+    Text = ("DXCC Summary")
+    Alignment = Align.Center
+  }
+  { cboBand ComboBox 
+    MoveScaled(6,10,15,4)
+    ReadOnly = True
+    Text = ("ComboBox1")
+  }
+  { cboMode ComboBox 
+    MoveScaled(6,16,15,4)
+    ReadOnly = True
+    Text = ("ComboBox2")
+  }
+  { Frame1 Frame 
+    MoveScaled(25,8,20,11)
+    { rbWkd RadioButton 
+      MoveScaled(2,1,17,4)
+      Text = ("Worked")
+      Value = True
+    }
+    { rbCfd RadioButton 
+      MoveScaled(2,6,17,4)
+      Text = ("Confirmed")
+    }
+  }
+  { Label2 Label 
+    MoveScaled(6,7,12,4)
+    Text = ("Band:")
+  }
+  { Label3 Label 
+    MoveScaled(6,13,12,4)
+    Text = ("Mode:")
+  }
+  { btnOK Button 
+    MoveScaled(27,22,18,7)
+    Text = ("&OK")
+  }
+  { btnCancel Button 
+    MoveScaled(6,22,18,7)
+    Text = ("&Cancel")
+  }
+}

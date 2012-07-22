@@ -1,0 +1,92 @@
+# Gambas Form File 3.0
+{ Form Form 
+  MoveScaled(0,0,64,40)
+  Text = ("ADIF Import")
+  Icon = Picture["icon:/16/down"]
+  Resizable = False
+  { Frame1 Frame 
+    MoveScaled(1,1,62,32)
+    { txtPath TextBox 
+      MoveScaled(2,4,44,4)
+      ReadOnly = True
+    }
+    { btnOpn Button 
+      MoveScaled(49,4,11,4)
+      Text = ("&Browse")
+    }
+    { Label1 Label 
+      MoveScaled(2,1,24,4)
+      Text = ("File:")
+    }
+    { Label2 Label 
+      MoveScaled(2,10,10,4)
+      Text = ("QSOs:")
+    }
+    { Label3 Label 
+      MoveScaled(2,16,10,4)
+      Text = ("Errors:")
+    }
+    { lblCurrent Label 
+      MoveScaled(11,22,49,4)
+    }
+    { lblQSOs Label 
+      MoveScaled(13,10,8,4)
+      Foreground = &H0000C0&
+      Text = ("0")
+      Alignment = Align.Right
+    }
+    { lblErrors Label 
+      MoveScaled(13,16,8,4)
+      Foreground = &HFF0000&
+      Text = ("0")
+      Alignment = Align.Right
+    }
+    { pb ProgressBar 
+      MoveScaled(2,26,58,4)
+    }
+    { Label4 Label 
+      MoveScaled(2,22,8,4)
+      Text = ("QSO:")
+    }
+    { Label5 Label 
+      MoveScaled(2,13,10,4)
+      Text = ("Duplicated:")
+    }
+    { lblDupes Label 
+      MoveScaled(13,13,8,4)
+      Foreground = &H008000&
+      Text = ("0")
+      Alignment = Align.Right
+    }
+    { Frame2 Frame 
+      MoveScaled(44,8,16,12.4286)
+      Foreground = &H000040&
+      ToolTip = ("OS Origin of ADIF file")
+      Text = ("ADIF Origin")
+      { chkLinux RadioButton 
+        MoveScaled(2,2.1429,11,4)
+        Text = ("Linux")
+        Value = True
+      }
+      { chkMac RadioButton 
+        MoveScaled(2,5.1429,11,4)
+        Text = ("Mac")
+      }
+      { chkWindows RadioButton 
+        MoveScaled(2,8.1429,11,4)
+        Text = ("Windows")
+      }
+    }
+    { Separator1 Separator 
+      MoveScaled(2,20,40,2)
+    }
+  }
+  { btnCancel Button 
+    MoveScaled(29,35,16,4)
+    Text = ("&Cancel")
+  }
+  { btnOK Button 
+    MoveScaled(47,35,16,4)
+    Text = ("&Import")
+  }
+}

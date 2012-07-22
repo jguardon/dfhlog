@@ -1,0 +1,53 @@
+# Gambas Form File 3.0
+{ Form Form 
+  MoveScaled(0,0,47,32)
+  Icon = Picture["icon:/16/fullscreen"]
+  { Frame1 Frame 
+    MoveScaled(1,9,45,16)
+    Text = ("Size in mm.")
+    { spWidth SpinBox 
+      MoveScaled(24,4,9,4)
+      MinValue = 100
+      MaxValue = 180
+      Value = 140
+    }
+    { spHeight SpinBox 
+      MoveScaled(24,10,9,4)
+      MinValue = 60
+      MaxValue = 140
+      Value = 90
+    }
+    { Label2 Label 
+      MoveScaled(9,4,12,4)
+      Text = ("Width:")
+      Alignment = Align.Right
+    }
+    { Label3 Label 
+      MoveScaled(9,10,12,4)
+      Text = ("Height:")
+      Alignment = Align.Right
+    }
+  }
+  { btnSave Button 
+    MoveScaled(25,27,16,4)
+    Text = ("&Save")
+    Picture = Picture["icon:/16/apply"]
+  }
+  { btnCancel Button 
+    MoveScaled(6,27,16,4)
+    Text = ("&Cancel")
+    Picture = Picture["icon:/16/cancel"]
+  }
+  { Panel1 Panel 
+    MoveScaled(0,0,47,8)
+    Background = Color.LightBackground
+    Arrangement = Arrange.Fill
+    { Label1 Label 
+      MoveScaled(1,1,45,6)
+      Font = Font["Bold,+4"]
+      Expand = True
+      Text = ("QSL Size")
+      Alignment = Align.Center
+    }
+  }
+}

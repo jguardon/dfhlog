@@ -1,0 +1,246 @@
+' Gambas class file
+' dfhLog- Hamradio LogBook
+'     Copyright (C) 2009  Jesús Guardón, EA7DFH <ea7dfh@gmail.com>
+'
+'     This program is free software: you can redistribute it and/or modify
+'     it under the terms of the GNU General Public License as published by
+'     the Free Software Foundation, either version 3 of the License, or
+'     (at your option) any later version.
+'
+'     This program is distributed in the hope that it will be useful,
+'     but WITHOUT ANY WARRANTY; without even the implied warranty of
+'     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'     GNU General Public License for more details.
+'
+'     You should have received a copy of the GNU General Public License
+'     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+PRIVATE $hres AS Result
+PRIVATE $rf AS ResultField
+PRIVATE $aMyFields AS NEW String[]
+PUBLIC active AS Boolean = FALSE
+
+PUBLIC SUB Form_Open()
+
+    DIM resul AS Result
+    DIM sql AS String
+
+    active = TRUE
+    ME.Move(FMain.ScreenX + 100, FMain.ScreenY + 100)
+    ME.Title = ("QSL Print Queue")
+    ME.Raise
+    ME.SetFocus
+
+    prepararCV()
+    IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN
+    sql = "SELECT id, date, time, call, band, mode, prop_mode, rst_sent, gridsquare, my_gridsquare, qsl_via, qsl_rcvd, qsl_sent, my_call FROM qQSL ORDER BY call ASC;"
+    resul = dbLog.cnLog.Exec(sql)
+
+    FOR EACH $rf IN resul.Fields
+        $aMyFields.Add($rf.Name)
+    NEXT
+    searchQSO
+
+END
+
+PRIVATE SUB prepararCV()
+
+    cv.Columns.Count = 14
+
+    cv.Columns[0].Title = ("Nr")
+    cv.Columns[1].Text = ("Date")
+    cv.Columns[2].Text = ("Time")
+    cv.Columns[3].Text = ("Callsign")
+    cv.Columns[4].Text = ("Band")
+    cv.Columns[5].Text = ("Mode")
+    cv.Columns[6].Text = ("Propa.")
+    cv.Columns[7].Text = ("RST(E)")
+    cv.Columns[8].Text = ("Locator")
+    cv.Columns[9].Text = ("My Locator")
+    cv.Columns[10].Text = ("Manager")
+    cv.Columns[11].Text = ("QSL(R)")
+    cv.Columns[12].Text = ("QSL(S)")
+    cv.Columns[13].Text = ("My Call")
+
+END
+
+PUBLIC SUB searchQSO()
+
+    DIM sql AS String
+
+    cv.Clear()
+
+    sql = "SELECT id, date, time, call, band, mode, prop_mode, rst_sent, gridsquare, my_gridsquare, qsl_via, qsl_rcvd, qsl_sent, my_call FROM qQSL ORDER BY call, id ASC;"
+
+    IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN
+    $hres = dbLog.cnLog.Exec(sql)
+    cv.Rows.Count = $hres.Count
+    lblNumRec.Text = ("Records: ") & $hres.Count
+
+CATCH
+    Message.Error(Error.Text, Error.Where)
+
+END
+
+PUBLIC SUB cv_Data(Row AS Integer, Column AS Integer)
+
+    $hres.MoveTo(Row)
+
+    IF Column = 1 THEN
+        cv.Data.Text = Format$($hres[$aMyFields[Column]], "dd/mm/yyyy")
+    ELSE
+        cv.Data.Text = $hres[$aMyFields[Column]]
+    ENDIF
+
+    IF row MOD 2 = 0 THEN cv.Data.Background = Color.LightBackground
+CATCH
+
+END
+
+PRIVATE SUB menuLog()
+
+    DIM hMenus AS Menu
+    DIM hMenu, hMenue AS Menu
+
+    hMenus = NEW Menu(ME)
+
+    hMenu = NEW Menu(hMenus)
+    getSelectedQSO()
+    IF global.$iQSOn.Count > 1 THEN
+        hMenu.Text = ("For selected QSOs: ") & global.$iQSOn.Count
+    ELSE
+        hMenu.Text = (("For QSO with: ") & cv[cv.Row, 3].Text)
+    ENDIF
+
+    hMenu = NEW Menu(hMenus)
+    hMenu.Text = ""
+
+    hMenue = NEW Menu(hMenus) AS "mnuEditarQSO"
+    hMenue.Text = ("Edit QSO")
+    hMenue.Picture = Picture["icons/gtk-edit.png"]
+    hMenue.Shortcut = "Ctrl+M"
+    IF global.$iQSOn.Count > 1 THEN hMenue.enabled = FALSE
+
+    hMenu = NEW Menu(hMenus) AS "mnuBorrarQSO"
+    hMenu.Text = ("Delete QSO")
+    hMenu.Picture = Picture["icons/gtk-delete.png"]
+    hMenu.Shortcut = "Ctrl+D"
+
+    hMenu = NEW Menu(hMenus)
+    hMenu.Text = ""
+
+    hMenu = NEW Menu(hMenus) AS "mnuExpADIF"
+    hMenu.Text = ("Export to ADIF")
+    hMenu.Picture = Picture["icon:/16/up"]
+    hMenu.Shortcut = "Ctrl+Alt+A"
+
+    ' pop up
+    IF hMenus THEN hMenus.Popup()
+
+END
+
+PUBLIC SUB getSelectedQSO()
+
+    DIM i AS Integer
+
+    global.$iQSOn.Clear()
+    FOR i = 0 TO cv.Rows.Count - 1
+        IF cv.Rows[i].Selected = TRUE THEN
+            global.$iQSOn.Add(CInt(cv[i, 0].Text))
+        ENDIF
+    NEXT
+
+END
+
+PUBLIC SUB mnuEditarQSO_Click()
+
+    IF global.$iQSOn.Count = 1 THEN
+        TRY FMain.modifyQSO(CInt(cv[cv.Row, 0].Text))
+        ME.Lower()
+        FMain.SetFocus()
+    ENDIF
+
+END
+
+PUBLIC SUB fillData()
+
+    INC Application.Busy
+    searchQSO()
+    DEC Application.Busy
+
+END
+
+PUBLIC SUB mnuBorrarQSO_Click()
+
+    DIM i AS Integer
+
+    IF Message.Warning(("Selected QSO will be deleted\nDo you want to continue?"), ("Delete QSO"), ("Cancel")) = 2 THEN RETURN
+    IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN
+    FOR i = 0 TO global.$iQSOn.Count - 1
+        dbLog.cnLog.Exec("DELETE FROM log WHERE id=&1;", global.$iQSOn[i])
+    NEXT
+
+    fillData()
+    FMain.fillData()
+CATCH
+    Message.Error(Error.Text, Error.Where)
+
+END
+
+PUBLIC SUB mnuExpADIF_Click()
+
+    DIM i AS Integer
+    DIM filePath AS String
+
+    Dialog.Title = ("Save ADIF file")
+    Dialog.Filter = ["*.adi", ("ADIF file")]
+
+    IF Dialog.SaveFile() THEN RETURN
+    filePath = Dialog.Path & ".adi"
+    global.saveADIF(filePath)
+
+END
+
+PUBLIC SUB cv_Menu()
+
+    TRY menuLog()
+    cv.Rows.Unselect()
+
+END
+
+PUBLIC SUB btnClose_Click()
+
+    ME.Close()
+
+END
+
+PUBLIC SUB Form_Close()
+
+    active = FALSE
+
+END
+
+PUBLIC SUB btnClear_Click()
+
+    IF cv.Rows.Count > 0 THEN
+        IF Message.Warning(("Print queue will be deleted\nDo you want to continue?"), ("Delete"), ("Cancel")) = 2 THEN RETURN
+        IF dbLog.connDB(FMain.ini["Log/File"]) THEN RETURN
+        dbLog.cnLog.Exec("DELETE FROM qQSL")
+        'dbLog.CloseDB()
+        fillData()
+    ENDIF
+
+END
+
+PUBLIC SUB btnPrintQSL_Click()
+
+    FDesign.printQSLs
+
+END
+
+PUBLIC SUB btnPrintLabel_Click()
+
+    FPreview.ShowModal
+    fillData
+
+END

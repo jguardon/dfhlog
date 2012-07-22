@@ -1,0 +1,43 @@
+# Gambas Form File 3.0
+{ Form Form 
+  MoveScaled(0,0,114.1429,85.7143)
+  Text = ("Global Stats")
+  Icon = Picture["icon:/16/component"]
+  Arrangement = Arrange.Vertical
+  Margin = True
+  { tblGStats GridView 
+    MoveScaled(1,1,82,68)
+    Expand = True
+    Header = GridView.Both
+  }
+  { HBox1 HBox 
+    MoveScaled(1,69,82,4)
+    Spacing = True
+    { lblTotal Label 
+      MoveScaled(1,0,22,4)
+      AutoResize = True
+      Text = ("Total QSOs")
+    }
+  }
+  { HBox2 HBox 
+    MoveScaled(1,73,82,4)
+    Spacing = True
+    { lblTotalCfd Label 
+      MoveScaled(1,0,22,4)
+      AutoResize = True
+      Text = ("Total QSOs")
+    }
+    { Label1 Label 
+      MoveScaled(25,0,21,4)
+      Expand = True
+    }
+    { btnPrint Button 
+      MoveScaled(47,0,16,4)
+      Text = ("E&xport CSV")
+    }
+    { btnClose Button 
+      MoveScaled(64,0,16,4)
+      Text = ("&Close")
+    }
+  }
+}

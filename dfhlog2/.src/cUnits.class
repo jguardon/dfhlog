@@ -1,0 +1,61 @@
+' Gambas class file
+
+STATIC PUBLIC AllowedUnits AS String[] = ["m", "cm", "mm", "in", "pt", "px"]
+
+STATIC PUBLIC FUNCTION GetFactorUnitToInch(Unit AS String) AS Float
+
+    SELECT CASE Unit
+        CASE "cm"
+            RETURN 0.3937
+        CASE "ft"
+            RETURN 12
+        CASE "in"
+            RETURN 1
+        CASE "m"
+            RETURN 39.37
+        CASE "mm"
+            RETURN 0.03937
+        CASE "px"
+            RETURN 1 / Desktop.Resolution
+        CASE "pt"
+            RETURN 1 / Printer.Resolution
+
+    END SELECT
+
+END
+
+STATIC PUBLIC FUNCTION UnitsConverter(Value AS Float, Unit1 AS String, Unit2 AS String) AS Float
+
+    DIM fInch AS Float
+    DIM f AS Float
+
+    f = GetFactorUnitToInch(Unit1)
+    finch = value * f
+    f = GetFactorUnitToInch(Unit2)
+    RETURN finch / f
+
+END
+
+STATIC PUBLIC FUNCTION mmToUnit(Value AS Float, Unit AS String) AS Float
+
+    DIM fInch AS Float
+    DIM f AS Float
+
+    f = GetFactorUnitToInch("mm")
+    finch = value * f
+    f = GetFactorUnitToInch(Unit)
+    RETURN finch / f
+
+END
+
+STATIC PUBLIC FUNCTION UnitTomm(Value AS Float, Unit AS String) AS Float
+
+    DIM fInch AS Float
+    DIM f AS Float
+
+    f = GetFactorUnitToInch(Unit)
+    finch = value * f
+    f = GetFactorUnitToInch("mm")
+    RETURN finch / f
+
+END

@@ -1,0 +1,19 @@
+# Gambas Form File 3.0
+{ Form Form 
+  MoveScaled(0,0,51,50)
+  Icon = Picture["icon:/16/find"]
+  Resizable = False
+  Utility = True
+  SkipTaskbar = True
+  { cView ColumnView 
+    MoveScaled(1,6,49,43)
+    Sorted = True
+  }
+  { txtBuscar TextBox 
+    MoveScaled(12,2,38,4)
+  }
+  { Label1 Label 
+    MoveScaled(2,2,9,4)
+    Text = ("Search:")
+  }
+}

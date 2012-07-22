@@ -1,0 +1,68 @@
+# Gambas Form File 3.0
+{ Form Form 
+  MoveScaled(0,0,70,60)
+  Text = ("Setup Label")
+  Icon = Picture["icon:/16/properties"]
+  Resizable = False
+  { cboModel ComboBox 
+    MoveScaled(21,4,27,4)
+    ReadOnly = True
+  }
+  { Label1 Label 
+    MoveScaled(3,4,14,4)
+    Text = ("Choose model:")
+  }
+  { btnCancel Button 
+    MoveScaled(33,53,16,4)
+    Text = ("&Cancel")
+    Picture = Picture["icons/cancel.png"]
+  }
+  { btnOK Button 
+    MoveScaled(51,53,16,4)
+    Text = ("&OK")
+    Picture = Picture["icons/accept.png"]
+  }
+  { btnConfig Button 
+    MoveScaled(50,4,17,4)
+    Text = ("Con&figure")
+    Picture = Picture["icon:/16/options"]
+  }
+  { Frame1 Frame 
+    MoveScaled(2,9,65,32)
+    Text = ("Label Preview")
+    { daTestLabel DrawingArea 
+      MoveScaled(3,5,58,24)
+      Background = &HFFFFFF&
+      Cached = True
+      Border = Border.Plain
+    }
+  }
+  { Frame2 Frame 
+    MoveScaled(2,42,29,15)
+    Text = ("Data Layout")
+    { rbFull RadioButton 
+      MoveScaled(3,3,24,4)
+      Tag = "full"
+      Text = ("Full layout")
+      Value = True
+    }
+    { rbMedium RadioButton 
+      MoveScaled(3,6.5714,24,4)
+      Tag = "medium"
+      Text = ("Medium Layout")
+    }
+    { rbBasic RadioButton 
+      MoveScaled(3,10,24,4)
+      Tag = "basic"
+      Text = ("Basic Layout")
+    }
+  }
+  { TextLabel1 TextLabel 
+    MoveScaled(33,43,34,9)
+    Font = Font["8"]
+    Background = &HFFFFDF&
+    Padding = 3
+    Text = ("Choose a model from the dropdown that matches your label dimensions, and then pick a layout that fit into the label ")
+    Alignment = Align.Justify
+  }
+}
